@@ -1,0 +1,36 @@
+<mat-card class="card" [ngClass]="{ deactive: !account.active }">
+  <div
+    fxLayout="row wrap"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    class="card__header"
+  >
+    <div
+      fxFlex="20"
+      class="font-semi-thick card__header--name"
+      fxLayoutAlign="start center"
+      fxLayoutGap="0.5rem"
+    >
+    <mat-radio-group>
+      <mat-radio-button [value]="account.uuid" [checked]="account.uuid === selected?.uuid ? true : false" color="primary"></mat-radio-button>
+    </mat-radio-group>
+      <span
+        >{{ account?.identity?.salutation | titlecase }}
+        {{ account?.identity?.fullName | titlecase }}</span
+      >
+    </div>
+    <div fxFlex="30" class="font-semi-thick card__header--email">
+      {{ account.email | lowercase }}
+    </div>
+    <div fxFlex="20" class="font-semi-thick card__header--phone">
+      {{ account.phone ? account.phone.code + account.phone.number : '-' }}
+    </div>
+    <div
+      fxFlex="15"
+      *ngIf="groupName"
+      class="font-semi-thick card__header--group"
+    >
+      {{ groupName }}
+    </div>
+  </div>
+</mat-card>

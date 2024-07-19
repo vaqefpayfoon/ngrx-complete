@@ -1,0 +1,74 @@
+<mat-card class="card">
+  <div
+    fxLayout="row wrap"
+    fxLayout.lt-md="column"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    fxLayoutAlign.lt-md="start start"
+    class="card__header"
+    fxLayoutGap.lt-md="1rem"
+  >
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--createdAt"
+      fxLayout="column"
+      fxLayoutGap="0.5rem"
+      fxFlexOrder.lt-md="2"
+    >
+      <div>
+        {{ purchaseItem?.createdAt }}
+      </div>
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--fullName"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ purchaseItem?.shared?.fullName }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--status"
+      fxLayoutAlign="center"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ purchaseItem?.status }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--price"
+      fxLayoutAlign="center"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ purchaseItem?.model?.price }}
+    </div>
+    <div
+      fxFlex="15"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--brand"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ purchaseItem?.model?.unit?.brand }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--fullName"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ purchaseItem?.model?.unit?.model }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--fullName"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ purchaseItem?.model?.unit?.series }}
+    </div>
+  </div>
+</mat-card>

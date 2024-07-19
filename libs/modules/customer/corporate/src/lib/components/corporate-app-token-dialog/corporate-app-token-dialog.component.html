@@ -1,0 +1,16 @@
+<h1 mat-dialog-title class="font-thick text-black">{{ name }}'s App Token</h1>
+
+<mat-dialog-content>
+  <p>
+    Please save the token in a safe place.
+  </p>
+  <p class="token">
+    {{ data.token }}
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions class="text-right">
+  <button mat-button (click)="copy(data.token)" [color]="'primary'">
+    Copy
+  </button>
+</mat-dialog-actions>

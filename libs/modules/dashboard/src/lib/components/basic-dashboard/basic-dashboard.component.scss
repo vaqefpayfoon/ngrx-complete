@@ -1,0 +1,84 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.basic {
+
+  &__passage {
+    font-weight: 462px;
+    font-size: 25px;
+    color: black;
+  }
+  &__header {
+
+    .mat-icon {
+      height: 48px;
+      width: 48px;
+      line-height: 48px;
+      text-align: center;
+      background-color: map-get($map: $colors, $key: seashell);
+      border: 1px solid map-get($map: $colors, $key: aquaHaze);
+      box-shadow: 0 2px 5px 0px rgba($color: #727272, $alpha: 0.3);
+    }
+  }
+
+  &__card {
+    color: map-get($map: $colors, $key: shark) !important;
+    border: 1px solid map-get($map: $colors, $key: aquaHaze);
+    @include round(7px);
+    box-shadow: none;
+  }
+
+  &__full-height {
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  &__carts{
+    min-height: 443px;
+    min-width: 584px;
+  }
+
+  &__preview {
+    font-size: 2rem;
+  }
+
+  &__divider {
+    position: relative;
+  }
+
+  &__statistics{
+
+    .mat-icon {
+      background-color: map-get($map: $colors, $key: red);
+      border-radius: 50%;
+      height: 48px;
+      width: 48px;
+      line-height: 48px;
+      text-align: center;
+      color: map-get($map: $colors, $key: white);
+    }
+
+    &--active {
+      .mat-icon {
+        background-color: map-get($map: $colors, $key: green) !important;
+      }
+    }
+    
+    &--rating {
+      .mat-icon {
+        background-color: darken($color: map-get($map: $colors, $key: pending), $amount: 5%) !important;
+      }
+    }
+  }
+
+  &__loading,
+  &__not-found {
+    width: 100%;
+    font-size: 48px;
+    color: map-get($map: $colors, $key: shark);
+    font-weight: $font-thicker;
+    text-align: center;
+    padding: 150px 0;
+  }
+}

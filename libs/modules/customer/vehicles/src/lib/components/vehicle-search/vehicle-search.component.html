@@ -1,0 +1,27 @@
+<mat-card class="card">
+  <mat-card-content class="card__general">
+    <div class="card__search" fxLayoutAlign="center center" fxLayoutGap="1rem">
+      <div class="form-group" fxFlex="35">
+        <input
+          type="text"
+          matInput
+          class="form-control"
+          [formControl]="numberPlate"
+          placeholder="Number Plate"
+          autocomplete="off"
+        />
+        <neural-show-errors [control]="numberPlate"></neural-show-errors>
+      </div>
+      <button
+        mat-flat-button
+        type="button"
+        class="px10 py1"
+        color="primary"
+        [disabled]="numberPlate.invalid"
+        (click)="onSearchVIN(numberPlate)"
+      >
+        Search
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

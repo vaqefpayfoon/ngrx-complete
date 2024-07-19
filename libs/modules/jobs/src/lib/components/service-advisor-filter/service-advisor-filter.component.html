@@ -1,0 +1,20 @@
+<div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start space-between">
+    <div fxFlex="1 0 50">
+        <mat-card class="card">
+            <mat-card-title class="mb2">
+                <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize font-semi-thick my0">Filter By Service Advisor</h2>
+                </div>
+            </mat-card-title>
+            <div class="card__divider">
+                <mat-divider></mat-divider>
+            </div>
+
+            <div class="card__data pt8" >
+                <button mat-stroked-button class="m1" (click)="onFilter(serviceAdvisorFilter.ALL)" [disabled]="disableAllFilter"> All ({{totals?.all}})</button>
+                <button mat-stroked-button class="m1" (click)="onFilter(serviceAdvisorFilter.UNASSIGNED)" [disabled]="selectedServiceAdvisor===serviceAdvisorFilter.UNASSIGNED"> Unassigned ({{totals?.unassigned}})</button>
+                <button mat-stroked-button class="m1" *ngFor="let sa of totals?.serviceAdvisors " (click)="onFilter(sa?.uuid)" [disabled]="sa?.uuid===selectedServiceAdvisor"> {{ sa?.identity?.fullName }} ({{sa?.totalAssigned}})</button>
+            </div>
+        </mat-card>
+    </div>
+</div>

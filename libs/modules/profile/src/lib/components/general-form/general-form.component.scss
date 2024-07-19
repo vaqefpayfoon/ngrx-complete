@@ -1,0 +1,88 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.general {
+  $self: &;
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+  .mat-card-title {
+    font-size: $font-size * 1.1;
+  }
+
+  &__form {
+
+    mat-label {
+      font-size: 13px;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+    h2 {
+      color: map-get($map: $colors, $key: theme);
+      font-size: 15.5px;
+      font-weight: 600;
+      margin-top: 15px;
+      margin-bottom: 0;
+    }
+  }
+  &__avatar {
+    img {
+      object-fit: cover;
+      object-position: center;
+      width: 120px;
+      height: 120px;
+      display: inline-block;
+      border-radius: 50% !important;
+      box-shadow: 0px 0px 0px 3px rgb(67, 100, 237);
+    }
+
+    #{$self} {
+      &__image {
+        height: 120px;
+        &:hover > #{$self} {
+          &__upload {
+            transform: translate(0px, -60px);
+            opacity: 1;
+          }
+        }
+      }
+
+      &__image > #{$self} {
+        &__upload {
+          position: relative;
+          height: 80px;
+          width: 120px;
+          text-align: center;
+          border-bottom-left-radius: 80px;
+          border-bottom-right-radius: 80px;
+          opacity: 1;
+          transform: translate(0px, -55px) scale(1, 0.8);
+          opacity: 0;
+          transition: 0.3s ease;
+          cursor: pointer;
+          
+          &:before {
+            content: '';
+            background-color: map-get($map: $colors, $key: black);
+            opacity: 0.4;
+            height: 60px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 60px;
+            border-bottom-left-radius: 80px;
+            border-bottom-right-radius: 80px;
+          }
+
+          & mat-icon {
+            color: #fff;
+            margin-top: 15px;
+            z-index: 5;
+            position: relative;
+          }
+        }
+      }
+    }
+  }
+}

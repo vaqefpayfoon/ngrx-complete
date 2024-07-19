@@ -1,0 +1,338 @@
+<div [formGroup]="data">
+  <!-- start general form -->
+  <mat-card class="campaign p4 my8">
+    <!-- start card title -->
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">RSVP</h2>
+      </div>
+    </mat-card-title>
+    <!-- end card title -->
+
+    <!-- start title divider -->
+    <div class="campaign__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <!-- end title divider -->
+
+    <!-- start card content -->
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="campaign__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <!-- search controls -->
+        <div fxFlex="100" fxLayoutGap="3rem" fxLayout="column">
+          <!-- search address -->
+          <div fxLayout="row" fxFlex="100">
+            <div fxFlex="35" class="form-group" fxLayout="column">
+              <mat-label>Search Address</mat-label>
+              <input
+                type="text"
+                class="form-control"
+                (keydown.enter)="$event.preventDefault()"
+                placeholder="Search Location"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="off"
+                type="text"
+                [disabled]="formDisabled"
+                #search
+              />
+            </div>
+          </div>
+          <!-- location -->
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxLayoutGap="1rem"
+            formGroupName="location"
+          >
+            <div fxFlex="35" class="form-group" fxLayout="column">
+              <mat-label>Address</mat-label>
+              <input
+                type="text"
+                readonly
+                matInput
+                class="form-control"
+                formControlName="address"
+                placeholder="Address"
+                autocomplete="off"
+              />
+              <neural-show-errors
+                [control]="location.controls.address"
+              ></neural-show-errors>
+            </div>
+            <div fxFlex="15" class="form-group" fxLayout="column">
+              <mat-label>Latitude</mat-label>
+              <input
+                type="text"
+                readonly
+                matInput
+                class="form-control"
+                formControlName="latitude"
+                placeholder="Latitude"
+                autocomplete="off"
+              />
+              <neural-show-errors
+                [control]="location.controls.latitude"
+              ></neural-show-errors>
+            </div>
+            <div fxFlex="15" class="form-group" fxLayout="column">
+              <mat-label>Longitude</mat-label>
+              <input
+                type="text"
+                readonly
+                matInput
+                class="form-control"
+                formControlName="longitude"
+                placeholder="Longitude"
+                autocomplete="off"
+              />
+              <neural-show-errors
+                [control]="location.controls.longitude"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <!-- end card content -->
+  </mat-card>
+</div>
+
+<div [formGroup]="data">
+  <!-- start general form -->
+  <mat-card class="campaign p4 my8">
+    <!-- start card title -->
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">RSVP Dates</h2>
+        <button
+          mat-mini-fab
+          color="primary"
+          (click)="addSelectedDates()"
+          [disabled]="formDisabled"
+        >
+          <mat-icon svgIcon="add"></mat-icon>
+        </button>
+      </div>
+    </mat-card-title>
+    <!-- end card title -->
+
+    <!-- start title divider -->
+    <div class="campaign__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <!-- end title divider -->
+
+    <!-- start card content -->
+    <mat-card-content>
+      <div formArrayName="selectedDates">
+        <div *ngFor="let item of selectedDatesControls; let i = index">
+          <div
+            fxLayout="column"
+            fxFlex="100"
+            class="campaign__general my8"
+            fxLayoutAlign="space-evenly space-between"
+            fxLayoutGap="1rem"
+            fxFlexOffset="8rem"
+            [formGroupName]="i"
+          >
+            <button
+              class="campaign__remove"
+              *ngIf="i !== 0"
+              matTooltip="Remove"
+              [disabled]="formDisabled"
+              (click)="removeSelectedDates(i)"
+              mat-icon-button
+              color="warn"
+            >
+              <mat-icon [svgIcon]="'close_off'"></mat-icon>
+            </button>
+
+            <!-- date -->
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <div fxFlex="35" class="form-group" fxLayout="column">
+                <mat-label>Start date</mat-label>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutGap="1rem"
+                  fxLayoutAlign="space-between center"
+                >
+                  <!-- <input
+                    readonly
+                    class="form-control"
+                    matInput
+                    formControlName="start"
+                    matStartDate
+                    [matDatepicker]="startDate"
+                    placeholder="Start date"
+                    (dateChange)="
+                      changeDate(selectedDatesControls[i].get('start'), $event)
+                    "
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="startDate"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #startDate></mat-datepicker> -->
+                  <input
+                  readonly
+                    matInput
+                    class="form-control"
+                    formControlName="start"
+                    [ngxMatDatetimePicker]="picker"
+                    placeholder="Set a start date and time"
+                    (dateChange)="
+                      changeDate(selectedDatesControls[i],selectedDatesControls[i].get('start'), $event)
+                    "
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <ngx-mat-datetime-picker #picker> </ngx-mat-datetime-picker>
+                </div>
+                <neural-show-errors
+                  [control]="selectedDatesControls[i].get('start')"
+                ></neural-show-errors>
+              </div>
+
+              <div fxFlex="35" class="form-group" fxLayout="column">
+                <mat-label>End date</mat-label>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutGap="1rem"
+                  fxLayoutAlign="space-between center"
+                >
+                  <!-- <input
+                    readonly
+                    class="form-control"
+                    matInput
+                    formControlName="end"
+                    matEndDate
+                    [matDatepicker]="endDate"
+                    placeholder="End date"
+                    (dateChange)="
+                      changeDate(selectedDatesControls[i].get('end'), $event)
+                    "
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="endDate"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #endDate></mat-datepicker> -->
+                  <input
+                  readonly
+                  matInput
+                  class="form-control"
+                  formControlName="end"
+                  [ngxMatDatetimePicker]="endPicker"
+                  placeholder="Set an end date and time"
+                  (dateChange)="
+                    changeDate(selectedDatesControls[i],selectedDatesControls[i].get('end'), $event)
+                  "
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="endPicker"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #endPicker> </ngx-mat-datetime-picker>
+                </div>
+                <neural-show-errors
+                  [control]="selectedDatesControls[i].get('end')"
+                ></neural-show-errors>
+              </div>
+            </div>
+
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <!-- Seats -->
+              <div fxFlex="35" class="form-group" fxLayout="column">
+                <mat-label>Available Seats</mat-label>
+                <input
+                  type="number"
+                  matInput
+                  class="form-control"
+                  formControlName="availableSeats"
+                  placeholder="Available Seats"
+                  autocomplete="off"
+                />
+                <neural-show-errors
+                  [control]="selectedDatesControls[i].get('availableSeats')"
+                ></neural-show-errors>
+              </div>
+              <!-- Pax -->
+              <div fxFlex="35" class="form-group" fxLayout="column">
+                <mat-label>Max Pax</mat-label>
+                <input
+                  type="number"
+                  matInput
+                  class="form-control"
+                  formControlName="maxPax"
+                  placeholder="Max Pax"
+                  autocomplete="off"
+                />
+                <neural-show-errors
+                  [control]="selectedDatesControls[i].get('maxPax')"
+                ></neural-show-errors>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <!-- end card content -->
+
+    <!-- start actions button -->
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        [disabled]="!createPermission || !updatePermission"
+        type="button"
+        class="mr4 px10 py1"
+        (click)="disableForm()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        [disabled]="!updatePermission"
+        *ngIf="exists && formDisabled"
+        class="px10 py1"
+        color="primary"
+        (click)="enableForm()"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!createPermission || formInvalid"
+        *ngIf="formEnabled && !exists"
+        class="px10 py1"
+        color="primary"
+        (click)="onCreate()"
+      >
+        Save
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!updatePermission"
+        *ngIf="formEnabled && exists"
+        class="px10 py1"
+        color="primary"
+        (click)="onUpdate()"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+    <!-- end actions button -->
+  </mat-card>
+</div>

@@ -1,0 +1,32 @@
+<div
+  class="lead"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+      (refreshChange)="onRefresh($event)"
+    ></neural-dynamic-header>
+  </div>
+  <!-- (loaded)="onLoadLead($event)" -->
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-lead-form
+    [lead]="lead$ | async"
+    [brands]="brands$ | async"
+    [corporates]="corporates$ | async"
+    [purchaseQuotes]="purchaseQuote$ | async"
+    [testDrives]="testDrives$ | async"
+    [wishList] = "wishList$ | async"
+    [permissions]="permissions$ | async"
+    [isSuperAdmin]="isSuperAdmin$ | async"
+    [selectedCorporate]="selectedCorporate$ | async"
+    [selectedBranch]="selectedBranch$ | async"
+    (updated)="onUpdate($event)"
+    (branchChange)="onBranchChange($event)"
+    [account]="account$ | async"
+    ></neural-lead-form>
+  </div>
+</div>

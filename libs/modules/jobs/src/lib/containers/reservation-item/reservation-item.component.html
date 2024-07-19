@@ -1,0 +1,8 @@
+<div class="reservation" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="(reservation$ | async)?.referenceNumber" [breadcrumbs]="bc" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>    
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-reservation-form [timeZone]="timeZone$ | async" [selectedBranch]="selectedBranch$ | async" [reservation]="reservation$ | async" [error]="error$ | async" [loading]="loading$ | async" (loaded)="onLoad($event)" (branchChange)="onBranchChange($event)"></neural-reservation-form>
+    </div>
+</div>

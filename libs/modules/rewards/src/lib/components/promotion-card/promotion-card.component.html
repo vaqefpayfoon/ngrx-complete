@@ -1,0 +1,75 @@
+<mat-card class="card" [ngClass]="{ deactive: !promotion.active }">
+  <div
+    fxLayout="row wrap"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    class="card__header"
+  >
+    <div
+      fxFlex="20"
+      class="font-semi-thick card__header--name"
+      fxLayoutAlign="start center"
+      fxLayoutGap="0.5rem"
+    >
+      {{ promotion?.code }}
+    </div>
+    <div fxFlex="15" class="font-semi-thick card__header--email">
+      {{ promotion?.date?.start | date: 'mediumDate' }}
+    </div>
+    <div fxFlex="15" class="font-semi-thick card__header--phone">
+      {{ promotion?.date?.end | date: 'mediumDate' }}
+    </div>
+    <div fxFlex="10" class="font-semi-thick card__header--phone">
+      {{
+        discountType[promotion?.discount?.type] === discountType.PERCENTAGE
+          ? (promotion?.discount?.amount * 100) + '%' 
+          : '$' + (promotion?.discount?.amount | number)
+      }}
+    </div>
+    <div fxFlex="10" class="font-semi-thick card__header--phone">
+      {{ promotion?.type == mobileServiceType ? 'MOBILE SERVICE' : 'INVOICE'}}
+    </div>
+
+    <div fxFlex="10" class="font-semi-thick card__header--status">
+      <mat-slide-toggle
+        color="primary"
+        [disabled]="!statusPermission"
+        matTooltipPosition="above"
+        [matTooltip]="[promotion.autoRedeem ? 'Deactivate' : 'Activate']"
+        (click)="toggleRedeem($event)"
+        [checked]="promotion.autoRedeem"
+      ></mat-slide-toggle>
+    </div>
+    
+    <div fxFlex="10" class="font-semi-thick card__header--status">
+      <mat-slide-toggle
+        color="primary"
+        [disabled]="!statusPermission"
+        matTooltipPosition="above"
+        [matTooltip]="[promotion.active ? 'Deactivate' : 'Activate']"
+        (click)="toggleStatus($event)"
+        [checked]="promotion.active"
+      ></mat-slide-toggle>
+    </div>
+
+    <div fxFlex="5" class="font-semi-thick card__header--actions">
+      <button
+        mat-icon-button
+        [disabled]="!permissions?.GET_PROMO"
+        [matMenuTriggerFor]="actions"
+      >
+        <mat-icon svgIcon="action_off"></mat-icon>
+      </button>
+      <mat-menu #actions="matMenu">
+        <button
+          mat-menu-item
+          [disabled]="!permissions?.GET_PROMO"
+          [routerLink]="['../voucher', promotion.uuid]"
+        >
+          <mat-icon svgIcon="preview_off"></mat-icon>
+          <span>Preview</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-card>

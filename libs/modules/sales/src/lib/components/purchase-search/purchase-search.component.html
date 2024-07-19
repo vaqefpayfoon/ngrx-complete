@@ -1,0 +1,213 @@
+<div class="mt8 sale-search">
+    <mat-accordion class="sale-search__panel">
+      <mat-expansion-panel [expanded]="panelOpenState">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h2 class="h6 text-capitalize font-semi-thick my0">Advance search</h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card class="sale-search__card p4 my8">
+          <!-- content -->
+          <mat-card-content>
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              class="sale-search__general"
+              fxLayoutAlign="start space-between"
+              fxLayoutGap="1rem"
+              fxFlexOffset="1rem"
+            >
+              <!-- form -->
+              <div
+                [formGroup]="form"
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutGap="1rem grid"
+              >
+                <ng-container formGroupName="createdAt">              
+                  <!-- start -->
+                  <div
+                    fxFlex="30"
+                    class="form-group"
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                  >
+                    <mat-label>Start requested date</mat-label>
+                    <div fxLayout="row" class="form-group__wrapper">
+                      <input
+                        matInput
+                        class="form-control"
+                        [matDatepicker]="startPicker"
+                        placeholder="11 May 2012"
+                        formControlName="from"
+                        (dateChange)="changeStartDate($event)"
+                      />
+                      <button
+                        class="form-group__remove-date"
+                        type="button"
+                        *ngIf="!!from.value"
+                        mat-button
+                        matSuffix
+                        mat-icon-button
+                        (click)="clearDate(form)"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                      <mat-datepicker-toggle matSuffix [for]="startPicker">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #startPicker></mat-datepicker>
+                    </div>
+                  </div>
+                  <!-- end -->
+                  <div
+                    fxFlex="30"
+                    class="form-group"
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                  >
+                    <mat-label>End requested date</mat-label>
+                    <div fxLayout="row" class="form-group__wrapper">
+                      <input
+                        matInput
+                        class="form-control"
+                        [matDatepicker]="endPicker"
+                        placeholder="15 May 2012"
+                        formControlName="to"
+                        (dateChange)="changeEndDate($event)"
+                      />
+                      <button
+                        class="form-group__remove-date"
+                        type="button"
+                        *ngIf="!!to.value"
+                        mat-button
+                        matSuffix
+                        mat-icon-button
+                        (click)="clearDate(form)"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="endPicker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #endPicker></mat-datepicker>
+                    </div>
+                  </div>
+                </ng-container>
+                <!-- email -->
+                <div fxFlex="30" class="form-group" fxLayout="column" formGroupName="account">
+                  <mat-label>Email</mat-label>
+                  <div fxLayout="row" class="form-group__wrapper">
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="email"
+                      placeholder="name@example.com"
+                      autocomplete="off"
+                      (keyup)="onSearch(form)"
+                    />
+                    <button
+                      class="form-group__remove"
+                      *ngIf="email.value"
+                      mat-button
+                      matSuffix
+                      mat-icon-button
+                      (click)="email.patchValue('');onSearch(form);"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <!-- referenceNumber -->
+                <div fxFlex="30" class="form-group" fxLayout="column">
+                  <mat-label>Reference Number</mat-label>
+                  <div fxLayout="row" class="form-group__wrapper">
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="referenceNumber"
+                      placeholder="Reference Number"
+                      autocomplete="off"
+                      (keyup)="onSearch(form)"
+                    />
+                    <button
+                      class="form-group__remove"
+                      *ngIf="referenceNumber.value"
+                      mat-button
+                      matSuffix
+                      mat-icon-button
+                      (click)="referenceNumber.patchValue('');onSearch(form);"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+  
+                <!-- tradeInStatus -->
+                <div fxFlex="30" fxLayout="column" fxLayoutGap="0.5rem" formGroupName="tradeIn">
+                  <mat-label>Trade-In Status</mat-label>
+                  <ng-container formGroupName="offer">
+                    <div class="form-group selectedMat mb4" fxFlex="100">
+                      <mat-select
+                        placeholder="Select a status"
+                        formControlName="status"
+                        (selectionChange)="onSearch(form)"
+                      >
+                        <mat-option>-- None --</mat-option>
+                        <mat-option
+                          *ngFor="let status of offerStatuses | keyvalue"
+                          [value]="status.value"
+                        >
+                          {{ status.value }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </ng-container>
+                </div>
+                <!-- purchaseStatus -->
+                <div fxFlex="30" fxLayout="column" fxLayoutGap="0.5rem">
+                  <mat-label>Purchase Status</mat-label>
+                  <div class="form-group selectedMat mb4" fxFlex="100">
+                    <mat-select
+                      placeholder="Select a status"
+                      formControlName="status"
+                      (selectionChange)="onSearch(form)"
+                    >
+                      <mat-option>-- None --</mat-option>
+                      <mat-option
+                        *ngFor="let status of statuses | keyvalue"
+                        [value]="status.value"
+                      >
+                        {{ status.value }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <!-- downloadButton -->
+                <div
+                  fxLayout="row"
+                  fxFlex="100"
+                  fxLayoutAlign="end center"
+                  class="mt2"
+                >
+                  <button
+                    mat-flat-button
+                    type="button"
+                    color="primary"
+                    class="px10 py1"
+                    [disabled]="!downloadPermission"
+                    (click)="onDownload(downloadForm)"
+                  >
+                    Download
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  

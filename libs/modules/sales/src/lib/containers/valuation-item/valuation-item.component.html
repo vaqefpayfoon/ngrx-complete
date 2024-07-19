@@ -1,0 +1,21 @@
+<div
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+  fxLayoutGap="2rem"
+>
+  <!-- start breadcrumb and title -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <!-- end breadcrumb and title -->
+
+  <!-- start sale form -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-valuation-form></neural-valuation-form>
+  </div>
+  <!-- end sale form -->
+</div>

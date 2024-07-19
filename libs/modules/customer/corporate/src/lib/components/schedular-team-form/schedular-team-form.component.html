@@ -1,0 +1,597 @@
+<div
+  class="schedules"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <div
+      class="dynamic-header"
+      fxFlex="100"
+      fxLayoutAlign="space-between center"
+      fxLayout="row wrap"
+    >
+      <div
+        fxLayout="column"
+        fxFlex="50"
+        class="dynamic-header__header"
+        fxLayoutAlign="start start"
+      ></div>
+    </div>
+  </div>
+
+  <div fxFlex="100" fxFlexFill>
+    <div fxLayout="row wrap" fxFlexFill fxFlex="100" class="height-space">
+      <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+        <h3>General</h3>
+      </div>
+      <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+        <div
+          fxFlex="35"
+          fxLayout="column"
+          class="form-group"
+          fxLayoutGap="0.5rem"
+        >
+          <mat-label>Name</mat-label>
+          <input
+            type="text"
+            matInput
+            class="form-control disable-color"
+            [value]="schedule?.name"
+            readonly
+          />
+        </div>
+
+        <div
+          fxFlex="35"
+          fxLayout="column"
+          class="form-group"
+          fxLayoutGap="0.5rem"
+        >
+          <mat-label>Type</mat-label>
+          <input
+            type="text"
+            matInput
+            class="form-control disable-color"
+            [value]="
+              schedule?.type == 'AFTER_SALES' ? 'AFTER SALES' : schedule?.type
+            "
+            readonly
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <form
+    autocomplete="off"
+    novalidate
+    [formGroup]="form"
+    fxFlex="100"
+    fxFlexFill
+    fxLayout="row wrap"
+  >
+    <div fxFlex="100" fxFlexFill fxLayout="row wrap">
+      <mat-horizontal-stepper #stepper class="steper-width">
+        <mat-step>
+          <ng-template matStepLabel>Weekly</ng-template>
+          <div fxLayout="row wrap" fxFlex="100" fxFlexFill>
+            <div fxLayout="row wrap" fxFlex="100" class="mt10 mb5">
+              <div fxFlex="100" fxLayout="row wrap" fxLayout="row">
+                <div fxLayout="column" fxFlex="35">
+                  <mat-label>Team Name</mat-label>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    class="form-group"
+                    fxLayoutGap="1rem"
+                  >
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control top-space"
+                      formControlName="name"
+                      placeholder="Team Name"
+                      autocomplete="off"
+                      #fElement
+                    />
+                  </div>
+                  <br />
+                  <mat-label class="top-space">Slot Duration</mat-label>
+                  <div fxFlex="100" fxLayout="row" class="form-group">
+                    <div class="selectedMat mb2" fxFlex="100">
+                      <mat-select
+                        placeholder="Select a Slot Duration"
+                        formControlName="slotDuration"
+                        class="form-control top-space"
+                      >
+                        <mat-option
+                          *ngFor="let duration of durations"
+                          [value]="duration"
+                        >
+                          {{ duration }}
+                        </mat-option>
+                      </mat-select>
+                      <p class="small-font">
+                        Modifying the time slot will reset time slot capacity
+                        constraints for this team
+                      </p>
+                    </div>
+                  </div>
+                  <mat-label class="top-space">Brand(s)</mat-label>
+                  <div
+                    fxFlex="100"
+                    fxFlexFill
+                    fxLayout="row wrap"
+                    class="form-group"
+                  >
+                    <div class="selectedMat" fxFlex="100">
+                      <mat-chip-list #chipList aria-label="Brand selection">
+                        <input
+                          placeholder="New brand..."
+                          [formControl]="brandCtrl"
+                          #brandInput
+                          [matAutocomplete]="auto"
+                          [matChipInputFor]="chipList"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                          (matChipInputTokenEnd)="add($event)"
+                          class="form-control top-space"
+                        />
+                      </mat-chip-list>
+                      <mat-autocomplete
+                        #auto="matAutocomplete"
+                        (optionSelected)="selected($event)"
+                      >
+                        <mat-option
+                          *ngFor="let brand of filteredBrands | async"
+                          [value]="brand"
+                          [disabled]="isBrandSelected(brand)"
+                        >
+                          {{ brand }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </div>
+                  </div>
+
+                  <div
+                    fxFlex="100"
+                    fxFlexFill
+                    fxLayout="row wrap"
+                    class="form-group"
+                  >
+                    <div class="selectedMat" fxFlex="100">
+                      <mat-chip-list #chipList aria-label="Brand selection">
+                        <mat-chip
+                          *ngFor="let brand of myBrands"
+                          (removed)="remove(brand)"
+                        >
+                          {{ brand }}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                      </mat-chip-list>
+                    </div>
+                  </div>
+
+                  <br />
+                  <mat-label class="top-space">Team Member(s)</mat-label>
+                  <div
+                    fxFlex="100"
+                    fxFlexFill
+                    fxLayout="row wrap"
+                    class="form-group"
+                  >
+                    <div class="selectedMat" fxFlex="100">
+                      <mat-chip-list #chipListAcc aria-label="Brand selection">
+                        <input
+                          placeholder="Team Members..."
+                          [formControl]="accountCtrl"
+                          #accountInput
+                          [matAutocomplete]="autoAcc"
+                          [matChipInputFor]="chipListAcc"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                          (matChipInputTokenEnd)="addAccount($event)"
+                          class="form-control top-space"
+                        />
+                      </mat-chip-list>
+                      <mat-autocomplete
+                        #autoAcc="matAutocomplete"
+                        (optionSelected)="selectedAccount($event)"
+                      >
+                        <mat-option
+                          *ngFor="let account of filteredAccounts | async"
+                          [value]="account"
+                          [disabled]="isAccountSelected(account)"
+                        >
+                          {{ account }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </div>
+                  </div>
+
+                  <div
+                    fxFlex="100"
+                    fxFlexFill
+                    fxLayout="row wrap"
+                    class="form-group"
+                  >
+                    <div class="selectedMat" fxFlex="100">
+                      <mat-chip-list
+                        #chipListAcc
+                        aria-label="Account selection"
+                      >
+                        <mat-chip
+                          *ngFor="let account of myAccounts"
+                          (removed)="removeAccount(account)"
+                        >
+                          {{ account }}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                      </mat-chip-list>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayout="column" fxFlex="65" class="left-align">
+                  <div
+                    fxFlex="100"
+                    fxFlexFill
+                    fxLayout="row wrap"
+                    fxLayoutGap="1rem"
+                    formArrayName="weekdays"
+                  >
+                    <div
+                      *ngFor="
+                        let item of weekDaysItems;
+                        let i = index;
+                        let first = first
+                      "
+                      fxLayoutGap="10px"
+                      fxLayoutAlign="center center"
+                      [formGroupName]="i"
+                    >
+                      <br />
+                      <div
+                        class="form-group"
+                        fxLayout="column"
+                        fxFlex="20"
+                        fxLayoutGap="10px"
+                      >
+                        <mat-label class="small-font" *ngIf="first"
+                          >Day</mat-label
+                        >
+                        <input
+                          type="text"
+                          matInput
+                          class="form-control disable-color"
+                          formControlName="day"
+                          placeholder="Day"
+                          autocomplete="off"
+                          readonly
+                          fxLayoutGap="1rem"
+                        />
+                      </div>
+                      <div
+                        class="form-group"
+                        fxLayout="column"
+                        fxFlex="20"
+                        fxLayoutGap="10px"
+                      >
+                        <mat-label class="small-font" *ngIf="first"
+                          >Max Appointments</mat-label
+                        >
+                        <input
+                          type="number"
+                          matInput
+                          class="form-control"
+                          formControlName="maxAppointments"
+                          placeholder="Max Appointments"
+                          autocomplete="off"
+                          [readonly]="!activeTmp(i)"
+                          [ngClass]="activeTmp(i) ? '' : 'disable-color'"
+                          fxLayoutGap="1rem"
+                          onkeydown="if(event.key==='.'){event.preventDefault();}"
+                        />
+                      </div>
+                      <div
+                        class="form-group"
+                        fxLayout="column"
+                        fxFlex="20"
+                        fxLayoutGap="10px"
+                      >
+                        <mat-label class="small-font" *ngIf="first"
+                          >Start Time</mat-label
+                        >
+                        <input
+                          type="time"
+                          matInput
+                          class="form-control"
+                          formControlName="startTime"
+                          placeholder="Start Time"
+                          autocomplete="off"
+                          [readonly]="!activeTmp(i)"
+                          [ngClass]="activeTmp(i) ? '' : 'disable-color'"
+                          fxLayoutGap="1rem"
+                        />
+                      </div>
+                      <div
+                        class="form-group"
+                        fxLayout="column"
+                        fxFlex="20"
+                        fxLayoutGap="10px"
+                      >
+                        <mat-label class="small-font" *ngIf="first"
+                          >End Time</mat-label
+                        >
+                        <input
+                          type="time"
+                          matInput
+                          class="form-control"
+                          formControlName="endTime"
+                          placeholder="End Time"
+                          autocomplete="off"
+                          [readonly]="!activeTmp(i)"
+                          [ngClass]="activeTmp(i) ? '' : 'disable-color'"
+                          fxLayoutGap="1rem"
+                        />
+                      </div>
+                      <div
+                        class="form-group"
+                        fxLayout="column"
+                        fxFlex="20"
+                        fxLayoutGap="10px"
+                      >
+                        <mat-checkbox
+                          formControlName="active"
+                          (change)="onActive(i)"
+                        ></mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="column" fxFlex="100" fxLayoutAlign="start start">
+              <mat-label class="top-space">Advance Booking Limit</mat-label>
+
+              <div
+                fxFlex="100"
+                fxFlexFill
+                fxLayout="row wrap"
+                class="form-group"
+                fxLayoutGap="1rem"
+              >
+                <div class="selectedMat mb2" fxFlex="35">
+                  <mat-select
+                    placeholder="Select booking limit"
+                    formControlName="bookingLeadTime"
+                    class="form-control top-space"
+                  >
+                    <mat-option
+                      *ngFor="let day of bookingLeadDays"
+                      [value]="day"
+                    >
+                      {{ day }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-step>
+        <mat-step *ngIf="step2">
+          <ng-template matStepLabel>Daily</ng-template>
+          <ul>
+            <li>[ - ] : Unlimited availability</li>
+            <li>[ 0 ] : No availability</li>
+            <li>[ ] (Empty) : No availability</li>
+            <li>[Any Number] : Indicates the number of available slots</li>
+          </ul>
+          <br />
+          <p>Slots Set Up</p>
+
+          <mat-accordion [multi]="true">
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxFlexFill
+              formArrayName="weekdays"
+            >
+              <div
+                xLayout="row wrap"
+                fxFlex="100"
+                fxFlexFill
+                *ngFor="
+                  let activeItem of weekDaysItems;
+                  let i = index;
+                  let firsti = first
+                "
+                [formGroupName]="i"
+              >
+                <mat-expansion-panel
+                  fxLayout="row wrap"
+                  style="overflow-x: scroll"
+                  fxFlex="100"
+                  fxFlexFill
+                  [expanded]="true"
+                  *ngIf="activeWeekDays(activeItem)"
+                >
+                  <mat-expansion-panel-header
+                    fxLayout="row wrap"
+                    fxFlex="100"
+                    fxFlexFill
+                  >
+                    <mat-panel-title
+                      fxLayout="row wrap"
+                      fxFlex="100"
+                      fxFlexFill
+                    >
+                      <h2 class="h6 text-capitalize font-semi-thick my0">
+                        {{ activeDayName(activeItem) }}
+                      </h2>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div
+                    fxLayout="row wrap"
+                    fxFlex="100"
+                    fxFlexFill
+                    formArrayName="daily"
+                    *ngIf="activeWeekDays(activeItem)"
+                  >
+                    <table style="width: 100%">
+                      <tr
+                        *ngFor="
+                          let sa of dailyItems(i);
+                          let j2 = index;
+                          let first = first
+                        "
+                        [formGroupName]="j2"
+                      >
+                      <td class="main-col" *ngIf="first">
+
+                      </td>
+                      <td class="sec-col" *ngIf="first">
+                        
+                      </td>
+
+                      <div
+                        formArrayName="slots"
+                        *ngIf="first"
+                      >
+                        <td
+                          *ngFor="
+                            let sa of slotsItems(i, j2);
+                            let k = index
+                          "
+                          [formGroupName]="k"
+                          class="time-slot"
+                        >
+                          <input
+                            type="text"
+                            matInput
+                            formControlName="teamSlotsMaxAppointments"
+                            autocomplete="off"
+                            fxLayoutGap="1rem"
+                            class="time-slot"
+                            onkeydown="if(event.key==='.'){event.preventDefault();}"
+                          />
+                        </td>
+                      </div>
+                      </tr>
+                    </table>
+
+                    <table style="width: 100%">
+                      <tr
+                        *ngFor="
+                          let item of dailyItems(i);
+                          let j = index;
+                          let first = first
+                        "
+                        [formGroupName]="j"
+                      >
+                        <div
+                          *ngIf="
+                            item.value.day == activeDayName(activeItem) &&
+                            item.value.show
+                          "
+                          formArrayName="slots"
+                        >
+                          <td class="main-col">
+                            <b> Name </b>
+                          </td>
+                          <td class="sec-col">
+                            <b> Max Appointments </b>
+                          </td>
+                          <td
+                            class="time-slot"
+                            *ngFor="let item of slotsItems(i, j); let k = index"
+                          >
+                            <b class="time-slot">{{
+                              timeSlotValue(i, j, k)
+                            }}</b>
+                          </td>
+                        </div>
+                      </tr>
+                    </table>
+
+                    <table style="width: 100%">
+                      <tr
+                        *ngFor="let sa of dailyItems(i); let j2 = index"
+                        [formGroupName]="j2"
+                      >
+                        <td
+                          *ngIf="sa.value.day == activeDayName(activeItem)"
+                          class="main-col"
+                        >
+                          <input
+                            type="text"
+                            matInput
+                            class="form-control disable-color main-col"
+                            formControlName="advisorName"
+                            placeholder="Name"
+                            autocomplete="off"
+                            readonly
+                            fxLayoutGap="1rem"
+                          />
+                        </td>
+                        <td
+                          *ngIf="sa.value.day == activeDayName(activeItem)"
+                          class="sec-col"
+                        >
+                          <input
+                            type="text"
+                            matInput
+                            class="form-control sec-col"
+                            formControlName="maxAppointments"
+                            placeholder="Max Appointments"
+                            autocomplete="off"
+                            fxLayoutGap="1rem"
+                          />
+                        </td>
+                        <div
+                          formArrayName="slots"
+                          *ngIf="sa.value.day == activeDayName(activeItem)"
+                        >
+                          <td
+                            *ngFor="let sa of slotsItems(i, j2); let k = index"
+                            [formGroupName]="k"
+                            class="time-slot"
+                          >
+                            <input
+                              type="text"
+                              matInput
+                              formControlName="numberOfAppointments"
+                              autocomplete="off"
+                              fxLayoutGap="1rem"
+                              class="time-slot"
+                              onkeydown="if(event.key==='.'){event.preventDefault();}"
+                            />
+                          </td>
+                        </div>
+                      </tr>
+                    </table>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+            </div>
+          </mat-accordion>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+    <br />
+    <div fxFlex="100" fxLayout="row wrap" fxFlexFill>
+      <mat-card-actions class="my10">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          class="px10 py1"
+          color="primary"
+          (click)="saveSchedule(form)"
+          [disabled]="form.invalid || myAccounts.length < 1"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </div>
+  </form>
+</div>

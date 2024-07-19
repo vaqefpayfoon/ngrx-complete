@@ -1,0 +1,88 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.dynamic-header {
+
+  &__title {
+    h1 {
+      color: map-get($map: $colors, $key: shark);
+    }
+  }
+
+  &__search {
+    position: relative;
+  
+    &--input {
+      border: 0;
+      @include round(7px);
+      font-size: 14px;
+      width: 18rem;
+      height: 3rem;
+      box-shadow: 0 0 1px 0 rgba($color: #000000, $alpha: 0.1);
+    }
+  
+    &--icon {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 1.5rem;
+      margin: auto;
+      height: 28px !important;
+      width: 28px !important;
+      line-height: 28px !important;
+      cursor: pointer;
+    }
+    
+    &--closeicon {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 1.5rem;
+      margin: auto;
+      height: 20px !important;
+      width: 20px !important;
+      line-height: 20px !important;
+      cursor: pointer;
+    }
+  }
+
+  &__sort {
+    small {
+      color: map-get($map: $colors, $key: shark);
+      font-size: 0.8rem;
+    }
+    .mat-button{
+      color : map-get($map: $colors, $key: theme);
+      .mat-icon {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+      }
+      line-height: 36px;
+    }
+  }
+
+  &__actions{
+    .mat-icon-button {
+      &:first-child {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        .mat-icon {
+          width: 32px;
+          height: 32px;
+          line-height: 32px;
+        }
+      }
+    }
+
+    .mat-mini-fab {
+      .mat-icon {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+      }
+    }
+  }
+  
+}

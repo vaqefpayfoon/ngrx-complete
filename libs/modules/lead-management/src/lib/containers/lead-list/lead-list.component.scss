@@ -1,0 +1,26 @@
+@import 'styles-variables';
+
+.leads {
+  &__header {
+    background-color: transparent;
+    box-shadow: none;
+    text-transform: uppercase;
+
+    &--item {
+      font-size: 13px;
+    }
+  }
+
+  &__loading, &__not-found {
+    overflow: hidden;
+    font-size: 48px;
+    color: map-get($map: $colors, $key: shark);
+    font-weight: $font-thicker;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 400px);
+    min-height: 457px;
+  }
+}

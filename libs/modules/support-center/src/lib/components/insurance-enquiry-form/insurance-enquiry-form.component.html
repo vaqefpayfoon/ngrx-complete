@@ -1,0 +1,160 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="enquiry p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="enquiry__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Date</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ insuranceEnquiry?.createdAt | date: 'mediumDate' }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Insurance</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ insuranceEnquiry?.insurerName }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Name</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ insuranceEnquiry?.account?.identity?.salutation }}
+                      {{ insuranceEnquiry?.account?.identity?.fullName }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Registeration Number</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{insuranceEnquiry?.numberPlate}}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Email</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{insuranceEnquiry?.account?.email}}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">NCD Entitelments</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{insuranceEnquiry?.ncdEntitlement}}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Document Type</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{insuranceEnquiry?.document?.type}}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Phone</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{insuranceEnquiry?.account?.phone}}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Document ID</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{insuranceEnquiry?.document?.id}}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Post code</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{insuranceEnquiry?.postCode}}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Remark</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{insuranceEnquiry?.remark}}
+                    </h2>
+                  </div>
+                </mat-list-item>
+              </mat-list>
+        </mat-card-content>
+    </mat-card>
+</form>
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="enquiry p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Update</h2>
+            </div>
+        </mat-card-title>
+        <div class="enquiry__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="enquiry__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                        <div fxFlex="35">
+                            <mat-label>Status</mat-label>
+                            <div class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled,
+                            'ng-invalid': form.controls.status.invalid && form.controls.status.touched,
+                            'ng-valid': form.controls.status.valid}">
+                                <mat-select placeholder="Select Status" formControlName="status">
+                                    <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.key">
+                                        {{status.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                            <neural-show-errors [control]="form.controls.status"></neural-show-errors>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                        <div class="form-group" fxFlex="70">
+                            <mat-label>Remark</mat-label>
+                            <textarea matInput rows="7" formControlName="adminRemark" class="form-control" placeholder="Remark"></textarea>
+                            <neural-show-errors [control]="form.controls.adminRemark"></neural-show-errors>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!updatePermission" (click)="cancel(form)">Cancel</button>
+            <button mat-flat-button type="button" *ngIf="exists && form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="edit(form)">Edit</button>
+            <button mat-flat-button *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!updatePermission || form.invalid" (click)="update(form)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

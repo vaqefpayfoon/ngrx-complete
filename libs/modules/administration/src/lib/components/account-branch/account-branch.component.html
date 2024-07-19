@@ -1,0 +1,34 @@
+<form novalidate [formGroup]="form" autocomplete="off">
+    <div
+    class="account-branch"
+    fxFlex="100"
+    fxLayout="row wrap"
+    fxLayoutAlign="start center"
+    fxLayoutGap="0.5rem grid"
+  >
+    <div class="form-group">
+      <div fxFlex="100" fxFlexFill>
+          <mat-chip-list #chipList aria-label="Corporate selection">
+          <mat-chip
+              *ngFor="let branch of branches"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="remove(branch)">
+              {{branch}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input type="text" #branchInput [formControl]="branchCtrl" [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)" matInput placeholder="Branch name..." autocomplete="off">
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" [displayWith]="displayFn">
+              <mat-option *ngFor="let branch of filteredBranch | async" [value]="branch">
+              {{branch.name}}
+              </mat-option>
+          </mat-autocomplete>                    
+      </div>
+    </div>
+  </div>
+</form>

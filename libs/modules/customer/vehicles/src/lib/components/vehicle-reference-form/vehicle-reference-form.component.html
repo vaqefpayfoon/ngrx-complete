@@ -1,0 +1,186 @@
+<form novalidate [formGroup]="form" autocomplete="off">
+    <mat-card class="vehicle p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+                <div fxLayout="row" fxFlex="1 1 auto" class="vehicle__name font-semi-thick mb2" fxLayoutAlign="start center">
+                    Vehicle Reference
+                </div>
+            </div>
+        </mat-card-title>
+        <div class="vehicle__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+                <div fxLayout="column">
+                    <div class="vehicle__customer my8"  fxFlex="1 0 100">
+                        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between start">
+                            <div class="vehicle__customer--detail" fxFlex="100" fxFlexOffset="8rem">
+                                <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="30px grid">
+                                    <div fxLayout="column" fxFlex="0 0 90">
+                                        <div fxLayout="row" fxFlex="100" fxLayoutGap="30px grid">
+                                            <div fxFlex="0 0 33">
+                                                <mat-label>Vehicle Type</mat-label>
+                                                <div class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled}">
+                                                    <mat-select placeholder="Select Type" formControlName="type" (selectionChange)="onTypeSelected($event)">
+                                                        <mat-option *ngFor="let item of VehicleTypes | keyvalue" [value]="item.value">
+                                                            {{item.value | titlecase}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </div>
+                                            </div>
+                                        </div>                                   
+                                    </div>                                
+                                    <div fxLayout="column" fxFlex="0 0 90" *ngIf="list.brands">
+                                        <div fxLayout="column" fxFlex="100" formGroupName="unit" fxLayoutGap="30px">
+                                            <div fxLayout="row" fxFlex="100" fxLayoutGap="30px">
+                                                <div fxFlex="0 0 33">
+                                                    <mat-label>Brand</mat-label>
+                                                    <div class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled}">
+                                                        <mat-select placeholder="Select Brand" formControlName="brand" (selectionChange)="onBrandSelected($event)">
+                                                            <mat-option *ngFor="let brand of list.brands" [value]="brand">
+                                                                {{brand}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                                <div fxFlex="0 0 33" *ngIf="list.models">
+                                                    <mat-label>Model</mat-label>
+                                                    <div class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled}">
+                                                        <mat-select placeholder="Select Model" formControlName="model" (selectionChange)="onModelSelected($event)">
+                                                            <mat-option *ngFor="let model of list?.models" [value]="model">
+                                                                {{model}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                                <div fxFlex="0 0 33" *ngIf="list.variants">
+                                                    <mat-label>Variant</mat-label>
+                                                    <div class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled}">
+                                                        <mat-select placeholder="Select Variant" formControlName="variant">
+                                                            <mat-option *ngFor="let variant of list?.variants" [value]="variant.variant">
+                                                                {{variant.variant}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div xLayout="row" fxFlex="100">
+                                                <div fxFlex="0 0 33" *ngIf="!!type.value">
+                                                    <mat-label>Body Style</mat-label>
+                                                    <div *ngIf="type.value === 'CAR'" class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled}">
+                                                        <mat-select placeholder="Select Type" formControlName="bodyStyle">
+                                                            <mat-option *ngFor="let br of carBodyReferences | keyvalue" [value]="br.value">
+                                                                {{br.value}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                    <div *ngIf="type.value === 'BIKE'" class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled}" fxFlex="0 0 33">
+                                                        <mat-select placeholder="Select Type" formControlName="bodyStyle">
+                                                            <mat-option *ngFor="let br of bikeBodyReferences | keyvalue" [value]="br.value">
+                                                                {{br.value}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxFlex="0 0 90">
+                                        <div fxLayout="row" fxFlex="100" fxLayoutGap="30px grid" formGroupName="engine">
+                                            <div class="form-group" fxFlex="0 0 33">
+                                                <mat-label>Capacity</mat-label>
+                                                <input type="number" matInput class="form-control" formControlName="capacity"  placeholder="Capacity" autocomplete="off">
+                                            </div>
+                                            <div fxFlex="0 0 33">
+                                                <mat-label>Engin Type</mat-label>
+                                                <div class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled}">
+                                                    <mat-select placeholder="Select Engine Type" formControlName="type">
+                                                        <mat-option>None</mat-option>
+                                                        <mat-option *ngFor="let engine of EngineType | keyvalue" [value]="engine.value">
+                                                            {{engine.value}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                
+                    </div>                
+                </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0" *ngIf="!serviceMap.enabled">
+            <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+            <button mat-flat-button *ngIf="form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+            <button mat-flat-button *ngIf="exists && form.enabled" class="px10 py1" color="primary" [disabled]=" form.pristine || !updatePermission" (click)="updateVehicleReference(form)">Save</button>
+            <button mat-flat-button *ngIf="!exists && form.enabled" class="px10 py1" color="primary" [disabled]=" form.pristine || !createPermission" (click)="createVehicleReference(form)">Save</button>
+        </mat-card-actions>         
+    </mat-card>
+</form>
+<mat-card class="vehicle p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Availability</h2>
+            <mat-slide-toggle
+                fxLayout="row-reversed"
+                color="primary"
+                [disabled]="form.disabled"
+                [(ngModel)]="activeAvailability"
+                (change)="onChangeAvailability($event)">
+            </mat-slide-toggle>
+        </div>
+    </mat-card-title>
+    <div class="vehicle__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <form novalidate [formGroup]="form" autocomplete="off">
+            <div fxLayout="column">
+                <div class="vehicle__customer my8"  fxFlex="1 0 100">
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between start">
+                        <div class="vehicle__customer--detail" fxFlex="100" fxFlexOffset="8rem">
+                            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="30px grid">
+                                <div fxLayout="row" fxFlex="0 0 90" formGroupName="availability">
+                                    <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                        <mat-label>Mobile Service</mat-label>
+                                        <mat-slide-toggle
+                                            fxLayout="row-reversed"
+                                            color="primary"
+                                            formControlName="mobileService">
+                                        </mat-slide-toggle>
+                                    </div>
+                                    <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                        <mat-label>Service Center</mat-label>
+                                        <mat-slide-toggle
+                                            fxLayout="row-reversed"
+                                            color="primary"
+                                            formControlName="serviceCenter">
+                                        </mat-slide-toggle>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                
+                </div>                
+            </div>
+        </form>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml28 p0" *ngIf="!serviceMap.enabled && activeAvailability">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+        <button mat-flat-button *ngIf="form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+        <button mat-flat-button *ngIf="exists && form.enabled" class="px10 py1" color="primary" [disabled]=" form.pristine || !updatePermission" (click)="updateVehicleReference(form)">Save</button>
+        <button mat-flat-button *ngIf="!exists && form.enabled" class="px10 py1" color="primary" [disabled]=" form.pristine || !createPermission" (click)="createVehicleReference(form)">Save</button>
+    </mat-card-actions>         
+</mat-card>
+<form novalidate [formGroup]="form" autocomplete="off">
+    <neural-vehicle-coverage-servicemap
+        [formDisabled]="form.disabled"
+        [formValid]="form.valid"
+        [permissionValid]="!exists ? createPermission : updatePermission"
+        [parent]="form"
+        [vehicle]="reference"
+        (created)="createVehicleReference($event)"
+        (updated)="updateVehicleReference($event)"
+    ></neural-vehicle-coverage-servicemap>
+</form>

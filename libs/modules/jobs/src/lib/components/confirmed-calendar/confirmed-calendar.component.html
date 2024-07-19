@@ -1,0 +1,63 @@
+<div
+  class="calendar"
+  fxFlex="100"
+  fxLayout="row wrap"
+  fxLayoutAlign="start center"
+>
+  <div fxLayout="row" fxFlex="95" fxLayoutAlign="start center">
+    <div fxFlex="5" fxLayoutAlign="center center">
+      <button
+        mat-icon-button
+        class="calendar__btns calendar__btns--left"
+        (click)="onDecDate()"
+      >
+        <mat-icon [svgIcon]="'arrow_left_off'"></mat-icon>
+      </button>
+    </div>
+    <div fxFlex="90" fxLayoutAlign="center center">
+      <mat-button-toggle-group
+        #scrollMe
+        #group="matButtonToggleGroup"
+        [value]="currentDate"
+        class="calendar__days"
+        (change)="onValChange(group.value)"
+      >
+        <mat-button-toggle
+          value="{{ item.year }}-{{ item.month }}-{{ item.day }}"
+          mat-button-toggle
+          *ngFor="let item of daysArray"
+          [ngClass]="{'active-button': item.active, 'deactive-button' : !item.active }"
+        >
+          {{ item.day }} <br />
+          {{ monthName(item.month) }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div fxFlex="5" fxLayoutAlign="center center">
+      <button
+        mat-icon-button
+        class="calendar__btns calendar__btns--right"
+        (click)="onIncDate()"
+      >
+        <mat-icon [svgIcon]="'arrow_right_off'"></mat-icon>
+      </button>
+    </div>
+  </div>
+  <div fxFlex="5" fxLayoutAlign="flex-end center" fxLayout="row">
+    <mat-form-field class="calendar__none">
+      <input
+        matInput
+        readonly="true"
+        [matDatepicker]="picker"
+        placeholder="Choose a date"
+        (dateChange)="addEvent($event)"
+        [formControl]="date"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi #picker></mat-datepicker>
+    </mat-form-field>
+    <button mat-icon-button class="calendar__picker" (click)="picker.open()">
+      <mat-icon [svgIcon]="'booking_off'"></mat-icon>
+    </button>
+  </div>
+</div>

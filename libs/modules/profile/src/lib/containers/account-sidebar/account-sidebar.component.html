@@ -1,0 +1,26 @@
+<mat-card class="sidebar p0 py8">
+    <mat-card-title class="pl6 font-semi-thick mb4">
+        Account
+    </mat-card-title>
+    <mat-card-content>
+         <mat-list>
+            <mat-list-item
+               matRipple
+               *ngFor="let item of menu"
+               routerLinkActive="active"
+               [routerLink]="[item]">
+               <div fxFlex="1 1 100%" fxLayoutAlign="start center" fxLayoutGap="10px">
+                     <mat-icon [svgIcon]="item"></mat-icon>
+                  <h4 class="text-capitalize my0" mat-line>{{ item }}</h4>
+               </div>
+            </mat-list-item>
+            <mat-list-item
+               matRipple (click)="logout()">
+               <div fxFlex="1 1 100%" fxLayoutAlign="start center" fxLayoutGap="10px">
+                     <mat-icon [svgIcon]="'logout'"></mat-icon>
+                  <h4 class="text-capitalize my0" mat-line>logout</h4>
+               </div>
+            </mat-list-item>
+         </mat-list>
+    </mat-card-content>        
+</mat-card>

@@ -1,0 +1,39 @@
+<mat-card class="card">
+    <div
+        fxLayout="row wrap"
+        fxLayout.lt-md="column"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+        fxLayoutAlign.lt-md="start start"
+        class="card__header"
+        fxLayoutGap.lt-md="1rem"
+    >
+        <div fxFlex="20" fxFlex.lt-md="100" class="font-semi-thick card__header--name" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="2">
+            {{enquiry?.name  | titlecase}}
+        </div>
+        <div fxFlex="20" fxFlex.lt-md="100" class="font-semi-thick card__header--name" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="2">
+            {{enquiry?.email}}
+        </div>
+        <div fxFlex="15" fxFlex.lt-md="100" class="font-semi-thick card__header--email" fxFlexOrder.lt-md="3">
+            <a title="call {{enquiry?.name}}" href="tel:{{enquiry?.phone?.code}}{{enquiry?.phone?.number}}">{{enquiry?.phone?.code}}{{enquiry?.phone?.number}}</a>
+        </div>
+        <div fxFlex="20" fxFlex.lt-md="100" class="font-semi-thick card__header--phone" fxFlexOrder.lt-md="4">
+            {{enquiry?.subject | titlecase | formatString}}
+        </div>
+        <div fxFlex="10" fxFlex.lt-md="100" class="font-semi-thick card__header--phone" fxFlexOrder.lt-md="6">
+            {{enquiry?.status | titlecase | formatString}}
+        </div>
+        <div fxFlex="10" fxFlex.lt-md="100" class="font-semi-thick card__header--actions" fxLayoutAlign="center center" fxLayoutAlign.lt-md="end" fxLayout.lt-md="row" fxFlexFill fxFlexOrder.lt-md="1">
+            <button mat-icon-button [matMenuTriggerFor]="actions">
+                <mat-icon svgIcon="action_off"></mat-icon>
+            </button>
+        </div>
+    </div>
+    <mat-menu #actions="matMenu">
+        <button mat-menu-item [disabled]="!getPermission" [routerLink]="[enquiry.uuid]">
+            <mat-icon>remove_red_eye</mat-icon>
+            <span>Preview</span>
+        </button>
+    </mat-menu>
+</mat-card>
+  

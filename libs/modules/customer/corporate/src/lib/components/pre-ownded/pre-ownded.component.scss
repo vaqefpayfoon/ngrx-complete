@@ -1,0 +1,44 @@
+.mat-mini-fab {
+  .mat-icon {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+}
+
+.corporate {
+  $self: &;
+
+  &__general,
+  &__header {
+    #{$self} {
+      &__form {
+        position: relative;
+
+        &--close {
+          position: absolute;
+          top: 20px;
+          right: 0;
+          left: auto;
+        }
+      }
+    }
+
+    .form-group {
+      mat-label {
+        font-size: 13px;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+      }
+
+      &--inline {
+        mat-label {
+          margin-bottom: 0 !important;
+        }
+      }
+
+      // overflow: hidden;
+      position: relative;
+    }
+  }
+}

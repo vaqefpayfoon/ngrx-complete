@@ -1,0 +1,12 @@
+@import 'styles-variables';
+
+.calendar {
+
+  &__loading, &__not-found {
+    font-size: 48px;
+    color: map-get($map: $colors, $key: shark);
+    font-weight: $font-thicker;
+    text-align: center;
+    padding: 150px 0;
+  }
+}

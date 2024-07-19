@@ -1,0 +1,41 @@
+<neural-dynamic-header
+  *ngIf="(data$ | async)?.state?.data?.type !== accountType.ALL; else search"
+  [title]="title"
+  [breadcrumbs]="bc"
+></neural-dynamic-header>
+<ng-template #search>
+  <neural-dynamic-header
+  [title]="'Search acount by email'"
+  [breadcrumbs]="bcSearch"
+></neural-dynamic-header>
+</ng-template>
+<div class="my8" *ngIf="(data$ | async)?.state?.data?.type === accountType.ALL">
+  <neural-account-search (searched)="onSearch($event)"></neural-account-search>
+</div>
+<div class="account-item my8">
+  <div class="account-item__body">
+    <div class="account-item__body--content p9">
+      <neural-account-form
+        [router]="data$ | async"
+        [brands]="brands$ | async"
+        [permissions]="permissions$ | async"
+        [groups]="groups$ | async"
+        [codes]="codes$ | async"
+        [searchedAccount]="searchedAccount$ | async"
+        [account]="account$ | async"
+        [authCorporates]="corporates$ | async"
+        [selectCorporate]="selectedCorporate$ | async"
+        (create)="onCreateAccount($event)"
+        [error]="error$ | async"
+        [isCDK]="(corporateInfo$ |async)?.configuration?.cdk?.active"
+        (update)="onUpdateAccount($event)"
+        (updateSearchedAccount)="onUpdateSearchAccount($event)"
+        (passChanges)="onUpdateAccountPassword($event)"
+        (loaded)="onLoad($event)"
+        (corporateChange)="onCorporateChange($event)"
+        (deleted)="openDeleteDialog($event)"
+        (resynced)="openReSyncDialog($event)"
+      ></neural-account-form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,699 @@
+<div fxFlex="100" fxLayoutGap="1rem" fxLayout="column" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between">
+    <div class="corporate__general p4 my8" fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Pre owned</h2>
+        </div>
+        <div class="corporate__divider" fxFlex="100">
+            <mat-divider></mat-divider>
+        </div>
+        <div [formGroup]="form" fxFlex="100" fxLayout="column" fxLayoutGap="1rem">
+            <div formGroupName="stream">
+                <div fxLayout="column" fxFlex="100" >
+                    <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                        <h2 class="h5 text-capitalize font-semi-thick my0 mb2">Stream</h2>
+                        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-label>active</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active" (change)="changeStreamToggle($event)">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                    <div *ngIf="showIntegrationSection" fxLayout="column" fxFlex="100" formGroupName="integrationType">
+                    <h2 class="h5 text-capitalize font-semi-thick my2">Integration</h2>
+                    <div class="mb8 mt2" fxLayout="column" fxFlex="100" formGroupName="leaseGenius">
+                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                            <h2 class="h5 text-capitalize font-semi-thick my0 mb2">Lease Genius</h2>
+                            <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                <mat-label>active</mat-label>
+                                <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active" (change)="changeleaseGeniusToggle($event)">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                        <div *ngIf="showLeaseGeniusSection" fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="form-group" fxFlex="45">
+                                <mat-label>Api key</mat-label>
+                                <input type="text" matInput class="form-control" formControlName="apiKey"
+                                    placeholder="api key" autocomplete="off" />
+                            </div>
+                            <div class="form-group" fxFlex="45">
+                                <mat-label>Url</mat-label>
+                                <input type="text" matInput class="form-control" formControlName="url"
+                                    placeholder="Url" autocomplete="off" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="my8" fxLayout="column" fxFlex="100" formGroupName="adtorque">
+                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                            <h2 class="h5 text-capitalize font-semi-thick my0 mb2">Adtorque</h2>
+                            <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                <mat-label>active</mat-label>
+                                <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active" (change)="changeAdtorqueToggle($event)">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                        <div *ngIf="showAdtorqueSection" fxLayout="column" fxFlex="100">
+                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center" >
+                        <div class="form-group" fxFlex="45">
+                            <mat-label>Username</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="username"
+                                placeholder="Username" autocomplete="off" />
+                        </div>
+                        <div class="form-group" fxFlex="45">
+                            <mat-label>Password</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="password"
+                                placeholder="Password" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="mt2" fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="form-group" fxFlex="45">
+                            <mat-label>Source</mat-label>
+                            <mat-select placeholder="Select a status" formControlName="source" class="form-control">
+                                <mat-option *ngFor="let status of streamSource | keyvalue" [value]="status.value">
+                                    {{ status.value }}
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+
+                    <div class="corporate__divider my2">
+                        <mat-divider></mat-divider>
+                    </div>
+                    <div fxLayout="column" fxFlex="100">
+                        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                            <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Urls</h2>
+                            <button mat-mini-fab color="primary" [disabled]="formDisabled" type="button"
+                                (click)="addURL()">
+                                <mat-icon svgIcon="add"></mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div fxFlex="100">
+                        <div formArrayName="urls" fxLayout="column" fxLayoutGap="1rem">
+                            <ng-container *ngIf="urls.controls.length;else notfound">
+                                <ng-template ngFor let-item [ngForOf]="urls.controls" let-i="index">
+                                    <div fxLayout="column" fxFlex="100" [formGroupName]="i" class="corporate__form">
+                                        <button class="corporate__form--close" matTooltip="Remove"
+                                            [disabled]="formDisabled" mat-icon-button color="warn"
+                                            (click)="removeURL(i)">
+                                            <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                                        </button>
+                                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" formGroupName="set">
+                                            <div class="form-group" fxFlex="35">
+                                                <mat-label>PreOwned Vehicles</mat-label>
+                                                <input type="text" matInput class="form-control"
+                                                    formControlName="listPreOwnedVehicles" placeholder="Ex. google.com"
+                                                    autocomplete="off">
+                                            </div>
+                                            <div class="form-group" fxFlex="35">
+                                                <mat-label>Available Filters</mat-label>
+                                                <input type="text" matInput class="form-control"
+                                                    formControlName="getAvailableFilters" placeholder="Ex. google.com"
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" formGroupName="set">
+                                            <div class="form-group" fxFlex="35">
+                                                <mat-label>Vehicle Details</mat-label>
+                                                <input type="text" matInput class="form-control"
+                                                    formControlName="getVehicleDetails" placeholder="Ex. google.com"
+                                                    autocomplete="off">
+                                            </div>
+                                            <div class="form-group" fxFlex="35">
+                                                <mat-label>Vehicle Specification</mat-label>
+                                                <input type="text" matInput class="form-control"
+                                                    formControlName="getVehicleSpecification"
+                                                    placeholder="Ex. google.com" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                            <div class="form-group" fxFlex="35">
+                                                <mat-label>Version number</mat-label>
+                                                <input type="text" matInput class="form-control"
+                                                    formControlName="version" placeholder="version number"
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+            <!-- test drive -->
+
+            <div class="mt8" fxFlex="100">
+                <div formGroupName="testDrive" fxLayout="column">
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Test Dtive</h2>
+                        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-label>active</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxFlex="100">
+                        <div fxFlex="35" class="form-group form-group--inline mt4" fxLayoutAlign="start center"
+                            fxLayoutGap="1rem">
+                            <mat-label>Cancel Appointment</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary"
+                                formControlName="cancelAppointment">
+                            </mat-slide-toggle>
+                        </div>
+                        <div fxFlex="35" class="form-group form-group--inline mt4" fxLayoutAlign="start center"
+                            fxLayoutGap="1rem">
+                            <mat-label>Reschedule Appointment</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary"
+                                formControlName="rescheduleAppointment">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- sales -->
+
+            <div fxFlex="100">
+                <div formGroupName="sales" fxLayout="column">
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Sales</h2>
+                        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-label>active</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- soldVehicle -->
+
+            <div fxFlex="100">
+                <div formGroupName="soldVehicle" fxLayout="column">
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Sold Vehicle</h2>
+                        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-label>active</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxFlex="100">
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>display Days</mat-label>
+                            <input type="number" matInput class="form-control" formControlName="displayDays"
+                                placeholder="Days number" autocomplete="off">
+                            <neural-show-errors [control]="soldVehicle.get('displayDays')">
+                            </neural-show-errors>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- sold Vehicle -->
+
+            <div fxFlex="100">
+                <div formGroupName="registrationDate" fxLayout="column">
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Registration Date</h2>
+                        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-label>active</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- finance -->
+
+            <div fxFlex="100">
+                <div formGroupName="finance" fxLayout="column">
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Finance</h2>
+                        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-label>active</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- checkpoint -->
+
+            <div fxFlex="100">
+                <div formGroupName="checkpoint" fxLayout="column">
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Checkpoint</h2>
+                        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-label>active</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- filter -->
+
+            <div fxFlex="100">
+                <div formGroupName="filter" fxLayout="column" fxLayoutGap="1rem">
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h5 text-capitalize font-semi-thick my0 mb2">Filter</h2>
+                        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-label>active</mat-label>
+                            <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                    <div fxFlex="100">
+                        <div formGroupName="price" fxLayout="column">
+                            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Price</h2>
+                            </div>
+                            <div fxFlex="100" fxLayout="column">
+                                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                        fxLayoutGap="1rem">
+                                        <mat-label>increment</mat-label>
+                                        <mat-slide-toggle fxLayout="row-reversed" color="primary"
+                                            formControlName="increment">
+                                        </mat-slide-toggle>
+                                    </div>
+                                </div>
+                                <div class="corporate__divider my2">
+                                    <mat-divider></mat-divider>
+                                </div>
+                                <div fxLayout="column" fxFlex="100">
+                                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                        <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Elements</h2>
+                                        <button mat-mini-fab color="primary" [disabled]="formDisabled" type="button"
+                                            (click)="addFilterPriceElement()">
+                                            <mat-icon svgIcon="add"></mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxFlex="100">
+                                    <div formArrayName="elements" fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                                        <ng-container *ngIf="priceElements.controls.length;else notfound">
+                                            <ng-template ngFor let-item [ngForOf]="priceElements.controls"
+                                                let-i="index">
+                                                <div fxLayout="column" fxFlex="100" [formGroupName]="i">
+                                                    <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                                        <div class="form-group" fxFlex="30">
+                                                            <mat-label>Title</mat-label>
+                                                            <input type="text" matInput class="form-control"
+                                                                formControlName="title" placeholder="Ex. google.com"
+                                                                autocomplete="off">
+                                                            <neural-show-errors
+                                                                [control]="priceElements.controls[i].get('title')">
+                                                            </neural-show-errors>
+                                                        </div>
+                                                        <div class="form-group" fxFlex="30">
+                                                            <mat-label>Min</mat-label>
+                                                            <input type="text" matInput class="form-control"
+                                                                formControlName="min" placeholder="Min"
+                                                                autocomplete="off">
+                                                            <neural-show-errors
+                                                                [control]="priceElements.controls[i].get('min')">
+                                                            </neural-show-errors>
+                                                        </div>
+                                                        <div class="form-group" fxFlex="30">
+                                                            <mat-label>Max</mat-label>
+                                                            <input type="text" matInput class="form-control"
+                                                                formControlName="max" placeholder="Max"
+                                                                autocomplete="off">
+                                                            <neural-show-errors
+                                                                [control]="priceElements.controls[i].get('max')">
+                                                            </neural-show-errors>
+                                                        </div>
+                                                        <div fxFlex="10" class="mt6">
+                                                            <button matTooltip="Remove" [disabled]="formDisabled"
+                                                                mat-icon-button color="warn"
+                                                                (click)="removeFilterPriceElement(i)">
+                                                                <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="corporate__divider my2">
+                            <mat-divider></mat-divider>
+                        </div>
+                        <br>
+                        <div formGroupName="quickFilter" fxLayout="column">
+                            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Quick Filter</h2>
+                            </div>
+                            <div fxFlex="100" fxLayout="column">
+                                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                        fxLayoutGap="1rem">
+                                        <mat-label>Active</mat-label>
+                                        <mat-slide-toggle fxLayout="row-reversed" color="primary"
+                                            formControlName="active">
+                                        </mat-slide-toggle>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                            <div formGroupName="monthlyInstallment" fxLayout="column">
+                                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Monthly Installment</h2>
+                                </div>
+                                <div fxFlex="100" fxLayout="column">
+                                    <div fxLayout="row" fxFlex="100">
+                                        <div fxLayout="row" fxFlex="100">
+                                            <div fxFlex="40" class="form-group form-group--inline" fxLayoutAlign="start center"
+                                                fxLayoutGap="1rem">
+                                                <mat-label>Active</mat-label>
+                                                <mat-slide-toggle fxLayout="row-reversed" color="primary"
+                                                    formControlName="active">
+                                                </mat-slide-toggle>
+                                            </div>
+                                            <div fxFlex="30" class="form-group" fxLayoutGap="1rem" >
+                                                <mat-label>Max Range</mat-label>
+                                                <input type="number" matInput class="form-control"
+                                                    formControlName="maxRange" placeholder="Max Range" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+ 
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxFlex="100" formGroupName="bodyType" fxLayout="column">
+                                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Body Type</h2>
+                                </div>
+                                <br>
+                                <div fxFlex="100" fxLayout="column">
+                                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                        <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                            fxLayoutGap="1rem">
+                                            <mat-label>Active</mat-label>
+                                            <mat-slide-toggle fxLayout="row-reversed" color="primary"
+                                                formControlName="active">
+                                            </mat-slide-toggle>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                            <div fxFlex="100" formGroupName="branch" fxLayout="column">
+                                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Branch</h2>
+                                </div>
+                                <br>
+                                <div fxFlex="100" fxLayout="column">
+                                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                        <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                            fxLayoutGap="1rem">
+                                            <mat-label>Active</mat-label>
+                                            <mat-slide-toggle fxLayout="row-reversed" color="primary"
+                                                formControlName="active">
+                                            </mat-slide-toggle>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="corporate__divider my2">
+                        <mat-divider></mat-divider>
+                    </div>
+                    <div fxFlex="100">
+                        <div formGroupName="age" fxLayout="column">
+                            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Age</h2>
+                                <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                    fxLayoutGap="1rem">
+                                    <mat-label>active</mat-label>
+                                    <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                            <div fxFlex="100" fxLayout="column">
+                                <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                        fxLayoutGap="1rem">
+                                        <mat-label>increment</mat-label>
+                                        <mat-slide-toggle fxLayout="row-reversed" color="primary"
+                                            formControlName="increment">
+                                        </mat-slide-toggle>
+                                    </div>
+                                </div>
+                                <div class="corporate__divider my2">
+                                    <mat-divider></mat-divider>
+                                </div>
+                                <div fxLayout="column" fxFlex="100">
+                                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                        <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Elements</h2>
+                                        <button mat-mini-fab color="primary" [disabled]="formDisabled" type="button"
+                                            (click)="addFilterAgeElement()">
+                                            <mat-icon svgIcon="add"></mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxFlex="100">
+                                    <div formArrayName="elements" fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                                        <ng-container *ngIf="ageElements.controls.length;else notfound">
+                                            <ng-template ngFor let-item [ngForOf]="ageElements.controls" let-i="index">
+                                                <div fxLayout="column" fxFlex="100" [formGroupName]="i">
+                                                    <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                                        <div class="form-group" fxFlex="30">
+                                                            <mat-label>Title</mat-label>
+                                                            <input type="text" matInput class="form-control"
+                                                                formControlName="title" placeholder="Ex. google.com"
+                                                                autocomplete="off">
+                                                            <neural-show-errors
+                                                                [control]="ageElements.controls[i].get('title')">
+                                                            </neural-show-errors>
+                                                        </div>
+                                                        <div class="form-group" fxFlex="30">
+                                                            <mat-label>Min</mat-label>
+                                                            <input type="text" matInput class="form-control"
+                                                                formControlName="min" placeholder="Min"
+                                                                autocomplete="off">
+                                                            <neural-show-errors
+                                                                [control]="ageElements.controls[i].get('min')">
+                                                            </neural-show-errors>
+                                                        </div>
+                                                        <div class="form-group" fxFlex="30">
+                                                            <mat-label>Max</mat-label>
+                                                            <input type="text" matInput class="form-control"
+                                                                formControlName="max" placeholder="Max"
+                                                                autocomplete="off">
+                                                            <neural-show-errors
+                                                                [control]="ageElements.controls[i].get('max')">
+                                                            </neural-show-errors>
+                                                        </div>
+                                                        <div fxFlex="10" class="mt6">
+                                                            <button matTooltip="Remove" [disabled]="formDisabled"
+                                                                mat-icon-button color="warn"
+                                                                (click)="removeFilterAgeElement(i)">
+                                                                <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxFlex="100">
+                        <div formGroupName="vehicleMake" fxLayout="column">
+                            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Vehicle Make</h2>
+                                <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                    fxLayoutGap="1rem">
+                                    <mat-label>active</mat-label>
+                                    <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxFlex="100">
+                        <div formGroupName="vehicleModel" fxLayout="column">
+                            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Vehicle Model</h2>
+                                <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                    fxLayoutGap="1rem">
+                                    <mat-label>active</mat-label>
+                                    <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxFlex="100">
+                        <div formGroupName="sortBy" fxLayout="column">
+                            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0 mb2">Sort By</h2>
+                                <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                    fxLayoutGap="1rem">
+                                    <mat-label>active</mat-label>
+                                    <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- bank -->
+
+            <div fxLayout="column" fxFlex="100">
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h5 text-capitalize font-semi-thick my0 mb2">Bank</h2>
+                    <button mat-mini-fab color="primary" [disabled]="formDisabled" type="button" (click)="addBank()">
+                        <mat-icon svgIcon="add"></mat-icon>
+                    </button>
+                </div>
+                <div class="corporate__divider my2">
+                    <mat-divider></mat-divider>
+                </div>
+                <div fxFlex="100">
+                    <div formArrayName="banks" fxLayout="column" fxLayoutGap="1rem">
+                        <ng-container *ngIf="banks.controls.length;else notfound">
+                            <ng-template ngFor let-item [ngForOf]="banks.controls" let-i="index">
+                                <div fxLayout="row" fxFlex="100">
+                                    <div class="corporate__form" fxLayout="column" fxFlex="100"
+                                        fxLayoutAlign="space-evenly space-between" [formGroupName]="i"
+                                        fxLayoutGap="1rem">
+                                        <button class="corporate__form--close" matTooltip="Remove"
+                                            [disabled]="formDisabled" mat-icon-button color="warn"
+                                            (click)="removeBank(i)">
+                                            <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                                        </button>
+                                        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                                            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                                <div fxLayout="column" fxFlexFill fxLayoutGap="0.5rem" fxFlex="35">
+                                                    <mat-label style="font-size: 13px">Bank</mat-label>
+                                                    <div class="form-group selectedMat my0" fxFlex="100"
+                                                        [ngClass]="{'selectedMat--disabled':formDisabled,'ng-invalid': banks.controls[i].get('name').invalid,'ng-valid': banks.controls[i].get('name').valid}">
+                                                        <mat-select formControlName="uuid" placeholder="Select a bank"
+                                                            (selectionChange)="onSelect($event, i)"
+                                                            [compareWith]="bankCompareFn">
+                                                            <mat-option *ngFor="let bank of banksList"
+                                                                [value]="bank.uuid">
+                                                                <div fxLayoutAlign="start center" fxLayoutGap="1rem"
+                                                                    fxFlex="100">
+                                                                    <img width="35" height="35" [src]="bank.logo" />
+                                                                    <span>{{ bank.name }}</span>
+                                                                </div>
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" fxFlex="35">
+                                                    <mat-label>Interest Rate</mat-label>
+                                                    <input type="number" matInput class="form-control"
+                                                        [ngClass]="{'form-control--disabled':formDisabled, 'form-control--valid': banks.controls[i].get('interestRate').valid, 'form-control--invalid': banks.controls[i].get('interestRate').invalid}"
+                                                        [ngModel]="banks.controls[i].get('interestRate').value * 100"
+                                                        (ngModelChange)="onChangeRate($event, banks.controls[i].get('interestRate'))"
+                                                        [ngModelOptions]="{standalone: true}" placeholder="rate number"
+                                                        autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem"
+                                            formGroupName="downPayment">
+                                            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                                <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="35">
+                                                    <mat-label style="font-size: 13px">Type</mat-label>
+                                                    <div class="form-group selectedMat my0" fxFlex="100"
+                                                        [ngClass]="{'selectedMat--disabled':formDisabled,'ng-invalid': typeCtrl(banks.controls[i].get('downPayment')).invalid,'ng-valid': typeCtrl(banks.controls[i].get('downPayment')).valid}">
+                                                        <mat-select formControlName="type" placeholder="Select a type">
+                                                            <mat-option *ngFor="let type of downPaymentType | keyvalue"
+                                                                [value]="type.value">
+                                                                <div fxLayoutAlign="start center" fxLayoutGap="1rem"
+                                                                    fxFlex="100">
+                                                                    <span>{{ type.key | titlecase }}</span>
+                                                                </div>
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" fxFlex="35">
+                                                    <mat-label>Amount</mat-label>
+                                                    <ng-container
+                                                        *ngIf="downPaymentType.PERCENTAGE === typeCtrl(banks.controls[i].get('downPayment')).value;else flat">
+                                                        <input type="number" matInput class="form-control"
+                                                            [ngClass]="{'form-control--disabled':formDisabled, 'form-control--valid': amountCtrl(banks.controls[i].get('downPayment')).valid, 'form-control--invalid': amountCtrl(banks.controls[i].get('downPayment')).invalid}"
+                                                            [ngModel]="amountCtrl(banks.controls[i].get('downPayment')).value * 100"
+                                                            (ngModelChange)="onChangeRate($event, amountCtrl(banks.controls[i].get('downPayment')))"
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            placeholder="amount number" autocomplete="off">
+                                                    </ng-container>
+                                                    <ng-template #flat>
+                                                        <input type="number" matInput class="form-control"
+                                                            formControlName="amount" placeholder="amount"
+                                                            autocomplete="off">
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem" formGroupName="period">
+                                            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                                <div class="form-group" fxFlex="35">
+                                                    <mat-label>Min</mat-label>
+                                                    <input type="number" matInput class="form-control"
+                                                        formControlName="min" placeholder="min" autocomplete="off">
+                                                </div>
+                                                <div class="form-group" fxFlex="35">
+                                                    <mat-label>Max</mat-label>
+                                                    <input type="number" matInput class="form-control"
+                                                        formControlName="max" placeholder="max" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="100">
+                                            <div class="form-group form-group--inline" fxLayoutAlign="start center"
+                                                fxLayoutGap="1rem">
+                                                <mat-label>Is Default?</mat-label>
+                                                <mat-slide-toggle fxLayout="row-reversed" color="primary"
+                                                    formControlName="isDefault">
+                                                </mat-slide-toggle>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div fxFlex="100">
+        <ng-content></ng-content>
+    </div>
+</div>
+<ng-template #notfound>
+    <div fxFlex="100" class="corporate__not-found text-center">
+        Add a new record
+    </div>
+</ng-template>

@@ -1,0 +1,67 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.inprogress {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+  min-height: 400px;
+  position: relative;
+
+  &__divider {
+    position: relative;
+  }
+
+  &__download {
+    color: map-get($map: $colors, $key: white) !important;
+    background-color: map-get($map: $colors, $key: black) !important;
+  }
+
+  &__disabled {
+    &:before {
+      color: map-get($map: $colors, $key: white);
+      content: '';
+      background: rgba($color: #000000, $alpha: 0.5);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      z-index: 9;
+      @include round(7px);
+    }
+  }
+  &__file {
+    h1 {
+      color: map-get($map: $colors, $key: white);
+    }
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 10;
+  }
+
+  .mat-mini-fab {
+    .mat-icon {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+
+  &__general {
+    mat-label {
+      font-size: 13px;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+  }
+}

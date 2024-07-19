@@ -1,0 +1,72 @@
+<ng-container *ngIf="bankLoan">
+  <mat-card class="bank">
+    <mat-card-header
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="1rem"
+    >
+      <img mat-card-avatar class="bank__logo" loading="lazy" [src]="bank?.logo" />
+      <mat-card-title class="mb0">{{ bank?.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxFlex="100">
+        <mat-list>
+          <mat-list-item>
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+              <h2 class="h6 text-capitalize my0">Downpayment Value (RM)</h2>
+              <h2 class="h6 text-capitalize font-semi-thick my0">
+                {{ bankLoan.loan.downPayment | number }}
+              </h2>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+              <h2 class="h6 text-capitalize my0">Loan Amount (RM)</h2>
+              <h2 class="h6 font-semi-thick my0">
+                {{ bankLoan.loan.amount | number }}
+              </h2>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+              <h2 class="h6 text-capitalize my0">Monthly Instalment (RM)</h2>
+              <h2 class="h6 font-semi-thick my0">
+                {{ bankLoan.loan.monthlyInstallment | number }}
+              </h2>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+              <h2 class="h6 text-capitalize my0">Interest rate (%)</h2>
+              <h2 class="h6 font-semi-thick my0">
+                {{ (bankLoan.loan.interestRate * 100) }}
+              </h2>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+              <h2 class="h6 text-capitalize my0">Loan Period (Years)</h2>
+              <h2 class="h6 font-semi-thick my0">{{ bankLoan.loan.period }}</h2>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </mat-list>
+      </div>
+    </mat-card-content>
+    <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+      <button
+        mat-button
+        color="warn"
+        type="button"
+        [disabled]="!deletePermission"
+        (click)="onDelete(bankLoan.bankUuid)"
+      >
+        Delete
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</ng-container>

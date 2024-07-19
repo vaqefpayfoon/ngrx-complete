@@ -1,0 +1,58 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="app p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="app__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="app__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div fxFlex="35" fxLayout="column">
+                        <div class="form-group">
+                            <mat-label>Name</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="name" placeholder="Name" autocomplete="off">
+                        </div>
+                        <neural-show-errors [control]="form.controls.name"></neural-show-errors>
+                    </div>
+                    <div fxFlex="35" fxLayout="column">
+                        <mat-label>Type</mat-label>
+                        <div class="form-group selectedMat" [class.ng-valid]="type.valid" [class.ng-invalid]="type.invalid && type.touched" [class.selectedMat--disabled]="formDisabled || type.disabled" fxLayoutAlign="start center" fxFlex="100" >
+                            <mat-select placeholder="Select an app type" formControlName="type" (selectionChange)="onChangeType($event)">
+                                <mat-option *ngFor="let type of appTypes | keyvalue" [value]="type.key">
+                                  {{type.value}}
+                                </mat-option>
+                            </mat-select>
+                        </div>   
+                        <neural-show-errors [control]="form.controls.type"></neural-show-errors>
+                    </div>
+                </div>
+                <ng-container *ngIf="!!type.value">
+                    <ng-template [ngIf]="(type.value | titlecase) === (appTypes.IONIC  | titlecase)">
+                        <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem" formGroupName="payload">
+                            <div class="form-group" fxFlex="35">
+                                <mat-label>iOS Bundle ID</mat-label>
+                                <input type="text" matInput class="form-control" formControlName="iosBundleId" placeholder="iOS Bundle ID" autocomplete="off">
+                                <neural-show-errors [control]="payload.controls.iosBundleId"></neural-show-errors>
+                            </div>
+                            <div class="form-group" fxFlex="35">
+                                <mat-label>Android Package Name</mat-label>
+                                <input type="text" matInput class="form-control" formControlName="androidPackageName" placeholder="Android Package Name" autocomplete="off">
+                                <neural-show-errors [control]="payload.controls.androidPackageName"></neural-show-errors>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ng-container>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button class="mr4 px10 py1" type="button" (click)="behaviourForm(true)">Cancel</button>
+            <button type="button" mat-flat-button *ngIf="form.disabled" class="px10 py1" color="primary" (click)="behaviourForm(false)">Edit</button>
+            <button type="submit" mat-flat-button *ngIf="exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !updatePermission" (click)="updateApp(form)">Save</button>
+            <button type="submit" mat-flat-button *ngIf="!exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || !createPermission" (click)="createApp(form)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

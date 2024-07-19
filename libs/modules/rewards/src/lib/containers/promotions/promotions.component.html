@@ -1,0 +1,75 @@
+<div
+  class="promotions"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="'voucher'"
+      [breadcrumbs]="bc"
+      [link]="(permissions$ | async)?.CREATE_PROMO ? '../voucher/new' : null"
+      (refreshChange)="onRefresh($event)"
+      [loading]="loading$ | async"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <mat-card class="promotions__header">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <span class="promotions__header--item font-normal" fxFlex="20">
+          Promo code
+        </span>
+        <span class="promotions__header--item font-normal" fxFlex="15">
+          Start date
+        </span>
+        <span class="promotions__header--item font-normal" fxFlex="15">
+          End date
+        </span>
+        <span class="promotions__header--item font-normal" fxFlex="10">
+          Reward amount
+        </span>
+        <span class="promotions__header--item font-normal" fxFlex="10">
+          Type
+        </span>
+        <span class="promotions__header--item font-normal" fxFlex="10">
+          Redeem 
+        </span>
+        <span class="promotions__header--item font-normal" fxFlex="10">
+          Status
+        </span>
+        <span class="promotions__header--item font-normal" fxFlex="5">
+          Actions
+        </span>
+      </div>
+    </mat-card>
+    <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+      <div class="mb3" *ngFor="let promotion of promotions$ | async">
+        <neural-promotion-card [promotion]="promotion" [permissions]="permissions$ | async" (status)="openDialog($event)" (redeem)="openRedeemDialog($event)"></neural-promotion-card>
+      </div>
+    </ng-container>
+    
+    <div *ngIf="loading$ | async" class="promotions__loading">
+      Loading...
+    </div>
+    <div
+      class="promotions__not-found"
+      *ngIf="(error$ | async) && !(total$ | async)"
+    >
+      <neural-error [error]="error$ | async"></neural-error>
+    </div>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="total$ | async">
+    <mat-paginator
+      [length]="total$ | async"
+      [pageSize]="(promotionsConfig$ | async).limit"
+      [pageIndex]="(promotionsConfig$ | async).page - 1"
+      (page)="changePage($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
+</div>

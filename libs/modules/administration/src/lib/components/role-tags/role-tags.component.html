@@ -1,0 +1,29 @@
+<mat-card class="role-tag-card p4 my8">
+  <mat-card-content>
+      <div fxFlex="100" fxLayout="column" class="role-tag-card__content">
+          <div class="py4 role-tag-card__content--title" fxLayout="row" fxFlexFill fxFlex="100" fxLayoutAlign="start center">
+              <mat-icon svgIcon="tag"></mat-icon>
+              <span class="font-semi-thick">Available Tags</span>
+          </div>
+
+          <form class="role-tag-card__search mb4" autocomplete="off" [formGroup]="form">
+              <input class="role-tag-card__search--input py3 pl6 pr12" formControlName="filter" type="text" matInput placeholder="Search...">
+              <mat-icon class="role-tag-card__search--icon" svgIcon="search"></mat-icon>
+          </form>                
+          <div *ngIf="!loading" class="role-tag-card__content--chips" fxLayout="row wrap" fxFlexFill fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="10px grid">
+              <div *ngFor="let permission of (permissions | filter: form.get('filter').value)">
+                <span (click)="selectPermission(permission)" [ngClass]="{
+                    active: existsInPermissions(permission),
+                    disabled: formDisabled
+                  }">{{permission}}</span>
+              </div>
+          </div>
+        <div *ngIf="loading" class="role-tag-card__loading">
+            Loading...
+        </div>
+        <div class="role-tag-card__not-found" *ngIf="error">
+          <span> {{ error }} </span>
+        </div>          
+      </div>
+  </mat-card-content>        
+</mat-card>

@@ -1,0 +1,544 @@
+@import 'styles-variables';
+
+body {
+  background: map-get($map: $colors, $key: bg);
+}
+
+$sizes: 48;
+
+@mixin margin-classes {
+  @for $i from 0 through $sizes {
+    $margin: $i * 0.25rem;
+    /* margin #{$margin} */
+    .m#{$i} {
+      margin: $margin !important;
+    }
+    .ml#{$i} {
+      margin-left: $margin !important;
+    }
+    .mr#{$i} {
+      margin-right: $margin !important;
+    }
+    .mt#{$i} {
+      margin-top: $margin !important;
+    }
+    .mb#{$i} {
+      margin-bottom: $margin !important;
+    }
+    .mx#{$i} {
+      margin-left: $margin !important;
+      margin-right: $margin !important;
+    }
+    .my#{$i} {
+      margin-top: $margin !important;
+      margin-bottom: $margin !important;
+    }
+  }
+}
+@include margin-classes;
+
+@mixin padding-classes {
+  @for $i from 0 through $sizes {
+    $padding: $i * 0.25rem;
+    /* padding #{$padding} */
+    .p#{$i} {
+      padding: $padding !important;
+    }
+    .pl#{$i} {
+      padding-left: $padding !important;
+    }
+    .pr#{$i} {
+      padding-right: $padding !important;
+    }
+    .pt#{$i} {
+      padding-top: $padding !important;
+    }
+    .pb#{$i} {
+      padding-bottom: $padding !important;
+    }
+    .px#{$i} {
+      padding-left: $padding !important;
+      padding-right: $padding !important;
+    }
+    .py#{$i} {
+      padding-top: $padding !important;
+      padding-bottom: $padding !important;
+    }
+  }
+}
+@include padding-classes;
+
+// Custom Css
+a {
+  color: map-get($map: $colors, $key: theme);
+  text-decoration: none;
+}
+
+// Page Title
+.page-title {
+  color: map-get($map: $colors, $key: shark);
+  &__avatar {
+    display: inline-flex;
+    width: 50px;
+    height: 50px;
+    object-position: center;
+    object-fit: cover;
+    @include round(50%);
+    border: 2px solid map-get($map: $colors, $key: theme);
+  }
+  &__detail {
+    h1,
+    h6 {
+      line-height: 1;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: $font-semi-thick;
+    }
+    h6 {
+      font-size: 12px;
+      font-weight: $font-normal;
+    }
+  }
+
+  &__submit {
+    font-weight: $font-semi-thick !important;
+  }
+}
+
+.form-group {
+  $self: &;
+  position: relative;
+
+  &__wrapper {
+    position: relative;
+
+    #{$self}__remove {
+      position: absolute;
+      left: auto;
+      right: 0.5rem;
+    }
+    #{$self}__remove-date {
+      position: absolute;
+      left: auto;
+      right: 3rem;
+    }
+  }
+
+  &__password {
+    position: relative;
+
+    .form-control {
+      padding-right: 2.5rem !important;
+    }
+
+    #{$self}__btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
+
+  ::-webkit-input-placeholder {
+    /* Edge */
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+
+  ::placeholder {
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+
+  .form-control {
+    @include round(7px);
+    border: 1px solid map-get($map: $colors, $key: aquaHaze);
+    padding: 0.75rem;
+    width: 100%;
+    resize: none;
+
+    &.ng-invalid,  &--ng-invalid {
+      border: 1px solid map-get($map: $colors, $key: red);
+      // &.ng-touched {
+      // }
+    }
+
+    &.ng-valid, &--ng-valid {
+      border: 1px solid map-get($map: $colors, $key: green);
+      // &.ng-touched {
+      // }
+    }
+
+    &:disabled, &--disabled {
+      background-color: rgb(235, 235, 228);
+      border: 1px solid map-get($map: $colors, $key: aquaHaze) !important;
+    }
+  }
+
+  &.selectedMat {
+    border: 1px solid map-get($map: $colors, $key: aquaHaze);
+    padding: 0.75rem;
+    border-radius: 7px;
+
+    &.ng-invalid {
+      border: 1px solid map-get($map: $colors, $key: red);
+    }
+
+    &.ng-valid {
+      border: 1px solid map-get($map: $colors, $key: green) !important;
+    }
+
+    &--disabled {
+      background-color: rgb(235, 235, 228);
+      border: 1px solid map-get($map: $colors, $key: aquaHaze) !important;
+    }
+
+    &--white {
+      background-color: map-get($map: $colors, $key: white);
+    }
+  }
+
+  .error-danger {
+    font-size: 0.8rem;
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.mat-input-element:disabled,
+.mat-form-field-type-mat-native-select.mat-form-field-disabled
+  .mat-form-field-infix::after {
+  color: rgba(0, 0, 0, 0.38) !important;
+}
+
+.breadcrumb {
+  span,
+  a {
+    font-size: 0.75rem;
+    display: inline-block;
+    vertical-align: bottom;
+    color: map-get($map: $colors, $key: shark);
+    .mat-icon {
+      margin: 0 0.5rem;
+      width: 16px;
+      vertical-align: middle;
+      height: 16px;
+      line-height: 18px;
+    }
+    &:last-child {
+      color: map-get($map: $colors, $key: theme);
+    }
+  }
+  &__active {
+    transition: all 0.3s ease;
+    &:hover {
+      color: map-get($map: $colors, $key: theme) !important;
+    }
+  }
+}
+
+.mat-mini-fab .mat-button-wrapper {
+  padding: 0 !important;
+}
+
+.mat-checkbox-frame {
+  border-color: map-get($map: $colors, $key: heather) !important;
+  border-radius: 3px !important;
+}
+
+.error-danger {
+  color: map-get($map: $colors, $key: red);
+  font-size: $font-size * 0.9;
+}
+
+// animation
+@keyframes spin {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.neural-spin {
+  animation: spin 3s linear;
+}
+
+svg {
+  pointer-events: none;
+}
+
+.mat-mini-fab[disabled] {
+  svg {
+    filter: sepia(1) hue-rotate(200deg);
+  }
+}
+
+.sort-menu-btn {
+  color: map-get($map: $colors, $key: theme);
+  .mat-icon {
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+  }
+}
+
+.mat-stroked-button,
+.mat-flat-button {
+  @include round(7px);
+  padding: 0 36px !important;
+  font-weight: $font-semi-thick !important;
+}
+
+.none {
+  display: none !important;
+}
+
+.block {
+  display: block !important;
+}
+
+.green {
+  color: map-get($map: $colors, $key: green) !important;
+}
+.red {
+  color: map-get($map: $colors, $key: red) !important;
+}
+.warn {
+  color: map-get($map: $colors, $key: pending) !important;
+}
+
+.e-code-mirror::before {
+  content: '\e345';
+}
+.CodeMirror-linenumber,
+.CodeMirror-gutters {
+  display: none;
+}
+
+#special_char,
+.char_block {
+  display: inline-block;
+}
+.char_block.e-active {
+  /* box-shadow: inset 3px 3px 7px 0px; */
+  outline: 1.5px solid;
+}
+
+.char_block {
+  min-width: 160px;
+  height: 30px;
+  line-height: 30px;
+  margin: 0 5px 5px 0;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #dddddd;
+  font-size: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+
+  &.e-active {
+    border-color: map-get($map: $colors, $key: theme);
+  }
+}
+
+#custom_tbar,
+#custom_tbar div {
+  cursor: pointer;
+}
+
+#rteSection {
+  height: 500px;
+}
+.e-rte-quick-popup .e-rte-quick-toolbar .e-roatate-left::before {
+  content: '\e76e';
+}
+
+.e-rte-quick-popup .e-rte-quick-toolbar .e-roatate-right::before {
+  content: '\e726';
+}
+
+.e-richtexteditor textarea.e-content {
+  float: left;
+}
+.e-richtexteditor .e-rte-content {
+  overflow: hidden;
+}
+.e-rte-content .e-content.e-pre-source {
+  width: 100%;
+}
+
+.property-panel-content td {
+  width: 50%;
+}
+.property-panel-content td div {
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.e-icon-btn.e-active .e-md-preview::before {
+  content: '\e350';
+}
+
+.e-icon-btn .e-md-preview.e-icons::before {
+  content: '\e345';
+}
+.e-icon-btn.e-active .e-md-preview::before,
+#mdCustom .e-icon-btn.e-active .e-md-preview.e-icons::before {
+  content: '\e350';
+}
+#mdCustom .e-icon-btn .e-md-preview.e-icons::before {
+  content: '\e345';
+}
+
+#rteDialog.e-dialog .e-dlg-content {
+  padding: 0px 0px 5px 16px;
+}
+#custom_tbar .e-tbar-btn-text {
+  font-size: 16px;
+}
+.e-bigger #custom_tbar .e-tbar-btn-text {
+  font-size: 18px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .fabric.e-bigger #rteDialog {
+    min-width: 281px;
+  }
+
+  .fabric #rteDialog {
+    min-width: 241px;
+  }
+
+  .bootstrap.e-bigger #rteDialog,
+  .bootstrap #rteDialog {
+    min-width: 223px;
+  }
+
+  .highcontrast.e-bigger #rteDialog {
+    min-width: 283px;
+  }
+  .highcontrast #rteDialog {
+    min-width: 243px;
+  }
+  .material #rteDialog {
+    min-width: 224px;
+  }
+  .material.e-bigger #rteDialog {
+    min-width: 236px;
+  }
+}
+
+#rteDialog {
+  min-width: 550px !important;
+}
+
+$progress-height: 20px;
+
+.progress-dashboard {
+  height: $progress-height !important;
+
+  &.progress-primary {
+    .mat-progress-bar-fill::after {
+      background-color: map-get($map: $colors, $key: green);
+    }
+  }
+
+  &.progress-secondary {
+    .mat-progress-bar-fill::after {
+      background-color: lighten(
+        $color: map-get($map: $colors, $key: green),
+        $amount: 10%
+      );
+    }
+  }
+
+  &.progress-tertiary {
+    .mat-progress-bar-fill::after {
+      background-color: map-get($map: $colors, $key: pending);
+    }
+  }
+
+  &.progress-quaternary {
+    .mat-progress-bar-fill::after {
+      background-color: map-get($map: $colors, $key: orange);
+    }
+  }
+
+  &.progress-quinary {
+    .mat-progress-bar-fill::after {
+      background-color: darken(
+        $color: map-get($map: $colors, $key: orange),
+        $amount: 10%
+      );
+    }
+  }
+
+  .mat-progress-bar-buffer {
+    background-color: map-get($map: $colors, $key: aquaHaze);
+  }
+
+  /* remove animation and the dots*/
+  .mat-progress-bar-background {
+    animation: none;
+    background-color: transparent;
+    fill: transparent;
+  }
+}
+
+.mat-menu-item {
+  &:hover, &.active {
+    color: map-get($map: $colors, $key: theme);
+  }
+
+  &.active {
+    font-weight: $font-semi-thick;
+  }
+}
+
+.mat-toolbar {
+  @include breakpoint(lt-md) {
+    min-height: 64px !important;
+    height: unset !important;
+  }
+}
+
+.test .mat-dialog-container {
+  padding: 0 !important;
+}
+
+.custom-dialog-container .mat-dialog-container {
+  margin: 0px;
+    padding: 0px;
+    border-radius: 5px !important;
+}
+
+// .cdk-dialog-container .mat-dialog-container {
+//   max-width: 468px !important;
+//   width: 468px !important;
+//   max-height: 262px !important;
+//   height: 262px !important;
+// }
+
+.swiper-button-prev[hidden], .swiper-button-next[hidden] {
+  display: none !important;
+}
+
+.truncate {
+  flex: 1;
+  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

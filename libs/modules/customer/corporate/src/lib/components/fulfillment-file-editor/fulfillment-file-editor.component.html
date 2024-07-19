@@ -1,0 +1,88 @@
+<div
+  class="viewer"
+  class="py4 px4"
+  fxFlex="100"
+  fxLayout="column"
+  fxLayoutAlign="space-between center"
+  fxLayoutGap="1rem"
+>
+  <div class="viewer__pdf">
+    <div
+      [class.none]="this.loading"
+      [style.top.px]="y"
+      [style.left.px]="x"
+      class="signed-box"
+    >
+      Sign here
+    </div>
+  </div>
+  <div *ngIf="!this.loading; else isLoading"></div>
+  <ng-template #isLoading>
+    <div class="viewer__loading">
+      Select a PDF...
+    </div>
+  </ng-template>
+  <div
+    fxFlex="100"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+    fxLayoutGap="2rem"
+  >
+    <div fxFlex="50" fxLayoutGap="1rem" fxLayout="row">
+      <div class="form-group" fxLayout="column">
+        <input
+          type="file"
+          #myFileInput
+          accept="application/pdf"
+          name="file"
+          hidden
+          class="form-control"
+          placeholder="Image"
+          autocomplete="off"
+          (change)="onFileSelected($event)"
+        />
+        <div
+          fxFlex="100"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="1rem"
+        >
+          <button
+            type="button"
+            color="accent"
+            mat-flat-button
+            (click)="myFileInput.click()"
+          >
+            Select PDF
+          </button>
+        </div>
+      </div>
+      <div fxLayoutGap="1rem" fxLayout="row">
+        <button
+          [disabled]="page === 1 || this.loading"
+          mat-mini-fab
+          color="primary"
+          aria-label="left"
+          (click)="onPerv()"
+        >
+          <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <button
+          [disabled]="page === totalPages || this.loading"
+          mat-mini-fab
+          color="primary"
+          aria-label="right"
+          (click)="onNext()"
+        >
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div fxFlex="50" fxLayoutGap="1rem" fxLayout="row">
+        <button mat-flat-button (click)="toggleStatus()" [disabled]="loading" [color]="'primary'">
+            Save
+          </button>
+          <button mat-flat-button (click)="close()">Cancel</button>
+    </div>
+  </div>
+</div>

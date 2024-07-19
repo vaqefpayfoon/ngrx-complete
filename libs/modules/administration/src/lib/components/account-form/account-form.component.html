@@ -1,0 +1,799 @@
+<div class="account" fxLayout="column" fxFlex="100">
+  <div class="page-title">
+    <ng-container *ngIf="exists">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <img
+            class="page-title__avatar"
+            [src]="image"
+            onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/test/avatar.jpg'"
+            alt="user"
+          />
+          <div
+            class="page-title__detail"
+            fxLayout="column"
+            fxLayoutAlign="center start"
+            fxLayoutGap="10px"
+          >
+            <h1 class="mt0">
+              {{ account?.identity?.salutation | titlecase }}
+              {{ account?.identity?.fullName | titlecase }}
+            </h1>
+            <h6 class="m0">{{ email }}</h6>
+          </div>
+        </div>
+        <div class="font-semi-thick">
+          <button
+            mat-icon-button
+            [disabled]="!permissions?.GET_ACCOUNT"
+            [matMenuTriggerFor]="actions"
+          >
+            <mat-icon svgIcon="action_off"></mat-icon>
+          </button>
+          <mat-menu #actions="matMenu">
+            <button
+              (mouseover)="buttons.deleteIcon = buttonTypes.DELETEON"
+              (mouseout)="buttons.deleteIcon = buttonTypes.DELETEOFF"
+              mat-menu-item
+              [disabled]="!permissions?.PURGE_ACCOUNT"
+              (click)="toggleDelete()"
+            >
+              <mat-icon [svgIcon]="buttons.deleteIcon"></mat-icon>
+              <span>Delete</span>
+            </button>
+            <button
+              (mouseover)="buttons.resyncIcon = buttonTypes.RESYNCON"
+              (mouseout)="buttons.resyncIcon = buttonTypes.RESYNCOFF"
+              mat-menu-item
+              [disabled]="!permissions?.RESYNC_ACCOUNT"
+              (click)="toggleResync()"
+            >
+              <mat-icon [svgIcon]="buttons.resyncIcon"></mat-icon>
+              <span>Resync</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="account__body" fxLayout="column" fxFlex="100">
+    <form
+      novalidate
+      [formGroup]="form"
+      autocomplete="off"
+      fxLayout="row wrap"
+      fxFlex="100"
+      fxLayoutAlign="start start"
+    >
+      <div class="account__body--personal" fxFlex="0 0 100" fxLayout="column">
+        <h2>personal detail</h2>
+        <mat-divider></mat-divider>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <div class="form-group" fxFlex="0 0 33">
+            <mat-label>Email</mat-label>
+            <input
+              type="email"
+              matInput
+              class="form-control"
+              formControlName="email"
+              placeholder="email"
+              autocomplete="off"
+            />
+            <neural-show-errors
+              [control]="form.controls.email"
+            ></neural-show-errors>
+          </div>
+
+          <div class="form-group" fxFlex="0 0 33" formGroupName="integrations">
+            <div formGroupName="cdk">
+              <mat-label>Service Adviser</mat-label>
+              <input
+                type="text"
+                matInput
+                class="form-control"
+                formControlName="serviceAdvisorId"
+                placeholder="Service Advisor Id"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          formGroupName="name"
+          fxLayoutGap="10px"
+          formGroupName="identity"
+        >
+          <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="0 0 33">
+            <mat-label style="font-size: 13px">Salutation</mat-label>
+            <div
+              class="form-group selectedMat my0"
+              fxFlex="100"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid':
+                  identity.controls.salutation.invalid &&
+                  identity.controls.salutation.touched,
+                'ng-valid':
+                  identity.controls.salutation.valid &&
+                  identity.controls.salutation.touched
+              }"
+            >
+              <mat-select
+                placeholder="Select Salutation"
+                formControlName="salutation"
+              >
+                <mat-option
+                  *ngFor="let salutation of salutationList | keyvalue"
+                  [value]="salutation.value"
+                >
+                  {{ salutation.key }}
+                </mat-option>
+              </mat-select>
+              <neural-show-errors
+                [control]="identity.controls.salutation"
+              ></neural-show-errors>
+            </div>
+          </div>
+          <div class="form-group" fxFlex="0 0 33">
+            <mat-label>Full Name</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control"
+              formControlName="fullName"
+              placeholder="Full Name"
+              autocomplete="off"
+            />
+            <neural-show-errors
+              [control]="identity.controls.fullName"
+            ></neural-show-errors>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <div class="form-group" fxFlex="0 0 33">
+            <mat-label>Date of birth</mat-label>
+            <div fxLayout="row" class="form-group__wrapper">
+              <input
+                matInput
+                class="form-control"
+                readonly
+                formControlName="dateOfBirth"
+                [matDatepicker]="dateOfBirth"
+                placeholder="11 May 1992"
+                (dateChange)="changeDateOfBirth($event)"
+                autocomplete="off"
+              />
+              <mat-datepicker-toggle matSuffix [for]="dateOfBirth">
+              </mat-datepicker-toggle>
+              <mat-datepicker #dateOfBirth></mat-datepicker>
+              <neural-show-errors [control]="dateOfBirth"></neural-show-errors>
+            </div>
+          </div>
+
+          <div class="form-group" fxFlex="0 0 33">
+            <mat-label>Driving license expiry</mat-label>
+            <div fxLayout="row" class="form-group__wrapper">
+              <input
+                matInput
+                class="form-control"
+                readonly
+                formControlName="drivingLicenseExpiry"
+                [matDatepicker]="drivingLicenseExpiry"
+                placeholder="11 May 2026"
+                (dateChange)="changedrivingLicenseExpiry($event)"
+                autocomplete="off"
+              />
+              <mat-datepicker-toggle matSuffix [for]="drivingLicenseExpiry">
+              </mat-datepicker-toggle>
+              <mat-datepicker #drivingLicenseExpiry></mat-datepicker>
+              <neural-show-errors
+                [control]="drivingLicenseExpiry"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          formGroupName="name"
+          fxLayoutGap="10px"
+          formGroupName="document"
+        >
+          <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="0 0 33">
+            <mat-label style="font-size: 13px">Type</mat-label>
+            <div
+              class="form-group selectedMat my0"
+              fxFlex="100"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid':
+                  document.controls.type.invalid &&
+                  document.controls.type.touched,
+                'ng-valid':
+                  document.controls.type.valid && document.controls.type.touched
+              }"
+            >
+              <mat-select placeholder="Select a type" formControlName="type">
+                <mat-option>-- None --</mat-option>
+                <mat-option
+                  *ngFor="let docType of documentTypeList | keyvalue"
+                  [value]="docType.value"
+                >
+                  {{ docType.key }}
+                </mat-option>
+              </mat-select>
+              <neural-show-errors
+                [control]="document.controls.type"
+              ></neural-show-errors>
+            </div>
+          </div>
+          <div class="form-group" fxFlex="0 0 33">
+            <mat-label>ID</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control"
+              formControlName="id"
+              placeholder="ID"
+              autocomplete="off"
+            />
+            <neural-show-errors
+              [control]="document.controls.id"
+            ></neural-show-errors>
+          </div>
+        </div>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          formGroupName="phone"
+          fxLayoutGap="10px"
+        >
+          <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="0 0 33">
+            <mat-label style="font-size: 13px">Country code</mat-label>
+            <div
+              class="form-group selectedMat my0"
+              fxFlex="100"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid':
+                  phoneGroup.controls.code.invalid &&
+                  phoneGroup.controls.code.touched,
+                'ng-valid':
+                  phoneGroup.controls.code.valid &&
+                  phoneGroup.controls.code.touched
+              }"
+            >
+              <mat-select placeholder="Select Country" formControlName="code">
+                <mat-option
+                  *ngFor="let code of codes"
+                  [value]="'+' + code.code"
+                >
+                  {{ code.name }} ( +{{ code.code }} )
+                </mat-option>
+              </mat-select>
+              <neural-show-errors
+                [control]="phoneGroup.controls.code"
+              ></neural-show-errors>
+            </div>
+          </div>
+          <div class="form-group" fxFlex="0 0 33">
+            <mat-label>Number</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control"
+              formControlName="number"
+              placeholder="Phone Number"
+              autocomplete="new-phone"
+            />
+            <neural-show-errors
+              [control]="phoneGroup.controls.number"
+            ></neural-show-errors>
+          </div>
+        </div>
+        <div fxLayout="row" *ngIf="!exists">
+          <div class="form-group" fxFlex="0 0 33">
+            <mat-label>Password</mat-label>
+            <div class="form-group__password">
+              <input
+                type="password"
+                matInput
+                class="form-control"
+                formControlName="password"
+                placeholder="Password"
+                [type]="hide ? 'password' : 'text'"
+                autocomplete="new-password"
+              />
+              <button
+                class="form-group__btn"
+                type="button"
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{
+                  hide ? 'visibility_off' : 'visibility'
+                }}</mat-icon>
+              </button>
+            </div>
+            <div class="mt6">
+              <neural-show-errors
+                [control]="form.controls.password"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="isCDK"
+        class="account__body--personal"
+        fxFlex="0 0 100"
+        fxLayout="column"
+      >
+        <div>
+          <h2>Integration</h2>
+          <mat-divider></mat-divider>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <div class="form-group" fxFlex="0 0 33" formGroupName="integrations">
+            <div formGroupName="fortellis">
+              <mat-label>Customer Id</mat-label>
+              <input
+                type="text"
+                matInput
+                class="form-control"
+                formControlName="customerId"
+                placeholder="Customer Id"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="account__body--access" fxFlex="0 0 100" fxLayout="column">
+        <div *ngIf="!!router?.state?.data?.type">
+          <h2>access detail</h2>
+          <mat-divider></mat-divider>
+          <ng-container
+            *ngIf="
+              router?.state?.data?.type === accountType.ALL;
+              else notSuperAdmin
+            "
+          >
+            <h3>Group</h3>
+            <div fxLayout="row" formGroupName="permissions" fxLayoutGap="1rem">
+              <div
+                class="form-group selectedMat"
+                [ngClass]="{
+                  'selectedMat--disabled': formDisabled,
+                  'ng-invalid':
+                    adminGroupUuid.invalid && adminGroupUuid.touched,
+                  'ng-valid': adminGroupUuid.valid && adminGroupUuid.touched
+                }"
+                fxFlex="0 0 33"
+              >
+                <mat-select
+                  formControlName="adminGroupUuid"
+                  placeholder="Select Group"
+                >
+                  <mat-option>-- None --</mat-option>
+                  <mat-option *ngFor="let group of groups" [value]="group.uuid">
+                    {{ group.name }}
+                  </mat-option>
+                </mat-select>
+                <neural-show-errors
+                  [control]="permissionsGroup.controls.adminGroupUuid"
+                ></neural-show-errors>
+              </div>
+            </div>
+            <h3>Group</h3>
+            <div fxLayout="row" formGroupName="permissions" fxLayoutGap="1rem">
+              <div
+                class="form-group selectedMat"
+                [ngClass]="{
+                  'selectedMat--disabled': formDisabled,
+                  'ng-invalid': operationRole.invalid && operationRole.touched,
+                  'ng-valid': operationRole.valid && operationRole.touched
+                }"
+                fxFlex="0 0 33"
+              >
+                <mat-select
+                  formControlName="operationRole"
+                  placeholder="Select role"
+                >
+                  <mat-option>-- None --</mat-option>
+                  <mat-option
+                    *ngFor="let role of operationRoles | keyvalue"
+                    [value]="role.value"
+                  >
+                    {{ role.value }}
+                  </mat-option>
+                </mat-select>
+                <neural-show-errors
+                  [control]="permissionsGroup.controls.operationRole"
+                ></neural-show-errors>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #notSuperAdmin>
+            <h3 *ngIf="router?.state?.data?.type !== accountType.CUSTOMER">
+              {{
+                router?.state?.data?.type === accountType.OPERATION
+                  ? 'Role & Group'
+                  : 'Group'
+              }}
+            </h3>
+            <div
+              *ngIf="router?.state?.data?.type !== accountType.CUSTOMER"
+              fxLayout="row-reverse"
+              fxLayoutAlign="end center"
+              formGroupName="permissions"
+              fxLayoutGap="1rem"
+            >
+              <ng-template
+                [ngIf]="
+                  router?.state?.data?.type === accountType.ADMIN ||
+                  router?.state?.data?.type === accountType.OPERATION
+                "
+              >
+                <div
+                  class="form-group selectedMat"
+                  [ngClass]="{
+                    'selectedMat--disabled': formDisabled,
+                    'ng-invalid':
+                      adminGroupUuid.invalid && adminGroupUuid.touched,
+                    'ng-valid': adminGroupUuid.valid && adminGroupUuid.touched
+                  }"
+                  fxFlex="0 0 33"
+                >
+                  <mat-select
+                    formControlName="adminGroupUuid"
+                    placeholder="Select Group"
+                  >
+                    <mat-option>-- None --</mat-option>
+                    <mat-option
+                      *ngFor="let group of groups"
+                      [value]="group.uuid"
+                    >
+                      {{ group.name }}
+                    </mat-option>
+                  </mat-select>
+                  <neural-show-errors
+                    [control]="permissionsGroup.controls.adminGroupUuid"
+                  ></neural-show-errors>
+                </div>
+              </ng-template>
+              <ng-container
+                *ngIf="router?.state?.data?.type === accountType.OPERATION"
+              >
+                <div
+                  class="form-group selectedMat"
+                  [ngClass]="{
+                    'selectedMat--disabled': formDisabled,
+                    'ng-invalid':
+                      operationRole.invalid && operationRole.touched,
+                    'ng-valid': operationRole.valid && operationRole.touched
+                  }"
+                  fxFlex="0 0 33"
+                >
+                  <mat-select
+                    formControlName="operationRole"
+                    placeholder="Select role"
+                    (selectionChange)="onChangeRole($event)"
+                  >
+                    <ng-template
+                      ngFor
+                      let-role
+                      [ngForOf]="operationRoles | keyvalue"
+                    >
+                      <mat-option>-- None --</mat-option>
+                      <mat-option
+                        [disabled]="
+                          role.value === operationRoles.SA ||
+                          role.value === operationRoles.CSO
+                        "
+                        [value]="role.value"
+                      >
+                        {{ role.value }}
+                        {{
+                          role.value === operationRoles.SA ||
+                          role.value === operationRoles.CSO
+                            ? '(disabled)'
+                            : ''
+                        }}
+                      </mat-option>
+                    </ng-template>
+                  </mat-select>
+                  <neural-show-errors
+                    [control]="permissionsGroup.controls.operationRole"
+                  ></neural-show-errors>
+                </div>
+              </ng-container>
+            </div>
+          </ng-template>
+        </div>
+        <h3>Corporates</h3>
+        <div fxLayout="row">
+          <div
+            class="form-group selectedMat"
+            [ngClass]="{
+              'selectedMat--disabled': formDisabled,
+              'ng-invalid':
+                selectedCorporate.invalid && selectedCorporate.touched,
+              'ng-valid': selectedCorporate.valid && selectedCorporate.touched
+            }"
+            fxFlex="0 0 33"
+          >
+            <mat-select
+              placeholder="Select Corporate"
+              [formControl]="selectedCorporate"
+              (selectionChange)="selectedBranches.setValue('')"
+            >
+              <mat-option
+                *ngFor="let corporate of authCorporates"
+                [value]="corporate.uuid"
+              >
+                {{ corporate.name }}
+              </mat-option>
+            </mat-select>
+            <neural-show-errors
+              [control]="selectedCorporate"
+            ></neural-show-errors>
+          </div>
+        </div>
+        <h3 *ngIf="!!selectedCorporate.value">Branches</h3>
+        <div fxLayout="row" *ngIf="!!selectedCorporate.value">
+          <div
+            class="form-group selectedMat"
+            [ngClass]="{
+              'selectedMat--disabled': formDisabled,
+              'ng-invalid':
+                selectedBranches.invalid && selectedBranches.touched,
+              'ng-valid': selectedBranches.valid && selectedBranches.touched
+            }"
+            fxFlex="0 0 33"
+          >
+            <mat-select
+              [formControl]="selectedBranches"
+              [compareWith]="compareFn"
+              placeholder="Select Branch"
+              multiple
+              (selectionChange)="onChangeBranch($event)"
+            >
+              <mat-select-trigger>
+                {{
+                  selectedBranches.value && selectedBranches.value[0]
+                    ? selectedBranches.value[0].name
+                    : ''
+                }}
+                <span
+                  *ngIf="selectedBranches.value?.length > 1"
+                  class="example-additional-selection"
+                >
+                  (+{{ selectedBranches.value.length - 1 }}
+                  {{
+                    selectedBranches.value?.length === 2 ? 'other' : 'others'
+                  }})
+                </span>
+              </mat-select-trigger>
+              <ng-template
+                ngFor
+                let-branch
+                [ngForOf]="branches(selectedCorporate.value)"
+              >
+                <mat-option [value]="branch">
+                  {{ branch.name }}
+                </mat-option>
+              </ng-template>
+            </mat-select>
+            <neural-show-errors
+              [control]="selectedBranches"
+            ></neural-show-errors>
+          </div>
+        </div>
+        <ng-template [ngIf]="editable">
+          <h3>Product</h3>
+          <neural-account-product
+            [formDisabled]="formDisabled"
+            [products]="productLists"
+            formControlName="products"
+          ></neural-account-product>
+          <neural-show-errors
+            [control]="form.controls.products"
+          ></neural-show-errors>
+        </ng-template>
+        <ng-container
+          *ngIf="
+            router?.state?.data?.type === accountType.OPERATION ||
+            router?.state?.data?.type === accountType.ALL
+          "
+        >
+          <mat-label style="font-size: 13px">Divisions</mat-label>
+          <div fxLayout="row" formGroupName="permissions">
+            <div
+              class="form-group selectedMat"
+              fxFlex="0 0 33"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid': divisions.invalid && divisions.touched,
+                'ng-valid': divisions.valid && divisions.touched
+              }"
+              (selectionChange)="onChangeDivision($event)"
+            >
+              <mat-select
+                placeholder="Select a division"
+                formControlName="divisions"
+                multiple
+              >
+                <mat-option
+                  *ngFor="let division of permissionDivisions | keyvalue"
+                  [value]="division.value"
+                >
+                  {{ division.key }}
+                </mat-option>
+              </mat-select>
+              <neural-show-errors
+                [control]="permissionsGroup.controls.divisions"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </ng-container>
+        <div
+          fxLayout="column"
+          formGroupName="permissions"
+          *ngIf="brands && brands.length"
+        >
+          <h3>Brands</h3>
+          <div fxFlex="100">
+            <neural-account-brands
+              fxFlex="33"
+              [brands]="brands"
+              [formDisabled]="formDisabled"
+              formControlName="brands"
+            ></neural-account-brands>
+          </div>
+          <div fxFlex="100">
+            <neural-show-errors
+              [control]="permissionsGroup.controls.brands"
+            ></neural-show-errors>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="
+          router?.state?.data?.type === accountType.OPERATION ||
+          router?.state?.data?.type === accountType.ALL
+        "
+        fxFlex="0 0 100"
+        fxLayout="column"
+      >
+        <neural-account-form-cso
+          [formDisabled]="formDisabled"
+          [cso]="account?.cso"
+        ></neural-account-form-cso>
+      </div>
+      <div class="mt4">
+        <button
+          mat-stroked-button
+          class="mr4 px10 py1"
+          (click)="bahaviorForm(false)"
+        >
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.disabled"
+          class="px10 py1"
+          color="primary"
+          (click)="bahaviorForm(true)"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="exists && form.enabled"
+          class="px10 py1"
+          color="primary"
+          [disabled]="form.invalid || form.pristine || !updatePermission"
+          (click)="updateAccount(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="!exists && form.enabled"
+          class="px10 py1"
+          color="primary"
+          [disabled]="
+            form.invalid ||
+            selectedCorporate.invalid ||
+            selectedBranches.invalid ||
+            !createPermission
+          "
+          (click)="createAccount(form)"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+
+    <form
+      *ngIf="exists"
+      novalidate
+      [formGroup]="updatePassword"
+      autocomplete="off"
+      fxLayout="row wrap"
+      fxFlex="100"
+      fxLayoutAlign="start start"
+    >
+      <div class="account__body--personal" fxFlex="0 0 100" fxLayout="column">
+        <h2>Change Password</h2>
+        <mat-divider></mat-divider>
+        <div fxLayout="row">
+          <div class="form-group" fxFlex="0 0 33">
+            <mat-label>Password</mat-label>
+            <div class="form-group__password">
+              <input
+                type="password"
+                matInput
+                class="form-control"
+                formControlName="password"
+                placeholder="Password"
+                [type]="hide ? 'password' : 'text'"
+                autocomplete="new-password"
+              />
+              <button
+                class="form-group__btn"
+                type="button"
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{
+                  hide ? 'visibility_off' : 'visibility'
+                }}</mat-icon>
+              </button>
+            </div>
+            <div class="mt6">
+              <neural-show-errors
+                [control]="updatePassword.controls.password"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt4">
+        <button
+          mat-stroked-button
+          type="button"
+          class="mr4 px10 py1"
+          (click)="updatePassword.reset()"
+        >
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          class="px10 py1"
+          color="primary"
+          [disabled]="
+            !updatePassword.valid ||
+            updatePassword.pristine ||
+            !updatePassPermission
+          "
+          (click)="updatePass(updatePassword)"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

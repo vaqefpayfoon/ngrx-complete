@@ -1,0 +1,205 @@
+<mat-card class="corporate p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Service Map</h2>
+            <mat-slide-toggle
+                fxLayout="row-reversed"
+                color="primary"
+                [disabled]="formDisabled"
+                [(ngModel)]="activeServiceMap"
+                (change)="onChangeServiceMap($event)">
+            </mat-slide-toggle>
+        </div>
+    </mat-card-title>
+    <div class="corporate__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <div class="corporate__general my8" fxLayout="column">
+            <div class="form-group">
+                <mat-chip-list #chipList aria-label="Service Map">
+                    <mat-chip
+                    *ngFor="let appIF of appIdentifiers"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="remove(appIF)">
+                        {{appIF}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                    placeholder="Add a new partnumber for batteries"
+                    #appIFInput
+                    [readOnly]="!activeServiceMap"
+                    class="form-control"
+                    [formControl]="appIdentifireCtrl"
+                    [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let appIF of filteredAppIdentifire | async" [value]="appIF">
+                    {{appIF}}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <div class="form-group">
+                <mat-chip-list #chipListBpFA aria-label="Service Map">
+                    <mat-chip
+                    *ngFor="let bp of brakePadFearAxiles"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="removebpfa(bp)">
+                        {{bp}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                    placeholder="Add a new front Axle Part Numbers for brakePad"
+                    #appIFInput
+                    class="form-control"
+                    [readOnly]="!activeServiceMap"
+                    [formControl]="breakPadFrontAxileCtrl"
+                    [matAutocomplete]="bpfaauto"
+                    [matChipInputFor]="chipListBpFA"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="addbpfa($event)">
+                </mat-chip-list>
+                <mat-autocomplete #bpfaauto="matAutocomplete" (optionSelected)="selectedbpfa($event)">
+                    <mat-option *ngFor="let appIF of filteredBreakPadFrontAxileCtrl | async" [value]="appIF">
+                    {{appIF}}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <div class="form-group">
+                <mat-chip-list #chipListBpRA aria-label="Service Map">
+                    <mat-chip
+                    *ngFor="let bp of brakePadRearAxiles"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="removebpra(bp)">
+                        {{bp}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                    placeholder="Add a new Rear Axle Part Numbers for brakePad"
+                    #appIFInput
+                    class="form-control"
+                    [readOnly]="!activeServiceMap"
+                    [formControl]="breakPadRearAxileCtrl"
+                    [matAutocomplete]="bpraauto"
+                    [matChipInputFor]="chipListBpRA"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="addbpra($event)">
+                </mat-chip-list>
+                <mat-autocomplete #bpraauto="matAutocomplete" (optionSelected)="selectedbpra($event)">
+                    <mat-option *ngFor="let appIF of filteredBreakPadRearAxileCtrl | async" [value]="appIF">
+                    {{appIF}}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <div class="form-group">
+                <mat-chip-list #chipListTyreFA aria-label="Service Map">
+                    <mat-chip
+                    *ngFor="let bp of tyreFearAxiles"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="removetyrefa(bp)">
+                        {{bp}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                    placeholder="Add a new front Axle Part Numbers for Tyre"
+                    #appIFInput
+                    class="form-control"
+                    [readOnly]="!activeServiceMap"
+                    [formControl]="tyreFrontAxileCtrl"
+                    [matAutocomplete]="tyrefaauto"
+                    [matChipInputFor]="chipListTyreFA"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="addtyrefa($event)">
+                </mat-chip-list>
+                <mat-autocomplete #tyrefaauto="matAutocomplete" (optionSelected)="selectedtyrefa($event)">
+                    <mat-option *ngFor="let appIF of filteredTyreFrontAxileCtrl | async" [value]="appIF">
+                    {{appIF}}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <div class="form-group">
+                <mat-chip-list #chipListTyreRA aria-label="Service Map">
+                    <mat-chip
+                    *ngFor="let bp of tyreRearAxiles"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="removetyrera(bp)">
+                        {{bp}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                    placeholder="Add a new Rear Axle Part Numbers for Tyre"
+                    #tyreraInput
+                    class="form-control"
+                    [readOnly]="!activeServiceMap"
+                    [formControl]="tyreRearAxileCtrl"
+                    [matAutocomplete]="tyreraauto"
+                    [matChipInputFor]="chipListTyreRA"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="addtyrera($event)">
+                </mat-chip-list>
+                <mat-autocomplete #tyreraauto="matAutocomplete" (optionSelected)="selectedtyrera($event)">
+                    <mat-option *ngFor="let appIF of filteredTyreRearAxileCtrl | async" [value]="appIF">
+                    {{appIF}}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <div fxFlex="1 0 100" class="my4">
+                <div class="form-group">
+                    <mat-label class="my1 ml2">Engine Oil</mat-label>
+                    <input
+                        type="number" 
+                        matInput
+                        [readOnly]="!activeServiceMap"
+                        placeholder="Minimum Requirement"
+                        class="form-control"
+                        [formControl]="MinimumRequirement">
+                </div>
+                <div class="form-group">
+                    <mat-chip-list #chipListEngineOilPartNumber aria-label="Service Map">
+                        <mat-chip
+                        *ngFor="let bp of engineOilPartNumbers"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        (removed)="removePartNumber(bp)">
+                            {{bp}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input
+                        placeholder="Add a new engine oil part number"
+                        #engineOilPartNumbersInput
+                        class="form-control"
+                        [readOnly]="!activeServiceMap"
+                        [formControl]="engineOilPartNumbersCtrl"
+                        [matAutocomplete]="engineOilPartNumbersMatAutocomplete"
+                        [matChipInputFor]="chipListEngineOilPartNumber"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="addEngineOilPartNumber($event)">
+                    </mat-chip-list>
+                    <mat-autocomplete #engineOilPartNumbersMatAutocomplete="matAutocomplete" (optionSelected)="selectedPartNumber($event)">
+                        <mat-option *ngFor="let pnumber of filteredEngineOilPartNumbers | async" [value]="pnumber">
+                        {{pnumber}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
+            </div>
+        </div>
+        <mat-card-actions class="my0 ml32 p0" *ngIf="activeServiceMap">
+            <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+            <button mat-flat-button class="px10 py1" [disabled]="formDisabled || !permissionValid " color="primary" (click)="onSave(parent)">Save</button>
+        </mat-card-actions>
+    </mat-card-content>
+</mat-card>

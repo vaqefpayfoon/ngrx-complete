@@ -1,0 +1,77 @@
+<form autocomplete="off" novalidate [formGroup]="parent">
+    <mat-card class="branch p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Calendar</h2>
+            </div>
+        </mat-card-title>
+        <div class="branch__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div formArrayName="workshops" fxLayout="column" fxLayoutGap="1rem">
+                    <div *ngFor="let item of workshops; let i = index;">
+                        <div [formGroupName]="i" class="branch__general">
+                            <button class="branch__general--close" matTooltip="Remove" [disabled]="formDisabled" (click)="onRemove(i)" mat-icon-button color="warn">
+                                <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                            </button>
+                            <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                    <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                                        <mat-label>Brand</mat-label>
+                                        <div class="form-group selectedMat mb4" fxFlex="100" [ngClass]="{'selectedMat--disabled':formDisabled, 'ng-valid': workshops[i].get('brand').valid,'ng-invalid': workshops[i].get('brand').invalid}">
+                                            <mat-select placeholder="Select a brand" formControlName="brand">
+                                                <mat-option *ngFor="let coverage of corporate?.configuration?.vehicles?.coverages" [value]="coverage?.brand">
+                                                  {{coverage?.brand}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </div>            
+                                    </div>
+                                </div>
+                                <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <h2 class="h6 text-capitalize font-semi-thick my0">Name</h2>
+                                </div>
+                                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" formGroupName="name">
+                                    <div class="form-group" fxFlex="35">
+                                        <mat-label>Mobile Service</mat-label>
+                                        <input type="text" matInput class="form-control" formControlName="mobileService" placeholder="Mobile Service" autocomplete="off">
+                                    </div>
+                                    <div class="form-group" fxFlex="35">
+                                        <mat-label>Service Center</mat-label>
+                                        <input type="text" matInput class="form-control" formControlName="serviceCenter" placeholder="Service Center" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <h2 class="h6 text-capitalize font-semi-thick my0">ID</h2>
+                                </div>
+                                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" formGroupName="id">
+                                    <div class="form-group" fxFlex="35">
+                                        <mat-label>Mobile Service</mat-label>
+                                        <input type="text" matInput class="form-control" formControlName="mobileService" placeholder="Mobile Service" autocomplete="off">
+                                    </div>
+                                    <div class="form-group" fxFlex="35">
+                                        <mat-label>Service Center</mat-label>
+                                        <input type="text" matInput class="form-control" formControlName="serviceCenter" placeholder="Service Center" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="branch__divider my4" *ngIf="i !== workshops.length - 1">
+                            <mat-divider></mat-divider>
+                        </div>
+                    </div>
+                    <div fxFlex="100" *ngIf="!workshops.length || !corporate?.configuration?.vehicles?.coverages?.length">
+                        <div class="branch__not-found" fxLayout="column" fxLayoutGap="1rem">
+                            <span>Add a new vehicle in " {{corporate?.name}} " form</span>
+                            <div>
+                                <button mat-flat-button type="button" [routerLink]="['../../']" color="primary">Click here</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <ng-content></ng-content>
+    </mat-card>
+</form>

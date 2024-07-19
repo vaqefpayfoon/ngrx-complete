@@ -1,0 +1,91 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.test-drive {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+  overflow: hidden;
+
+  $self: &;
+
+  &__divider {
+    position: relative;
+  }
+
+  &__image {
+    max-width: 600px;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
+    @include round(7px);
+  }
+
+  .mat-mini-fab {
+    .mat-icon {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+
+  &__general {
+    position: relative;
+    .form-group {
+      mat-label {
+        font-size: 13px;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+      }
+
+      position: relative;
+    }
+
+    #{$self} {
+      &__remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: auto;
+      }
+
+      &__color-picker {
+        cursor: pointer;
+        height: 70px;
+        width: 70px;
+        @include round(100%);
+        border: 1px solid rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    &--close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: auto;
+    }
+  }
+
+  .mat-chip {
+    @include round(7px);
+    font-size: 14px;
+    background-color: map-get($map: $colors, $key: theme);
+    color: map-get($map: $colors, $key: white);
+    z-index: 1;
+    padding: 0 25px 0 15px;
+
+    .mat-icon {
+      top: 0 !important;
+      color: map-get($map: $colors, $key: white) !important;
+    }
+  }
+
+  &__not-found {
+    font-size: 48px;
+    color: map-get($map: $colors, $key: shark);
+    font-weight: $font-thicker;
+    text-align: center;
+    padding: 150px 0;
+  }
+}

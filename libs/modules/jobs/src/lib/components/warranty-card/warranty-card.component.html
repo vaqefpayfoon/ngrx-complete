@@ -1,0 +1,49 @@
+<mat-card class="card">
+  <div
+    fxLayout="row wrap"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    class="card__header"
+  >
+    <div fxFlex="35" class="font-semi-thick card__header--name">
+        <div class="card__meter">
+
+          <ol class="progress-bar">
+            <li [class.is-complete]="rawStatus === item" *ngFor="let item of progressBar;"><span>{{shortStatusName(item)}}</span></li>
+          </ol>          
+
+        </div>
+    </div>
+    <div fxFlex="15" class="font-semi-thick card__header--email">
+        <div class="square">
+            <span>
+                {{time | date: 'h:mm a' }} <br>
+                {{time | date: 'd MMM' }}
+            </span>
+          </div>
+    </div>
+    <div fxFlex="20" class="font-semi-thick card__header--phone">
+        {{numberPlate | titlecase}}
+    </div>
+    <div fxFlex="25" class="font-semi-thick card__header--status">
+        {{name?.salutation | titlecase}} {{name?.fullName | titlecase}} <br>
+        <a href="tel:{{phone?.code}}{{phone?.number}}">{{phone?.code}}{{phone?.number}}</a>
+    </div>
+    <div fxFlex="5" class="font-semi-thick card__header--actions">
+      <button mat-icon-button [disabled]="!previewPermission && !closePermission" [matMenuTriggerFor]="actions">
+        <mat-icon svgIcon="action_off"></mat-icon>
+      </button>
+      <mat-menu #actions="matMenu">
+        <button mat-menu-item [disabled]="!previewPermission" [routerLink]="['../'+uuid]">
+          <mat-icon>remove_red_eye</mat-icon>
+          <span>Preview</span>
+        </button>
+        <mat-divider *ngIf="rawStatus !== statusEnum.CLOSED"></mat-divider>
+        <button mat-menu-item [disabled]="!closePermission" *ngIf="rawStatus !== statusEnum.CLOSED" (click)="closeWarranty()">
+          <mat-icon>cancel</mat-icon>
+          <span>Close</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-card>

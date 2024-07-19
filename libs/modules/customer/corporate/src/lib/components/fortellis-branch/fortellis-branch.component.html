@@ -1,0 +1,45 @@
+<form autocomplete="off" novalidate [formGroup]="parent">
+    <mat-card class="corporate p4 my8">
+        <mat-card-title class="mb2">
+          <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Fortellis</h2>
+          </div>
+        </mat-card-title>
+        <div class="corporate__divider">
+          <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+          <div [formGroup]="parent">
+            <div formGroupName="configuration">
+              <div formGroupName="subscriptions">
+                <div formGroupName="fortellis" fxLayout="row wrap">
+                  <div
+                    fxLayout="column"
+                    fxFlex="32"
+                    class="corporate__general"
+                    fxFlexOffset="8rem"
+                    fxLayoutAlign="space-evenly space-between"
+                  >
+                    <div class="form-group" fxFlex="15">
+                      <mat-label>Subscription Id</mat-label>
+                      <input
+                        type="text"
+                        matInput
+                        class="form-control"
+                        formControlName="subscriptionId"
+                        placeholder="Subscription Id"
+                        autocomplete="off"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br><br>
+        </mat-card-content>
+        <ng-content></ng-content>
+      </mat-card>
+</form>
+
+  

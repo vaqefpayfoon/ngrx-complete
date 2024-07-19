@@ -1,0 +1,213 @@
+<div
+  fxLayout="row"
+  fxFlex="100"
+  fxLayoutAlign="start stretch"
+  class="sale__loan"
+>
+  <mat-card fxFlex class="sale">
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <div
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="1rem"
+        >
+          <h2 class="h6 text-capitalize font-semi-thick my0">
+            Loan Calculator
+          </h2>
+        </div>
+      </div>
+    </mat-card-title>
+    <div class="sale__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutAlign="start center"
+          fxLayoutGap="1rem"
+        >
+          <form [formGroup]="form" novalidate fxFlex="45">
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              fxLayoutAlign="start start"
+              fxLayoutGap="1rem"
+              class="sale__general mt8"
+            >
+              <div
+                fxLayout="column"
+                fxFlexFill
+                fxLayoutGap="0.5rem"
+                fxFlex="100"
+              >
+                <mat-label style="font-size: 13px">Bank</mat-label>
+                <div
+                  class="form-group selectedMat my0"
+                  [ngClass]="{
+                    'selectedMat--disabled': formDisabled,
+                    'ng-invalid': bank.invalid && bank.touched,
+                    'ng-valid': bank.valid && bank.touched
+                  }"
+                  fxFlex="100"
+                >
+                  <mat-select
+                    formControlName="bank"
+                    placeholder="Select a bank"
+                    (selectionChange)="onSelect($event)"
+                  >
+                    <mat-option
+                      *ngFor="let bank of banks"
+                      [disabled]="selectedBank(bank.uuid)"
+                      [value]="bank.uuid"
+                    >
+                      <div
+                        fxLayoutAlign="start center"
+                        fxLayoutGap="1rem"
+                        fxFlex="100"
+                      >
+                        <img width="35" height="35" [src]="bank.logo" />
+                        <span>{{ bank.name }}</span>
+                      </div>
+                    </mat-option>
+                  </mat-select>
+                  <neural-show-errors
+                  [control]="bank"
+                ></neural-show-errors>
+                </div>
+              </div>
+              <div class="form-group" fxFlexFill fxFlex="100">
+                <mat-label>Downpayment Value (RM)</mat-label>
+                <input
+                  type="number"
+                  formControlName="downPayment"
+                  matInput
+                  class="form-control"
+                  placeholder="Downpayment value"
+                  autocomplete="off"
+                />
+                <neural-show-errors
+                  [control]="downPayment"
+                ></neural-show-errors>
+              </div>
+              <div class="form-group" fxFlexFill fxFlex="100">
+                <mat-label>Interest Rate (%)</mat-label>
+                <input
+                  type="number"
+                  formControlName="interestRate"
+                  matInput
+                  class="form-control"
+                  placeholder="Interest Rate"
+                  autocomplete="off"
+                />
+                <neural-show-errors
+                [control]="interestRate"
+              ></neural-show-errors>
+              </div>
+              <div
+                fxLayout="column"
+                fxFlexFill
+                fxLayoutGap="0.5rem"
+                fxFlex="100"
+              >
+                <mat-label style="font-size: 13px"
+                  >Loan Period (Years)</mat-label
+                >
+                <div
+                  class="form-group selectedMat my0"
+                  [ngClass]="{
+                    'selectedMat--disabled': formDisabled,
+                    'ng-invalid': period.invalid && period.touched,
+                    'ng-valid': period.valid && period.touched
+                  }"
+                  fxFlex="100"
+                >
+                  <mat-select
+                    formControlName="period"
+                    placeholder="Select a loan period"
+                  >
+                    <mat-option *ngFor="let year of years" [value]="year">
+                      {{ year }}
+                    </mat-option>
+                  </mat-select>
+                  <neural-show-errors
+                  [control]="period"
+                ></neural-show-errors>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div fxFlex="10" fxLayoutAlign="center center">
+            <mat-icon
+              [ngStyle]="{
+                'font-size.px': 48,
+                'width.px': 48,
+                'height.px': 48
+              }"
+              inline="false"
+              >swap_horiz</mat-icon
+            >
+          </div>
+          <div
+            fxLayout="column"
+            fxFlex="45"
+            fxLayoutAlign="start start"
+            fxLayoutGap="1rem"
+            class="sale__general mt8"
+          >
+            <div class="form-group" fxFlexFill fxFlex="100">
+              <mat-label>Downpayment Value (RM)</mat-label>
+              <input
+                type="text"
+                readonly
+                [ngModel]="downPayment.value"
+                matInput
+                class="form-control"
+                placeholder="Ex. 90,000.00"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group" fxFlexFill fxFlex="100">
+              <mat-label>Loan Amount (RM)</mat-label>
+              <input
+                type="number"
+                readonly
+                [ngModel]="loanAmount"
+                matInput
+                class="form-control"
+                placeholder="Ex. 310,000.00"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group" fxFlexFill fxFlex="100">
+              <mat-label>Monthly instalment (RM)</mat-label>
+              <input
+                type="text"
+                readonly
+                [(ngModel)]="loanCalculator"
+                matInput
+                class="form-control"
+                placeholder="Ex. 2,734.00"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="py4" fxLayoutAlign="end center">
+      <button
+        mat-flat-button
+        class="px10 py1"
+        color="primary"
+        [disabled]="form.invalid"
+        (click)="onCalculate(form)"
+      >
+        Setup a loan
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<ng-container *ngIf="formChange$ | async"></ng-container>

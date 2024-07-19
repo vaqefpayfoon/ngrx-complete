@@ -1,0 +1,64 @@
+<mat-card class="model p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Sales</h2>
+        </div>
+    </mat-card-title>
+    <div class="model__divider">
+        <mat-divider></mat-divider>
+    </div>
+
+    <mat-card-content>
+        <div [formGroup]="parent">
+            <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+
+                <div fxLayout="column" fxLayoutGap="1rem" formGroupName="sales">
+                    <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" formGroupName="deposit">
+                        <!-- type -->
+                        <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                            <mat-label>Type</mat-label>
+                            <div class="form-group selectedMat mb4"
+                                [ngClass]="{'selectedMat--disabled':formDisabled, 'ng-invalid': deposit.controls.type.invalid && deposit.controls.type.touched, 'ng-valid': deposit.controls.type.valid && deposit.controls.type.touched}"
+                                fxFlex="100">
+                                <mat-select placeholder="Select a Type" formControlName="type" (selectionChange)="onChangeType($event)">
+                                    <mat-option>-- None --</mat-option>
+                                    <mat-option *ngFor="let key of typeKeys | keyvalue" [value]="key.value">
+                                        {{key.value}}
+                                    </mat-option>
+                                </mat-select>
+                                <neural-show-errors [control]="deposit.controls.type"></neural-show-errors>
+                            </div>
+                        </div>
+                        <!-- amount -->
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Amount</mat-label>
+                            <input type="number" matInput class="form-control" formControlName="amount" placeholder="Amount" autocomplete="off">
+                            <mat-hint *ngIf="!!deposit.controls.type.value">
+                                {{
+                                    deposit.controls.type.value === typeKeys.PERCENTAGE ? 'Value must be between 0 and 1' : 'Value must be equal or less than price'
+                                }}
+                            </mat-hint>
+                            <neural-show-errors [control]="deposit.controls.amount"></neural-show-errors>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <mat-label class="mb0">Active</mat-label>
+                            <mat-slide-toggle
+                                fxLayout="row-reversed"
+                                color="primary"
+                                (change)="onChangeActive($event)"
+                                formControlName="active">
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!createPermission && !updatePermission" (click)="onAction('cancel')">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="parent.disabled"  class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="onAction('edit')">Edit</button>
+        <button mat-flat-button type="button" *ngIf="parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || !createPermission || !updatePermission"  (click)="onSave(parent)">Save</button>
+    </mat-card-actions>
+</mat-card>

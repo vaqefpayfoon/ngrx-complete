@@ -1,0 +1,334 @@
+<div [formGroup]="form">
+  <!-- start general form -->
+  <mat-card class="template p4 my8">
+    <!-- start card title -->
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+      </div>
+    </mat-card-title>
+    <!-- end card title -->
+
+    <!-- start title divider -->
+    <div class="template__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <!-- end title divider -->
+
+    <!-- start card content -->
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="template__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <!-- <div fxLayout="column" fxLayoutGap="1rem" fxFlex="100" *ngIf="isEmail">
+          <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Create dynamic link
+            </h2>
+          </div>
+          <neural-template-button-form
+            [backGroundColor]="backGroundColor"
+            [color]="color"
+            (added)="addCutomBtn($event)"
+          ></neural-template-button-form>
+          <div fxLayout="row" fxLayoutGap="1rem" fxFlex="100">
+            <div
+              fxLayout="column"
+              fxLayoutGap="1rem"
+              fxLayoutAlign="center center"
+            >
+              <span
+                class="template__color-picker"
+                [style.background]="backGroundColor"
+                [(colorPicker)]="backGroundColor"
+              ></span>
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">
+                  Background color
+                </h2>
+              </div>
+            </div>
+            <div
+              fxLayout="column"
+              fxLayoutGap="1rem"
+              fxLayoutAlign="center center"
+            >
+              <span
+                class="template__color-picker"
+                [style.background]="color"
+                [(colorPicker)]="color"
+              ></span>
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">
+                  Color
+                </h2>
+              </div>
+            </div>
+          </div>
+          <div class="template__divider">
+            <mat-divider></mat-divider>
+          </div>
+        </div> -->
+        <!-- start form controls -->
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          *ngIf="masterTemplates && !!masterTemplates.length"
+        >
+          <!-- Seletc from master template -->
+
+          <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+            <mat-label>Master templates</mat-label>
+            <div
+              class="form-group selectedMat mb4"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled
+              }"
+              fxFlex="100"
+            >
+              <mat-select
+                [placeholder]="
+                  !!masterTemplates.length
+                    ? 'Select a template'
+                    : 'Master templates not found'
+                "
+                (selectionChange)="onChangeTemplate($event)"
+              >
+                <mat-option>None</mat-option>
+                <mat-option
+                  *ngFor="let template of masterTemplates"
+                  [value]="template"
+                >
+                  {{ template.name }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+        </div>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxFlex="100"
+          fxLayoutGap="2rem"
+        >
+          <div class="form-group" fxLayout="column">
+            <input
+              type="file"
+              #myFileInput
+              accept=".html"
+              name="file"
+              hidden
+              class="form-control"
+              placeholder="Image"
+              autocomplete="off"
+              (change)="showPreview($event)"
+            />
+            <div
+              fxFlex="100"
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              fxLayoutGap="1rem"
+            >
+              <button
+                type="button"
+                [disabled]="form.disabled"
+                *ngIf="!template?.html"
+                color="accent"
+                mat-flat-button
+                (click)="openHTMLEditor()"
+              >
+                Create HTML
+              </button>
+
+              <button
+                type="button"
+                [disabled]="form.disabled"
+                *ngIf="template?.html"
+                color="accent"
+                mat-flat-button
+                (click)="openHTMLEditor({html: html.value})"
+              >
+                Edit HTML
+              </button>
+
+              <button
+                type="button"
+                [disabled]="form.disabled"
+                color="accent"
+                mat-flat-button
+                (click)="myFileInput.click()"
+              >
+                Select HTML file
+              </button>
+              <a
+                *ngIf="!!html.value"
+                [href]="downloadFile(html.value)"
+                type="button"
+                [disabled]="form.disabled"
+                color="warn"
+                mat-flat-button
+                [download]="name?.value+'.html'"
+              >
+                Download HTML file
+            </a>
+            </div>
+          </div>
+        </div>
+        <!-- HTML -->
+        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+          <!-- header -->
+          <!-- <div class="form-group" fxLayout="column">
+            <mat-label>Header</mat-label>
+            <ejs-richtexteditor
+              [height]="height"
+              [width]="width"
+              formControlName="header"
+              #headerCustomRTE
+              [toolbarSettings]="toolsHeader"
+              (created)="rteCreated()"
+            >
+            </ejs-richtexteditor>
+            <neural-show-errors
+              [control]="form.controls.header"
+            ></neural-show-errors>
+          </div> -->
+          <!-- body -->
+          <!-- footer -->
+          <!-- <div class="form-group" fxLayout="column">
+            <mat-label>Footer</mat-label>
+            <ejs-richtexteditor
+              [height]="height"
+              [width]="width"
+              formControlName="footer"
+              #footerCustomRTE
+              [toolbarSettings]="toolsFooter"
+              (created)="rteCreated()"
+            >
+            </ejs-richtexteditor>
+            <neural-show-errors
+              [control]="form.controls.footer"
+            ></neural-show-errors>
+          </div> -->
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <!-- name -->
+          <div fxFlex="35" class="form-group" fxLayout="column">
+            <mat-label>Name</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control"
+              formControlName="name"
+              placeholder="Name"
+              autocomplete="off"
+            />
+            <neural-show-errors
+              [control]="form.controls.name"
+            ></neural-show-errors>
+          </div>
+
+          <!-- subject -->
+          <div fxFlex="35" class="form-group" fxLayout="column">
+            <mat-label>Subject</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control"
+              formControlName="subject"
+              placeholder="Subject"
+              autocomplete="off"
+            />
+            <neural-show-errors
+              [control]="form.controls.subject"
+            ></neural-show-errors>
+          </div>
+        </div>
+
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          *ngIf="!router.state.data.labels"
+        >
+          <!-- Seletc Label -->
+
+          <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+            <mat-label>Labels</mat-label>
+            <div
+              class="form-group selectedMat mb4"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled
+              }"
+              fxFlex="100"
+            >
+              <mat-select
+                placeholder="Select a label"
+                formControlName="labels"
+                multiple
+              >
+                <mat-option
+                  *ngFor="let label of (labels | keyvalue)"
+                  [value]="label.value"
+                >
+                  {{ label.key }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <!-- end card content -->
+
+    <!-- start actions button -->
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        [disabled]="!createPermission || !updatePermission"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        [disabled]="!updatePermission || form.invalid"
+        *ngIf="exists && form.disabled"
+        class="px10 py1"
+        color="primary"
+        (click)="onEdit(form)"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!createPermission || form.invalid"
+        *ngIf="!exists"
+        class="px10 py1"
+        color="primary"
+        (click)="onCreate(form)"
+      >
+        Save
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!updatePermission"
+        *ngIf="form.enabled && exists"
+        class="px10 py1"
+        color="primary"
+        (click)="onUpdate(form)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+    <!-- end actions button -->
+  </mat-card>
+</div>

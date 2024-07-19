@@ -1,0 +1,85 @@
+<div [formGroup]="form">
+    <!-- start general form -->
+    <mat-card class="insurer p4 my8">
+        <!-- start card title -->
+        <mat-card-title class="mb2">
+            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <!-- end card title -->
+
+        <!-- start title divider -->
+        <div class="insurer__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <!-- end title divider -->
+
+        <!-- start card content -->
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="insurer__general my8" fxLayoutAlign="space-evenly space-between"
+                fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <!-- start form controls -->
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <!-- name -->
+                    <div fxFlex="35" class="form-group" fxLayout="column">
+                        <mat-label>Name</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="name" placeholder="Name"
+                            autocomplete="off" />
+                        <neural-show-errors [control]="form.controls.name"></neural-show-errors>
+                    </div>
+                    <!-- Type -->
+                    <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="33">
+                        <mat-label style="font-size: 13px">Type</mat-label>
+                        <div class="form-group selectedMat my0" [ngClass]="{
+                            'selectedMat--disabled': form.disabled,
+                            'ng-invalid': type.invalid && type.touched,
+                            'ng-valid': type.valid && type.touched
+                          }" fxFlex="100">
+                          <mat-select formControlName="type" placeholder="Select a type" (selectionChange)="onChangeType($event)">
+                            <mat-option *ngFor="let type of insurerType | keyvalue" [value]="type.value">
+                              {{ type.key | titlecase }}
+                            </mat-option>
+                          </mat-select>
+                        </div>
+                      </div>
+                    <!-- url -->
+                    <div fxFlex="35" class="form-group" fxLayout="column">
+                        <mat-label>URL</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="url" placeholder="https://google.com"
+                            autocomplete="off" />
+                        <neural-show-errors [control]="form.controls.url"></neural-show-errors>
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex="100">
+                    <!-- name -->
+                    <div fxFlex="33" class="form-group" fxLayout="column">
+                        <mat-label>Image Link</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="image" placeholder="Link"
+                            autocomplete="off" />
+                        <neural-show-errors [control]="form.controls.image"></neural-show-errors>
+                    </div>
+                </div>
+            </div>
+            <!-- image -->
+        </mat-card-content>
+        <!-- end card content -->
+
+        <!-- start actions button -->
+        <mat-card-actions class="my0 ml32 p0">
+            <button [disabled]="!createPermission || !updatePermission" mat-stroked-button type="button" class="mr4 px10 py1" (click)="exists ? form.disable(): ''">
+                Cancel
+            </button>
+            <button *ngIf="formDisabled" [disabled]="!createPermission || !updatePermission" mat-flat-button type="button" class="px10 py1" color="primary" (click)="onEdit(form)">
+                Edit
+            </button>
+            <button *ngIf="!exists" [disabled]="!createPermission" mat-flat-button class="px10 py1" color="primary" (click)="onCreate(form)">
+                Save
+            </button>
+            <button *ngIf="exists && !formDisabled" [disabled]="!updatePermission" mat-flat-button class="px10 py1" color="primary" (click)="onUpdate(form)">
+                Save
+            </button>
+        </mat-card-actions>
+        <!-- end actions button -->
+    </mat-card>
+</div>

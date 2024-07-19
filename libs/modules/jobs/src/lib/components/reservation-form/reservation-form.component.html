@@ -1,0 +1,350 @@
+<div *ngIf="!loading && reservation" fxLayout="row wrap" fxLayoutGap="1rem grid">
+    <div fxFlex="50">
+        <mat-card class="card">
+            <mat-card-content>
+                <div class="card__account" fxLayout="column" fxFlex="100">
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center"><mat-icon>person</mat-icon> Customer Account</h2>
+                    </div>
+                    <div class="card__divider my4">
+                        <mat-divider></mat-divider>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1rem">
+                            <img *ngIf="account && account?.image" [src]="account?.image" class="card__general--avatar" [alt]="account?.identity?.salutation + '' + account?.identity?.fullName" width="50" height="50">
+                            <div fxLayout="column" fxLayoutAlign="center start">
+                                <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center">
+                                    {{account?.identity?.salutation | titlecase}} {{account?.identity?.fullName | titlecase}}
+                                </h2>
+                            </div>
+                        </div>
+                        <div fxLayout="column" class="card__general" fxLayoutAlign="center start" fxLayoutGap="1rem">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Email:</mat-label>
+                                <span class="font-semi-thick">{{account?.email}}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Phone:</mat-label>
+                                <span class="font-semi-thick">{{account?.phone?.code}}{{account?.phone?.number}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="50">
+        <mat-card class="card">
+            <mat-card-content>
+                <div class="card__account" fxLayout="column" fxFlex="100">
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center"><mat-icon>today</mat-icon>Location | date & Time</h2>
+                    </div>
+                    <div class="card__divider my4">
+                        <mat-divider></mat-divider>
+                    </div>
+                    <div fxLayout="row wrap" class="card__general" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutGap="1rem">
+                            <div fxLayout="row" *ngIf="location?.address" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Address:</mat-label>
+                                <span class="font-semi-thick">{{location?.unitNumber}} <i *ngIf="!!location?.unitNumber">,</i> {{location?.blockNumber}} <i *ngIf="!!location?.blockNumber">,</i> {{location?.zipCode}} <i *ngIf="!!location?.zipCode">,</i> {{location?.address}}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Date Time:</mat-label>
+                                <span class="font-semi-thick">{{calendar?.slot | date: 'medium' : timeZone }}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Logistic Method:</mat-label>
+                                <ng-container *ngIf="calendar?.logistic else nullLogistic">
+                                    <span class="font-semi-thick">{{calendar?.logistic}}</span>
+                                </ng-container>
+                                <ng-template #nullLogistic>
+                                    <span>-</span>
+                                </ng-template>
+                            </div>
+                        </div>     
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>    
+    <div fxFlex="100">
+        <mat-card class="card">
+            <mat-card-content>
+                <div class="card__account" fxLayout="column" fxFlex="100">
+                    <div fxLayout="column">
+                        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                            <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center"><mat-icon>commute</mat-icon> Vehicle Account</h2>
+                        </div>
+                        <div class="card__divider my4">
+                            <mat-divider></mat-divider>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" class="card__general" fxLayoutGap="2rem" fxLayoutAlign="start center">
+                        <div fxLayout="row wrap" fxLayoutGap="1rem" fxLayoutAlign="center center">
+                            <div fxLayout="row wrap" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+                                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1rem">
+                                    <img [src]="accountVehicle?.vehicleReference?.image" class="card__general--vehicle" width="250" height="250">
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="2rem">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Brand:</mat-label>
+                                <span class="font-semi-thick">{{accountVehicle?.vehicleReference?.unit?.brand}}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Model:</mat-label>
+                                <span class="font-semi-thick">{{accountVehicle?.vehicleReference?.unit?.model?.display}} {{accountVehicle?.vehicleReference?.unit?.display}}</span>
+                            </div>
+                        </div>                        
+                        <div fxLayout="column" fxLayoutGap="2rem">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Fuel Type:</mat-label>
+                                <span class="font-semi-thick">{{accountVehicle?.fuelType}}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Number Plate:</mat-label>
+                                <span class="font-semi-thick">{{accountVehicle?.numberPlate}}</span>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="2rem">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Registration Date:</mat-label>
+                                <span class="font-semi-thick">{{accountVehicle?.registrationDate  | date: 'mediumDate'}}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <mat-label>Identification Number:</mat-label>
+                                <span class="font-semi-thick">{{accountVehicle?.identificationNumber}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="100" *ngIf="services">
+        <mat-card class="card">
+            <mat-card-content>
+                <div class="card__account" fxLayout="column" fxFlex="100">
+                    <div fxLayout="column">
+                        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                            <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center"><mat-icon>local_shipping</mat-icon> Service Details</h2>
+                        </div>
+                        <div class="card__divider my4">
+                            <mat-divider></mat-divider>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayoutGap="2rem">
+                        <div fxFlex="100" fxLayout="column" class="card__general" fxLayoutGap="2rem" fxLayoutAlign="center space-between">
+                            <div fxFlex="100" *ngFor="let service of services">
+                                <div fxLayout="column">
+                                    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+                                        <div fxLayout="row wrap" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+                                            <div *ngIf="service?.icon" fxLayout="row wrap" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                                <img [src]="service?.icon" class="card__general--object" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/placeholder.jpg'" width="100" height="100">
+                                            </div>
+                                            <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="1rem">
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <mat-label>Title:</mat-label>
+                                                    <span class="font-semi-thick">{{service?.title}}</span>
+                                                </div>
+                                                <div fxLayout="row" *ngIf="service?.subtitle" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <mat-label>Subtitle:</mat-label>
+                                                    <span class="font-semi-thick">{{service?.subtitle}}</span>
+                                                </div>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <mat-label>Quantity:</mat-label>
+                                                    <span class="font-semi-thick">{{service?.quantity}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" class="card__general" fxLayoutGap="0.75rem">
+                                            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                                <mat-label class="mb0">Retail Price:</mat-label>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                                    <span class="font-semi-thick">{{service?.pricing?.recommendedRetailPrice | number}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row" *ngIf="service?.pricing?.unitBuyingPrice" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                                <mat-label class="mb0">Buying Price:</mat-label>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                                    <span class="font-semi-thick">{{service?.pricing?.unitBuyingPrice | number}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                                <mat-label class="mb0">Total Tax:</mat-label>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                                    <span class="font-semi-thick">{{service?.pricing?.calculatedTax | number}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="1rem" *ngIf="!!reservation?.promo && reservation?.promo?.type === promoTypes.MOBILE_SERVICE_FEE && service.type === upcomingTypes.MOBILE_SERVICE">
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <mat-label class="mb0">Promo code:</mat-label> 
+                                                    <span class="font-semi-thick"> {{ reservation?.promo?.code}}</span>
+                                                </div>
+                                                <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                                    <mat-label class="mb0">Promo discount:</mat-label>
+                                                    <span class="font-semi-thick" *ngIf="reservation?.promo?.discount?.type === promoDiscountTypes.PERCENTAGE;else flatDiscount"> {{ (reservation?.promo?.discount?.amount * 100) }} %</span>
+                                                    <ng-template #flatDiscount>
+                                                        <span class="font-semi-thick"> {{branch?.currency}} {{ reservation?.promo?.discount?.amount}}</span>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                                <mat-label class="mb0">Labour Fee:</mat-label> 
+                                                <div fxLayout="column" fxLayoutAlign="end start" fxLayoutGap="0.5rem">
+                                                    <p class="my0 py0" [ngStyle]="{'text-decoration': service?.pricing?.discountedLabour ? 'line-through' : 'none'}"> <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small> {{service?.pricing?.labour | number}}</p>
+                                                    <p class="my0 py0 font-semi-thick" *ngIf="!!service?.pricing?.discountedLabour"><small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small> {{service?.pricing?.discountedLabour | number}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card__divider my4">
+                                        <mat-divider></mat-divider>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                        <mat-label class="font-semi-thick mb0">Total Amount:</mat-label>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                            <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                            <span class="font-semi-thick text-primary">{{service?.pricing?.discountedTotal ? service?.pricing?.discountedTotal : service?.pricing?.total | number}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxLayout="row wrap" class="card__general" fxLayoutGap="2rem" fxLayoutAlign="space-between center">
+                            <div fxFlex="100" *ngFor="let product of products">
+                                <div fxLayout="column">
+                                    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between start" fxLayoutGap="1rem">
+                                        <div fxLayout="row wrap" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+                                            <div *ngIf="product?.productReference?.image" fxLayout="row wrap" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                                <img [src]="product?.productReference?.image" class="card__general--object" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/placeholder.jpg'" width="100" height="100">
+                                            </div>
+                                            <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="1rem">
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <mat-label>Title:</mat-label>
+                                                    <span class="font-semi-thick">{{product?.service?.title}}</span>
+                                                </div>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <mat-label>Brand:</mat-label>
+                                                    <span class="font-semi-thick">{{product?.productReference?.unit?.brand}}</span>
+                                                </div>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <mat-label>Model:</mat-label>
+                                                    <span class="font-semi-thick">{{product?.productReference?.unit?.model}}</span>
+                                                </div>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <mat-label>Quantity:</mat-label>
+                                                    <span class="font-semi-thick">{{product?.quantity}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" class="card__general" fxLayoutGap="0.75rem">
+                                            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                                <mat-label>Retail Price:</mat-label>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                                    <span class="font-semi-thick">{{product?.pricing?.recommendedRetailPrice | number}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                                <mat-label>Buying Price:</mat-label>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                                    <span class="font-semi-thick">{{product?.pricing?.unitBuyingPrice | number}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                                <mat-label>Total Tax:</mat-label>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                                    <span class="font-semi-thick">{{product?.pricing?.calculatedTax | number}}</span>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                                <mat-label>Labour Fee:</mat-label>
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                                    <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                                    <span class="font-semi-thick">{{product?.pricing?.labour | number}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="card__divider my4">
+                                        <mat-divider></mat-divider>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                                        <mat-label class="font-semi-thick">Total Amount:</mat-label>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                            <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                            <span class="font-semi-thick text-primary">{{product?.pricing?.total | number}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="column" class="card__general card__general--total mt10" fxLayoutGap="0.75rem">
+                        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                            <mat-label class="mb0 font-semi-thick">Subtotal:</mat-label>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                <span class="font-semi-thick">{{summary?.subtotal | number}}</span>
+                            </div> 
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                            <mat-label class="mb0">Labour Fee:</mat-label>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                <span class="font-semi-thick">{{summary?.labour | number}}</span>
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                            <mat-label class="mb0">Total Taxes:</mat-label>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                <span class="font-semi-thick">{{summary?.tax | number}}</span>
+                            </div>
+                        </div>
+                        <div class="card__divider my4">
+                            <mat-divider></mat-divider>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem" class="mb0">
+                            <mat-label class="mb0 font-semi-thick">Grand Total:</mat-label>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                <span class="font-semi-thick">{{summary?.total | number}}</span>
+                            </div>
+                        </div>
+                        <div class="card__divider my4">
+                            <mat-divider></mat-divider>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="0.5rem">
+                            <mat-label class="mb0 font-semi-thick">Payable amount (incl. tax):</mat-label>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                <small [ngStyle]="{'font-size': '10px'}">{{branch?.currency}}</small>
+                                <span class="font-semi-thick  text-primary">{{summary?.payableAmount | number}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<ng-template [ngIf]="loading">
+    <div class="card__loading">
+        Loading...
+    </div>      
+</ng-template>
+<ng-template [ngIf]="error">
+    <mat-card class="card">
+        <div class="card__not-found">
+            <neural-error [error]="error"></neural-error>  
+        </div>     
+    </mat-card>
+</ng-template>

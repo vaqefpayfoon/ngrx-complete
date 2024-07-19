@@ -1,0 +1,53 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.servicePackage {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+}
+
+.mat-mini-fab {
+  .mat-icon {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.m-alignment {
+  padding-top: 1%;
+}
+.disabled{
+  opacity: 0.5; 
+  pointer-events: none; 
+}
+
+@import 'styles-variables';
+
+.serviceLine {
+  &__header {
+    background-color: transparent;
+    box-shadow: none;
+    text-transform: uppercase;
+
+    &--item {
+      font-size: 13px;
+    }
+    // &__disabled{
+    //     opacity: 0.1; 
+    //     pointer-events: none; 
+    // }
+  }
+}

@@ -1,0 +1,51 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.campaign {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+
+  $self: &;
+
+  &__divider {
+    position: relative;
+  }
+
+  &__image {
+    max-width: 600px;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
+    @include round(7px);
+  }
+
+  .mat-mini-fab {
+    .mat-icon {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+
+  &__general {
+    position: relative;
+    .form-group {
+      mat-label {
+        font-size: 13px;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+      }
+
+      position: relative;
+    }
+
+    #{$self}__remove {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: auto;
+    }
+  }
+}

@@ -1,0 +1,173 @@
+<form autocomplete="off" novalidate [formGroup]="parent">
+  <mat-card class="branch p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="grow"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Scheduler</h2>
+      </div>
+
+    </mat-card-title>
+    <div class="branch__divider">
+      <mat-divider></mat-divider>
+    </div>
+    
+    <mat-card-content>
+      <div formArrayName="schedules" fxLayout="column">
+        <div
+          fxLayout="row wrap"
+          fxFlex="grow"
+          fxLayoutAlign="end end"
+          style="margin-top: 20px"
+        >
+          <button
+            mat-mini-fab
+            color="primary"
+            type="button"
+            [disabled]="parent.disabled"
+            (click)="addSchedule()"
+          >
+            <mat-icon svgIcon="add"></mat-icon>
+          </button>
+        </div>
+        <div *ngFor="let item of schedulesItems; let i = index">
+          <div [formGroupName]="i" class="branch__general">
+            <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+              <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                <br />
+              </div>
+              
+              <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                <div
+                  fxFlex="35"
+                  fxLayout="column"
+                  class="form-group"
+                  fxLayoutGap="0.5rem"
+                >
+                  <mat-label>Name</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    class="form-control"
+                    formControlName="name"
+                    placeholder="Scheduler Name"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                  <mat-label>Type</mat-label>
+                  <div class="form-group selectedMat mb4" fxFlex="100">
+                    <mat-select
+                      placeholder="Select a Type"
+                      formControlName="type"
+                      (selectionChange)="onSelectionChange($event.value)"
+                    >
+                      <mat-option value="SALES">Sales</mat-option>
+                      <mat-option value="AFTER_SALES">After Sales</mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div
+                  fxFlex="35"
+                  fxLayout="column"
+                  fxLayoutGap="0.5rem"
+                  fxLayoutAlign="center start"
+                >
+                  <button
+                    class="branch__general--close"
+                    matTooltip="Remove"
+                    [disabled]="formDisabled"
+                    (click)="removeSchedule(i)"
+                    mat-icon-button
+                    color="warn"
+                  >
+                    <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutGap="0.5rem"
+                >
+                  <div fxFlex="35" fxLayout="column" fxLayoutAlign="start start">
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      Teams
+                    </h2>
+                  </div>
+                  <div fxFlex="35" fxLayout="column" fxLayoutAlign="start start">
+                    <button
+                      mat-mini-fab
+                      color="primary"
+                      type="button"
+                      [disabled]="parent.disabled"
+                      (click)="addTeam(i)"
+                      mat-icon-button
+                    >
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div formGroupName="weeks" fxLayout="column">
+                <div formArrayName="teams">
+                  <div *ngFor="let item of teamsItem(i); let j = index">
+                    <div [formGroupName]="j" class="branch__general">
+                      <div fxFlex="100" fxLayout="row" fxLayoutGap="0.5rem">
+                        <div
+                          fxFlex="35"
+                          fxLayout="column"
+                          class="form-group"
+                          fxLayoutGap="0.5rem"
+                        >
+                          <br />
+                          <mat-label>Name</mat-label>
+                          <input
+                            type="text"
+                            matInput
+                            class="form-control"
+                            formControlName="name"
+                            placeholder="Team Name"
+                            autocomplete="off"
+                          />
+                        </div>
+                        <div
+                          fxFlex.gt-lg="35"
+                          fxLayout.gt-lg="column"
+                          fxLayoutAlign="center end"
+                          fxLayoutGap="0.5rem"
+                        >
+                          <button
+                            matTooltip="Remove"
+                            [disabled]="formDisabled"
+                            (click)="removeTeam(i, j)"
+                            mat-icon-button
+                          >
+                            <mat-icon>close</mat-icon>
+                          </button>
+                          <button
+                            matTooltip="details"
+                            [disabled]="formDisabled"
+                            mat-icon-button
+                            (click)="onDetails(i, j)"
+                          >
+                          <mat-icon svgIcon="action_off"></mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <ng-content></ng-content>
+  </mat-card>
+</form>

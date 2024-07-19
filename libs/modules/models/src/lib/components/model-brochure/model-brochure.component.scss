@@ -1,0 +1,42 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.model {
+    &__general {
+      position: relative;
+  
+      .form-group {
+        // overflow: hidden;
+        position: relative;
+  
+        .mat-icon {
+          cursor: pointer;
+          position: absolute;
+          top: 24px;
+          right: 4px;
+          bottom: 0;
+          margin: auto;
+  
+          height: 18px;
+          width: 18px;
+          line-height: 18px;
+        }
+      }
+  
+      &--close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: auto;
+      }
+    }
+
+    &__not-found {
+        font-size: 48px;
+        color: map-get($map: $colors, $key: shark);
+        font-weight: $font-thicker;
+        text-align: center;
+        padding: 150px 0;
+      }
+  }
+  

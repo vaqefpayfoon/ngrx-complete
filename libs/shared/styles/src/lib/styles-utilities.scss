@@ -1,0 +1,133 @@
+// Font Family
+// ─────────────────────────────────────
+.font-family {
+  font-family: $font-family !important;
+}
+
+// Font Weight
+// ─────────────────────────────────────
+.font-light {
+  font-weight: $font-light !important;
+}
+.font-normal {
+  font-weight: $font-normal !important;
+}
+.font-semi-thick {
+  font-weight: $font-semi-thick !important;
+}
+.font-thick {
+  font-weight: $font-thick !important;
+}
+.font-thicker {
+  font-weight: $font-thicker !important;
+}
+
+// Font Transform
+// ─────────────────────────────────────
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+.text-capitalize {
+  text-transform: capitalize !important;
+}
+
+// Font Alignment
+// ─────────────────────────────────────
+.text-right {
+  text-align: right !important;
+}
+.text-center {
+  text-align: center !important;
+}
+.text-left {
+  text-align: left !important;
+}
+.text-justify {
+  text-align: justify !important;
+}
+
+// Font Color
+// ─────────────────────────────────────
+.text-primary {
+  color: map-get($map: $colors, $key: theme) !important;
+}
+
+// Padding
+// ─────────────────────────────────────
+.padding-none {
+  @include remove-padding();
+}
+.padding-xs {
+  @include padding(5px);
+}
+.padding-sm {
+  @include padding(10px);
+}
+.padding-md {
+  @include padding(15px);
+}
+.padding-lg {
+  @include padding(20px);
+}
+.padding-xl {
+  @include padding(40px);
+}
+
+// Margin
+// ─────────────────────────────────────
+.margin-none {
+  @include remove-margin();
+}
+.margin-xs {
+  @include breakpoint(xs) {
+    @include margin(5px);
+  }
+}
+.margin-sm {
+  @include breakpoint(sm) {
+    @include margin(10px);
+  }
+}
+.margin-md {
+  @include breakpoint(sm) {
+    @include margin(15px);
+  }
+}
+.margin-lg {
+  @include breakpoint(lg) {
+    @include margin(20px);
+  }
+}
+.margin-xl {
+  @include breakpoint(xl) {
+    @include margin(40px);
+  }
+}
+.margin-a {
+  @include margin(auto);
+}
+
+// Width
+// ─────────────────────────────────────
+.full-width {
+  width: 100%;
+}
+.w-150 {
+  width: 150px;
+}
+.w-100 {
+  width: 100px;
+}
+.w-50 {
+  width: 50px;
+}
+
+button {
+  font-size: 16px;
+}
+.text-gray {
+  color: #666666;
+}

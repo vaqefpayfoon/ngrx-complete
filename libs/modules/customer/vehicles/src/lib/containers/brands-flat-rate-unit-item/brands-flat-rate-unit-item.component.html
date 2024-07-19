@@ -1,0 +1,11 @@
+<div class="fru" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [breadcrumbs]="bc" [title]="'Flat Rate Units'" ></neural-dynamic-header> 
+    </div>
+    <div *ngIf="!(error$ | async)" fxFlex="100" fxFlexFill class="my8">
+        <neural-brands-flat-rate-unit-form  [permissions]="permissions$ | async" [corporates]="corporates$ | async" [pendingBrands]="remainingBrands$ | async" [brandsflatRateUnits]="brandsFlatRateUnit$ | async" (update)="setBrandsFRU($event)"></neural-brands-flat-rate-unit-form>
+    </div>    
+    <div *ngIf="(error$ | async)" fxFlex="100" fxFlexFill class="my8">
+         <neural-error [error]="(error$ | async)"></neural-error>
+    </div>
+</div>

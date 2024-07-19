@@ -1,0 +1,20 @@
+<div class="model">
+    <div fxFlex="100" fxLayout="column" fxLayoutGap="1rem">
+        <ng-template ngFor let-item [ngForOf]="variants">
+            <div fxFlex="100" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem">
+                <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize font-semi-thick my0">{{item?.unit?.variant}}</h2>
+                </div>
+                <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="1rem">
+                    <ng-template ngFor let-gallery [ngForOf]="item?.gallery?.exterior">
+                            <ng-template ngFor let-url [ngForOf]="gallery?.images">
+                                <div class="model__image" [ngClass]="{ active: url === value, disabled: formDisabled }" (click)="selectImage(url)">
+                                    <img [src]="url" />
+                                </div>
+                            </ng-template>
+                    </ng-template>
+                </div>
+            </div>
+        </ng-template>      
+    </div>
+</div>

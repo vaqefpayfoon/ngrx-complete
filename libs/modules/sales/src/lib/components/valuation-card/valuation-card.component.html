@@ -1,0 +1,42 @@
+<mat-card class="card">
+    <div
+        fxLayout="row wrap"
+        fxLayout.lt-md="column"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+        fxLayoutAlign.lt-md="start start"
+        class="card__header"
+        fxLayoutGap.lt-md="1rem"
+    >
+        <div fxFlex="10" fxFlex.lt-md="100" class="font-semi-thick card__header--name" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="2">
+            10 Sep 2021
+        </div>
+        <div fxFlex="15" fxFlex.lt-md="100" class="font-semi-thick card__header--name" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="2">
+            <div>Mohi Jalili</div>
+            <div fxHide.lt-md>mohijalili@hotmail.com</div>
+            <div fxHide.lt-md>
+                <a title="Call Mohi jalili" href="tel:+60178080069">+60178080069</a>
+            </div>
+        </div>
+        <div fxFlex="15" fxFlex.lt-md="100" class="font-semi-thick card__header--email" fxFlexOrder.lt-md="3">
+            BMW 320i Sport
+        </div>
+        <div fxFlex="10" fxFlex.lt-md="100" class="font-semi-thick card__header--phone" fxFlexOrder.lt-md="4">
+            FFFDV44
+        </div>
+        <div fxFlex="10" fxFlex.lt-md="100" class="font-semi-thick card__header--phone" fxFlexOrder.lt-md="5">
+            Approved
+        </div>
+        <div fxFlex="10" fxFlex.lt-md="100" class="font-semi-thick card__header--actions" fxLayoutAlign="center center" fxLayoutAlign.lt-md="end" fxLayout.lt-md="row" fxFlexFill fxFlexOrder.lt-md="1">
+            <button mat-icon-button [matMenuTriggerFor]="actions">
+                <mat-icon svgIcon="action_off"></mat-icon>
+            </button>
+        </div>
+    </div>
+    <mat-menu #actions="matMenu">
+        <button mat-menu-item [routerLink]="['../valuation']">
+            <mat-icon>remove_red_eye</mat-icon>
+            <span>Preview</span>
+        </button>
+    </mat-menu>
+</mat-card>

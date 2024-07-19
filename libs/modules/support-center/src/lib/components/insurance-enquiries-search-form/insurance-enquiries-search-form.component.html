@@ -1,0 +1,120 @@
+<div class="mt8 sale-search">
+    <mat-accordion class="sale-search__panel">
+      <mat-expansion-panel [expanded]="panelOpenState">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h2 class="h6 text-capitalize font-semi-thick my0">Advance search</h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card class="sale-search__card p4 my8">
+          <!-- content -->
+          <mat-card-content>
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              class="sale-search__general"
+              fxLayoutAlign="start space-between"
+              fxLayoutGap="1rem"
+              fxFlexOffset="1rem"
+            >
+              <!-- form -->
+              <div
+                [formGroup]="form"
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutGap="1rem grid"
+              >
+                <div fxFlex="30" class="form-group" fxLayout="column">
+                  <mat-label>Number Plate</mat-label>
+                  <div fxLayout="row" class="form-group__wrapper">
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="numberPlate"
+                      placeholder="Ex. NVS123"
+                      autocomplete="off"
+                    />
+                    <button
+                      class="form-group__remove"
+                      *ngIf="numberPlate.value"
+                      mat-button
+                      matSuffix
+                      mat-icon-button
+                      (click)="numberPlate.patchValue('');"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <div fxFlex="30" class="form-group" fxLayout="column">
+                  <mat-label>Postcode</mat-label>
+                  <div fxLayout="row" class="form-group__wrapper">
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="postCode"
+                      placeholder="Ex. 46300"
+                      autocomplete="off"
+                    />
+                    <button
+                      class="form-group__remove"
+                      *ngIf="postCode.value"
+                      mat-button
+                      matSuffix
+                      mat-icon-button
+                      (click)="postCode.patchValue('');"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <div fxFlex="30" class="form-group" fxLayout="column" fxLayoutGap="0.5rem">
+                    <mat-label>Document Type</mat-label>
+                    <div class="form-group selectedMat mb4" fxFlex="100" [ngClass]="{'ng-invalid': documentTypeCtrl.invalid && documentTypeCtrl.touched,'ng-valid': documentTypeCtrl.valid && documentTypeCtrl.touched}">
+                        <mat-select
+                          placeholder="Select a type"
+                          formControlName="document.type"
+                        >
+                          <mat-option>-- None --</mat-option>
+                          <mat-option
+                            *ngFor="let type of documentType | keyvalue"
+                            [value]="type.value"
+                          >
+                            {{ type.value }}
+                          </mat-option>
+                        </mat-select>
+                      </div>
+                </div>
+                <div fxFlex="30" class="form-group" fxLayout="column">
+                  <mat-label>Document ID</mat-label>
+                  <div fxLayout="row" class="form-group__wrapper">
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="document.id"
+                      placeholder="Ex. NVS123"
+                      autocomplete="off"
+                    />
+                    <button
+                      class="form-group__remove"
+                      *ngIf="documentId.value"
+                      mat-button
+                      matSuffix
+                      mat-icon-button
+                      (click)="documentId.patchValue('');"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <ng-container *ngIf="formChange$ | async"></ng-container>

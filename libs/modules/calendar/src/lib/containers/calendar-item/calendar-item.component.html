@@ -1,0 +1,8 @@
+<div class="calendar" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'create a calendar'" [breadcrumbs]="bc"></neural-dynamic-header> 
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-calendar-form [permissions]="permissions$ | async" [selectedBranch]="selectedBranch$ | async" (create)="onCreate($event)" (branchChange)="onBranchChange($event)"></neural-calendar-form>
+    </div>
+</div>

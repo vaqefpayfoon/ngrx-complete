@@ -1,0 +1,219 @@
+<mat-card
+  class="card"
+  fxLayout="column"
+  fxFlex="100"
+  *ngIf="types[(chart?.chartType)] === types.LINE"
+>
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-title class="mb0 text-capitalize font-semi-thick">
+      {{ chart?.title }}
+    </mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+      <span>{{ chart?.description }}</span>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="card__container px4 py4">
+    <div class="card__container--data">
+      <plotly-plot
+        [data]="graph.data"
+        [layout]="graph.layout"
+        [config]="config"
+        class="card__container--graph"
+      >
+      </plotly-plot>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card
+  class="card"
+  fxLayout="column"
+  fxFlex="100"
+  *ngIf="types[(chart?.chartType)] === types.BAR"
+>
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-title class="mb0 text-capitalize font-semi-thick">
+      {{ chart?.title }}
+    </mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+      <span>{{ chart?.description }}</span>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="card__container px4 py4">
+    <div class="card__container--data">
+      <plotly-plot
+        [data]="graph.data"
+        [layout]="graph.layout"
+        [config]="config"
+        class="card__container--graph"
+      >
+      </plotly-plot>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card
+  class="card"
+  fxLayout="column"
+  fxFlex="100"
+  *ngIf="types[(chart?.chartType)] === types.PIE"
+>
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-title class="mb0 text-capitalize font-semi-thick">
+      {{ chart?.title }}
+    </mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+      <span>{{ chart?.description }}</span>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="card__container px4 py4">
+    <div class="card__container--data">
+      <plotly-plot
+        [data]="graph.data"
+        [layout]="graph.layout"
+        [config]="config"
+        class="card__container--graph"
+      >
+      </plotly-plot>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card
+  class="card"
+  fxLayout="column"
+  fxFlex="100"
+  *ngIf="types[(chart?.chartType)] === types.RATE"
+>
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-title class="mb0 text-capitalize font-semi-thick">
+      {{ chart?.title }}
+    </mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+      <span>{{ chart?.description }}</span>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="card__container px4 py4">
+    <div
+      class="card__container--data"
+      fxLayout="row"
+      fxLayout.lt-md="column"
+      fxLayoutGap.lt-md="1rem"
+    >
+      <div
+        fxFlex="50"
+        fxFlex.lt-md="100"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+        fxLayoutGap="1rem"
+      >
+        <span class="font-semi-thick h2">{{ avg }} / 5</span>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1rem">
+          <ng-template ngFor let-star [ngForOf]="[1, 2, 3, 4, 5]">
+            <mat-icon class="card__star">{{ getStarIcon(star) }}</mat-icon>
+          </ng-template>
+        </div>
+      </div>
+      <div
+        class="card__progress"
+        fxLayout="column"
+        fxFlex="50"
+        fxFlex.lt-md="100"
+        fxLayoutGap="1rem"
+        fxLayoutAlign="start center"
+      >
+        <ng-template ngFor let-item [ngForOf]="chart?.items">
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxFlexFill
+            fxLayoutAlign="center center"
+            fxLayoutGap="0.5rem"
+          >
+            <span>{{ item?.key }}</span>
+            <mat-progress-bar
+              class="progress-dashboard"
+              [ngClass]="{
+                'progress-primary': 5 == item.key,
+                'progress-secondary': 4 == item.key,
+                'progress-tertiary': 3 == item.key,
+                'progress-quaternary': 2 == item.key,
+                'progress-quinary': 1 == item.key
+              }"
+              mode="determinate"
+              [value]="(item?.value * 100) / totalRates"
+            ></mat-progress-bar>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card
+  class="card"
+  fxLayout="column"
+  fxFlex="100"
+  *ngIf="types[(chart?.chartType)] === types.TREEMAP"
+>
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-title class="mb0 text-capitalize font-semi-thick">
+      {{ chart?.title }}
+    </mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+      <span>{{ chart?.description }}</span>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="card__container px4 py4">
+    <div class="card__container--data">
+      <plotly-plot
+        [data]="graph.data"
+        [layout]="graph.layout"
+        [config]="config"
+        class="card__container--graph"
+      >
+      </plotly-plot>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card
+  class="card"
+  fxLayout="column"
+  fxFlex="100"
+  [ngClass]="{ card__header: types[(chart?.chartType)] === types.HEADER }"
+  *ngIf="types[(chart?.chartType)] === types.HEADER"
+>
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-title class="mb0 text-capitalize font-semi-thick">
+      {{ chart?.title }}
+    </mat-card-title>
+    <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+      <span>{{ chart?.description }}</span>
+    </div> -->
+  </mat-card-header>
+</mat-card>
+<mat-card
+  class="card"
+  fxLayout="column"
+  fxFlex="100"
+  *ngIf="types[(chart?.chartType)] === types.INDICATOR"
+>
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-title class="mb0 text-capitalize font-semi-thick">
+      {{ chart?.title }}
+    </mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+      <span>{{ chart?.description }}</span>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="card__container px4 py4">
+    <div class="card__container--data">
+      <div *ngFor="let graph of graph.data">
+        <div fxLayout="column" fxLayoutGap="0.5rem">
+          <h4 class="h1 text-capitalize font-semi-thick mt0 text-center">
+            {{ graph?.value }}
+          </h4>
+          <h2 class="h4 font-semi-thick my0 text-center">
+            {{ graph?.title?.text }}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

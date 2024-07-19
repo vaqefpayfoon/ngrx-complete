@@ -1,0 +1,18 @@
+{
+  "migrations": [
+    {
+      "version": "10.0.0-0",
+      "description": "Updates the Angular CDK to v10",
+      "factory": "./ng-update/index#updateToV10",
+      "package": "@angular/cdk",
+      "name": "migration-v10"
+    },
+    {
+      "version": "11.0.0-0",
+      "description": "Updates the Angular CDK to v11",
+      "factory": "./ng-update/index#updateToV11",
+      "package": "@angular/cdk",
+      "name": "migration-v11"
+    }
+  ]
+}

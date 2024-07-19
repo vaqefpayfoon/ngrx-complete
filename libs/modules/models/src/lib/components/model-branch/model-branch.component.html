@@ -1,0 +1,187 @@
+<mat-card class="model p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Branches</h2>
+            <button mat-mini-fab color="primary" type="button" (click)="addBranch()" [disabled]="formDisabled">
+                <mat-icon svgIcon="add"></mat-icon>
+            </button>
+        </div>
+    </mat-card-title>
+    <div class="model__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <div [formGroup]="form" fxLayout="column" fxFlex="100">
+            <div *ngIf="unit?.brandsAndSeries">
+                <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutGap="1rem" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between">
+                    <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="1rem" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                        <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                            <mat-label>Brand</mat-label>
+                            <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':formDisabled}" fxFlex="100">
+                                <mat-select placeholder="Select a brand" formControlName="brand">
+                                    <mat-option *ngFor="let item of unit?.brandsAndSeries" [value]="item.name">
+                                      {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                        </div>
+                        <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                            <mat-label>Series</mat-label>
+                            <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':(formDisabled || brand.invalid)}" fxFlex="100">
+                                <mat-select placeholder="Select series" formControlName="series" (selectionChange)="onChangeSeries($event)">
+                                    <mat-option *ngFor="let item of seriesList" [value]="item.name">
+                                      {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                        </div>
+                        <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                            <mat-label>Model</mat-label>
+                            <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':(formDisabled || series.invalid)}" fxFlex="100">
+                                <mat-select placeholder="Select a model" formControlName="model">
+                                    <mat-option *ngFor="let model of unit?.models" [value]="model.actualModel">
+                                      {{model.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div formArrayName="branches">
+                <div *ngFor="let item of branchesControls; let i = index;">
+                    <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutGap="1rem" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between" [formGroupName]="i">
+                        <button class="model__general--close" (click)="onRemoveBranch(i)" matTooltip="Remove" [disabled]="formDisabled" mat-icon-button color="warn">
+                            <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                        </button>
+                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+                            <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                                <mat-label>Branch</mat-label>
+                                <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':formDisabled}" fxFlex="100">
+                                    <mat-select placeholder="Select a branch" formControlName="uuid">
+                                        <mat-option *ngFor="let branch of selectedCorporate?.branches" [value]="branch.uuid">
+                                          {{branch.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="space-between start" formGroupName="testDrive">
+                            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h3 text-capitalize font-semi-thick my0">Test drive</h2>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                    <mat-label>Active</mat-label>
+                                    <mat-slide-toggle
+                                        fxLayout="row-reversed"
+                                        color="primary"
+                                        formControlName="active">
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h4 text-capitalize font-semi-thick my0">Location</h2>
+                            </div>
+                            <div formGroupName="location" fxFlex="100" fxLayout="column" fxLayoutGap="1rem">
+                                <div formGroupName="days">
+                                    <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+                                        <ng-template ngFor let-day [ngForOf]="weekDays">
+                                            <div [formGroupName]="day" fxLayout="column" fxLayoutGap="1rem">
+                                                    <strong class="h6">{{day | titlecase}}</strong>
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Start</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="start" placeholder="HH:MM" autocomplete="off">
+                                                    </div>
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>End</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="end" placeholder="HH:MM" autocomplete="off">
+                                                    </div>
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Session</mat-label>
+                                                        <input type="number" matInput class="form-control" formControlName="session" placeholder="Ex: 60" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                    <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                        <mat-label>Active</mat-label>
+                                        <mat-slide-toggle
+                                            fxLayout="row-reversed"
+                                            color="primary"
+                                            formControlName="active">
+                                        </mat-slide-toggle>
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h4 text-capitalize font-semi-thick my0">Show Room</h2>
+                            </div>
+                            <div formGroupName="showRoom" fxFlex="100" fxLayout="column" fxLayoutGap="1rem">
+                                <div formGroupName="days">
+                                    <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+                                        <ng-template ngFor let-day [ngForOf]="weekDays">
+                                            <div [formGroupName]="day" fxLayout="column" fxLayoutGap="1rem">
+                                                    <strong class="h6">{{day | titlecase}}</strong>
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Start</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="start" placeholder="HH:MM" autocomplete="off">
+                                                    </div>
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>End</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="end" placeholder="HH:MM" autocomplete="off">
+                                                    </div>
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Session</mat-label>
+                                                        <input type="number" matInput class="form-control" formControlName="session" placeholder="Ex: 60" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                    <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                        <mat-label>Active</mat-label>
+                                        <mat-slide-toggle
+                                            fxLayout="row-reversed"
+                                            color="primary"
+                                            formControlName="active">
+                                        </mat-slide-toggle>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="space-between start" formGroupName="sales">
+                            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h3 text-capitalize font-semi-thick my0">Sales</h2>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                    <mat-label>Active</mat-label>
+                                    <mat-slide-toggle
+                                        fxLayout="row-reversed"
+                                        color="primary"
+                                        formControlName="active">
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="model__divider" *ngIf="i !== branchesControls.length - 1">
+                            <mat-divider></mat-divider>
+                        </div>
+                    </div>
+                </div>
+                <div class="model__not-found" *ngIf="!branchesControls.length">
+                    Add a new branch
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" (click)="form.disable()">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="form.disabled" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+        <button mat-flat-button type="button" *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || !createPermission" (click)="setBranch(form)">Save</button>
+    </mat-card-actions>
+</mat-card>

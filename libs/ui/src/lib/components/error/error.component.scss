@@ -1,0 +1,19 @@
+
+@import 'styles-variables';
+@import 'styles-mixins';
+.error {
+  &__container {
+    &--image {
+      display: block;
+      width: 369px;
+      height: 369px;
+      object-fit: cover;
+      object-position: center;
+    }
+    p {
+      font-size: 24px;
+      color: map-get($map: $colors, $key: shark);
+      font-weight: $font-thicker;
+    }
+  }
+}

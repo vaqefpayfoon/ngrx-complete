@@ -1,0 +1,207 @@
+
+<div fxLayout="row wrap" fxFlexFill fxFlex="100">
+  <div fxLayout="row wrap" fxFlexFill fxFlex="100">
+    <div fxFlex="100" fxLayout="row" fxLayoutGap="5rem">
+      <h3>Off Days</h3>
+    </div>
+  </div>
+  <mat-card class="calendar p4 my3">
+    <mat-card-title>
+      <h2 class="h6 text-capitalize font-semi-thick my0">Days Off Setup</h2>
+    </mat-card-title>
+    <mat-card-content>
+      <div fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+        <form
+          autocomplete="off"
+          novalidate
+          [formGroup]="form"
+          fxFlex="100"
+          fxFlexFill
+          fxLayout="row wrap"
+        >
+          <div fxFlex="100" fxLayout="row wrap" class="my8">
+            <div fxLayout="column" fxFlex="35">
+              <mat-label>Reason</mat-label>
+              <div fxFlex="100" class="form-group my2">
+                <input
+                  type="text"
+                  matInput
+                  class="form-control"
+                  formControlName="reason"
+                  placeholder="Reason"
+                  autocomplete="off"
+                  #fElement
+                />
+              </div>
+            </div>
+          </div>
+          <div fxFlex="100" fxLayout="row wrap">
+            <div fxLayout="column" fxFlex="35">
+              <mat-label>Who's getting time off?</mat-label>
+              <div fxFlex="50" fxLayout="row">
+                <div fxFlex="100" class="form-group my2">
+                  <div class="selectedMat" fxFlex="100">
+                    <mat-chip-list #chipListAcc aria-label="selection">
+                      <input
+                        placeholder="Members..."
+                        [formControl]="accountCtrl"
+                        #accountInput
+                        [matAutocomplete]="autoAcc"
+                        [matChipInputFor]="chipListAcc"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        (matChipInputTokenEnd)="addAccount($event)"
+                        class="form-control top-space"
+                      />
+                    </mat-chip-list>
+                    <mat-autocomplete
+                      #autoAcc="matAutocomplete"
+                      (optionSelected)="selectedAccount($event)"
+                    >
+                      <mat-option
+                        *ngFor="let account of filteredAccounts | async"
+                        [value]="account"
+                        [disabled]="isAccountSelected(account)"
+                      >
+                        {{ account }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="100" fxFlexFill fxLayout="row wrap" class="form-group">
+                <div class="selectedMat" fxFlex="100">
+                  <mat-chip-list #chipListAcc aria-label="Account selection">
+                    <mat-chip
+                      *ngFor="let account of myAccounts"
+                      (removed)="removeAccount(account)"
+                    >
+                      {{ account }}
+                      <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                  </mat-chip-list>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            fxFlex="100"
+            fxLayout="row wrap"
+            formGroupName="dateAndTime"
+            class="my5"
+          >
+            <div
+              fxFlex="30"
+              fxLayout="column"
+              class="form-group"
+              fxLayoutGap="0.5rem"
+            >
+              <mat-label>Date(s)</mat-label>
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <mat-date-range-input class="form-control" [ngClass]="{'form-control--disabled': form.disabled, 'form-control--ng-invalid': (startDate.invalid || endDate.invalid), 'form-control--ng-valid': dateAndTime.valid}" [rangePicker]="picker">
+                  <input
+                    formControlName="startDate"
+                    matStartDate
+                    placeholder="Start date"
+                    (dateChange)="changeStartDate($event)"
+                  />
+                  <input
+                    formControlName="endDate"
+                    matEndDate
+                    placeholder="End date"
+                    (dateChange)="changeEndDate($event)"
+                  />
+                </mat-date-range-input>
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+              </div>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </div>
+            <div
+              fxFlex="5"
+              fxLayout="column"
+              class="form-group"
+              fxLayoutGap="0.5rem"
+            ></div>
+            <div
+              fxFlex="30"
+              fxLayout="column"
+              class="form-group"
+              fxLayoutGap="1rem"
+            >
+              <mat-label>All Day</mat-label>
+              <mat-checkbox #chkAllDay formControlName="onLeave" (change)="onActiveAllDay($event)"></mat-checkbox>
+            </div>
+          </div>
+          <div fxFlex="100" fxLayout="row wrap" class="my2">
+            <div fxFlex="100" fxLayout="row wrap" formGroupName="dateAndTime">
+              <div
+                class="form-group"
+                fxLayout="column"
+                fxFlex="15"
+                fxLayoutGap="10px"
+              >
+                <mat-label class="small-font">Start Time</mat-label>
+                <input
+                  type="time"
+                  matInput
+                  class="form-control"
+                  formControlName="startTime"
+                  placeholder="Start Time"
+                  autocomplete="off"
+                  fxLayoutGap="1rem"
+                  [readonly]="chkAllDay.checked"
+                  [ngClass]="chkAllDay.checked ? 'disable-color' : ''"
+                />
+              </div>
+              <div
+                class="form-group"
+                fxLayout="column"
+                fxFlex="2"
+              >
+              </div>
+              <div
+                class="form-group"
+                fxLayout="column"
+                fxFlex="15"
+                fxLayoutGap="10px"
+              >
+                <mat-label class="small-font">End Time</mat-label>
+                <input
+                  type="time"
+                  matInput
+                  class="form-control"
+                  formControlName="endTime"
+                  placeholder="End Time"
+                  autocomplete="off"
+                  fxLayoutGap="1rem"
+                  [readonly]="chkAllDay.checked"
+                  [ngClass]="chkAllDay.checked ? 'disable-color' : ''"
+                />
+              </div>
+            </div>
+          </div>
+  
+          <br />
+          <div fxFlex="100" fxLayout="row wrap" fxFlexFill>
+            <mat-card-actions class="my10">
+              <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">
+                Cancel
+              </button>
+              <button
+                mat-flat-button
+                class="px10 py1"
+                color="primary"
+                (click)="saveOffDays(form)"
+                [disabled]="form.invalid || myAccounts.length < 1"
+              >
+                Save
+              </button>
+            </mat-card-actions>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

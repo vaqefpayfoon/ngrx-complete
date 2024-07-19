@@ -1,0 +1,259 @@
+<h1 mat-dialog-title>Weekly</h1>
+<div mat-dialog-content>
+  <form autocomplete="off" novalidate [formGroup]="parent">
+    <div fxFlex="100" fxFlexFill fxLayout="row wrap" fxLayoutGap="1rem">
+      <div fxFlex="50" fxFlexFill fxLayout="row wrap" fxLayoutGap="1rem">
+        <mat-label>Slot Duration</mat-label>
+        <div class="form-group selectedMat mb2" fxFlex="100">
+          <mat-select
+            placeholder="Select a Slot Duration"
+            formControlName="slotDuration"
+          >
+            <mat-option *ngFor="let duration of durations" [value]="duration">
+              {{ duration }}
+            </mat-option>
+          </mat-select>
+        </div>
+        <span class="small-font">
+          Modifying the time slot will reset time slot capacity constraints for
+          this team
+        </span>
+        <br />
+      </div>
+
+      <div fxFlex="100" fxFlexFill fxLayout="row wrap" fxLayoutGap="1rem">
+        <mat-label>Brands</mat-label>
+        <div class="form-group selectedMat mb4" fxFlex="100">
+          <mat-chip-list #chipList aria-label="Brand selection">
+            <mat-chip *ngFor="let brand of myBrands" (removed)="remove(brand)">
+              {{ brand }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="New brand..."
+              [formControl]="brandCtrl"
+              #brandInput
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="add($event)"
+            />
+          </mat-chip-list>
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
+            <mat-option
+              *ngFor="let brand of filteredBrands | async"
+              [value]="brand"
+              [disabled]="isBrandSelected(brand)"
+            >
+              {{ brand }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+
+      <div
+        fxFlex="100"
+        fxFlexFill
+        fxLayout="row wrap"
+        fxLayoutGap="1rem"
+        formArrayName="weekdays"
+      >
+        <div
+          *ngFor="let item of weekDaysItems; let i = index; let first = first"
+          fxLayoutGap="10px"
+          fxLayoutAlign="space-around center"
+          [formGroupName]="i"
+        >
+          <br />
+          <div
+            class="form-group"
+            fxLayout="column"
+            fxFlex="20"
+            fxLayoutGap="10px"
+          >
+            <mat-label class="small-font" *ngIf="first">Day</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control disable-color"
+              formControlName="day"
+              placeholder="Day"
+              autocomplete="off"
+              readonly
+              fxLayoutGap="1rem"
+            />
+          </div>
+          <div
+            class="form-group"
+            fxLayout="column"
+            fxFlex="20"
+            fxLayoutGap="10px"
+          >
+            <mat-label class="small-font" *ngIf="first"
+              >Max Appointments</mat-label
+            >
+            <input
+              type="number"
+              matInput
+              class="form-control"
+              formControlName="maxAppointments"
+              placeholder="Max Appointments"
+              autocomplete="off"
+              [readonly]="!activeTmp(i)"
+              [ngClass]="activeTmp(i) ? '' : 'disable-color'"
+              fxLayoutGap="1rem"
+              onkeydown="if(event.key==='.'){event.preventDefault();}"
+            />
+          </div>
+          <div
+            class="form-group"
+            fxLayout="column"
+            fxFlex="20"
+            fxLayoutGap="10px"
+          >
+            <mat-label class="small-font" *ngIf="first">Start Time</mat-label>
+            <input
+              type="time"
+              matInput
+              class="form-control"
+              formControlName="startTime"
+              placeholder="Start Time"
+              autocomplete="off"
+              [readonly]="!activeTmp(i)"
+              [ngClass]="activeTmp(i) ? '' : 'disable-color'"
+              fxLayoutGap="1rem"
+            />
+          </div>
+          <div
+            class="form-group"
+            fxLayout="column"
+            fxFlex="20"
+            fxLayoutGap="10px"
+          >
+            <mat-label class="small-font" *ngIf="first">End Time</mat-label>
+            <input
+              type="time"
+              matInput
+              class="form-control"
+              formControlName="endTime"
+              placeholder="End Time"
+              autocomplete="off"
+              [readonly]="!activeTmp(i)"
+              [ngClass]="activeTmp(i) ? '' : 'disable-color'"
+              fxLayoutGap="1rem"
+            />
+          </div>
+          <div
+            class="form-group"
+            fxLayout="column"
+            fxFlex="20"
+            fxLayoutGap="10px"
+          >
+            <mat-checkbox
+              formControlName="active"
+              (change)="onActive(i)"
+            ></mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+      <div fxLayout="row wrap" fxFlex="100">
+        <br /><br />
+      </div>
+      <div formArrayName="advisors" fxLayout="row wrap" fxFlex="100">
+        <div
+          fxLayout="row"
+          fxFlex="grow"
+          fxFlex="100"
+          fxLayoutGap="2rem"
+        >
+          <div
+            fxLayout="column"
+            fxLayoutAlign="center start"
+            fxFlex="50"
+            fxLayoutGap="2rem"
+          >
+            <b>Team Members</b>
+          </div>
+
+          <div
+            fxLayout="column"
+            fxLayoutAlign="center start"
+            fxFlex="50"
+            fxLayoutGap="2rem"
+          >
+            <button
+              mat-mini-fab
+              color="primary"
+              type="button"
+              [disabled]="parent.disabled"
+              (click)="addAdvisor()"
+            >
+              <mat-icon svgIcon="add"></mat-icon>
+            </button>
+          </div>
+        </div>
+        <div fxLayout="row wrap" fxFlex="100">
+          <br /><br />
+        </div>
+        <div
+          fxLayout="row wrap"
+          fxFlex="grow"
+          fxFlex="100"
+          *ngFor="let item of advisorsItems; let i = index"
+          [formGroupName]="i"
+          fxLayoutGap="1rem"
+        >
+        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+          <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+            <div fxFlex="50" fxLayout="column">
+              <div class="form-group selectedMat mb4" fxFlex="100">
+                <mat-select
+                  placeholder="Select a Team"
+                  formControlName="uuid"
+                >
+                  <mat-option
+                    *ngFor="let account of data?.accounts"
+                    [value]="account.uuid"
+                    [disabled]="isExist(account.uuid)"
+                  >
+                    {{ account?.identity?.fullName }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <div
+              fxFlex="10"
+              fxLayout="column"
+              fxLayoutAlign="start start"
+            >
+              <button
+                matTooltip="Remove"
+                (click)="removeAdvisor(i)"
+                mat-icon-button
+                color="warn"
+              >
+                <mat-icon [svgIcon]="'close_off'"></mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onConfirm()"
+    [disabled]="parent.invalid"
+  >
+    Ok
+  </button>
+  <button mat-stroked-button (click)="onClose()">Cancel</button>
+</div>

@@ -1,0 +1,16 @@
+<div class="countries">
+    <neural-dynamic-header [title]="'countries'" [breadcrumbs]="bc" (refreshChange)="onRefresh($event)" (searchChange)="onSubmit($event)" [isSearch]="search" [loading]="(loading$ | async)" [link]="((permissions$ | async)?.CREATE_COUNTRY && (permissions$ | async)?.LIST_ALL_CURRENCIES && (permissions$ | async)?.GET_COUNTRY_BY_NAME) ? '../country/new' : null"></neural-dynamic-header>
+
+    <ng-container *ngIf="!(loading$ | async)">
+        <div class="mb3" *ngFor="let country of (countries$ | async | filter: filter)">
+            <neural-country-card [permissions]="permissions$ | async" (status)="openDialog($event)" [country]="country"></neural-country-card>
+        </div>
+    </ng-container>
+
+    <div *ngIf="(loading$ | async)" class="countries__loading">
+        Loading...
+    </div>
+    <div class="countries__not-found" *ngIf="(error$ | async)">
+        <span> {{ (error$ | async) }} </span>
+    </div>    
+</div>

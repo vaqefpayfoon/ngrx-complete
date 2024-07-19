@@ -1,0 +1,37 @@
+<div
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+  fxLayoutGap="2rem"
+>
+  <!-- start breadcrumb and title -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="(campaign$ | async)?.name ? (campaign$ | async)?.name : title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <!-- end breadcrumb and title -->
+
+  <!-- start campaign form -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-campaign-form
+      [campaign]="campaign$ | async"
+      [selectedCorporate]="selectedCorporate$ | async"
+      [permissions]="permissions$ | async"
+      [unit]="unit$ | async"
+      [images]="images$ | async"
+      [campaignTargets]="campaignTargets$ | async"
+      (create)="onCreate($event)"
+      (update)="onUpdate($event)"
+      (loaded)="onLoad($event)"
+      (loadBrandAndSeries)="onLoadBrandAndSeries($event)"
+      (corporateChange)="onCorporateChange($event)"
+      (loadModels)="onLoadModels($event)"
+      (loadVariant)="onLoadVariants($event)"
+      (loadCampaignTargets)="onSetCampaignTargetsPage($event)"
+      (uploadImage)="uploadContentImage($event)"
+    ></neural-campaign-form>
+  </div>
+  <!-- end campaign form -->
+</div>

@@ -1,0 +1,15 @@
+<div
+  class="corporate"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-schedules-off-days
+      [branch]="branch$|async"
+      [accounts$]="accounts$"
+      (save)="updateOffDays($event)"
+      (cancelEvent)="onRedirectToOffDays()"
+    ></neural-schedules-off-days>
+  </div>
+</div>

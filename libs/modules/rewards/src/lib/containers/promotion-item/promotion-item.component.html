@@ -1,0 +1,38 @@
+<div
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+  fxLayoutGap="2rem"
+>
+  <!-- start breadcrumb and title -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <!-- end breadcrumb and title -->
+
+  <!-- start promotion form -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-promotion-form
+      [permissions]="permissions$ | async"
+      [promotion]="promotion$ | async"
+      [codeValidity]="codeValidity$ | async"
+      (searchChange)="onSearch($event)"
+      (searchChangeVehicle)="onSearchVehicle($event)"
+      [accountsList]="accounts$ | async"
+      [vehiclesList]="vehicles$ | async"
+      [selectedCorporate]="selectedCorporate$ | async"
+      [allBrands]="brands$ | async"
+      (create)="onCreatePromotion($event)"
+      (update)="onUpdatePromotion($event)"
+      (loaded)="onLoad($event)"
+      (checkCode)="checkCodeValidity($event)"
+      (corporateChange)="onCorporateChange($event)"
+      (searchByEmail)="getAccountByEmail($event)"
+      (loadAllBrands)="getAllBrands()"
+    ></neural-promotion-form>
+  </div>
+  <!-- end promotion form -->
+</div>

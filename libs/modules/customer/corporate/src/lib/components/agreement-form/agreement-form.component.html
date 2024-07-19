@@ -1,0 +1,376 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+  <mat-card class="agreement p4 my8">
+    <!-- header -->
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+      </div>
+    </mat-card-title>
+    <!-- divider -->
+    <div class="agreement__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="agreement__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="space-between center"
+        >
+          <div fxFlex="35" fxLayout="column">
+            <mat-label>Type</mat-label>
+            <div
+              class="form-group selectedMat"
+              [ngClass]="{
+                'ng-valid': type.valid,
+                'ng-invalid': type.invalid && type.touched,
+                'selectedMat--disabled': formDisabled || type.disabled
+              }"
+              fxLayoutAlign="start center"
+              fxFlex="100"
+            >
+              <mat-select
+                placeholder="Select an agreement type"
+                formControlName="type"
+                (selectionChange)="onChangeType($event)"
+              >
+                <mat-option
+                  *ngFor="let type of agreementTypes | keyvalue"
+                  [value]="type.key"
+                >
+                  {{ type.value }}
+                </mat-option>
+              </mat-select>
+            </div>
+            <neural-show-errors
+              [control]="form.controls.type"
+            ></neural-show-errors>
+          </div>
+          <div fxLayoutAlign="end space-between" fxFlex="100">
+            <button
+              mat-mini-fab
+              color="primary"
+              type="button"
+              [disabled]="type.invalid || formDisabled"
+              (click)="addClauses()"
+            >
+              <mat-icon svgIcon="add"></mat-icon>
+            </button>
+          </div>
+        </div>
+        <div
+          formArrayName="clauses"
+          fxLayout="column"
+          fxFlex="100"
+          fxLayoutAlign="start start"
+          fxLayoutGap="2rem"
+        >
+          <div
+            *ngFor="let item of clausesControls; let i = index"
+            fxFlex="100"
+            fxLayout="row"
+            fxLayoutAlign="start start"
+            fxFlexFill
+          >
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              class="agreement__general"
+              fxLayoutAlign="space-evenly space-between"
+              [formGroupName]="i"
+            >
+              <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                  <div class="form-group" fxFlex="35">
+                    <mat-label>Title</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="title"
+                      placeholder="Tittle"
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div fxLayoutAlign="end space-between" fxFlex="100">
+                    <div
+                      class="mt7"
+                      fxLayoutAlign="end space-between"
+                      fxFlex="100"
+                    >
+                      <button
+                        mat-icon-button
+                        color="warn"
+                        matTooltip="Remove"
+                        type="button"
+                        [disabled]="clausesControls.length === 1"
+                        *ngIf="!formDisabled"
+                        (click)="removeClauses(i)"
+                      >
+                        <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                      </button>
+                      <button
+                        mat-mini-fab
+                        color="primary"
+                        type="button"
+                        [disabled]="type.invalid || formDisabled"
+                        (click)="addElement(i)"
+                      >
+                        <mat-icon svgIcon="add"></mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                formArrayName="elements"
+                fxFlex="100"
+                fxLayout="column"
+                fxLayoutAlign="start start"
+                fxFlexFill
+              >
+                <h2 class="h6 text-capitalize font-semi-thick my0 mt10">
+                  Elements
+                </h2>
+                <ng-container *ngIf="!elementsControls(i).length">
+                  <div
+                    fxFlex="100"
+                    fxFlexFill
+                    class="agreement__not-found text-center"
+                    fxFlexFill
+                  >
+                    Please create a new element
+                  </div>
+                </ng-container>
+                <div
+                  *ngFor="let item of elementsControls(i); let j = index"
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="start start"
+                  fxFlexFill
+                >
+                  <div
+                    fxLayout="column"
+                    fxFlex="100"
+                    class="agreement__general"
+                    fxLayoutAlign="space-evenly space-between"
+                    [formGroupName]="j"
+                  >
+                    <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                      <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                        <div class="form-group mt5" fxFlex="35">
+                          <mat-label>Title</mat-label>
+                          <input
+                            type="text"
+                            matInput
+                            class="form-control"
+                            formControlName="title"
+                            placeholder="Tittle"
+                            autocomplete="off"
+                          />
+                        </div>
+                        <div class="mt5" fxFlex="35" fxLayout="column">
+                          <mat-label>Type</mat-label>
+                          <div
+                            class="form-group selectedMat"
+                            [ngClass]="{
+                              'ng-valid':
+                                elementType(i, j).valid &&
+                                elementType(i, j).touched,
+                              'ng-invalid':
+                                elementType(i, j).invalid &&
+                                elementType(i, j).touched,
+                              'selectedMat--disabled': formDisabled
+                            }"
+                            fxLayoutAlign="start center"
+                            fxFlex="100"
+                          >
+                            <mat-select
+                              placeholder="Select a clause type"
+                              formControlName="type"
+                            >
+                              <mat-option
+                                *ngFor="
+                                  let type of agreementTypesClauseTypes[
+                                    type.value
+                                  ] | keyvalue
+                                "
+                                [value]="type.key"
+                              >
+                                {{ type.value }}
+                              </mat-option>
+                            </mat-select>
+                          </div>
+                        </div>
+                        <div
+                          class="mt7"
+                          fxLayoutAlign="end space-between"
+                          fxFlex="100"
+                        >
+                          <button
+                            mat-icon-button
+                            color="warn"
+                            matTooltip="Remove"
+                            type="button"
+                            [disabled]="elementsControls(i).length === 1"
+                            *ngIf="!formDisabled"
+                            (click)="removeElement(i, j)"
+                          >
+                            <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                      <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                        <div
+                          class="form-group form-group--inline"
+                          fxLayoutAlign="start center"
+                          fxLayoutGap="1rem"
+                        >
+                          <mat-label>Is Compulsory?</mat-label>
+                          <mat-slide-toggle
+                            fxLayout="row-reversed"
+                            color="primary"
+                            formControlName="isCompulsory"
+                          >
+                          </mat-slide-toggle>
+                        </div>
+                        <div
+                          class="form-group form-group--inline"
+                          fxLayoutAlign="start center"
+                          fxLayoutGap="1rem"
+                        >
+                          <mat-label>Is Checked?</mat-label>
+                          <mat-slide-toggle
+                            fxLayout="row-reversed"
+                            color="primary"
+                            formControlName="isChecked"
+                          >
+                          </mat-slide-toggle>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              fxFlex="100"
+              fxLayoutGap="2rem"
+            >
+              <div class="form-group" fxLayout="column">
+                <input
+                  type="file"
+                  #myFileInput
+                  accept="application/pdf"
+                  name="file"
+                  hidden
+                  class="form-control"
+                  placeholder="Image"
+                  autocomplete="off"
+                  (change)="showPreview($event,i)"
+                />
+                <h2
+                  class="h6 text-capitalize font-semi-thick my0 mb5 mt5"
+                >
+                  PDF*
+                </h2>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="start center"
+                  fxLayoutGap="1rem"
+                >
+                  <button
+                    type="button"
+                    [disabled]="form.disabled"
+                    color="accent"
+                    mat-flat-button
+                    (click)="myFileInput.click()"
+                  >
+                    Select PDF
+                  </button>
+                  <a
+                    [disabled]="formDisabled"
+                    *ngIf="getPdfUrl(i) && getPdfUrl(i).value"
+                    color="primary"
+                    mat-flat-button
+                    target="_blank"
+                    [href]="getPdfUrl(i) && getPdfUrl(i).value"
+                    >Preview</a
+                  >
+                </div>
+              </div>
+            </div>
+            </div>
+            <div *ngIf="i > 0" class="agreement__divider">
+              <mat-divider></mat-divider>
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="!type.value">
+          <div fxFlex="100" fxFlexFill class="agreement__not-found text-center">
+            Please select an agreement type
+          </div>
+        </ng-container>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        class="mr4 px10 py1"
+        type="button"
+        (click)="behaviourForm(true)"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        mat-flat-button
+        *ngIf="form.disabled"
+        class="px10 py1"
+        color="primary"
+        (click)="behaviourForm(false)"
+      >
+        Edit
+      </button>
+      <button
+        type="submit"
+        mat-flat-button
+        *ngIf="exists && form.enabled"
+        class="px10 py1"
+        color="primary"
+        [disabled]="form.invalid || form.pristine || !updatePermission"
+        (click)="updateAgreement(form)"
+      >
+        Save
+      </button>
+      <button
+        type="submit"
+        mat-flat-button
+        *ngIf="!exists && form.enabled"
+        class="px10 py1"
+        color="primary"
+        [disabled]="form.invalid || !createPermission"
+        (click)="createAgreement(form)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -1,0 +1,137 @@
+<input #statusFilters [value]="statuses$ | async" type="hidden" />
+<input
+  #dateFilter
+  [value]="(filters$ | async)['calendar.slot']"
+  type="hidden"
+/>
+<div
+  class="reservations"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [link]="null"
+      [breadcrumbs]="bc"
+      [sort]="sort"
+      (refreshChange)="onRefresh($event)"
+      [loading]="loading$ | async"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-confirmed-calendar
+      [currentDate]="(filters$ | async)['calendar.slot']"
+      [dayList]="dayList$ | async"
+      [filterInput]="filterInput"
+      (incrementChange)="incrementDate($event)"
+      (decrementChange)="decrement($event)"
+      (dateChange)="dateChange($event)"
+    >
+    </neural-confirmed-calendar>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <!-- <neural-service-center-statistics
+      [reports]="reports$ | async"
+      [reservations]="completedReservations"
+      [manualReservations]="manualReservations"
+      [statuses]="statuses$ | async"
+      [total]="total"
+      [totals]="totals$ | async"
+      [totalSlot]="completedReservations.length"
+      (serviceChange)="serviceChange($event)"
+      (jobsChange)="jobsChange($event)"
+      (amendedInvoicesChange)="amendedInvoicesChange($event)"
+    >
+    </neural-service-center-statistics> -->
+  </div>
+  <div
+    fxFlex="100"
+    fxFlexFill
+    class="my8 pt4"
+    *ngIf="!(error$ | async) && !(loading$ | async)"
+  >
+    <neural-service-advisor-filter
+      (filtered)="onFilter($event)"
+      [totals]="totals$ | async"
+      [selectedServiceAdvisor]="(filters$ | async)['operation.uuid']"
+    ></neural-service-advisor-filter>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8 pt4">
+    <div
+      class="mb5"
+      fxLayoutAlign="end center"
+      *ngIf="!(error$ | async) && !(loading$ | async)"
+    >
+      <button (click)="onExpandAll()" mat-flat-button color="primary">
+        {{ openPanelState ? 'Collapse All' : 'Expand All' }}
+      </button>
+    </div>
+
+    <!-- <ng-container *ngIf="!(loading$ | async)">
+      <div
+        class="mb12"
+        *ngFor="let reservation of completedReservations; let i = index"
+      >
+        <div *ngFor="let item of reservation | keyvalue">
+          <mat-expansion-panel class="mb5" [expanded]="openPanelState">
+            <mat-expansion-panel-header>
+              <mat-panel-description class="reservations__panel--description">
+                <h2 class="h6 text-capitalize font-semi-thick pl20">
+                  {{ item.key }} ({{ active[i] }})
+                </h2>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div *ngFor="let element of item.value">
+              <div class="mt7" *ngIf="element?.available">
+                <neural-create-manual-reservation
+                  [element]="element"
+                  [selectedServiceAdvisor]="(filters$ | async)['operation.uuid']"
+                  [active]="(corporateInfo$ | async)?.configuration?.cdk?.active"
+                ></neural-create-manual-reservation>
+              </div>
+
+              <div class="mt8" *ngIf="element?.type === rosterType.RESERVATION">
+                <neural-completed-service-center-card
+                  [permissions]="permissions$ | async"
+                  [timeZone]="timeZone$ | async"
+                  [reservation]="element"
+                  [openPanelState]="openPanelState"
+                  (cancelChange)="cancel($event)"
+                  (completeChange)="openCompleteDialog($event)"
+                  (resetChange)="openResetDialog($event)"
+                >
+                </neural-completed-service-center-card>
+              </div>
+              <div
+                class="mt8"
+                *ngIf="element?.type === rosterType.MANUAL_RESERVATION"
+              >
+                <neural-manual-reservation-card
+                  [permissions]="permissions$ | async"
+                  [timeZone]="timeZone$ | async"
+                  [openPanelState]="openPanelState"
+                  [reservation]="element"
+                  (completeChange)="openCompleteManualReservationDialog($event)"
+                  (resetChange)="openResetManualReservationDialog($event)"
+                  (cancelChange)="openCancelManualReservationDialog($event)"
+                >
+                </neural-manual-reservation-card>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </div>
+    </ng-container>
+     -->
+    <div *ngIf="loading$ | async" class="reservations__loading">Loading...</div>
+    <div
+      class="reservations__not-found"
+      *ngIf="(error$ | async) && !(loading$ | async)"
+    >
+      <neural-error [error]="error$ | async"></neural-error>
+    </div>
+  </div>
+</div>

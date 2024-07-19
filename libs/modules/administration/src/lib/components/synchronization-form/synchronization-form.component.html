@@ -1,0 +1,116 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+  <mat-card class="synchronization p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Synchronization</h2>
+      </div>
+    </mat-card-title>
+    <div class="synchronization__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="synchronization__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+          <label>Excel Type</label>
+          <mat-radio-group
+            fxLayoutGap="1rem"
+            [(ngModel)]="labelType"
+            [ngModelOptions]="{ standalone: true }"
+            (change)="change($event)"
+          >
+            <mat-radio-button value="link" color="primary"
+              >Link</mat-radio-button
+            >
+            <mat-radio-button value="file" color="primary"
+              >Upload File</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" fxLayoutAlign="start center">
+          <ng-template [ngIf]="labelType === 'link'" [ngIfElse]="fileInput">
+            <div class="form-group" fxFlex="35">
+              <mat-label>Link</mat-label>
+              <input
+                type="text"
+                matInput
+                class="form-control"
+                formControlName="url"
+                placeholder="Link"
+                autocomplete="off"
+              />
+              <neural-show-errors
+                [control]="form.controls.url"
+              ></neural-show-errors>
+            </div>
+          </ng-template>
+          <ng-template #fileInput>
+            <div class="form-group" fxLayout="column">
+              <input
+                type="file"
+                #myImageInput
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                name="file"
+                hidden
+                class="form-control"
+                placeholder="Image"
+                autocomplete="off"
+                (change)="showPreview($event)"
+              />
+              <div
+                fxFlex="100"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+                fxLayoutGap="1rem"
+              >
+                <button
+                  type="button"
+                  [disabled]="form.disabled"
+                  color="accent"
+                  mat-flat-button
+                  (click)="myImageInput.click()"
+                >
+                  Select File (.xlsx)
+                </button>
+              </div>
+            </div>
+            <div *ngIf="!!file" class="font-semi-thick">
+              {{ file?.value?.name }}
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        [disabled]="!updatePermission"
+        (click)="cancel(form)"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        *ngIf="form.enabled"
+        class="px10 py1"
+        color="primary"
+        [disabled]="!updatePermission || form.invalid"
+        (click)="update(form)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

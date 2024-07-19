@@ -1,0 +1,116 @@
+<mat-card class="card">
+  <div
+    fxLayout="row wrap"
+    fxLayout.lt-md="column"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    fxLayoutAlign.lt-md="start start"
+    class="card__header"
+    fxLayoutGap.lt-md="1rem"
+  >
+    <div
+      fxFlex="15"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--fullName"
+      fxLayoutAlign="start start"
+      fxLayout="column"
+      fxLayoutGap="0.5rem"
+      fxFlexOrder.lt-md="2"
+    >
+      <div>
+        {{ lead?.account?.identity?.salutation }}
+        {{ lead?.account?.identity?.fullName | titlecase }}
+      </div>
+      <div fxHide.lt-md>{{ lead?.account?.email }}</div>
+      <div fxHide.lt-md>
+        <a
+          title="Call {{ lead?.account?.identity?.fullName | titlecase }}"
+          href="tel:+{{ lead?.account?.phone?.code }}{{
+            lead?.account?.phone?.number
+          }}"
+          >{{ lead?.account?.phone?.code }}{{ lead?.account?.phone?.number }}</a
+        >
+      </div>
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--createdAt"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ lead?.createdAt }}
+    </div>
+    <div
+      fxFlex="20"
+      fxFlex.lt-md="200"
+      class="font-semi-thick card__header--fullName"
+      fxFlexOrder.lt-md="6"
+    >
+      <ng-container *ngIf="!lead?.salesAdvisor">Not selected</ng-container>
+      <div>
+        {{ lead?.salesAdvisor?.identity?.salutation }}
+        {{ lead?.salesAdvisor?.identity?.fullName | titlecase }}
+      </div>
+      <div fxHide.lt-md>{{ lead?.salesAdvisor?.email }}</div>
+      <div fxHide.lt-md>
+        <a
+          title="Call {{ lead?.salesAdvisor?.identity?.fullName | titlecase }}"
+          href="tel:+{{ lead?.salesAdvisor?.phone?.code }}{{
+            lead?.salesAdvisor?.phone?.number
+          }}"
+          >{{ lead?.salesAdvisor?.phone?.code
+          }}{{ lead?.salesAdvisor?.phone?.number }}</a
+        >
+      </div>
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="50"
+      class="font-semi-thick card__header--status"
+      fxFlexOrder.lt-md="6"
+    >
+      {{ lead?.status | formatString | titlecase }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="50"
+      class="font-semi-thick card__header--priority"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ lead?.priority }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--actions"
+      fxLayoutAlign="center center"
+      fxLayoutAlign.lt-md="end"
+      fxLayout.lt-md="row"
+      fxFlexFill
+      fxFlexOrder.lt-md="1"
+    >
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="actions"
+        matBadgeColor="warn"
+        matBadgeOverlap="false"
+      >
+        <mat-icon svgIcon="action_off"></mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-menu #actions="matMenu">
+    <button
+      mat-menu-item
+      [disabled]="!previewPermission"
+      [routerLink]="['../leadItem', lead?.uuid]"
+    >
+      <mat-icon>remove_red_eye</mat-icon>
+      <span>Preview</span>
+    </button>
+    <button [disabled]="LeadStatus" (click)="onStatusChanged()" mat-menu-item>
+      <mat-icon>flip</mat-icon>
+      <span>{{ getStatus }}</span>
+    </button>
+  </mat-menu>
+</mat-card>

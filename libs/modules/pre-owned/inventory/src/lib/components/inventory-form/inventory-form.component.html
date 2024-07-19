@@ -1,0 +1,98 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+  <mat-card class="inventory p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">
+          Import Inventory Vehicles
+        </h2>
+      </div>
+    </mat-card-title>
+    <div class="inventory__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="inventory__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+          <label>Upload File</label>
+        </div>
+        <div
+          fxLayout="row wrap"
+          fxFlex="100"
+          fxLayoutGap="1rem grid"
+          fxLayoutAlign="start center"
+        >
+          <div class="form-group" fxLayout="column">
+            <input
+              type="file"
+              #zipFileInput
+              accept=".zip"
+              name="file"
+              hidden
+              class="form-control"
+              placeholder="Image"
+              autocomplete="off"
+              (change)="showPreview($event)"
+            />
+            <div
+              fxFlex="100"
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              fxLayoutGap="1rem"
+            >
+              <button
+                type="button"
+                [disabled]="form.disabled"
+                color="accent"
+                mat-flat-button
+                (click)="zipFileInput.click()"
+              >
+                Select File
+              </button>
+            </div>
+            <div class="mt1" *ngIf="!zipFileInput.value">
+              <mat-hint
+                >Please upload a zip file contains one excel and all the
+                images.</mat-hint
+              >
+            </div>
+          </div>
+          <div *ngIf="!!file" class="font-semi-thick">
+            {{ file?.value?.name }}
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        [disabled]="!updatePermission"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        *ngIf="form.enabled"
+        class="px10 py1"
+        color="primary"
+        [disabled]="!updatePermission || form.invalid"
+        (click)="upload(form)"
+      >
+        Upload
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

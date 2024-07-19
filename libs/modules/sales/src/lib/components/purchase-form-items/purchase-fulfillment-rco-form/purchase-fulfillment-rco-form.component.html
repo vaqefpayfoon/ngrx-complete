@@ -1,0 +1,337 @@
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+  <mat-card fxFlex class="sale">
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <div
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="1rem"
+        >
+          <h2 class="h6 text-capitalize font-semi-thick my0">
+            {{ purchase.fulfillments[index]?.title }}
+          </h2>
+        </div>
+        <div fxLayoutGap="1rem">
+          <button
+            *ngIf="purchase?.badge?.edit"
+            mat-stroked-button
+            color="primary"
+            matBadgeColor="warn"
+            matBadge="1"
+            (click)="onClearBadge()"
+          >
+            Clear
+          </button>
+          <button
+            mat-stroked-button
+            type="button"
+            class="px10 py1"
+            color="primary"
+            [disabled]="!updatePermission || (purchase.fulfillments[this.index]?.rco?.status === saleFulfillmentRcoStatus.PENDING)"
+            (click)="onLock(form)"
+          >
+            {{ !purchase.fulfillments[index]?.isLocked ? 'Lock' : 'Unlock' }}
+          </button>
+        </div>
+      </div>
+    </mat-card-title>
+    <div class="sale__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100">
+        <ng-container *ngIf="edit; else editForms">
+          <div fxFlex="100">
+            <mat-list>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">
+                    View uploaded document
+                  </h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    <a
+                      mat-flat-button
+                      color="accent"
+                      type="button"
+                      [disabled]="!purchase.fulfillments[index]?.rco?.url"
+                      [href]="purchase.fulfillments[index]?.rco?.url"
+                      target="_blank"
+                    >
+                      Download
+                    </a>
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">
+                    View signed document
+                  </h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    <a
+                      mat-flat-button
+                      color="accent"
+                      type="button"
+                      [disabled]="!purchase.fulfillments[index]?.rco?.signature?.url"
+                      [href]="purchase.fulfillments[index]?.rco?.signature?.url"
+                      target="_blank"
+                    >
+                      Download
+                    </a>
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">
+                    Final Vehicle Price (RM)
+                  </h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase?.fulfillments[index]?.rco?.finalValue | number
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+        </ng-container>
+        <ng-template #editForms>
+          <form [formGroup]="form" novalidate>
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              class="sale__general mt8"
+              fxLayoutAlign="space-evenly space-between"
+              fxLayoutGap="1rem"
+            >
+              <div
+                fxLayout="row"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <div
+                  fxLayout="row wrap"
+                  fxFlex="100"
+                  fxLayoutAlign="space-between center"
+                  fxLayoutGap="1rem"
+                >
+                  <div class="form-group" fxFlex="30">
+                    <mat-label>Final Vehicle Price (RM)</mat-label>
+                    <input
+                      type="number"
+                      matInput
+                      class="form-control"
+                      formControlName="finalValue"
+                      placeholder="Ex. 30,000"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="sale__divider">
+                <mat-divider></mat-divider>
+              </div>
+              <div
+                fxLayout="row"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <div
+                  fxLayout="row wrap"
+                  fxFlex="100"
+                  fxLayoutAlign="space-between center"
+                  fxLayoutGap="1rem"
+                >
+                  <h2 class="h6 text-capitalize font-semi-thick my0">
+                    Document
+                  </h2>
+                </div>
+              </div>
+              <div
+                fxFlex="100"
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+              >
+                <div
+                  fxLayout="column"
+                  fxLayoutGap="0.5rem"
+                  fxLayoutAlign="center start"
+                >
+                  <mat-label>Document</mat-label>
+                  <input
+                    type="file"
+                    #fulFillmentDoc
+                    name="docs"
+                    hidden
+                    class="form-control"
+                    placeholder="File"
+                    autocomplete="off"
+                    (change)="onSelectFile($event)"
+                    accept="application/pdf"
+                  />
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="1rem"
+                  >
+                    <button
+                      type="button"
+                      color="primary"
+                      mat-flat-button
+                      (click)="fulFillmentDoc.click()"
+                    >
+                      Select a Document
+                    </button>
+                    <mat-chip-list aria-label="files">
+                      <mat-chip
+                        color="primary"
+                        selected
+                        *ngFor="
+                          let file of fulFillmentDocEle?.nativeElement?.files
+                        "
+                      >
+                        {{ file?.name }}
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                </div>
+              </div>
+              <div class="sale__divider">
+                <mat-divider></mat-divider>
+              </div>
+              <div
+                fxLayout="row"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <div
+                  fxLayout="row wrap"
+                  fxFlex="100"
+                  fxLayoutAlign="space-between center"
+                  fxLayoutGap="1rem"
+                  formGroupName="signature"
+                >
+                  <h2 class="h6 text-capitalize font-semi-thick my0">
+                    Signature
+                  </h2>
+                  <div
+                    class="form-group"
+                    fxLayoutAlign="start center"
+                  >
+                    <mat-slide-toggle
+                      fxLayout="row-reversed"
+                      color="primary"
+                      formControlName="isRequired"
+                      (change)="signatureIsRequiredChanges($event)"
+                    ></mat-slide-toggle>
+                  </div>
+                </div>
+              </div>
+              <div
+                fxFlex="100"
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+              >
+                <div
+                  fxLayout="column"
+                  fxLayoutGap="0.5rem"
+                  fxLayoutAlign="center start"
+                >
+                  <mat-label>Signature position</mat-label>
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    name="docs"
+                    hidden
+                    class="form-control"
+                    placeholder="File"
+                    autocomplete="off"
+                  />
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="1rem"
+                  >
+                    <button
+                      type="button"
+                      color="primary"
+                      mat-flat-button
+                      matBadge="1"
+                      matBadgePosition="after"
+                      matBadgeColor="warn"
+                      [disabled]="
+                        !fulFillmentDoc.value || !updatePermission || !signatureIsRequired.value
+                      "
+                      (click)="openEditor(form)"
+                    >
+                      Edit Signature position
+                    </button>
+                  </div>
+                  <mat-hint *ngIf="!fulFillmentDoc.value"
+                    >Please select a document</mat-hint
+                  >
+                  <mat-hint *ngIf="signatureIsRequired.value && !page.value "
+                  >Edit signature is required</mat-hint
+                >
+                </div>
+              </div>
+              <div class="sale__divider">
+                <mat-divider></mat-divider>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="py4" fxLayoutAlign="end center">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        (click)="edit = true"
+        [disabled]="!updatePermission"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        class="px10 py1"
+        color="primary"
+        *ngIf="edit"
+        (click)="edit = !edit"
+        [disabled]="!updatePermission"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        class="px10 py1"
+        color="primary"
+        *ngIf="!edit"
+        (click)="onUpdate(form)"
+        [disabled]="form.invalid || !updatePermission"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,0 +1,8 @@
+<div fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'model images'" [breadcrumbs]="bc"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-model-image-form [currentModelImageUrl]="currentModelImageUrl$ | async" [unit]="unit$ | async" [permissions]="permissions$ | async" [selectedCorporate]="selectedCorporate$ | async" (setModelImage)="onSetModelImage($event)" (seriesChange)="onChangeSeries($event)" (modelChange)="onChangeModel($event)"></neural-model-image-form>
+    </div>
+</div>

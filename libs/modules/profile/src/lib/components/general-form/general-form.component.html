@@ -1,0 +1,215 @@
+<mat-card class="general p4">
+    <mat-card-title class="mb2 font-semi-thick mb2">General</mat-card-title>
+    <div class="role-card__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div class="general__form mb8">
+        <!-- avatar -->
+  
+        <div class="general__avatar my8">
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+            <div class="general__image">
+              <img [src]="image" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/test/avatar.jpg'" [alt]="name?.fullName | titlecase" />
+              <div class="general__upload my0" (click)="file.click()">
+                <input type="file" hidden="true" accept="image/*" #file (change)="uploadImg(file.files)" />
+                <mat-icon aria-hidden="false" aria-label="Example home icon">
+                  add_a_photo
+                </mat-icon>
+              </div>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start center">
+              <h2 class="h5 my0 text-capitalize">
+                {{ name?.salutation | titlecase }}
+                {{ name?.fullName | titlecase }}
+              </h2>
+            </div>
+          </div>
+        </div>
+  
+        <!-- general info -->
+  
+        <div class="mx8" fxLayout="column" fxLayoutGap="2rem">
+          <form class="form" [formGroup]="nameForm" autocomplete="off" novalidate>
+            <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="1rem" formGroupName="identity">
+              <!-- Salutaion and FullName -->
+              <div fxLayout="row wrap" fxLayoutGap="0.5rem" fxFlex="0 0 33" fxFlex.lt-md="100" fxFlexFill>
+                <mat-label style="font-size: 13px">Salutation</mat-label>
+                <div class="form-group selectedMat my0" fxFlex="100" [ngClass]="{
+                    'selectedMat--disabled': formDisabled,
+                    'ng-invalid': identity.controls.salutation.invalid,
+                    'ng-valid': identity.controls.salutation.valid
+                  }">
+                  <mat-select placeholder="Select Salutation" formControlName="salutation">
+                    <mat-option *ngFor="let salutation of (salutationList | keyvalue)" [value]="salutation.value">
+                      {{ salutation.key }}
+                    </mat-option>
+                  </mat-select>
+                  <neural-show-errors [control]="identity.controls.salutation"></neural-show-errors>
+                </div>
+              </div>
+              <div class="form-group" fxFlex="0 0 33" fxFlex.lt-md="100" fxFlexFill>
+                <mat-label>Full Name</mat-label>
+                <input type="text" matInput class="form-control" formControlName="fullName" placeholder="Full Name"
+                  autocomplete="off" />
+                <neural-show-errors [control]="identity.controls.fullName"></neural-show-errors>
+              </div>
+              <div fxFlex="0 0 30" fxLayoutGap="1rem" class="mt6" fxFlex.lt-md="100" fxFlexFill>
+                <button mat-stroked-button *ngIf="exists && identity.disabled" (click)="identity.enable()">
+                  Edit
+                </button>
+                <button mat-stroked-button *ngIf="exists && identity.enabled" (click)="identity.disable()">
+                  Cancel
+                </button>
+                <button mat-flat-button color="primary" *ngIf="identity.enabled" (click)="onSelfAccountProfile(nameForm)">
+                  Save
+                </button>
+              </div>
+            </div>
+  
+            <!-- Document Type and ID Number -->
+            <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start" fxLayoutAlign="start center" fxLayoutGap="1rem" class="mt8" formGroupName="document">
+              {{document.controls.touched}}
+              <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="0 0 33" fxFlex.lt-md="100" fxFlexFill>
+                <mat-label style="font-size: 13px">Type</mat-label>
+                <div class="form-group selectedMat my0" fxFlex="100" [ngClass]="{
+                    'selectedMat--disabled': documentFormDisabled,
+                    'ng-invalid': document.controls.type.invalid && document.controls.touched,
+                    'ng-valid': document.controls.type.valid
+                  }">
+                  <mat-select placeholder="Select a type" formControlName="type">
+                    <mat-option *ngFor="let docType of (documentTypeList | keyvalue)" [value]="docType.value">
+                      {{ docType.key }}
+                    </mat-option>
+                  </mat-select>
+                  <neural-show-errors [control]="document.controls.type"></neural-show-errors>
+                </div>
+              </div>
+              <div class="form-group" fxFlex="0 0 33" fxFlex.lt-md="100" fxFlexFill>
+                <mat-label>ID</mat-label>
+                <input type="text" matInput class="form-control" formControlName="id" placeholder="ID"
+                  autocomplete="off" />
+                <neural-show-errors [control]="document.controls.id"></neural-show-errors>
+              </div>
+              <div fxFlex="0 0 30" fxLayoutGap="1rem" class="mt6" fxFlex.lt-md="100" fxFlexFill>
+                <button mat-stroked-button *ngIf="exists && document.disabled" (click)="document.enable()">
+                  Edit
+                </button>
+                <button mat-stroked-button *ngIf="exists && document.enabled" (click)="document.disable()">
+                  Cancel
+                </button>
+                <button mat-flat-button color="primary" *ngIf="document.enabled" (click)="onSelfAccountProfile(nameForm)">
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+          <form class="form" [formGroup]="emailForm" autocomplete="off" novalidate>
+            <div fxLayout="row wrap" fxLayout.lt-md="column"  fxLayoutAlign="start center" fxLayoutGap="1rem">
+              <div class="form-group" fxFlex="0 0 33" fxFlex.lt-md="100" fxFlexFill>
+                <mat-label>Email</mat-label>
+                <input type="text" matInput class="form-control" formControlName="email" placeholder="email"
+                  autocomplete="off" />
+              </div>
+            </div>
+          </form>
+  
+          <form class="form" [formGroup]="phoneForm" autocomplete="off" novalidate>
+            <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="start center" fxLayoutGap="1rem" formGroupName="phone">
+              <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="0 0 33" fxFlex.lt-md="100" fxFlexFill>
+                <mat-label style="font-size: 13px">Country code</mat-label>
+                <div class="form-group selectedMat my0" fxFlex="100" [ngClass]="{
+                    'selectedMat--disabled': phoneFormDisabled,
+                    'ng-invalid': phoneGroup.controls.code.invalid,
+                    'ng-valid': phoneGroup.controls.code.valid
+                  }">
+                  <mat-select placeholder="Select Country Code" formControlName="code">
+                    <mat-option *ngFor="let code of codes" [value]="'+' + code.code">
+                      {{ code.name }} ( +{{ code.code }} )
+                    </mat-option>
+                  </mat-select>
+                  <neural-show-errors [control]="phoneGroup.controls.code"></neural-show-errors>
+                </div>
+              </div>
+  
+              <div class="form-group" fxFlex="0 0 33" fxFlex.lt-md="100" fxFlexFill>
+                <mat-label>Number</mat-label>
+                <input type="text" matInput class="form-control" formControlName="number" placeholder="Phone Number"
+                  autocomplete="off" />
+              </div>
+  
+              <div fxFlex="0 0 30" fxLayoutGap="1rem" class="mt6" fxFlex.lt-md="100" fxFlexFill>
+                <button mat-stroked-button *ngIf="exists && phoneForm.disabled" (click)="phoneForm.enable()">
+                  Edit
+                </button>
+                <button mat-stroked-button *ngIf="exists && phoneForm.enabled" (click)="phoneForm.disable()">
+                  Cancel
+                </button>
+                <button mat-flat-button color="primary" *ngIf="phoneForm.enabled" (click)="onPhoneSubmit(phoneForm)">
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+  
+          <form class="form" [formGroup]="passwordForm" autocomplete="off" novalidate>
+            <input type="password" hidden/>
+            <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign.lt-md="center start" fxLayoutAlign="start center" fxLayoutGap="1rem" fxFlexFill>
+  
+              <div class="form-group" fxFlex="0 0 33" fxFlex.lt-md="100" fxFlexFill>
+                <mat-label>Password</mat-label>
+                <div class="form-group__password">
+                  <input type="password" matInput class="form-control" formControlName="password" placeholder="Password"
+                    [type]="hide ? 'password' : 'text'" autocomplete="new-password" />
+                  <button class="form-group__btn" type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{
+                      hide ? 'visibility_off' : 'visibility'
+                    }}</mat-icon>
+                  </button>
+                </div>
+                <div class="mt6">
+                <neural-show-errors [control]="passwordForm.controls.password"></neural-show-errors>
+              </div>
+              </div>
+  
+              <div class="form-group" fxFlex="0 0 33" fxFlex.lt-md="100" fxFlexFill>
+                <mat-label>Confirm Password</mat-label>
+                <div class="form-group__password">
+                  <input type="password" matInput class="form-control" formControlName="confirmPassword"
+                    placeholder="confirm password" [type]="hideRepass ? 'password' : 'text'" autocomplete="none" />
+                  <button class="form-group__btn" type="button" mat-icon-button matSuffix
+                    (click)="hideRepass = !hideRepass" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hideRepass">
+                    <mat-icon>{{
+                      hideRepass ? 'visibility_off' : 'visibility'
+                    }}</mat-icon>
+                  </button>
+                </div>
+                <div class="mt6">
+                <neural-show-errors [control]="passwordForm.controls.confirmPassword"></neural-show-errors>
+              </div>
+              </div>
+              <div fxFlex="0 0 30" fxFlex.lt-md="100" fxLayoutGap="1rem"  fxLayoutAlign="start center">
+                <button mat-flat-button color="primary" [disabled]="passwordForm.invalid" (click)="onPasswordSubmit(passwordForm)">
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+  
+          <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign.lt-md="center start" fxLayoutAlign="start center" fxLayoutGap="1rem">
+            <div class="form-group" fxFlex="0 0 30" fxFlex.lt-md="100">
+              <mat-slide-toggle color="primary" [checked]="isFacebookConnect">Facebook</mat-slide-toggle>
+            </div>
+            <div class="form-group" fxFlex="0 0 30" fxFlex.lt-md="100">
+              <mat-slide-toggle color="primary" [checked]="isGoogleConnected">Google</mat-slide-toggle>
+            </div>
+            <div class="form-group" fxFlex="0 0 30" fxFlex.lt-md="100">
+              <mat-slide-toggle color="primary" [checked]="isGoogleConnected">Apple</mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>

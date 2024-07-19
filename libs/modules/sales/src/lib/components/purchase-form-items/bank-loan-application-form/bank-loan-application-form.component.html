@@ -1,0 +1,127 @@
+<div fxLayout="column" fxFlex="100" fxLayoutAlign="center start" fxLayoutGap="1rem">
+  <div fxLayout="row" fxFlex="100" fxFlexFill>
+    <neural-bank-loan-application-calculator fxFlex="100" fxFlexFill [purchase]="purchase"
+      [bankApplications]="loans.value" [loans]="loansBySaleUuid" (calculateChanges)="addLoan($event)">
+    </neural-bank-loan-application-calculator>
+  </div>
+  <div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch" fxFlexFill>
+    <mat-card fxFlex class="sale" fxFlex="100" fxFlexFill>
+      <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Loan Application Lists
+            </h2>
+          </div>
+        </div>
+      </mat-card-title>
+      <div class="sale__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-card-content>
+        <form [formGroup]="form" novalidate class="pt8">
+          <div fxLayout="column" fxFlex="100" fxLayoutAlign="center start" fxLayoutGap="1rem" class="sale__general mt8">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center" fxLayoutGap="1rem grid">
+              <ng-template [ngIf]="!!loans.controls.length">
+                <ng-container formArrayName="loans">
+                  <ng-container *ngFor="let item of loans.controls; let i = index">
+                    <div [formGroupName]="i">
+                      <neural-bank-loan-application [bankLoan]="item.value" formControlName="bankUuid"
+                        [permissions]="permissions"></neural-bank-loan-application>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-template>
+            </div>
+            <ng-container *ngIf="!loans.length">
+              <div fxFlex="100" fxFlexFill class="sale__not-found--file text-center" fxFlexFill>
+                Please create a loan
+              </div>
+            </ng-container>
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center" fxLayoutGap="1rem grid"
+              formGroupName="account" class="mt10" fxFlexFill>
+              <div class="form-group" fxFlex="33">
+                <mat-label>IC/Passport number</mat-label>
+                <input type="text" matInput formControlName="identification" class="form-control"
+                  placeholder="Ex. Z13243454" autocomplete="off" />
+              </div>
+              <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="33">
+                <mat-label style="font-size: 13px">Nationality</mat-label>
+                <div class="form-group selectedMat my0" [ngClass]="{
+                    'selectedMat--disabled': form.disabled,
+                    'ng-invalid': nationality.invalid && nationality.touched,
+                    'ng-valid': nationality.valid && nationality.touched
+                  }" fxFlex="100">
+                  <mat-select formControlName="nationality" placeholder="Select a nationality">
+                    <mat-option *ngFor="let country of countries" [value]="country">
+                      {{ country }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+              <div fxFlex="33" class="form-group" fxLayout="column" fxLayoutGap="0.5rem">
+                <mat-label>Date of Birth</mat-label>
+                <div fxLayout="row">
+                  <input matInput formControlName="dateOfBirth" readonly placeholder="30 March 1991"
+                    class="form-control" [matDatepicker]="datePicker" (dateChange)="changeDate($event)" />
+                  <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #datePicker></mat-datepicker>
+                </div>
+              </div>
+            </div>
+
+            <ng-template ngFor let-item [ngForOf]="uploadLoanDocumnetTypesList">
+              <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center" class="my4">
+                <div fxLayout="column" fxLayoutGap="0.5rem" fxLayoutAlign="center start">
+                  <mat-label>{{item | titlecase | formatString}} file {{item !==
+                    uploadLoanDocumnetTypes.ADDITIONAL_DOCUMENT ? '*' : ''}}</mat-label>
+
+                  <input type="file" multiple #bankLoanDoc [id]="'upload-'+item" name="docs" hidden class="form-control"
+                    placeholder="File" autocomplete="off" (change)="onUploadFile($event, item)" />
+
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                    <button type="button" color="primary" accept="application/pdf" mat-flat-button
+                      (click)="onClickBankLoanDoc(item)" [disabled]="!createPermission">
+                      Select doc
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            </ng-template>
+
+          </div>
+        </form>
+        <div fxLayout="column">
+          <div>
+            <div class="mb5" fxFlex="100" *ngIf="documents.controls.length">
+              <h2 class="h6 text-capitalize font-semi-thick my0 mt10">
+                Uploaded files
+              </h2>
+            </div>
+          </div>
+          <div fxLayout="row">
+            <form [formGroup]="form">
+              <ng-container formArrayName="documents">
+                <div fxFlex="100" fxLayout="row" *ngFor="let item of documents.controls; let i = index">
+                  <div fxLayout="row" fxFlex="100" [formGroupName]="i">
+                    <neural-tradeIn-file [permissions]="permissions" [formDisabled]="
+                        form.disabled
+                      " [title]="item.get('title').value" formControlName="url"
+                      (remove)="onDeleteFile(item.get('url'))"></neural-tradeIn-file>
+                  </div>
+                </div>
+              </ng-container>
+            </form>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="py4" fxLayoutAlign="end center">
+        <button mat-flat-button class="px10 py1" color="primary"
+          [disabled]="form.invalid || !createPermission || (documents.controls.length < 2)" (click)="onCreate(form)">
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

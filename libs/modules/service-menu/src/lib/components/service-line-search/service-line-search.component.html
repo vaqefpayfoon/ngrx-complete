@@ -1,0 +1,84 @@
+<div class="mt8 service-line-search">
+    <mat-accordion class="service-line-search__panel">
+        <mat-expansion-panel [expanded]="panelOpenState">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">Advance search</h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-card class="service-line-search__card p4 my8">
+                <!-- content -->
+                <mat-card-content>
+                    <div fxLayout="column" fxFlex="100" class="service-line-search__general"
+                        fxLayoutAlign="start space-between" fxLayoutGap="1rem" fxFlexOffset="1rem">
+                        <!-- form -->
+                        <div [formGroup]="form" fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                            <div fxFlex="30" class="form-group" fxLayout="column">
+                                <mat-label>Operation Code</mat-label>
+                                <div fxLayout="row" class="form-group__wrapper">
+                                    <input type="text" matInput class="form-control" placeholder="Operation Code" formControlName="operationCode"
+                                        autocomplete="off" (keyup)="onSearch(form)" />
+                                    <button class="form-group__remove" mat-button matSuffix mat-icon-button
+                                        (click)="clearOperationCode(form)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div fxFlex="30" class="form-group" fxLayout="column" formGroupName="service">
+                                <mat-label>Name</mat-label>
+                                <div fxLayout="row" class="form-group__wrapper">
+                                    <input type="text" matInput class="form-control" formControlName="title"
+                                        placeholder="Name" autocomplete="off" (keyup)="onSearch(form)" />
+                                    <button class="form-group__remove" mat-button matSuffix mat-icon-button
+                                        (click)="clearTitle(form)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div fxFlex="30" fxLayout="column" fxLayoutGap="0.5rem">
+                                <mat-label>Active</mat-label>
+                                <ng-container>
+                                    <div class="form-group selectedMat mb4" fxFlex="100">
+                                        <mat-select placeholder="Select a status" formControlName="active"
+                                            (selectionChange)="onSearch(form)">
+                                            <mat-option>-- None --</mat-option>
+                                            <mat-option [value]="true">Active</mat-option>
+                                            <mat-option [value]="false">Deactive</mat-option>
+                                        </mat-select>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <div fxFlex="30" fxLayout="column" fxLayoutGap="0.5rem">
+                                <mat-label>Customer View</mat-label>
+                                <ng-container>
+                                    <div class="form-group selectedMat mb4" fxFlex="100">
+                                        <mat-select placeholder="Select a status" formControlName="isInCustomerApp"
+                                            (selectionChange)="onSearch(form)">
+                                            <mat-option>-- None --</mat-option>
+                                            <mat-option [value]="true">View In Customer App</mat-option>
+                                            <mat-option [value]="false">Hide In Customer App</mat-option>
+                                        </mat-select>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <div fxFlex="30" fxLayout="column" fxLayoutGap="0.5rem" formGroupName="service">
+                                <mat-label>Type</mat-label>
+                                <ng-container>
+                                    <div class="form-group selectedMat mb4" fxFlex="100">
+                                        <mat-select placeholder="Select a Service Type" formControlName="type"
+                                        (selectionChange)="onSearch(form)">
+                                            <mat-option>-- None --</mat-option>
+                                            <mat-option *ngFor="let serviceItem of services" [value]="serviceItem.type">
+                                              {{ serviceItem.type }}
+                                            </mat-option>
+                                          </mat-select>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

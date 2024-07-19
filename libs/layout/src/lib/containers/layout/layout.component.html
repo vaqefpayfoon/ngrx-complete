@@ -1,0 +1,28 @@
+<div class="app" gdAreas="header | content | footer" gdRows="auto auto auto">
+  <div gdArea="header" class="app__header">
+    <neural-header
+      [router]="data$ | async"
+      [menus]="menu$ | async"
+      [permissions]="permissions$ | async"
+      [account]="account$ | async"
+      [corporates]="corporates$ | async"
+      [isPasswordExpired]="isPasswordExpired"
+      [selectedCorporate]="selectedCorporate$ | async"
+      (corporateChange)="selectCorporate($event)"
+      (branchChange)="selectBranch($event)"
+      [selectedBranch]="selectedBranch$ | async"
+      [branches]="(selectedCorporate$ | async)?.branches"
+      (resetSwitcher)="resetSwitcher($event)"
+      (redirectToHome)="reditectToHome($event)"
+      (contactUs)=" OnContactUs()"
+    ></neural-header>
+  </div>
+
+  <div gdArea="content" class="app__content">
+    <ng-content></ng-content>
+  </div>
+
+  <div gdArea="footer">
+    <neural-footer [version]="version"></neural-footer>
+  </div>
+</div>

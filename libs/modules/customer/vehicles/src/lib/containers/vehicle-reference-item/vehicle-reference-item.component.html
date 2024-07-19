@@ -1,0 +1,8 @@
+<div class="vehicles" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="title" [breadcrumbs]="bc" [loading]="loading$ | async"></neural-dynamic-header> 
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-vehicle-reference-form [selectedCorporate]="selectedCorporate$ | async" [permissions]="permissions$ | async" (loadReference)="onVehicleReferenceLoad($event)" [list]="list$ | async" (corporateChange)="onCorporateChange($event)" (typeChange)="onTypeChange($event)" (modelChange)="onBrandSelect($event)" (variantChange)="onModelSelect($event)" [reference]="reference$ | async" (create)="onCreateVehicleReference($event)" (update)="onUpdateVehicleReference($event)"></neural-vehicle-reference-form>
+    </div>    
+</div>

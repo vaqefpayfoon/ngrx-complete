@@ -1,0 +1,1595 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "nerv": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/workspace:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/nerv",
+      "sourceRoot": "apps/nerv/src",
+      "prefix": "nrv",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/nerv",
+            "index": "apps/nerv/src/index.html",
+            "main": "apps/nerv/src/main.ts",
+            "polyfills": "apps/nerv/src/polyfills.ts",
+            "tsConfig": "apps/nerv/tsconfig.app.json",
+            "assets": [
+              "apps/nerv/src/favicon.ico",
+              "apps/nerv/src/assets",
+              {
+                "input": "libs/shared/assets/src/assets",
+                "glob": "**/*",
+                "output": "assets"
+              },
+              "apps/nerv/src/manifest.webmanifest"
+            ],
+            "styles": [
+              "apps/nerv/src/styles.scss",
+              "apps/nerv/src/styles-app-loading.scss",
+              "libs/shared/styles/src/index.scss",
+              "node_modules/@syncfusion/ej2-base/styles/material.css",
+              "node_modules/@syncfusion/ej2-icons/styles/material.css",
+              "node_modules/@syncfusion/ej2-buttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-splitbuttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-inputs/styles/material.css",
+              "node_modules/@syncfusion/ej2-lists/styles/material.css",
+              "node_modules/@syncfusion/ej2-navigations/styles/material.css",
+              "node_modules/@syncfusion/ej2-popups/styles/material.css",
+              "node_modules/@syncfusion/ej2-richtexteditor/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-popups/styles/material.css",
+              "node_modules/grapesjs/dist/css/grapes.min.css",
+              "node_modules/grapesjs-preset-newsletter/dist/grapesjs-preset-newsletter.css"
+            ],
+            "scripts": [
+              "node_modules/grapesjs/dist/grapes.min.js",
+              "node_modules/grapesjs-preset-newsletter/dist/grapesjs-preset-newsletter.min.js"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["libs/shared/styles/src/lib/"]
+            },
+            "allowedCommonJsDependencies": [
+              "rxjs-compat",
+              "firebase/app",
+              "@firebase/app",
+              "@firebase/firestore",
+              "@firebase/database",
+              "@firebase/auth",
+              "ng2-pdf-viewer",
+              "grapesjs-preset-newsletter",
+              "xmldom"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/nerv/src/environments/environment.ts",
+                  "with": "apps/nerv/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "apps/nerv/ngsw-config.json"
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/nerv/src/environments/environment.ts",
+                  "with": "apps/nerv/src/environments/environment.stag.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
+                }
+              ]
+            },
+            "stagingClient": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/nerv/src/environments/environment.ts",
+                  "with": "apps/nerv/src/environments/environment.client.stag.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
+                }
+              ]
+            },
+            "stagingCustomer": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/nerv/src/environments/environment.ts",
+                  "with": "apps/nerv/src/environments/environment.customer.stag.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
+                }
+              ]
+            },
+            "sandbox": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/nerv/src/environments/environment.ts",
+                  "with": "apps/nerv/src/environments/environment.sandbox.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "apps/nerv/ngsw-config.json"
+            }
+          },
+          "outputs": ["{options.outputPath}"]
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "nerv:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "nerv:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "nerv:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/nerv/tsconfig.app.json",
+              "apps/nerv/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/nerv/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/nerv/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/apps/nerv"]
+        }
+      }
+    },
+    "nerv-e2e": {
+      "root": "apps/nerv-e2e",
+      "sourceRoot": "apps/nerv-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/nerv-e2e/cypress.json",
+            "tsConfig": "apps/nerv-e2e/tsconfig.e2e.json",
+            "devServerTarget": "nerv:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "nerv:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/nerv-e2e/tsconfig.e2e.json",
+            "exclude": ["!apps/nerv-e2e/**/*"]
+          }
+        }
+      }
+    },
+    "ngrx-router": {
+      "projectType": "library",
+      "root": "libs/ngrx-router",
+      "sourceRoot": "libs/ngrx-router/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/ngrx-router/tsconfig.lib.json",
+            "project": "libs/ngrx-router/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ngrx-router/tsconfig.lib.json",
+              "libs/ngrx-router/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/ngrx-router/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/ngrx-router/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/ngrx-router"]
+        }
+      },
+      "schematics": {}
+    },
+    "environment": {
+      "root": "libs/environment",
+      "sourceRoot": "libs/environment/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/environment/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/environment/**/*"]
+          }
+        }
+      }
+    },
+    "shared-assets": {
+      "root": "libs/shared/assets",
+      "sourceRoot": "libs/shared/assets/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {}
+    },
+    "ui": {
+      "projectType": "library",
+      "root": "libs/ui",
+      "sourceRoot": "libs/ui/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/ui/tsconfig.lib.json",
+            "project": "libs/ui/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ui/tsconfig.lib.json",
+              "libs/ui/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/ui/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/ui/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/ui"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "shared-styles": {
+      "root": "libs/shared/styles",
+      "sourceRoot": "libs/shared/styles/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/shared/styles/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/shared/styles/**/*"]
+          }
+        }
+      }
+    },
+    "core": {
+      "projectType": "library",
+      "root": "libs/core",
+      "sourceRoot": "libs/core/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/core/tsconfig.lib.json",
+            "project": "libs/core/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/core/tsconfig.lib.json",
+              "libs/core/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/core/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/core/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/core"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "layout": {
+      "projectType": "library",
+      "root": "libs/layout",
+      "sourceRoot": "libs/layout/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/layout/tsconfig.lib.json",
+            "project": "libs/layout/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/layout/tsconfig.lib.json",
+              "libs/layout/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/layout/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/layout/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/layout"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-dashboard": {
+      "projectType": "library",
+      "root": "libs/modules/dashboard",
+      "sourceRoot": "libs/modules/dashboard/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/dashboard/tsconfig.lib.json",
+            "project": "libs/modules/dashboard/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/dashboard/tsconfig.lib.json",
+              "libs/modules/dashboard/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/dashboard/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/dashboard/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/dashboard"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-administration": {
+      "projectType": "library",
+      "root": "libs/modules/administration",
+      "sourceRoot": "libs/modules/administration/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/administration/tsconfig.lib.json",
+            "project": "libs/modules/administration/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/administration/tsconfig.lib.json",
+              "libs/modules/administration/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/modules/administration/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/administration/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/administration"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "auth": {
+      "projectType": "library",
+      "root": "libs/auth",
+      "sourceRoot": "libs/auth/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/auth/tsconfig.lib.json",
+            "project": "libs/auth/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/auth/tsconfig.lib.json",
+              "libs/auth/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/auth/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/auth/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/auth"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "shared-data": {
+      "root": "libs/shared/data",
+      "sourceRoot": "libs/shared/data/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/shared/data/tsconfig.lib.json",
+              "libs/shared/data/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shared/data/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shared/data/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/shared/data"]
+        }
+      }
+    },
+    "modules-customer-vehicles": {
+      "projectType": "library",
+      "root": "libs/modules/customer/vehicles",
+      "sourceRoot": "libs/modules/customer/vehicles/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/customer/vehicles/tsconfig.lib.json",
+            "project": "libs/modules/customer/vehicles/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/customer/vehicles/tsconfig.lib.json",
+              "libs/modules/customer/vehicles/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/modules/customer/vehicles/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/customer/vehicles/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/customer/vehicles"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-customer-corporate": {
+      "projectType": "library",
+      "root": "libs/modules/customer/corporate",
+      "sourceRoot": "libs/modules/customer/corporate/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/customer/corporate/tsconfig.lib.json",
+            "project": "libs/modules/customer/corporate/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/customer/corporate/tsconfig.lib.json",
+              "libs/modules/customer/corporate/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/modules/customer/corporate/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/customer/corporate/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/customer/corporate"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "shared-util-directives": {
+      "projectType": "library",
+      "root": "libs/shared/util/directives",
+      "sourceRoot": "libs/shared/util/directives/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/shared/util/directives/tsconfig.lib.json",
+            "project": "libs/shared/util/directives/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/shared/util/directives/tsconfig.lib.json",
+              "libs/shared/util/directives/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/shared/util/directives/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shared/util/directives/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/shared/util/directives"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-profile": {
+      "projectType": "library",
+      "root": "libs/modules/profile",
+      "sourceRoot": "libs/modules/profile/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/profile/tsconfig.lib.json",
+            "project": "libs/modules/profile/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/profile/tsconfig.lib.json",
+              "libs/modules/profile/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/profile/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/profile/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/profile"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-customer-fleets": {
+      "projectType": "library",
+      "root": "libs/modules/customer/fleets",
+      "sourceRoot": "libs/modules/customer/fleets/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/customer/fleets/tsconfig.lib.json",
+            "project": "libs/modules/customer/fleets/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/customer/fleets/tsconfig.lib.json",
+              "libs/modules/customer/fleets/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/modules/customer/fleets/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/customer/fleets/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/customer/fleets"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "shared-util-pipes": {
+      "projectType": "library",
+      "root": "libs/shared/util/pipes",
+      "sourceRoot": "libs/shared/util/pipes/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/shared/util/pipes/tsconfig.lib.json",
+            "project": "libs/shared/util/pipes/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/shared/util/pipes/tsconfig.lib.json",
+              "libs/shared/util/pipes/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shared/util/pipes/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shared/util/pipes/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/shared/util/pipes"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-customer-services": {
+      "projectType": "library",
+      "root": "libs/modules/customer/services",
+      "sourceRoot": "libs/modules/customer/services/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/customer/services/tsconfig.lib.json",
+            "project": "libs/modules/customer/services/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/customer/services/tsconfig.lib.json",
+              "libs/modules/customer/services/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/modules/customer/services/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/customer/services/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/customer/services"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-jobs": {
+      "projectType": "library",
+      "root": "libs/modules/jobs",
+      "sourceRoot": "libs/modules/jobs/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/jobs/tsconfig.lib.json",
+            "project": "libs/modules/jobs/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/jobs/tsconfig.lib.json",
+              "libs/modules/jobs/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/jobs/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/jobs/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/jobs"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-marketplaces": {
+      "projectType": "library",
+      "root": "libs/modules/marketplaces",
+      "sourceRoot": "libs/modules/marketplaces/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/marketplaces/tsconfig.lib.json",
+            "project": "libs/modules/marketplaces/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/marketplaces/tsconfig.lib.json",
+              "libs/modules/marketplaces/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/marketplaces/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/marketplaces/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/marketplaces"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-business": {
+      "projectType": "library",
+      "root": "libs/modules/business",
+      "sourceRoot": "libs/modules/business/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/business/tsconfig.lib.json",
+            "project": "libs/modules/business/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/business/tsconfig.lib.json",
+              "libs/modules/business/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/business/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/business/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/business"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-models": {
+      "projectType": "library",
+      "root": "libs/modules/models",
+      "sourceRoot": "libs/modules/models/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/models/tsconfig.lib.json",
+            "project": "libs/modules/models/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/models/tsconfig.lib.json",
+              "libs/modules/models/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/models/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/models/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/models"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-marketing": {
+      "projectType": "library",
+      "root": "libs/modules/marketing",
+      "sourceRoot": "libs/modules/marketing/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/marketing/tsconfig.lib.json",
+            "project": "libs/modules/marketing/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/marketing/tsconfig.lib.json",
+              "libs/modules/marketing/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/marketing/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/marketing/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/marketing"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "modules-template": {
+      "projectType": "library",
+      "root": "libs/modules/template",
+      "sourceRoot": "libs/modules/template/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/template/tsconfig.lib.json",
+            "project": "libs/modules/template/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/template/tsconfig.lib.json",
+              "libs/modules/template/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/template/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/template/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/template"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "shared-classes": {
+      "root": "libs/shared/classes",
+      "sourceRoot": "libs/shared/classes/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/shared/classes/tsconfig.lib.json",
+              "libs/shared/classes/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shared/classes/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shared/classes/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/shared/classes"]
+        }
+      }
+    },
+    "modules-sales": {
+      "projectType": "library",
+      "root": "libs/modules/sales",
+      "sourceRoot": "libs/modules/sales/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/sales/tsconfig.lib.json",
+            "project": "libs/modules/sales/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/modules/sales/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/sales/tsconfig.lib.json",
+              "libs/modules/sales/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/sales/**/*"],
+            "linter": "eslint"
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/sales/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/sales"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "modules-test-drive": {
+      "projectType": "library",
+      "root": "libs/modules/test-drive",
+      "sourceRoot": "libs/modules/test-drive/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/test-drive/tsconfig.lib.json",
+            "project": "libs/modules/test-drive/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/modules/test-drive/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/test-drive/tsconfig.lib.json",
+              "libs/modules/test-drive/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/test-drive/**/*"],
+            "linter": "eslint"
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/test-drive/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/test-drive"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "modules-support-center": {
+      "projectType": "library",
+      "root": "libs/modules/support-center",
+      "sourceRoot": "libs/modules/support-center/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/support-center/tsconfig.lib.json",
+            "project": "libs/modules/support-center/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/modules/support-center/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/support-center/tsconfig.lib.json",
+              "libs/modules/support-center/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/modules/support-center/**/*"
+            ],
+            "linter": "eslint"
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/support-center/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/support-center"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "modules-calendar": {
+      "projectType": "library",
+      "root": "libs/modules/calendar",
+      "sourceRoot": "libs/modules/calendar/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/calendar/tsconfig.lib.json",
+            "project": "libs/modules/calendar/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/modules/calendar/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/calendar/tsconfig.lib.json",
+              "libs/modules/calendar/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/calendar/**/*"],
+            "linter": "eslint"
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/calendar/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/calendar"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "modules-rewards": {
+      "projectType": "library",
+      "root": "libs/modules/rewards",
+      "sourceRoot": "libs/modules/rewards/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/modules/rewards/tsconfig.lib.json",
+            "project": "libs/modules/rewards/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/modules/rewards/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/rewards/tsconfig.lib.json",
+              "libs/modules/rewards/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/rewards/**/*"],
+            "linter": "eslint"
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/modules/rewards/jest.config.js",
+            "passWithNoTests": true
+          },
+          "outputs": ["coverage/libs/modules/rewards"]
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "shared-google-location": {
+      "projectType": "library",
+      "root": "libs/shared/google-location",
+      "sourceRoot": "libs/shared/google-location/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/google-location/tsconfig.lib.json",
+            "project": "libs/shared/google-location/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/google-location/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/google-location/src/**/*.ts",
+              "libs/shared/google-location/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/google-location"],
+          "options": {
+            "jestConfig": "libs/shared/google-location/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "modules-insurer": {
+      "projectType": "library",
+      "root": "libs/modules/insurer",
+      "sourceRoot": "libs/modules/insurer/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/modules/insurer/tsconfig.lib.json",
+            "project": "libs/modules/insurer/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/modules/insurer/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/modules/insurer/src/**/*.ts",
+              "libs/modules/insurer/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/modules/insurer"],
+          "options": {
+            "jestConfig": "libs/modules/insurer/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "modules-pre-owned-inventory": {
+      "projectType": "library",
+      "root": "libs/modules/pre-owned/inventory",
+      "sourceRoot": "libs/modules/pre-owned/inventory/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/modules/pre-owned/inventory/tsconfig.lib.json",
+            "project": "libs/modules/pre-owned/inventory/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/modules/pre-owned/inventory/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/pre-owned/inventory/tsconfig.lib.json",
+              "libs/modules/pre-owned/inventory/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/modules/pre-owned/inventory/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/modules/pre-owned/inventory"],
+          "options": {
+            "jestConfig": "libs/modules/pre-owned/inventory/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "modules-lead-management": {
+      "projectType": "library",
+      "root": "libs/modules/lead-management",
+      "sourceRoot": "libs/modules/lead-management/src",
+      "prefix": "neural",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/modules/lead-management/tsconfig.lib.json",
+            "project": "libs/modules/lead-management/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/modules/lead-management/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/modules/lead-management/src/**/*.ts",
+              "libs/modules/lead-management/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/modules/lead-management"],
+          "options": {
+            "jestConfig": "libs/modules/lead-management/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "next-service": {
+      "projectType": "library",
+      "root": "libs/modules/next-service",
+      "sourceRoot": "libs/modules/next-service/src",
+      "prefix": "neural",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/next-service/tsconfig.lib.json",
+              "libs/modules/next-service/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/next-service/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/modules/next-service"],
+          "options": {
+            "jestConfig": "libs/modules/next-service/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "modules-service-menu": {
+      "projectType": "library",
+      "root": "libs/modules/service-menu",
+      "sourceRoot": "libs/modules/service-menu/src",
+      "prefix": "neural",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/modules/service-menu/tsconfig.lib.json",
+              "libs/modules/service-menu/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/modules/service-menu/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/modules/service-menu"],
+          "options": {
+            "jestConfig": "libs/modules/service-menu/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/angular",
+    "analytics": "d38f96c2-a72f-4a96-9953-c79fad1625c5"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest",
+      "strict": true
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  }
+}

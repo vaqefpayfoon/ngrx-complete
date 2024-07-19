@@ -1,0 +1,115 @@
+<div fxLayout="column" fxLayoutGap="1rem">
+    <div fxFlex="100" fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start end" *ngIf="!!repairOrder">
+        <button mat-flat-button color="primary" type="button" [disabled]="!completeReservationPermission" class="px10 py1" (click)="completeOrder()">Complete Job<mat-icon>arrow_right_alt</mat-icon></button>
+        <mat-hint>You can complete the current job if there is no invoice</mat-hint>
+    </div>
+    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem" fxLayoutAlign="space-between center">
+        <div fxFlex>
+            <mat-card class="inprogress" [class.inprogress__disabled]="inprogress?.job?.repairOrder">
+                <mat-card-content>
+                    <div fxLayout="column" fxFlex="100">
+                        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                            <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center">Repair Order</h2>
+                        </div>
+                        <div class="card__divider my4">
+                            <mat-divider></mat-divider>
+                        </div>
+                        <div>
+                            <form autocomplete="off" novalidate [formGroup]="form">
+                                <div fxLayout="column" class="inprogress__general my8" fxLayoutAlign="start space-between" fxLayoutGap="1rem">
+                                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem"> 
+                                        <div class="form-group" fxFlex="50">
+                                            <mat-label class="font-semi-thick">Repair Order Number</mat-label>
+                                            <input type="text" matInput class="form-control" formControlName="number" placeholder="Repair Order Number" autocomplete="off">
+                                            <neural-show-errors [control]="form.controls.number"></neural-show-errors>
+                                        </div>                
+                                    </div>
+                                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                                        <div class="form-group" fxFlex="35">
+                                            <input type="file" #roInput accept="application/pdf" hidden autocomplete="off" (change)="handleFileInput($event)">
+                                            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                                <button type="button" color="accent" mat-flat-button [disabled]="form.disabled || digitalRepairOrder?.active" (click)="roInput.click()" >Select Repair Order</button>
+                                                <span class="font-semi-thick">{{pdf.value && pdf.value.name ? pdf.value.name : ''}}</span>
+                                            </div>
+                                            <neural-show-errors [control]="form.controls.file"></neural-show-errors>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button mat-stroked-button class="mr4 px10 py1" (click)="form.disable()">Cancel</button>
+                                <button mat-flat-button *ngIf="form.disabled" class="px10 py1" color="primary" [disabled]="!!repairOrder" (click)="form.enable()">Edit</button>
+                                <button mat-flat-button *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid" (click)="createRO(form)">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <div class="inprogress__file" fxLayout="row" fxLayoutAlign="center center" *ngIf="inprogress?.job?.repairOrder">
+                    <a mat-flat-button *ngIf="inprogress?.job?.repairOrder" class="inprogress__download" target="_blank" [href]="repairOrder?.docUrl">
+                        <mat-icon>get_app</mat-icon> Repair order - {{repairOrder?.number}}
+                    </a>
+                </div>
+            </mat-card>
+        </div>
+        <div fxFlex>
+            <mat-card class="inprogress" [class.inprogress__disabled]="!inprogress?.job?.repairOrder">
+                <mat-card-content>
+                    <div fxLayout="column" fxFlex="100">
+                        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                            <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center">Invoice</h2>
+                        </div>
+                        <div class="card__divider my4">
+                            <mat-divider></mat-divider>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <form [fxFlex]="invoice ? '70' : '100'" autocomplete="off" novalidate [formGroup]="invoiceForm">
+                                <div fxLayout="column" class="inprogress__general my8" fxLayoutAlign="start space-between" fxLayoutGap="1rem">
+                                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem"> 
+                                        <div class="form-group" fxFlex="60">
+                                            <mat-label class="font-semi-thick">Invoice</mat-label>
+                                            <input type="text" matInput class="form-control" formControlName="number" placeholder="Invoice Number" autocomplete="off">
+                                            <neural-show-errors [control]="invoiceForm.controls.number"></neural-show-errors>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">                
+                                        <div class="form-group" fxFlex="60">
+                                            <mat-label class="font-semi-thick">Payable Amount</mat-label>
+                                            <input type="number" matInput class="form-control" formControlName="payableAmount" placeholder="Payable Amount" autocomplete="off">
+                                            <neural-show-errors [control]="invoiceForm.controls.payableAmount"></neural-show-errors>
+                                        </div> 
+                                        </div> 
+                                        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">                
+                                        <div class="form-group" fxFlex="60">
+                                            <mat-label class="font-semi-thick">Upsell Amount</mat-label>
+                                            <input type="number" matInput class="form-control" formControlName="upSellAmount" placeholder="Upsell Amount" autocomplete="off">
+                                            <neural-show-errors [control]="invoiceForm.controls.upSellAmount"></neural-show-errors>
+                                        </div>                
+                                    </div>
+                                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                                        <div class="form-group" fxFlex="100">
+                                            <input type="file" #invoiceInput accept="application/pdf" hidden autocomplete="off" (change)="invoiceUpload($event)"/>
+                                            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                                <button type="button" color="accent" mat-flat-button [disabled]="invoiceForm.disabled" (click)="invoiceInput.click()" >Select Invoice</button>
+                                                <span class="font-semi-thick">{{pdfInvoice.value && pdfInvoice.value.name ? pdfInvoice.value.name : ''}}</span>
+                                            </div>
+                                            <neural-show-errors [control]="invoiceForm.controls.file"></neural-show-errors>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button mat-stroked-button class="mr4 px10 py1" (click)="invoiceForm.disable()">Cancel</button>
+                                <button mat-flat-button *ngIf="invoiceForm.disabled" class="px10 py1" color="primary" (click)="invoiceForm.enable()">Edit</button>
+                                <button mat-flat-button *ngIf="invoiceForm.enabled" class="px10 py1" color="primary" [disabled]="!invoicePerms || !invoicePermission" (click)="createInvoice(invoiceForm)">Save</button>
+                            </form>
+                            <div fxFlex="30" *ngIf="invoice">
+                                <a mat-flat-button *ngIf="invoice?.docUrl" class="inprogress__download" target="_blank" [href]="invoice?.docUrl">
+                                    <mat-icon>get_app</mat-icon> Invoice - {{invoice?.number}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <div class="inprogress__file" fxLayout="row" fxLayoutAlign="center center" *ngIf="!inprogress?.job?.repairOrder">
+                    <h1 class="h4 text-capitalize font-semi-thick my0">Please Upload Repair Order</h1>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="role-card" fxFlex="100" fxLayout="column">
+    <div fxFlex="100" fxLayout="column" class="role-card__content">
+        <div class="py4 role-card__content--title" fxLayout="row" fxFlexFill fxFlex="100" fxLayoutAlign="start center">
+            <mat-icon svgIcon="tag"></mat-icon>
+            <span class="font-semi-thick">Selected States</span>
+        </div>
+        <div class="role-card__content--chips" fxLayout="row wrap" fxFlexFill fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="10px grid">
+            <div *ngFor="let state of states">
+                <span (click)="selectState(state)" [ngClass]="{
+                    active: existsInStates(state),
+                    disabled: formDisabled
+                }">{{state}}</span>
+            </div>
+        </div>
+    </div>            
+</div>

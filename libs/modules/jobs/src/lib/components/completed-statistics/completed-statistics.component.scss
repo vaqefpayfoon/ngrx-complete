@@ -1,0 +1,48 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.card {
+  &__header {
+    &--actions {
+      z-index: 1;
+    }
+  }
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+  height: 100%;
+
+  &__divider {
+    position: relative;
+  }
+
+  &__orange {
+    background-color: map-get($map: $colors, $key: orange) !important;
+  }
+
+  &__yellow {
+    background-color: darken($color: map-get($map: $colors, $key: pending), $amount: 5%) !important;
+  }
+
+  &__violet {
+    background-color: map-get($map: $colors, $key: theme) !important;
+  }
+
+  &__green {
+    background-color: map-get($map: $colors, $key: green) !important;
+  }
+
+  &__data {
+    height: 100%;
+    &--status {
+      cursor: pointer;
+      color: map-get($map: $colors, $key: white);
+      background-color: map-get($map: $colors, $key: theme);
+      border: 1px solid map-get($map: $colors, $key: aquaHaze);
+      @include round(7px);
+      padding: 10px 15px;
+      font-size: 13px;
+    }
+  }
+}

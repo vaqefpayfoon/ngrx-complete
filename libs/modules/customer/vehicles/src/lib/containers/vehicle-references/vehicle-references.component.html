@@ -1,0 +1,37 @@
+<div class="references" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'Vehicle references'" [breadcrumbs]="bc" (refreshChange)="onRefresh($event)" [loading]="loading$ | async" [link]="(permissions$ | async)?.CREATE_VEHICLE_REFERENCE ? '../reference/new' : null"></neural-dynamic-header> 
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-brands-flat-rate-unit-card [permissions]="permissions$ | async" [brandsFRU]="brandsFRU$ | async" [totalFRU]="totalFRU$ | async" [remainingBrands]="remainingBrands$ | async" [pendingFRU]="pendingFRU$ | async"></neural-brands-flat-rate-unit-card>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="references__header">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <span class="references__header--item font-normal" fxFlex="15">Brand</span>
+                <span class="references__header--item font-normal" fxFlex="25">Unit</span>
+                <span class="references__header--item font-normal" fxFlex="15">Body Style</span>
+                <span class="references__header--item font-normal" fxFlex="15">Status</span>
+                <span class="references__header--item font-normal" fxFlex="5">Actions</span>
+            </div>
+        </mat-card>
+        <ng-container *ngIf="!(loading$ | async)">
+            <div class="mb3" *ngFor="let reference of (references$ | async)">
+                <neural-vehicle-reference-card [permissions]="permissions$ | async" [reference]="reference" (status)="openDialog($event)"></neural-vehicle-reference-card>
+            </div>
+          </ng-container>        
+        <div *ngIf="(loading$ | async)" class="references__loading">
+            Loading...
+        </div>
+        <div class="references__not-found" *ngIf="(error$ | async)">
+          <span> {{ (error$ | async) }} </span>
+        </div>
+    </div>
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+        <mat-paginator [length]="total$ | async"
+            [pageSize]="(referencesConfig$ | async).limit"
+            [pageIndex]="(referencesConfig$ | async).page - 1"
+            (page)="changePage($event)" showFirstLastButtons>
+        </mat-paginator>
+    </div>
+</div>

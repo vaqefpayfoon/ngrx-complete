@@ -1,0 +1,29 @@
+<mat-card class="card">
+  <div
+    fxLayout="row wrap"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    class="card__header"
+  >
+    <div fxFlex="20" class="font-semi-thick card__header--phone">
+    {{ inboxMessage?.payload?.title }}
+     </div>
+    <div fxFlex="20" class="font-semi-thick card__header--email">
+      {{ inboxMessage?.type }}
+    </div>
+    <div fxFlex="20" class="font-semi-thick card__header--email">
+      {{ inboxMessage?.viewRate?inboxMessage?.viewRate:'_'}}
+    </div>
+    <div fxFlex="5" class="font-semi-thick card__header--actions">
+      <button mat-icon-button [matMenuTriggerFor]="actions">
+        <mat-icon svgIcon="action_off"></mat-icon>
+      </button>
+      <mat-menu #actions="matMenu">
+        <button mat-menu-item [routerLink]="[inboxMessage?.uuid]">
+          <mat-icon>send</mat-icon>
+          <span>Send</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-card>

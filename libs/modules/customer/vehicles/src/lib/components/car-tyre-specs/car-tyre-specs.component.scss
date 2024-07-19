@@ -1,0 +1,91 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.specs {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+  $self: &;
+
+  &__name {
+    font-size: 1rem;
+  }
+
+  &__divider {
+    position: relative;
+  }
+
+  &__container {
+    position: relative;
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 2px;
+      background: map-get($map: $colors, $key: aquaHaze);
+      width: 83%;
+      top: 8.65rem;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      z-index: 0;
+    }
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 2px;
+      background: map-get($map: $colors, $key: aquaHaze);
+      width: 83%;
+      bottom: 15.15rem;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      z-index: 0;
+    }
+
+    &--title {
+    }
+
+    #{$self} {
+      &__vehicle {
+        position: relative;
+        z-index: 1;
+      }
+
+      &__input {
+
+        .form-group {
+          position: relative;
+          &:after {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            right: 5px;
+            content: "" attr(data-placeholder) ""
+          }
+
+          .form-control {
+            &--readonly {
+              background: map-get($map: $colors, $key: disable);
+            }
+          }
+        }
+
+        &--top {
+        }
+        &--bottom {
+        }
+      }
+
+      &__caption {
+        position: relative;
+
+      }
+    }
+  }
+}

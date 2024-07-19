@@ -1,0 +1,58 @@
+<form [formGroup]="form" fxLayout="column" fxFlex="100">
+    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">SingPass</h2>
+        <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+            <mat-label>Active</mat-label>
+            <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active" (change)="changeActive($event)">
+            </mat-slide-toggle>
+        </div>
+    </div>
+    <div class="corporate__divider my2">
+        <mat-divider></mat-divider>
+    </div>
+    <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem" class="corporate__general my8">
+        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+            <div class="form-group" fxFlex="35" fxLayout="column" fxLayoutGap="1rem">
+                <mat-label>Attributes</mat-label>
+                <input type="text" matInput class="form-control" formControlName="attributes" placeholder="Attributes"
+                    autocomplete="off">
+            </div>
+        </div>
+        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem" formGroupName="callback">
+            <h2 class="h6 text-capitalize font-semi-thick my0 mt8">Callback</h2>
+            <div class="corporate__divider my2">
+                <mat-divider></mat-divider>
+            </div>
+            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                <div class="form-group" fxFlex="35">
+                    <mat-label>URL</mat-label>
+                    <input type="text" matInput class="form-control" formControlName="url" placeholder="URL"
+                        autocomplete="off">
+                </div>
+                <div class="form-group" fxFlex="35">
+                    <mat-label>Token</mat-label>
+                    <input type="text" matInput class="form-control" formControlName="token" placeholder="Token"
+                        autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem" formGroupName="client">
+            <h2 class="h6 text-capitalize font-semi-thick my0 mt8">Callback</h2>
+            <div class="corporate__divider my2">
+                <mat-divider></mat-divider>
+            </div>
+            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                <div class="form-group" fxFlex="35">
+                    <mat-label>ID</mat-label>
+                    <input type="text" matInput class="form-control" formControlName="id" placeholder="ID"
+                        autocomplete="off">
+                </div>
+                <div class="form-group" fxFlex="35">
+                    <mat-label>Secret</mat-label>
+                    <input type="text" matInput class="form-control" formControlName="secret" placeholder="Secret"
+                        autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

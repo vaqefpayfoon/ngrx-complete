@@ -1,0 +1,113 @@
+<form autocomplete="off" novalidate [formGroup]="parent">
+  <mat-card class="branch p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Coverages</h2>
+      </div>
+    </mat-card-title>
+    <div class="branch__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+        formGroupName="mapCoveragePostalCodes"
+      >
+        <div fxFlex="100" fxLayout="column" fxLayoutGap="1rem">
+          <mat-label>Mobile Service</mat-label>
+          <div>
+            <div class="form-group" fxFlex="35">
+              <!-- <mat-chip-list #chipList aria-label="coverage mobile service">
+                <mat-chip
+                  *ngFor="let coverage of mobileServicecoverages"
+                  [selectable]="selectable"
+                  [removable]="removable"
+                  [disabled]="formDisabled"
+                  (removed)="remove(coverage)"
+                >
+                  {{ coverage }}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input
+                  placeholder="type and press enter"
+                  matInput
+                  [disabled]="formDisabled"
+                  [readonly]="formDisabled"
+                  class="form-control"
+                  [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="addOnBlur"
+                  (matChipInputTokenEnd)="add($event)"
+                />
+              </mat-chip-list> -->
+              <mat-form-field>
+                <mat-label>Mobile Service</mat-label>
+                <mat-chip-list #coverageList [disabled]="formDisabled" aria-label="coverage mobile service">
+                  <mat-chip
+                  *ngFor="let coverage of mobileServicecoverages"
+                  [selectable]="selectable"
+                  [removable]="removable"
+                  [disabled]="formDisabled"
+                  (removed)="remove(coverage)"
+                >
+                  {{ coverage }}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                    <input 
+                    placeholder="type and press enter"
+                    matInput
+                    [disabled]="formDisabled"
+                    [matChipInputFor]="coverageList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)"/>
+                </mat-chip-list>
+            </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxLayout="column" fxLayoutGap="1rem">
+          <mat-label>Test drive</mat-label>
+          <div>
+            <div class="form-group" fxFlex="35">
+              <mat-form-field>
+                <mat-label>Mobile Service</mat-label>
+                <mat-chip-list #coverageTestList [disabled]="formDisabled" aria-label="coverage test drive">
+                  <mat-chip
+                  *ngFor="let coverage of testDrivecoverages"
+                  [selectable]="selectable"
+                  [removable]="removable"
+                  [disabled]="formDisabled"
+                  (removed)="removeTestDrive(coverage)"
+                >
+                  {{ coverage }}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                    <input 
+                    placeholder="type and press enter"
+                    matInput
+                    [disabled]="formDisabled"
+                    [matChipInputFor]="coverageTestList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="addTestDrive($event)"/>
+                </mat-chip-list>
+            </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <ng-content></ng-content>
+  </mat-card>
+</form>

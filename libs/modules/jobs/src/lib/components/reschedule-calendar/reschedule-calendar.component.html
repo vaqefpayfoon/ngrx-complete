@@ -1,0 +1,54 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="reschedule p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Calendar</h2>
+            </div>
+        </mat-card-title>
+        <div class="reschedule__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="reschedule__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="2rem" fxFlexOffset="8rem">
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div fxLayout="column" fxFlex="15">
+                        <mat-label>Name</mat-label>
+                        <span class="font-semi-thick">{{ reservation?.account?.fullName }}</span>
+                    </div>
+                    <div fxLayout="column" fxFlex="15">
+                        <mat-label>Phone Number</mat-label>
+                        <span class="font-semi-thick">{{ reservation?.account?.phone }}</span>
+                    </div>
+                    <div fxLayout="column" fxFlex="15">
+                        <mat-label>Email</mat-label>
+                        <span class="font-semi-thick">{{ reservation?.account.email }}</span>
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div fxLayout="column" fxFlex="15">
+                        <mat-label>Current Selected Date</mat-label>
+                        <span class="font-semi-thick">{{ reservation?.calendar.slot | date: 'MMM d, y, h:mm a' : timezone }}</span>
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div class="form-group my0" fxLayout="column" fxFlex="33">
+                        <mat-label>Date Picker</mat-label>
+                        <div fxLayout="row">
+                            <input matInput readonly class="form-control" [matDatepicker]="dp" formControlName="date" [min]="minDate">
+                            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                            <mat-datepicker #dp startView="multi-year"
+                            (yearSelected)="chosenYearHandler($event)"
+                            (monthSelected)="chosenMonthHandler($event, dp)"
+                            disabled="false">
+                            </mat-datepicker>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+            <button mat-flat-button *ngIf="!exists && form.enabled" class="px10 py1" color="primary" (click)="createCalendar(form)">Search</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

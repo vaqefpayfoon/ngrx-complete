@@ -1,0 +1,69 @@
+<mat-card class="model p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Model Image</h2>
+        </div>
+    </mat-card-title>
+    <div class="model__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <div [formGroup]="form">
+            <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutGap="1rem" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between">
+                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                    <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                        <mat-label>Brand</mat-label>
+                        <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':formDisabled}" fxFlex="100">
+                            <mat-select placeholder="Select a brand" formControlName="brand">
+                                <mat-option *ngFor="let item of unit?.brandsAndSeries" [value]="item.name">
+                                  {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+                    <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                        <mat-label>Series</mat-label>
+                        <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':(formDisabled || brand.invalid)}" fxFlex="100">
+                            <mat-select placeholder="Select series" formControlName="series" (selectionChange)="onChangeSeries($event)">
+                                <mat-option *ngFor="let item of seriesList" [value]="item.name">
+                                  {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+                    <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                        <mat-label>Model</mat-label>
+                        <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':(formDisabled || series.invalid)}" fxFlex="100">
+                            <mat-select placeholder="Select a model" formControlName="model" (selectionChange)="onChangeModel($event)">
+                                <ng-template ngFor let-model [ngForOf]="unit?.models">
+                                    <mat-option [value]="model">
+                                        {{model?.display}}
+                                    </mat-option>
+                                </ng-template>
+                            </mat-select>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center" *ngIf="!!currentModelImageUrl">
+                    <span class="text-capitalize font-thick my0">Current Image</span>
+                </div>
+                <div fxLayout="row" fxLayoutGap="1rem" *ngIf="!!currentModelImageUrl">
+                    <img class="model__current-image" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/placeholder.jpg'" [src]="currentModelImageUrl?.url?.modelImage">
+                </div>
+                <div fxLayout="column" fxLayoutGap="1rem" *ngIf="unit?.variants">
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                        <span class="text-capitalize font-thick my0">Select Image</span>
+                    </div>
+                    <div fxFlex="100">
+                        <neural-model-images formControlName="image" [variants]="unit?.variants" [formDisabled]="formDisabled"></neural-model-images>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="form.disabled" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+        <button mat-flat-button type="button" *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || !createPermission" (click)="create(form)">Save</button>
+    </mat-card-actions>
+</mat-card>

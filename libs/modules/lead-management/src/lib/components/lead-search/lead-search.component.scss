@@ -1,0 +1,53 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.lead-search {
+  $self: &;
+  color: map-get($map: $colors, $key: shark) !important;
+
+  &__panel {
+    .mat-expansion-panel {
+      @include round(7px);
+      border: 0;
+      box-shadow: none;
+    }
+
+    #{$self} {
+      &__divider {
+        position: relative;
+      }
+
+      &__card {
+        border: 0;
+        box-shadow: none;
+      }
+
+      &__general {
+        border: 0;
+        mat-label {
+          font-size: 13px;
+          margin-bottom: 0.5rem;
+          display: inline-block;
+        }
+
+        position: relative;
+        .form-group {
+          mat-label {
+            font-size: 13px;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+          }
+
+          position: relative;
+        }
+      }
+    }
+    .mat-mini-fab {
+      .mat-icon {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+      }
+    }
+  }
+}

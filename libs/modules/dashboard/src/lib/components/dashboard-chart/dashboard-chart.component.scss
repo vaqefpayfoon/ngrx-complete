@@ -1,0 +1,80 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.card {
+  &__header {
+    &--actions {
+      z-index: 1;
+    }
+  }
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+  overflow: hidden;
+  min-height: 250px;
+
+  &__header {
+    min-height: unset;
+  }
+
+  &__progress {
+    @include breakpoint(lt-md) {
+      width: 100%;
+    }
+  }
+
+  $self: &;
+
+  &__container {
+    height: 100%;
+    &--data {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      @include breakpoint(lt-md) {
+        width: 100%;
+      }
+    }
+
+    &--icon {
+      background-color: map-get($map: $colors, $key: pending) !important;
+      border-radius: 50%;
+      height: 48px;
+      width: 48px;
+      line-height: 48px;
+      text-align: center;
+      color: map-get($map: $colors, $key: white) !important;
+    }
+
+    &--graph {
+      // max-width: 100%;
+      width: 100%;
+      height: 100%;
+    }
+
+    #{$self} {
+      &__star {
+        color: darken(
+          $color: map-get($map: $colors, $key: pending),
+          $amount: 5%
+        ) !important;
+        font-size: 2rem;
+      }
+
+      &__border {
+        border: 3px solid map-get($map: $colors, $key: theme);
+        @include round(50%);
+        width: 180px;
+        height: 180px;
+        padding: 15px;
+        line-height: 180px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+}

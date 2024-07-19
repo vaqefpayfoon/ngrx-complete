@@ -1,0 +1,101 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="enquiry p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="enquiry__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="enquiry__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Subject</mat-label>
+                            <input type="text" readonly matInput class="form-control" formControlName="subject" placeholder="Subject" autocomplete="off">
+                            <neural-show-errors [control]="form.controls.subject"></neural-show-errors>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Name</mat-label>
+                            <input type="text" readonly matInput class="form-control" formControlName="name" placeholder="Name" autocomplete="off">
+                            <neural-show-errors [control]="form.controls.name"></neural-show-errors>
+                        </div>
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Email</mat-label>
+                            <input type="text" readonly matInput class="form-control" formControlName="email" placeholder="Email" autocomplete="off">
+                            <neural-show-errors [control]="form.controls.email"></neural-show-errors>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" formGroupName="phone">
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Code</mat-label>
+                            <input type="text" readonly matInput class="form-control" formControlName="code" placeholder="Code" autocomplete="off">
+                            <neural-show-errors [control]="phone.controls.code"></neural-show-errors>
+                        </div>
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Number</mat-label>
+                            <input type="text" readonly matInput class="form-control" formControlName="number" placeholder="Number" autocomplete="off">
+                            <neural-show-errors [control]="phone.controls.number"></neural-show-errors>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                        <div class="form-group" fxFlex="70">
+                            <mat-label>Details</mat-label>
+                            <textarea readonly matInput rows="7" formControlName="details" class="form-control" placeholder="Details"></textarea>
+                            <neural-show-errors [control]="form.controls.details"></neural-show-errors>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="enquiry p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Update</h2>
+            </div>
+        </mat-card-title>
+        <div class="enquiry__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="enquiry__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                        <div fxFlex="35">
+                            <mat-label>Status</mat-label>
+                            <div class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled,
+                            'ng-invalid': form.controls.status.invalid && form.controls.status.touched,
+                            'ng-valid': form.controls.status.valid}">
+                                <mat-select placeholder="Select Status" formControlName="status">
+                                    <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.key">
+                                        {{status.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                            <neural-show-errors [control]="form.controls.status"></neural-show-errors>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                        <div class="form-group" fxFlex="70">
+                            <mat-label>Comment</mat-label>
+                            <textarea matInput rows="7" formControlName="comment" class="form-control" placeholder="Comment"></textarea>
+                            <neural-show-errors [control]="form.controls.comment"></neural-show-errors>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!updatePermission" (click)="cancel(form)">Cancel</button>
+            <button mat-flat-button type="button" *ngIf="exists && form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="edit(form)">Edit</button>
+            <button mat-flat-button *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!updatePermission || form.invalid" (click)="update(form)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

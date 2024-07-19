@@ -1,0 +1,20 @@
+<mat-dialog-content class="dialog">
+  <div *ngFor="let tags of data | keyvalue">
+    <h3>{{ tags.key }}</h3>
+    <mat-chip-list>
+      <mat-chip
+        [selectable]
+        [selected]="selectedTag === tag.value"
+        color="primary"
+        *ngFor="let tag of tags.value"
+        (click)="changeSelected(tag.value)"
+        >{{ tag.key }}</mat-chip
+      >
+    </mat-chip-list>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [disabled]="!selectedTag" (click)="addTag()">Add</button>
+</mat-dialog-actions>

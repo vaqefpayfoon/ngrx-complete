@@ -1,0 +1,29 @@
+<div class="services" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'Services'" [breadcrumbs]="bc" [link]="(permissions$ | async)?.CREATE_SERVICE ? '../action/new' : null" (refreshChange)="onRefresh($event)" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="services__header">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <span class="services__header--item font-normal" fxFlex="10">#</span>
+                <span class="services__header--item font-normal" fxFlex="50">Service</span>
+                <span class="services__header--item font-normal" fxFlex="10">Flat Rate Unit</span>
+                <span class="services__header--item font-normal" fxFlex="10">Category</span>
+                <span class="services__header--item font-normal" fxFlex="10">Main Service</span>
+                <span class="services__header--item font-normal" fxFlex="5">Status</span>
+                <span class="services__header--item font-normal" fxFlex="5">Actions</span>
+            </div>
+        </mat-card>
+        <ng-container *ngIf="!(loading$ | async)">
+            <div class="mb3" *ngFor="let service of (services$ | async)">
+                <neural-service-card [permissions]="permissions$ | async" [service]="service" (status)="openDialog($event)"></neural-service-card>
+            </div>
+        </ng-container>
+        <div *ngIf="(loading$ | async)" class="services__loading">
+            Loading...
+        </div>
+        <div class="services__not-found" *ngIf="(error$ | async)">
+            <span> {{ (error$ | async) }} </span>
+        </div>         
+    </div>
+</div>

@@ -1,0 +1,138 @@
+{
+  "npmScope": "neural",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*",
+    "tsconfig.base.json": "*"
+  },
+  "projects": {
+    "nerv-e2e": {
+      "tags": [],
+      "implicitDependencies": ["nerv"]
+    },
+    "nerv": {
+      "tags": []
+    },
+    "ngrx-router": {
+      "tags": []
+    },
+    "environment": {
+      "tags": []
+    },
+    "shared-assets": {
+      "tags": ["scope:shared", "type:assets"]
+    },
+    "ui": {
+      "tags": []
+    },
+    "shared-styles": {
+      "tags": ["scope:shared", "type:styles"]
+    },
+    "core": {
+      "tags": []
+    },
+    "layout": {
+      "tags": []
+    },
+    "modules-dashboard": {
+      "tags": []
+    },
+    "modules-administration": {
+      "tags": []
+    },
+    "auth": {
+      "tags": []
+    },
+    "shared-data": {
+      "tags": []
+    },
+    "modules-customer-vehicles": {
+      "tags": []
+    },
+    "modules-customer-corporate": {
+      "tags": []
+    },
+    "shared-util-directives": {
+      "tags": []
+    },
+    "modules-profile": {
+      "tags": []
+    },
+    "modules-customer-fleets": {
+      "tags": []
+    },
+    "shared-util-pipes": {
+      "tags": []
+    },
+    "modules-customer-services": {
+      "tags": []
+    },
+    "modules-jobs": {
+      "tags": []
+    },
+    "modules-marketplaces": {
+      "tags": []
+    },
+    "modules-business": {
+      "tags": []
+    },
+    "modules-models": {
+      "tags": []
+    },
+    "modules-marketing": {
+      "tags": []
+    },
+    "modules-template": {
+      "tags": []
+    },
+    "shared-classes": {
+      "tags": []
+    },
+    "modules-sales": {
+      "tags": []
+    },
+    "modules-test-drive": {
+      "tags": []
+    },
+    "modules-support-center": {
+      "tags": []
+    },
+    "modules-calendar": {
+      "tags": []
+    },
+    "modules-rewards": {
+      "tags": []
+    },
+    "modules-insurer": {
+      "tags": []
+    },
+    "shared-google-location": {
+      "tags": []
+    },
+    "modules-pre-owned-inventory": {
+      "tags": []
+    },
+    "modules-lead-management": {
+      "tags": []
+    },
+    "next-service": {
+      "tags": []
+    },
+    "modules-service-menu": {
+      "tags": []
+    }
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "affected": {
+    "defaultBase": "master"
+  }
+}

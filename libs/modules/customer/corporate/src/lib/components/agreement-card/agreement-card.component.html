@@ -1,0 +1,23 @@
+<mat-card class="card">
+  <div
+    fxLayout="row wrap"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    class="card__header"
+  >
+    <div fxFlex="20" class="font-semi-thick card__header--name">
+      {{type}}
+    </div>
+    <div fxFlex="5" class="font-semi-thick card__header--actions">
+      <button mat-icon-button [disabled]="!previewPermission" [matMenuTriggerFor]="actions">
+        <mat-icon svgIcon="action_off"></mat-icon>
+      </button>
+      <mat-menu #actions="matMenu">
+        <button mat-menu-item [disabled]="!previewPermission" [routerLink]="[uuid]">
+          <mat-icon svgIcon="preview_off"></mat-icon>
+          <span>Preview</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-card>

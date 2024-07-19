@@ -1,0 +1,53 @@
+<div fxLayout="column" fxFlex="100" fxLayoutAlign="stretch start">
+  <form [formGroup]="form" novalidate fxFlex="100" fxFlexFill>
+    <div
+      formArrayName="fulfillments"
+      fxLayout="column"
+      fxFlex="100"
+      fxLayoutGap="1rem"
+    >
+      <div
+        *ngFor="let item of fulfillments.controls; let i = index"
+        fxFlex="100"
+      >
+        <div [formGroupName]="i">
+          <div [ngSwitch]="item.get('type').value" fxFlex="100" fxFlexFill>
+            <neural-purchase-fulfillment-calendar-form
+              [branches]="(branches$ | async)?.branches"
+              [index]="i"
+              [purchase]="purchase"
+              *ngSwitchCase="modelSaleFulfillmentType.CALENDAR"
+              (updated)="onUpdateFullFillment($event)"
+              (locked)="onLock($event)"
+              [permissions]="permissions"
+            ></neural-purchase-fulfillment-calendar-form>
+            <neural-purchase-fulfillment-document-form
+              [index]="i"
+              [purchase]="purchase"
+              *ngSwitchCase="modelSaleFulfillmentType.DOCUMENT"
+              (updated)="onUpdateFullFillment($event)"
+              (locked)="onLock($event)"
+              [permissions]="permissions"
+            ></neural-purchase-fulfillment-document-form>
+            <neural-purchase-fulfillment-downpayment-form
+              [index]="i"
+              [purchase]="purchase"
+              *ngSwitchCase="modelSaleFulfillmentType.DOWNPAYMENT"
+              (updated)="onUpdateFullFillment($event)"
+              (locked)="onLock($event)"
+              [permissions]="permissions"
+            ></neural-purchase-fulfillment-downpayment-form>
+            <neural-purchase-fulfillment-rco-form
+              [index]="i"
+              [purchase]="purchase"
+              *ngSwitchCase="modelSaleFulfillmentType.RCO"
+              (updated)="onUpdateFullFillment($event)"
+              (locked)="onLock($event)"
+              [permissions]="permissions"
+            ></neural-purchase-fulfillment-rco-form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

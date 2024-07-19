@@ -1,0 +1,276 @@
+<div [formGroup]="form">
+  <!-- start general form -->
+  <mat-card class="campaign p4 my8">
+    <!-- start card title -->
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+      </div>
+    </mat-card-title>
+    <!-- end card title -->
+
+    <!-- start title divider -->
+    <div class="campaign__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <!-- end title divider -->
+
+    <!-- start card content -->
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="campaign__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <!-- start form controls -->
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <!-- type -->
+
+          <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+            <mat-label>Type</mat-label>
+            <div
+              class="form-group selectedMat mb4"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid': type.invalid && type.touched,
+                'ng-valid': type.valid
+              }"
+              fxFlex="100"
+            >
+              <mat-select
+                placeholder="Select type of campaign"
+                formControlName="type"
+                (selectionChange)="onChangeType($event)"
+              >
+                <mat-option
+                  *ngFor="let type of (types | keyvalue)"
+                  [value]="type.value"
+                >
+                  {{ type.value }}
+                </mat-option>
+              </mat-select>
+              <neural-show-errors
+                [control]="form.controls.type"
+              ></neural-show-errors>
+            </div>
+          </div>
+
+          <!-- name -->
+          <div fxFlex="35" class="form-group" fxLayout="column">
+            <mat-label>Name</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control"
+              formControlName="name"
+              placeholder="Name"
+              autocomplete="off"
+            />
+            <neural-show-errors
+              [control]="form.controls.name"
+            ></neural-show-errors>
+          </div>
+        </div>
+
+        <!-- description -->
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div fxFlex="35" class="form-group" fxLayout="column">
+            <mat-label>Description</mat-label>
+            <textarea
+              class="form-control"
+              formControlName="description"
+              placeholder="Ex. description..."
+              rows="7"
+            ></textarea>
+            <neural-show-errors
+              [control]="form.controls.description"
+            ></neural-show-errors>
+          </div>
+        </div>
+        <!-- image -->
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxFlex="100"
+          fxLayoutGap="2rem"
+        >
+          <div class="form-group" fxLayout="column">
+            <input
+              type="file"
+              #myImageInput
+              accept="image/*"
+              name="image"
+              hidden
+              class="form-control"
+              placeholder="Image"
+              autocomplete="off"
+              (change)="showImage($event)"
+            />
+            <div
+              fxFlex="100"
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              fxLayoutGap="1rem"
+            >
+              <button
+                type="button"
+                [disabled]="form.disabled"
+                color="warn"
+                mat-flat-button
+                (click)="myImageInput.click()"
+              >
+                Select Image
+              </button>
+            </div>
+          </div>
+          <div *ngIf="!!image.value && !formDisabled">
+            {{ image?.value?.name }}
+          </div>
+          <div>
+            <neural-show-errors
+                [control]="form.controls.image"
+              ></neural-show-errors>
+          </div>
+        </div>
+
+        <!-- image -->
+        <div fxLayout="row" fxFlex="100" *ngIf="campaign && campaign?.image">
+          <img class="campaign__image" [src]="campaign?.image" />
+        </div>
+
+        <!-- date -->
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          formGroupName="date"
+        >
+          <div fxFlex="35" class="form-group" fxLayout="column">
+            <mat-label>Enter a date range</mat-label>
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <mat-date-range-input class="form-control" [rangePicker]="picker" [min]="todayDate">
+                <input formControlName="start" matStartDate placeholder="Start date" (dateChange)="changeDate(start, $event)">
+                <input formControlName="end" matEndDate placeholder="End date" (dateChange)="changeEndDate(end, $event)">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            </div>
+            <mat-date-range-picker #picker></mat-date-range-picker>        
+          </div>
+        </div>
+        <div fxFlex="100" class="form-group" fxLayoutGap="1rem" fxLayout="row">
+
+          <!-- isFeatured -->
+          <div
+            class="form-group form-group--inline"
+            fxLayoutAlign="start center"
+            fxLayoutGap="1rem"
+          >
+            <mat-label class="mb0">Is Featured ?</mat-label>
+            <mat-slide-toggle
+              fxLayout="row-reversed"
+              color="primary"
+              formControlName="isFeatured"
+            >
+            </mat-slide-toggle>
+          </div>
+              <!-- is private -->
+              <div
+              class="form-group form-group--inline"
+              fxLayoutAlign="start center"
+              fxLayoutGap="1rem"
+            >
+              <mat-label class="mb0">Is private ?</mat-label>
+              <mat-slide-toggle
+                fxLayout="row-reversed"
+                color="primary"
+                formControlName="isPrivate"
+              >
+              </mat-slide-toggle>
+            </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <!-- end card content -->
+
+    <!-- start actions button -->
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        [disabled]="!createPermission || !updatePermission"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        [disabled]="!updatePermission"
+        *ngIf="exists && form.disabled"
+        class="px10 py1"
+        color="primary"
+        (click)="form.enable()"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!createPermission || formInvalid"
+        *ngIf="!exists"
+        class="px10 py1"
+        color="primary"
+        (click)="onCreate(form)"
+      >
+        Save
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!updatePermission"
+        *ngIf="form.enabled && exists"
+        class="px10 py1"
+        color="primary"
+        (click)="onUpdate(form)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+    <!-- end actions button -->
+  </mat-card>
+
+  <!-- start target form -->
+  <neural-campaign-target [campaign]="campaign" [parent]="form"></neural-campaign-target>
+  <!-- end target form -->
+
+  <!-- start notification form -->
+  <neural-campaign-notification></neural-campaign-notification>
+  <!-- end notification form -->
+
+  <!-- start newsletter form -->
+  <neural-campaign-newsletter
+    [formDisabled]="formDisabled"
+    *ngIf="types[type.value] === types.NEWSLETTER || types[type.value] === types.BANK_PROMOTION"
+  ></neural-campaign-newsletter>
+  <!-- end newsletter form -->
+
+  <!-- start rsvp form -->
+  <neural-campaign-rsvp
+    [formDisabled]="formDisabled"
+    *ngIf="types[type.value] === types.RSVP"
+  ></neural-campaign-rsvp>
+  <!-- end rsvp form -->
+
+  <!-- start external form -->
+  <neural-campaign-app-screen
+    [formDisabled]="formDisabled"
+    *ngIf="types[type.value] === types.APP_SCREEN"
+  ></neural-campaign-app-screen>
+  <!-- end external form -->
+
+  <!-- start content form -->
+  <neural-campaign-content [images]="images" [campaign]="campaign"></neural-campaign-content>
+  <!-- end content form -->
+</div>

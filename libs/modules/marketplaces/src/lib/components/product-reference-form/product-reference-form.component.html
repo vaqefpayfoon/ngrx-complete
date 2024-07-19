@@ -1,0 +1,94 @@
+<form autocomplete="off" [formGroup]="form" enctype="multipart/form-data">
+    <mat-card class="product p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="product__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="product__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem"> 
+
+                    <div fxFlex="100">
+                        <div fxFlex="0 0 35" fxLayout="column" fxLayoutGap="1rem">
+                            <mat-label>Service</mat-label>
+                            <div class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':form.disabled || serviceType.disabled}">
+                                <mat-select placeholder="Select a service" formControlName="serviceType" (selectionChange)="selected($event)">
+                                    <mat-option *ngFor="let serviceType of serviceTypes | keyvalue" [value]="serviceType.key">
+                                      {{serviceType.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxFlex="100">
+                        <div class="form-group">
+                            <mat-label>Description</mat-label>
+                            <ejs-richtexteditor
+                            [height]="height"
+                            [width]="width"
+                            formControlName="description"
+                            #customRTE
+                            [toolbarSettings]="tools"
+                        >
+                        </ejs-richtexteditor>
+                        </div>                
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex="100">
+                    <div class="form-group" fxLayout="column"  fxFlex="100">
+                        <mat-label>Image</mat-label>
+                        <input type="file" #myImageInput name="image" hidden class="form-control" placeholder="Image" autocomplete="off" (change)="showPreview($event)">
+                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                            <button type="button" color="primary" mat-flat-button [disabled]="form.disabled" (click)="myImageInput.click()" >Select Image</button>
+                            <span>{{image.value && image.value.name ? image.value.name : url}}</span>
+                            <div *ngIf="imageUrl" class="product__general--image">
+                                <img [src]="imageUrl" [alt]="brand?.value">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div formGroupName="unit" fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                    <div fxLayout="row">
+                        <div class="form-group">
+                            <mat-label>Brand</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="brand" placeholder="Brand" autocomplete="off">
+                        </div>
+                    </div>
+                    <div fxLayout="row">
+                        <div class="form-group">
+                            <mat-label>Model</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="model" placeholder="Model" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div formGroupName="unit" class="my8" fxLayoutAlign="start center" fxLayout="row wrap" fxFlex="100">
+                    <div formGroupName="specification" *ngFor="let specification of specificationsObjects" fxFlex="100">
+                        <ng-template [ngIf]="specification === serviceType.value">
+                            <div [formGroupName]="specification" fxFlex="14">
+                                <div class="mb4">
+                                    <h2 class="h6 text-capitalize font-semi-thick my0">{{removeExtra(specification) | titlecase}} Specifications</h2>
+                                </div>
+                                <div *ngFor="let spec of getSpecificationObjects(specification) | keyvalue">
+                                    <div class="form-group mb4">
+                                        <mat-label>{{removeExtra(spec.key) | titlecase}}</mat-label>
+                                        <input type="text" matInput class="form-control" [formControlName]="spec.key" [placeholder]="removeExtra(spec.key) | titlecase" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button class="mr4 px10 py1" type="button" (click)="behaviourForm(true)">Cancel</button>
+            <button type="button" mat-flat-button *ngIf="form.disabled" class="px10 py1" [disabled]="!updatePermission" color="primary" (click)="behaviourForm(false)">Edit</button>
+            <button type="button" mat-flat-button *ngIf="exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !updatePermission" (click)="updateProduct(form)">Save</button>
+            <button type="button" mat-flat-button *ngIf="!exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !createPermission" (click)="createProduct(form)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

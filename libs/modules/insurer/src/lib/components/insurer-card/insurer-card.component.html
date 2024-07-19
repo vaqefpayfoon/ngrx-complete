@@ -1,0 +1,37 @@
+<mat-card class="card" [ngClass]="{ deactive: !insurer?.active }">
+    <div fxLayout="row wrap" fxLayout.lt-md="column" fxFlex="100" fxLayoutAlign="space-between center"
+        fxLayoutAlign.lt-md="start start" class="card__header" fxLayoutGap.lt-md="1rem">
+        <div fxFlex="10" fxFlex.lt-md="100" class="font-semi-thick card__header--email">
+            {{ insurer?.name }}
+        </div>
+        <div fxFlex="15" fxLayout="row" fxFlex.lt-md="100" class="font-semi-thick card__header--phone">
+            <p class="truncate">{{insurer?.url || insurer?.image}}</p>
+            <a mat-icon-button aria-label="link" [disabled]="!insurer?.url && !insurer?.image" [href]="insurer?.url || insurer?.image" target="_blank">
+                <mat-icon>open_in_new</mat-icon>
+            </a>
+        </div>
+        <div fxFlex="15" fxFlex.lt-md="100" class="font-semi-thick card__header--phone">
+            {{insurer?.type | titlecase}}
+        </div>
+        <div fxFlex="20" class="font-semi-thick card__header--status">
+            <mat-slide-toggle color="primary" matTooltipPosition="above"
+                [matTooltip]="insurer.active ? 'Deactivate' : 'Activate'" (click)="toggleStatus($event)" [checked]="insurer?.active">
+            </mat-slide-toggle>
+        </div>
+        <div fxFlex="5" class="font-semi-thick card__header--actions">
+            <button mat-icon-button [matMenuTriggerFor]="actions">
+                <mat-icon svgIcon="action_off"></mat-icon>
+            </button>
+            <mat-menu #actions="matMenu">
+                <button mat-menu-item [routerLink]="[insurer?.uuid]">
+                    <mat-icon>remove_red_eye</mat-icon>
+                    <span>Preview</span>
+                </button>
+                <button  mat-menu-item [disabled]="!deletePermission" (click)="onDelete()">
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete</span>
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+</mat-card>

@@ -1,0 +1,51 @@
+<div
+    class="account__body--cso"
+    fxLayout="column"
+    fxFlex="100"
+    fxLayoutGap="1rem"
+    [formGroup]="form"
+  >
+  <h2>Cso</h2>
+  <mat-divider></mat-divider>
+  <div fxLayout="row">
+    <div class="form-group" fxFlex="0 0 33">
+      <mat-label>Since</mat-label>
+      <input
+        type="number"
+        matInput
+        class="form-control"
+        formControlName="since"
+        placeholder="since"
+      />
+      <neural-show-errors [control]="form.controls.since"></neural-show-errors>
+    </div>
+    </div>
+    <div fxLayout="row">
+
+    <div class="form-group" fxFlex="0 0 33">
+      <mat-label>Rate</mat-label>
+      <input
+        type="number"
+        matInput
+        class="form-control"
+        formControlName="rate"
+        placeholder="rate"
+      />
+      <neural-show-errors [control]="form.controls.rate"></neural-show-errors>
+    </div>
+  </div>
+
+    <div fxLayout="row">
+    <div class="form-group" fxFlex="0 0 33">
+      <mat-label>Average service time</mat-label>
+      <input
+        type="text"
+        matInput
+        class="form-control"
+        formControlName="averageServiceTime"
+        placeholder="average service time"
+      />
+      <neural-show-errors [control]="form.controls.averageServiceTime"></neural-show-errors>
+    </div>
+  </div>
+  </div>

@@ -1,0 +1,116 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.role-tag-card {
+  $self: &;
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+
+  &__divider {
+    position: relative;
+  }
+
+  &__content {
+    &--title {
+      span {
+        font-size: $font-size * 0.75;
+      }
+      .mat-icon {
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+      }
+    }
+    &--chips {
+
+      &.selected {
+        span {
+          cursor: unset;
+          background-color: map-get($map: $colors, $key: bg);
+          color: map-get($map: $colors, $key: theme);
+        }
+      }
+
+      span {
+        padding: 0.5rem 0.75rem;
+        cursor: pointer;
+        font-size: $font-size * 0.75;
+        text-transform: capitalize;
+        @include round(7px);
+        border: 1px solid map-get($map: $colors, $key: aquaHaze);
+        position: relative;
+
+        display: inline-block;
+        background: map-get($map: $colors, $key: white);
+        color: map-get($map: $colors, $key: shark);
+  
+        &:hover {
+          background-color: map-get($map: $colors, $key: bg) !important;
+          color: map-get($map: $colors, $key: theme);
+        }
+
+        &.active {
+          background-color: map-get($map: $colors, $key: bg) !important;
+          color: map-get($map: $colors, $key: theme);
+          overflow: visible;
+          &:after {
+            position: absolute;
+            top: -10px;
+            right: 0;
+            left: auto;
+            background-repeat: no-repeat;
+            display: block;
+            content: '';
+            background-image: url(https://d3gyzh3f9mj82k.cloudfront.net/icons/check_box.svg);
+            height: 18px;
+            width: 18px;
+            line-height: 18px;
+            background-position: center center;
+            opacity: 1;
+            background-color: transparent !important;
+          }
+        }
+      }
+    }
+  }
+
+  &__search {
+    position: relative;
+    width: 50%;
+
+    &--input {
+      background: map-get($map: $colors, $key: aquaHaze);
+      overflow: hidden;
+      width: 100%;
+      border: 0;
+      @include round(7px);
+      font-size: 14px;
+      height: 3rem;
+      display: block;
+      box-shadow: 0 0 1px 0 rgba($color: #000000, $alpha: 0.1);
+    }
+
+    &--icon {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 1.5rem;
+      margin: auto;
+      height: 28px !important;
+      width: 28px !important;
+      line-height: 28px !important;
+      cursor: pointer;
+    }
+  }
+
+  &__loading, &__not-found {
+    font-size: 48px;
+    color: map-get($map: $colors, $key: shark);
+    font-weight: $font-thicker;
+    text-align: center;
+    padding: 150px 0;
+  }
+
+}

@@ -1,0 +1,29 @@
+<mat-card class="template p4 my8">
+  <mat-card-title class="template__title p4 my8" class="mb0">
+    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+      <h2
+        fxLayoutAlign="start center"
+        fxFlex="95"
+        class="template__title--name h6 text-capitalize font-semi-thick my0"
+      >
+        Template advance setup
+      </h2>
+      <div fxLayout="row wrap" fxFlex="5" fxLayoutAlign="space-between center">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="actions"
+        >
+          <mat-icon svgIcon="action_off"></mat-icon>
+        </button>
+      </div>
+    </div>
+    <mat-menu #actions="matMenu">
+      <button mat-menu-item [disabled]="!masterPermission" [routerLink]="['new-master']">
+        <span>Create new master template</span>
+      </button>
+      <button mat-menu-item [disabled]="!fromMasterPermission" [routerLink]="['new-from-master']">
+        <span>Create from master templates</span>
+      </button>
+    </mat-menu>
+  </mat-card-title>
+</mat-card>

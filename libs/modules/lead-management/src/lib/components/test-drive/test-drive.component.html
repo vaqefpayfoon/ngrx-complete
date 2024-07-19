@@ -1,0 +1,68 @@
+<mat-card class="card">
+    <div
+      fxLayout="row wrap"
+      fxLayout.lt-md="column"
+      fxFlex="100"
+      fxLayoutAlign="space-between center"
+      fxLayoutAlign.lt-md="start start"
+      class="card__header"
+      fxLayoutGap.lt-md="1rem"
+    >
+      <div
+        fxFlex="10"
+        fxFlex.lt-md="100"
+        class="font-semi-thick card__header--createdAt"
+        fxLayout="column"
+        fxLayoutGap="0.5rem"
+        fxFlexOrder.lt-md="2"
+      >
+        <div>
+          {{ testDriveItem?.createdAt }}
+        </div>
+      </div>
+      <div
+        fxFlex="10"
+        fxFlex.lt-md="100"
+        class="font-semi-thick card__header--name"
+        fxFlexOrder.lt-md="3"
+      >
+        {{ testDriveItem?.salesAdvisor?.name }} &nbsp;&nbsp;-&nbsp;&nbsp; 
+        {{ testDriveItem?.salesAdvisor?.phone?.phoneNumber }}
+      </div>
+      <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--country"
+      fxLayoutAlign="center"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ testDriveItem?.location?.country }} &nbsp;&nbsp;-&nbsp;&nbsp; {{ testDriveItem?.location?.state }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--status"
+      fxLayoutAlign="center"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ testDriveItem?.status }}
+    </div>
+    <div
+    fxFlex="15"
+    fxFlex.lt-md="100"
+    class="font-semi-thick card__header--brand"
+    fxFlexOrder.lt-md="3"
+  >
+    {{ testDriveItem?.unit?.brand }} &nbsp;&nbsp;-&nbsp;&nbsp;{{ testDriveItem?.unit?.model }}
+  </div>
+  <div
+    fxFlex="10"
+    fxFlex.lt-md="100"
+    class="font-semi-thick card__header--price"
+    fxFlexOrder.lt-md="3"
+  >
+  {{ testDriveItem?.unit?.price }}
+  </div>
+    </div>
+  </mat-card>
+  

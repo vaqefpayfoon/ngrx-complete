@@ -1,0 +1,14 @@
+<h1 mat-dialog-title class="font-thick text-black">Are you sure?</h1>
+
+<mat-dialog-content>
+    <p>
+        {{ name | titlecase }} will be deleted.
+    </p>
+</mat-dialog-content>
+
+<mat-dialog-actions class="text-right">
+    <button mat-button (click)="toggleDelete()" [color]="'warn'">
+        Yes
+    </button>
+    <button mat-button (click)="close()">No</button>
+</mat-dialog-actions>

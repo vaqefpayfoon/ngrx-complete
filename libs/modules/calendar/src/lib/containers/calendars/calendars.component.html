@@ -1,0 +1,31 @@
+<div
+  class="calendar"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="'calendars'"
+      [link]="(permissions$ | async)?.GENERATE_CALENDARS ? 'new' : null"
+      [breadcrumbs]="bc"
+      (refreshChange)="onRefresh($event)"
+      [loading]="loading$ | async"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill>
+    <neural-calendar-header [permissions]="permissions$ | async" [timeZone]="timeZone$ | async" [filter]="(calendarsFilter$ | async) ? (calendarsFilter$ | async) : null" [calendars]="calendars$ | async" [selectedDate]="selectedDate$ | async" (loaded)="onChangeFilter($event)" (selectedChange)="onChangeTime($event)" (slotBlocked)="onChangeDate($event)"></neural-calendar-header>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="(calendars$ | async)?.length">
+    <neural-calendar-body [getCalendarFilter]="calendarsFilter$ | async" [permissions]="permissions$ | async" [timeZone]="timeZone$ | async" [calendars]="calendars$ | async" [selectedDate]="selectedDate$ | async" (slotBlocked)="onChangeSlot($event)" (selectSlot)="onSelectSlot($event)"></neural-calendar-body>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="(loading$ | async)" class="calendar__loading">
+    Loading...
+</div>
+  <div fxFlex="100" fxFlexFill class="calendar__not-found" *ngIf="(error$ | async) && !(total$ | async)">
+    <neural-error [error]="error$ | async"></neural-error>
+  </div>
+  <div fxFlex="100" fxFlexFill class="calendar__not-found" *ngIf="!(calendars$ | async)?.length && !(error$ | async)">
+    <span> Please select a type </span>
+  </div>
+</div>

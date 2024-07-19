@@ -1,0 +1,21 @@
+<mat-card class="branch p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Emails</h2>
+            <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem" [formGroup]="form">
+                <mat-label class="h6 my0">active</mat-label>
+                <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                </mat-slide-toggle>
+            </div>
+        </div>
+    </mat-card-title>
+    <div class="branch__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <div [formGroup]="form" class="mt8">
+            <neural-email-module [formDisabled]="formDisabled" [emailModule]="emailGroup?.modules"></neural-email-module>
+        </div>
+    </mat-card-content>
+    <ng-content></ng-content>
+</mat-card>

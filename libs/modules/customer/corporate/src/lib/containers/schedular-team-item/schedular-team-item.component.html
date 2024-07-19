@@ -1,0 +1,22 @@
+<div
+  class="corporate"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+<div fxFlex="100" fxFlexFill>
+  <neural-dynamic-header
+    [breadcrumbs]="bc"
+  ></neural-dynamic-header>
+</div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-schedular-team-form
+      [brands]="brands$ | async"
+      [schedule]="schedule$ | async"
+      [accounts$]="accounts$"
+      (save)="updateSchedular($event)"
+      (cancelEvent)="redirecttoTeams()"
+      (typeEvent)="onTypeEvent($event)"
+    ></neural-schedular-team-form>
+  </div>
+</div>

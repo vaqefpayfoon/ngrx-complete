@@ -1,0 +1,150 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.login {
+  $self: &;
+  background-color: #F0F4FC;
+  overflow-x: hidden;
+  min-height: 100vh;
+  overflow: hidden;
+
+  &__responsive {
+    @include breakpoint(lt-md) {
+      padding: 5rem 2.5rem !important;
+    }
+
+    #{ $self } {
+      &__logo {
+        height: 60px;
+        width: auto;
+      }
+
+      // Share from lock form
+      &__intro-image {
+        display: inline-flex;
+        width: 50px;
+        height: 50px;
+        object-position: center;
+        object-fit: cover;
+        @include round(50%);
+        border: 2px solid map-get($map: $colors, $key: white);
+      }
+
+      &__description {
+        width: 267px;
+        height: 56px;
+        top: 62px;
+        margin-top: 0px;
+        background: #4768E5;
+        color: #F0F4FC;
+        font-weight: 700;
+        font-size: 40px;
+        padding-left: 15px;
+      }
+
+      &__email-field,
+      &__password-field {
+        input {
+          display: block;
+          width: 100%;
+          border: 1px solid map-get($map: $colors, $key: heather) !important;
+          transition: border 0.2s ease-in;
+
+          &:focus {
+            outline: 0;
+            border-left: 5px solid map-get($map: $colors, $key: theme) !important;
+            &::-webkit-input-placeholder {
+              opacity: 1;
+            }
+          }
+
+          &.ng-valid {
+            border-left: 5px solid map-get($map: $colors, $key: green) !important;
+          }
+
+          &.ng-invalid.ng-touched {
+            border-left: 5px solid map-get($map: $colors, $key: red) !important;
+          }
+        }
+      }
+
+      &__email-field {
+        input {
+          border-top-left-radius: $border-raduis;
+          border-top-right-radius: $border-raduis;
+        }
+      }
+
+      &__sign-in {
+        width: 100%;
+      }
+
+      &__password-field {
+        position: relative;
+
+        // Modifier for login-form
+        &--partial-rounded {
+          input {
+            border-top: 0 !important;
+            border-top-right-radius: 0 !important;
+            border-top-left-radius: 0 !important;
+          }
+        }
+
+        input {
+          border-radius: $border-raduis;
+          padding-right: 2rem !important;
+        }
+
+        #{ $self } {
+          &__password-visibility {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+          }
+        }
+      }
+
+      &__button {
+        .mat-raised-button {
+          font-weight: $font-semi-thick;
+          padding: 0.25rem 2.5rem !important;
+          @include round(7px);
+        }
+
+        ::-webkit-input-placeholder {
+          color: map-get($map: $colors, $key: heather);
+        }
+
+        :-ms-input-placeholder {
+          color: map-get($map: $colors, $key: heather);
+        }
+
+        ::placeholder {
+          color: map-get($map: $colors, $key: heather);
+        }
+      }
+
+      &__privacy {
+        line-height: 1.2;
+        font-size: $font-size * 0.9;
+
+        .mat-stroked-button {
+          font-weight: $font-semi-thick;
+          padding: 0.25rem 2.5rem !important;
+          @include round(7px);
+        }
+      }
+    }
+  }
+
+  &__background-image {
+    background: url(https://d3gyzh3f9mj82k.cloudfront.net/images/login.svg) no-repeat;
+    background-size: auto;
+    width: 100%;
+    background-position: center;
+
+  }
+}

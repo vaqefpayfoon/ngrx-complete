@@ -1,0 +1,36 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="fleet p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="fleet__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="fleet__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div class="form-group" fxFlex="35">
+                        <mat-label>Name</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="name" placeholder="Name" autocomplete="off">
+                        <neural-show-errors [control]="form.controls.name"></neural-show-errors>
+                    </div>                
+                </div>
+                <div fxLayout="row" fxFlex="100">
+                    <div class="form-group" fxFlex="35">
+                        <mat-label>Number Plate</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="numberPlate" placeholder="Number Plate" autocomplete="off">
+                        <neural-show-errors [control]="form.controls.numberPlate"></neural-show-errors>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+            <button mat-flat-button *ngIf="form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+            <button mat-flat-button *ngIf="exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !updatePermission" (click)="updateFleet(form)">Save</button>
+            <button mat-flat-button *ngIf="!exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !createPermission" (click)="createFleet(form)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

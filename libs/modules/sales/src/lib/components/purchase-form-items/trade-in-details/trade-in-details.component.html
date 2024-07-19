@@ -1,0 +1,527 @@
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+  <mat-card fxFlex class="sale">
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <div
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="1rem"
+        >
+          <h2 class="h6 text-capitalize font-semi-thick my0">
+            {{exists ? 'Trade-In Details' : 'Create a Trade-In'}}
+          </h2>
+        </div>
+        <div>
+          <button
+            *ngIf="purchase?.badge?.tradeIn"
+            mat-stroked-button
+            color="primary"
+            matBadgeColor="warn"
+            matBadge="1"
+            (click)="onClearBadge()"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+    </mat-card-title>
+    <div class="sale__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100">
+        <ng-container *ngIf="tradeInDetail; else tradeInForms">
+          <div fxFlex="100">
+            <mat-list>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Brand</h2>
+                  <h2 class="h6 text-capitalize font-semi-thick my0">
+                    {{ purchase?.tradeIn?.unit?.brand }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Model</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{ purchase?.tradeIn?.unit?.model }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Variant</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{ purchase?.tradeIn?.unit?.variant }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Documents</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    <ng-template
+                      ngFor
+                      let-item
+                      [ngForOf]="purchase?.tradeIn?.documents"
+                    >
+                      <a
+                        mat-flat-button
+                        color="accent"
+                        type="button"
+                        [title]="item?.title"
+                        target="_blank"
+                        [href]="item?.url"
+                      >
+                        {{ item?.title }}
+                      </a>
+                    </ng-template>
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">
+                    Application Date & Time
+                  </h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{
+                      purchase?.tradeIn?.createdAt | date: 'MMMM d Y, h:mm a'
+                    }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Registration number</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{ purchase?.tradeIn?.numberPlate }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Year of make</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{ purchase?.tradeIn?.manufacturerYear }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Mileage (KM)</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{ purchase?.tradeIn?.mileage | number }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Remarks</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{ purchase?.tradeIn?.remark }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+        </ng-container>
+        <ng-template #tradeInForms>
+          <form fxLayout="column" [formGroup]="form" novalidate>
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              class="sale__general mt8"
+              fxLayoutAlign="space-evenly space-between"
+              fxLayoutGap="1rem"
+            >
+              <div
+                fxLayout="row wrap"
+                fxLayoutAlign="start center"
+                fxFlex="100"
+                fxLayoutGap="1rem grid"
+              >
+                <!-- brnad -->
+                <ng-container formGroupName="unit">
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label style="font-size: 13px">Brand</mat-label>
+                    <div
+                      class="form-group selectedMat my0"
+                      [ngClass]="{
+                        'selectedMat--disabled': formDisabled,
+                        'ng-invalid': brand.invalid && brand.touched,
+                        'ng-valid': brand.valid && brand.touched
+                      }"
+                      fxFlex="100"
+                    >
+                      <mat-select
+                        formControlName="brand"
+                        placeholder="Select a brand"
+                        (selectionChange)="onBrandChange($event)"
+                      >
+                        <mat-option
+                          *ngFor="let brand of globalVehicles?.brands"
+                          [value]="brand"
+                        >
+                          {{ brand }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <!-- Model -->
+                  <div class="form-group" fxFlex="30">
+                    <mat-label>Model</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="model"
+                      placeholder="Ex. G30"
+                      autocomplete="off"
+                    />
+                  </div>
+                  <!-- Variant -->
+                  <div class="form-group" fxFlex="30">
+                    <mat-label>Variant</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="variant"
+                      placeholder="Variant"
+                      autocomplete="off"
+                    />
+                  </div>
+                </ng-container>
+                <div class="form-group" fxFlex="30">
+                  <mat-label>Registration number</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    class="form-control"
+                    formControlName="numberPlate"
+                    placeholder="Registration number"
+                    autocomplete="off"
+                  />
+                </div>
+                <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                  <mat-label style="font-size: 13px">Year of make</mat-label>
+                  <div
+                    class="form-group selectedMat my0"
+                    [ngClass]="{
+                      'selectedMat--disabled': formDisabled,
+                      'ng-invalid':
+                        manufacturerYear.invalid && manufacturerYear.touched,
+                      'ng-valid':
+                        manufacturerYear.valid && manufacturerYear.touched
+                    }"
+                    fxFlex="100"
+                  >
+                    <mat-select
+                      formControlName="manufacturerYear"
+                      placeholder="Select year"
+                    >
+                      <mat-option *ngFor="let year of years" [value]="year">
+                        {{ year }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="form-group" fxFlex="30">
+                  <mat-label>Mileage</mat-label>
+                  <input
+                    type="number"
+                    matInput
+                    formControlName="mileage"
+                    class="form-control"
+                    placeholder="Ex: 10,000"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+            </div>
+            <div fxLayout="row" fxFlex="100">
+              <div
+                class="form-group"
+                fxFlex="90"
+                fxLayout="column"
+                fxLayoutGap="0.5rem"
+              >
+                <mat-label>Remarks</mat-label>
+                <textarea
+                  matInput
+                  rows="7"
+                  formControlName="remark"
+                  class="form-control"
+                  placeholder="Remarks"
+                ></textarea>
+              </div>
+            </div>
+
+            <div fxLayout="row" class="mt10">
+              <div fxFlex="100">
+                <h2 class="h6 text-capitalize font-semi-thick my0 mt10">
+                  Documents
+                </h2>
+              </div>
+              <ng-container *ngIf="!filesArray.length">
+                <div
+                  fxFlexFill
+                  class="files__not-found text-center"
+                  fxFlex="100"
+                >
+                  Please upload a new file
+                </div>
+              </ng-container>
+              <div fxLayoutAlign="end space-between" fxFlex="100">
+                <button
+                  mat-mini-fab
+                  color="primary"
+                  type="button"
+                  (click)="addFile()"
+                  [disabled]="uploadTitleCount === filesArray.length"
+                >
+                  <mat-icon svgIcon="add"></mat-icon>
+                </button>
+              </div>
+            </div>
+          </form>
+          <form [formGroup]="documentsForm">
+            <ng-container formArrayName="files">
+              <div *ngFor="let item of filesArray.controls; let i = index">
+                <div
+                  fxLayout="row"
+                  fxFlex="100"
+                  fxLayoutAlign="space-between center"
+                  class="my4"
+                >
+                  <div
+                    fxFlex="100"
+                    fxLayout="column"
+                    fxLayoutAlign="start start"
+                    fxFlexFill
+                  >
+                    <div
+                      fxFlex="100"
+                      fxLayout="row"
+                      fxLayoutAlign="start start"
+                      fxFlexFill
+                    >
+                      <div
+                        fxLayout="column"
+                        fxFlex="100"
+                        fxLayoutAlign="space-evenly space-between"
+                        [formGroupName]="i"
+                      >
+                        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                          <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                            <div fxFlex="25" fxLayout="column">
+                              <mat-label class="mb3">Title</mat-label>
+                              <div
+                                class="form-group selectedMat"
+                                fxLayoutAlign="start center"
+                                [ngClass]="{
+                                  'selectedMat--disabled': formDisabled,
+                                  'ng-invalid':
+                                    getTitle(i).invalid && getTitle(i).touched,
+                                  'ng-valid':
+                                    getTitle(i).valid && getTitle(i).touched
+                                }"
+                                fxFlex="100"
+                              >
+                                <mat-select
+                                  placeholder="Select a file type"
+                                  formControlName="title"
+                                  #title
+                                >
+                                  <mat-option
+                                    *ngFor="
+                                      let title of TradeInUploadTitleType
+                                        | keyvalue
+                                    "
+                                    [disabled]="compareTitle(title.value)"
+                                    [value]="title.value"
+                                  >
+                                    {{ title.key }}
+                                  </mat-option>
+                                </mat-select>
+                              </div>
+                            </div>
+                            <div
+                              fxLayout="column"
+                              fxLayoutGap="0.5rem"
+                              fxLayoutAlign="center start"
+                            >
+                              <mat-label>File</mat-label>
+                              <div>
+                                <input
+                                  type="file"
+                                  #tradeInDocs
+                                  multiple
+                                  name="docs"
+                                  hidden
+                                  class="form-control"
+                                  placeholder="File"
+                                  autocomplete="off"
+                                  (change)="showPreview($event, i)"
+                                />
+                                <div
+                                  fxFlex="100"
+                                  fxLayout="row"
+                                  fxLayoutAlign="start center"
+                                  fxLayoutGap="1rem"
+                                >
+                                  <button
+                                    type="button"
+                                    color="accent"
+                                    accept="application/pdf"
+                                    mat-flat-button
+                                    [disabled]="
+                                      !title.value || !updatePermission
+                                    "
+                                    (click)="tradeInDocs.click()"
+                                  >
+                                    Select doc
+                                  </button>
+                                  <mat-chip-list
+                                    *ngIf="!!fileDetail(i)"
+                                    aria-label="files"
+                                  >
+                                    <mat-chip color="primary" selected>
+                                      {{ fileDetail(i)?.name }}
+                                    </mat-chip>
+                                  </mat-chip-list>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </form>
+          <div fxLayout="column">
+            <div *ngIf="!!filesArray.length">
+              <div class="mb5" fxFlex="100">
+                <h2 class="h6 text-capitalize font-semi-thick my0 mt10">
+                  Uploaded files
+                </h2>
+              </div>
+            </div>
+            <div fxLayout="row">
+              <form [formGroup]="form">
+                <ng-container formArrayName="documents">
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    *ngFor="let item of document.controls; let i = index"
+                  >
+                    <div fxLayout="row" fxFlex="100" [formGroupName]="i">
+                      <neural-tradeIn-file
+                        [permissions]="permissions"
+                        [formDisabled]="form.disabled"
+                        [title]="item.get('title').value"
+                        formControlName="url"
+                        (remove)="removeFile(item.get('url'))"
+                      ></neural-tradeIn-file>
+                    </div>
+                  </div>
+                </ng-container>
+              </form>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="py4" fxLayoutAlign="end center">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        class="px10 py1"
+        color="primary"
+        *ngIf="formDisabled && exists"
+        (click)="onEdit()"
+        [disabled]="!updatePermission"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        class="px10 py1"
+        color="primary"
+        *ngIf="!formDisabled && exists"
+        (click)="onUpdateTradeIn(form)"
+        [disabled]="!updatePermission || form.invalid"
+      >
+        Save
+      </button>
+      <button
+        mat-flat-button
+        class="px10 py1"
+        color="primary"
+        *ngIf="!formDisabled && !exists"
+        (click)="onCreateTradeIn(form)"
+        [disabled]="!createPermission || form.invalid"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,0 +1,1020 @@
+<mat-card class="reservation p4 my8">
+  <form autocomplete="off" novalidate [formGroup]="previewForm">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+      </div>
+    </mat-card-title>
+    <div class="reservation__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="reservation__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="25">
+            <mat-label>Service Types</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="serviceTypes"
+              placeholder="Service Types"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="25">
+            <mat-label>Selected Date</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="date"
+              placeholder="Date"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="25">
+            <mat-label>Selected Slot</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="slot"
+              placeholder="Date"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </form>
+  <form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="reservation__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="35" formGroupName="calendar">
+            <mat-label>Logistic Method<b>*</b></mat-label>
+            <mat-select class="form-control my1" formControlName="logistic">
+              <mat-option value="">Select Logistic Method</mat-option>
+              <mat-option value="DROP_IN"> Drop </mat-option>
+              <mat-option value="WAIT"> Wait </mat-option>
+              <mat-option value="PICK_UP_AND_DELIVERY">
+                Pick up and delivery</mat-option
+              >
+            </mat-select>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </form>
+</mat-card>
+
+<form autocomplete="off" novalidate [formGroup]="form">
+  <mat-card class="reservation p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Account</h2>
+      </div>
+    </mat-card-title>
+    <div class="reservation__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="reservation__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          formGroupName="account"
+        >
+          <div class="form-group" fxFlex="18" *ngIf="isCdkCustomerExist">
+            <mat-label>Last Name<b>*</b></mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="fullName"
+              placeholder="Wick Doe"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="18" *ngIf="isCdkCustomerExist">
+            <mat-label>First Name</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="firstName"
+              placeholder="John"
+              autocomplete="off"
+            />
+          </div>
+          <div
+            class="form-group"
+            fxFlex="37"
+            *ngIf="existingCustomer != 'true'"
+          >
+            <mat-label>Full Name</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="fullName"
+              placeholder="John Wick Doe"
+              autocomplete="off"
+            />
+          </div>
+          <div
+            *ngIf="isCdkCustomerExist"
+            class="mt3"
+            fxLayoutGap="0.25"
+            fxLayoutAlign="center center"
+          >
+            <button
+              [disabled]="!name.value || name.invalid"
+              mat-flat-button
+              color="primary"
+              (click)="
+                onSearchCustomer(
+                  name.value,
+                  dmsSearchKey.lastName,
+                  firstName.value
+                )
+              "
+            >
+              Search
+            </button>
+          </div>
+        </div>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          formGroupName="account"
+        >
+          <div class="form-group" fxFlex="37">
+            <mat-label>Phone</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="phone"
+              placeholder="+60123456789"
+              autocomplete="off"
+            />
+          </div>
+          <div
+            *ngIf="isCdkCustomerExist"
+            class="mt3"
+            fxLayoutGap="0.75"
+            fxLayoutAlign="center center"
+          >
+            <button
+              [disabled]="!phone.value || phone.invalid"
+              mat-flat-button
+              color="primary"
+              (click)="onSearchCustomer(phone.value, dmsSearchKey.phone)"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          formGroupName="account"
+        >
+          <div class="form-group" fxFlex="37">
+            <mat-label>Email</mat-label>
+            <input
+              placeholder="John@email.com"
+              type="email"
+              matInput
+              class="form-control my1"
+              formControlName="email"
+              autocomplete="off"
+            />
+            <mat-hint>
+              No email notification will be sent if left empty.</mat-hint
+            >
+          </div>
+          <div
+            *ngIf="isCdkCustomerExist"
+            fxLayoutGap="0.75"
+            fxLayoutAlign="center center"
+          >
+            <button
+              [disabled]="!email.value || email.invalid"
+              mat-flat-button
+              color="primary"
+              (click)="onSearchCustomer(email.value, dmsSearchKey.email)"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+        <div
+          fxLayout="column"
+          fxFlex="100"
+          class="reservation__general my8"
+          fxLayoutAlign="space-evenly space-between"
+          fxLayoutGap="1rem"
+          fxFlexOffset="8rem"
+          formGroupName="integration"
+          *ngIf="isCdkCustomerExist"
+        >
+          <div
+            fxLayout="row wrap"
+            fxFlex="30"
+            fxLayoutAlign="space-between center"
+          >
+            <span class="text-capitalize font-thick">CDK</span>
+          </div>
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxLayoutGap="1rem"
+            formGroupName="cdk"
+          >
+            <div class="form-group" fxFlex="35">
+              <mat-label>Customer Id</mat-label>
+              <input
+                placeholder="Ex:uiod908433"
+                type="text"
+                matInput
+                class="form-control my1"
+                formControlName="customerId"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group" fxFlex="35">
+              <mat-label>Vehicle Id</mat-label>
+              <input
+                type="text"
+                matInput
+                class="form-control my1"
+                formControlName="vehicleId"
+                placeholder="Ex:ABC1234DE5670"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>
+
+<form
+  autocomplete="off"
+  novalidate
+  [formGroup]="form"
+  *ngIf="isCdkCustomerExist"
+>
+  <mat-card class="reservation p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Vehicle</h2>
+      </div>
+    </mat-card-title>
+    <div class="reservation__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="reservation__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          formGroupName="accountVehicle"
+        >
+          <div class="form-group" fxFlex="35">
+            <mat-label>Number Plate</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="numberPlate"
+              placeholder="ABC 123"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35" formGroupName="model">
+            <mat-label>Model</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="name"
+              placeholder="M135i XDrive"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          formGroupName="accountVehicle"
+        >
+          <div class="form-group" fxFlex="35">
+            <mat-label>Mileage<b *ngIf="!isCdkCustomerExist">*</b></mat-label>
+            <input
+              type="number"
+              matInput
+              class="form-control my1"
+              formControlName="mileage"
+              placeholder="100"
+              autocomplete="off"
+              [ngClass]="accountVehicle?.errors?.mismatch ? 'border-color' : ''"
+              onkeydown="if(event.key==='.'){event.preventDefault();}"
+            />
+            <div class="error-danger" *ngIf="accountVehicle?.errors?.mismatch">
+              Value must be a whole number without any decimal points.
+            </div>
+          </div>
+
+          <div class="form-group" fxFlex="35">
+            <mat-label>Vehicle Identification Number</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="identificationNumber"
+              placeholder="11920304949"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>
+
+<form
+  [formGroup]="form"
+  autocomplete="off"
+  novalidate
+  *ngIf="!isCdkCustomerExist && this.corporateInfo?.configuration?.cdk?.active"
+>
+  <mat-card class="reservation p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Vehicle</h2>
+      </div>
+    </mat-card-title>
+    <div class="reservation__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="reservation__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+        formGroupName="accountVehicle"
+      >
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="space-between center"
+        >
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxFlexFill
+            fxLayoutAlign="start center"
+            fxLayoutGap="1rem"
+          >
+            <div class="form-group" fxFlex="35">
+              <mat-label>Make<b>*</b></mat-label>
+              <input
+                type="text"
+                placeholder="BMW"
+                matInput
+                [formControl]="makeControl"
+                [matAutocomplete]="autoMake"
+                class="form-control my1"
+                aria-label="makes"
+                [readonly]="form.disabled && makePermission"
+              />
+              <mat-autocomplete
+                #autoMake="matAutocomplete"
+                (optionSelected)="makeSelected($event.option.value)"
+              >
+                <mat-option
+                  *ngFor="let option of makes$ | async"
+                  [value]="option?.name"
+                >
+                  {{ option?.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+            <div class="form-group" fxFlex="35">
+              <mat-label>Number Plate</mat-label>
+              <input
+                type="text"
+                matInput
+                class="form-control my1"
+                formControlName="numberPlate"
+                placeholder="ABC 123"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="space-between center"
+        >
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxFlexFill
+            fxLayoutAlign="start center"
+            fxLayoutGap="1rem"
+          >
+            <div class="form-group" fxFlex="35">
+              <mat-label>Model<b>*</b></mat-label>
+              <input
+                type="text"
+                placeholder="M135i XDrive"
+                matInput
+                [formControl]="modelControl"
+                [matAutocomplete]="autoModel"
+                class="form-control my1"
+                aria-label="models"
+                name="models"
+                [readonly]="form.disabled && modelPermission"
+              />
+              <mat-autocomplete
+                #autoModel="matAutocomplete"
+                (optionSelected)="modelSelected($event.option.value)"
+              >
+                <mat-option
+                  *ngFor="let option of models$ | async"
+                  [value]="option?.name"
+                >
+                  {{ option?.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+            <div class="form-group" fxFlex="35">
+              <mat-label>Vehicle Identification Number</mat-label>
+              <input
+                type="text"
+                matInput
+                class="form-control my1"
+                formControlName="identificationNumber"
+                placeholder="11920304949"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxFlexFill
+            fxLayoutGap="1rem"
+            fxLayoutAlign="start center"
+          >
+            <div class="form-group" fxFlex="35">
+              <mat-label>Year<b>*</b></mat-label>
+              <input
+                type="text"
+                placeholder="2017"
+                matInput
+                [formControl]="yearMakeControl"
+                [matAutocomplete]="autoYear"
+                class="form-control my1"
+                aria-label="yearMakes"
+                [readonly]="form.disabled"
+              />
+              <mat-autocomplete
+                #autoYear="matAutocomplete"
+                (optionSelected)="yearSelected($event.option.value)"
+              >
+                <mat-option
+                  *ngFor="let option of yearMakes$ | async"
+                  [value]="option?.name"
+                >
+                  {{ option?.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+            <div class="form-group" fxFlex="35">
+              <mat-label>Mileage<b>*</b></mat-label>
+              <input
+                type="number"
+                matInput
+                class="form-control my1"
+                formControlName="mileage"
+                placeholder="10000"
+                autocomplete="off"
+                [ngClass]="
+                  accountVehicle?.errors?.mismatch ? 'border-color' : ''
+                "
+                onkeydown="if(event.key==='.'){event.preventDefault();}"
+              />
+              <div
+                class="error-danger"
+                *ngIf="accountVehicle?.errors?.mismatch"
+              >
+                Value must be a whole number without any decimal points.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>
+
+<form
+  autocomplete="off"
+  [formGroup]="form"
+  novalidate
+  *ngIf="!corporateInfo?.configuration?.cdk?.active"
+>
+  <mat-card class="reservation p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Vehicle</h2>
+      </div>
+    </mat-card-title>
+    <div class="reservation__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="reservation__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+        formGroupName="accountVehicle"
+      >
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxFlexFill
+          fxLayoutAlign="start center"
+        >
+          <div class="form-group" fxFlex="35">
+            <mat-label>Make<b>*</b></mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="brand"
+              placeholder="BMW"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35">
+            <mat-label>Number Plate</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="numberPlate"
+              placeholder="ABC 123"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxFlexFill
+          fxLayoutAlign="start center"
+          fxLayoutGap="1rem"
+        >
+          <div class="form-group" fxFlex="35" formGroupName="model">
+            <mat-label>Model<b>*</b></mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="name"
+              placeholder="M135i XDrive"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35">
+            <mat-label>Vehicle Identification Number</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control my1"
+              formControlName="identificationNumber"
+              placeholder="11920304949"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxFlexFill
+          fxLayoutAlign="start center"
+          fxLayoutGap="1rem"
+        >
+          <div class="form-group" fxFlex="35">
+            <mat-label
+              >Year<b *ngIf="this.corporateInfo?.configuration?.cdk?.active"
+                >*</b
+              ></mat-label
+            >
+            <input
+              type="number"
+              matInput
+              class="form-control my1"
+              formControlName="year"
+              placeholder="2017"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35">
+            <mat-label
+              >Mileage<b *ngIf="this.corporateInfo?.configuration?.cdk?.active"
+                >*</b
+              ></mat-label
+            >
+            <input
+              type="number"
+              matInput
+              class="form-control my1"
+              formControlName="mileage"
+              placeholder="100"
+              autocomplete="off"
+              [ngClass]="accountVehicle?.errors?.mismatch ? 'border-color' : ''"
+              onkeydown="if(event.key==='.'){event.preventDefault();}"
+            />
+            <div class="error-danger" *ngIf="accountVehicle?.errors?.mismatch">
+              Value must be a whole number without any decimal points.
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>
+
+<form autocomplete="off" novalidate>
+  <mat-card class="reservation p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Services</h2>
+      </div>
+    </mat-card-title>
+    <div class="reservation__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="reservation__general"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxFlexFill
+            class="my8"
+            fxLayoutAlign="start center"
+          >
+            <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="40">
+              <mat-label>Search Service</mat-label>
+              <div class="form-group" fxFlex="30">
+                <input
+                  type="text"
+                  placeholder="Type service name or OP CODE"
+                  matInput
+                  [formControl]="serviceLineControl"
+                  [matAutocomplete]="auto"
+                  class="form-control my1"
+                  aria-label="services"
+                  [readonly]="form.disabled"
+                />
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  (optionSelected)="serviceSelected($event.option.value)"
+                >
+                  <mat-option
+                    *ngFor="let option of serviceLines$ | async"
+                    [value]="option?.service?.title"
+                  >
+                    {{ option?.service?.title }} &nbsp;-&nbsp;
+                    {{ option?.operationCode }}
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxFlexFill
+          fxLayoutAlign="space-between center"
+          *ngIf="selectedServiceLines && selectedServiceLines.length"
+        >
+          <mat-card class="serviceLine__header" fxFlex="100">
+            <div fxLayout="row wrap" fxFlex="100">
+              <span class="serviceLine__header--item font-normal" fxFlex="40">
+                NAME
+              </span>
+              <span class="serviceLine__header--item font-normal" fxFlex="15">
+                OPERATION CODE
+              </span>
+              <span class="serviceLine__header--item font-normal" fxFlex="15">
+                TYPE
+              </span>
+              <span class="serviceLine__header--item font-normal" fxFlex="20">
+                ESTIMATED DURATION
+              </span>
+              <!-- <span class="serviceLine__header--item font-normal" fxFlex="20">
+                ESTIMATED PRICE &nbsp;({{
+                  branchInfo?.payments?.sales?.currency
+                }})
+              </span> -->
+              <span class="serviceLine__header--item font-normal" fxFlex="5">
+              </span>
+            </div>
+          </mat-card>
+        </div>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxFlexFill
+          fxLayoutAlign="start center"
+          *ngFor="let serviceLine of selectedServiceLines; let i = index"
+        >
+          <mat-card class="card" fxFlex="100">
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutAlign="start center"
+              class="card__header"
+            >
+              <div
+                fxFlex="40"
+                class="font-semi-thick text-wrapper"
+                fxLayoutAlign="start center"
+                fxLayoutGap="0.5rem"
+              >
+                {{ serviceLine?.service?.title }}
+              </div>
+              <div
+                fxFlex="15"
+                class="font-semi-thick card__header--operationCode"
+                fxLayoutAlign="start center"
+              >
+                {{ serviceLine?.operationCode }}
+              </div>
+              <div
+                fxFlex="15"
+                class="font-semi-thick card__header--type"
+                fxLayoutAlign="start center"
+              >
+                {{ serviceLine?.service?.type }}
+              </div>
+              <div
+                fxFlex="20"
+                class="font-semi-thick card__header--value"
+                fxLayoutAlign="start center"
+              >
+                {{ serviceLine?.service?.duration }}
+              </div>
+              <!-- <div
+                fxFlex="20"
+                class="font-semi-thick card__header--value"
+                fxLayoutAlign="start center"
+              >
+                {{ serviceLine?.service?.price?.value?.toFixed(2) }}
+              </div> -->
+              <div fxFlex="5">
+                <button
+                  type="button"
+                  color="primary"
+                  mat-mini-fab
+                  [disabled]="form.disabled"
+                  (click)="onEditServiceLine(i, serviceLine)"
+                  aria-label="edit"
+                  fxLayoutAlign="cenetr center"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+              <div fxFlex="5">
+                <button
+                  type="button"
+                  color="warn"
+                  mat-mini-fab
+                  [disabled]="form.disabled"
+                  (click)="onRemoveServiceLine(i)"
+                  aria-label="remove"
+                  fxLayoutAlign="cenetr center"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>
+
+<form autocomplete="off" novalidate [formGroup]="form">
+  <mat-card class="reservation p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">
+          Additional remarks
+        </h2>
+      </div>
+    </mat-card-title>
+    <div class="reservation__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="reservation__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="70">
+            <mat-label>Remarks</mat-label>
+            <textarea
+              matInput
+              rows="7"
+              formControlName="remark"
+              class="form-control my1"
+              placeholder="Any remarks about the service or vehicle?"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>
+
+<form autocomplete="off" novalidate [formGroup]="form">
+  <mat-card class="reservation p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">
+          Select service advisor
+        </h2>
+      </div>
+    </mat-card-title>
+    <div class="reservation__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="reservation__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="35">
+            <mat-label style="font-size: 13px"
+              >Service Advisor<b>*</b></mat-label
+            >
+            <div
+              class="form-group selectedMat my0"
+              fxFlex="100"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid': form.controls.operationUuid.invalid,
+                'ng-valid':
+                  form.controls.operationUuid.valid &&
+                  form.controls.operationUuid.touched
+              }"
+            >
+              <mat-select
+                color="primary"
+                placeholder="Select a service advisor"
+                formControlName="operationUuid"
+              >
+                <mat-option
+                  *ngFor="let operation of operations"
+                  [value]="operation.uuid"
+                >
+                  {{ operation?.identity?.fullName }}
+                  <span *ngIf="operation?.phone?.number"
+                    >({{ operation?.phone?.code
+                    }}{{ operation?.phone?.number }})</span
+                  >
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+      <button mat-stroked-button class="mr4 px10 py1" (click)="onCancel()">
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        class="px10 py1"
+        color="primary"
+        [disabled]="isFormInvalid"
+        (click)="onCreate(form)"
+      >
+        Next
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

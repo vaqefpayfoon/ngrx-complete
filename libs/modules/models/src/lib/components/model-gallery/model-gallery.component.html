@@ -1,0 +1,136 @@
+<mat-card class="model p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Gallery (Interior)</h2>
+            <button mat-mini-fab color="primary" type="button" (click)="onAddInterior()" [disabled]="formDisabled">
+                <mat-icon svgIcon="add"></mat-icon>
+            </button>
+        </div>
+    </mat-card-title>
+    <div class="model__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <div [formGroup]="parent">
+            <div formGroupName="gallery">
+                <div formArrayName="interior">
+                    <div *ngFor="let item of interior.controls; let i = index;">
+                        <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutGap="1rem" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between" [formGroupName]="i">
+                            <button class="model__general--close" matTooltip="Remove" [disabled]="formDisabled" (click)="onRemoveInterior(i)" mat-icon-button color="warn">
+                                <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                            </button>
+                            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center" fxLayoutGap="1rem" formGroupName="color">
+                                <div class="form-group" fxFlex="35">
+                                    <mat-label>Color Name</mat-label>
+                                    <input type="text" matInput class="form-control" formControlName="name" placeholder="Color name" autocomplete="off">
+                                    <neural-show-errors [control]="item.get('color')['controls'].name"></neural-show-errors>
+                                </div>
+                                <div class="model__color mt4" *ngIf="!!imageInput.value">
+                                    <img [src]="imageInput.value" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/default.png'">
+                                </div>
+                                <input type="text" hidden matInput class="form-control" #imageInput formControlName="image" placeholder="Image" autocomplete="off">
+                                <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center">
+                                    <input type="file" #myImageInput accept="image/*" hidden class="form-control" placeholder="Image" autocomplete="off" (change)="showPreviewInterior($event,i)">
+                                    <button type="button" class="mt4" [disabled]="formDisabled" color="warn" mat-flat-button (click)="myImageInput.click()">Select Image</button>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                                <div class="model__images p4" fxLayoutAlign="start start">
+                                    <input type="file" accept="image/*" hidden #interiorImages (change)="showPreviewInteriorImages($event,i)">
+                                    <button mat-flat-button type="button" class="model__add-btn" color="primary" (click)="interiorImages.click()" [disabled]="formDisabled">Add new image</button>
+                                    <div fxLayoutGap="1rem" fxLayoutAlign="space-between center" fxLayout="row wrap">
+                                        <ng-template ngFor let-child [ngForOf]="interior.controls[i].get('images').value">
+                                            <div fxLayout="column" class="model__gallery-wrapper" fxLayoutGap="1rem" fxLayoutAlign="center center">
+                                                <img [src]="child" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/placeholder.jpg'" class="model__galleries">
+                                                <button mat-mini-fab (click)="onDeleteInteriorImage(i,child)" color="warn" [disabled]="formDisabled" class="model__close" aria-label="close icon">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="model__not-found" *ngIf="!interior.controls.length">
+                        Add a new interior
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!updatePermission" (click)="onAction('cancel')">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="parent.disabled"  class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="onAction('edit')">Edit</button>
+        <button mat-flat-button type="button" *ngIf="parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || !updatePermission"  (click)="onSave(parent)">Save</button>
+    </mat-card-actions>
+</mat-card>
+<mat-card class="model p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Gallery (Exterior)</h2>
+            <button mat-mini-fab color="primary" (click)="onAddExterior()" [disabled]="parent.disabled">
+                <mat-icon svgIcon="add"></mat-icon>
+            </button>
+        </div>
+    </mat-card-title>
+    <div class="model__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+            <div [formGroup]="parent">
+                <div formGroupName="gallery">
+                    <div formArrayName="exterior">
+                        <div *ngFor="let item of exterior.controls; let i = index;">
+                            <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutGap="1rem" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between" [formGroupName]="i">
+                                <button class="model__general--close" matTooltip="Remove" [disabled]="formDisabled" (click)="onRemoveExterior(i)" mat-icon-button color="warn">
+                                    <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                                </button>
+                                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-between center" fxLayoutGap="1rem" formGroupName="color">
+                                    <div class="form-group" fxFlex="35">
+                                        <mat-label>Color Name</mat-label>
+                                        <input type="text" matInput class="form-control" formControlName="name" placeholder="Color name" autocomplete="off">
+                                        <neural-show-errors [control]="item.get('color')['controls'].name"></neural-show-errors>
+                                    </div>
+                                    <div class="model__color mt4" *ngIf="!!imageInput.value">
+                                        <img [src]="imageInput.value" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/default.png'">
+                                    </div>
+                                    <input type="text" hidden matInput class="form-control" #imageInput formControlName="image" placeholder="Image" autocomplete="off">
+                                    <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center">
+                                        <input type="file" #myImageInput accept="image/*" hidden class="form-control" placeholder="Image" autocomplete="off" (change)="showPreviewExterior($event,i)">
+                                        <button type="button" class="mt4" [disabled]="formDisabled" color="warn" mat-flat-button (click)="myImageInput.click()">Select Image</button>
+                                    </div>
+                                </div>
+                                <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                                    <div class="model__images p4" fxLayoutAlign="start start">
+                                        <input type="file" accept="image/*" hidden #exteriorImages (change)="showPreviewExteriorImages($event,i)">
+                                        <button mat-flat-button type="button" class="model__add-btn" color="primary" [disabled]="formDisabled" (click)="exteriorImages.click()">Add new image</button>
+                                        <div fxLayoutGap="1rem" fxLayoutAlign="space-between center" fxLayout="row wrap">
+                                            <ng-template ngFor let-child [ngForOf]="exterior.controls[i].get('images').value">
+                                                <div fxLayout="column" class="model__gallery-wrapper" fxLayoutGap="1rem" fxLayoutAlign="center center">
+                                                    <img [src]="child" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/placeholder.jpg'" class="model__galleries">
+                                                    <button mat-mini-fab [disabled]="formDisabled" color="warn" class="model__close" (click)="onDeleteExteriorImage(i,child)" aria-label="close icon">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="model__not-found" *ngIf="!exterior.controls.length">
+                            Add a new exterior
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!updatePermission" (click)="onAction('cancel')">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="parent.disabled"  class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="onAction('edit')">Edit</button>
+        <button mat-flat-button type="button" *ngIf="parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || !updatePermission"  (click)="onSave(parent)">Save</button>
+    </mat-card-actions>
+</mat-card>

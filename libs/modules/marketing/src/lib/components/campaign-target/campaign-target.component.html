@@ -1,0 +1,132 @@
+<div [formGroup]="form">
+  <!-- start general form -->
+  <mat-card class="campaign p4 my8">
+    <!-- start card title -->
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">Target Groups</h2>
+      </div>
+    </mat-card-title>
+    <!-- end card title -->
+
+    <!-- start title divider -->
+    <div class="campaign__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <!-- end title divider -->
+
+    <!-- start card content -->
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="campaign__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <!-- search address -->
+        <div fxLayout="row" fxFlex="100">
+          <div fxFlex="35" class="form-group" fxLayout="column">
+            <input
+              type="text"
+              class="form-control"
+              (keydown.enter)="$event.preventDefault()"
+              placeholder="Search target name"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="off"
+              type="text"
+              [disabled]="formDisabled"
+              #search
+            />
+          </div>
+        </div>
+        <!-- taget input -->
+
+        <!-- start form controls -->
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <!-- target -->
+          <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+            <div
+              class="form-group selectedMat "
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid': targetUuid.invalid && targetUuid.touched,
+                'ng-valid': targetUuid.valid
+              }"
+              fxFlex="100"
+            >
+              <mat-select
+                placeholder="Select Target Group"
+                formControlName="targetUuid"
+              >
+                <mat-option
+                  *ngFor="let target of campaignTargets"
+                  [value]="target.uuid"
+                >
+                  {{ target.name }}
+                </mat-option>
+              </mat-select>
+              <neural-show-errors
+                [control]="form.controls.targetUuid"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="campaign?.target?.name" fxFlex="35" fxLayout="row" fxLayoutGap="0.5rem">
+          <p class="text-capitalize font-semi-thick my0">Selected Target Groups: {{campaign?.target?.name}}</p>
+        </div>
+
+        <!-- end form controls -->
+      </div>
+    </mat-card-content>
+    <!-- end card content -->
+
+    <!-- start actions button -->
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        [disabled]="!createPermission || !updatePermission"
+        (click)="form.disable()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        [disabled]="!updatePermission"
+        *ngIf="exists && formDisabled"
+        class="px10 py1"
+        color="primary"
+        (click)="form.enable()"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!createPermission || formInvalid"
+        *ngIf="formEnabled && !exists"
+        class="px10 py1"
+        color="primary"
+        (click)="onCreate()"
+      >
+        Save
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!updatePermission"
+        *ngIf="formEnabled && exists"
+        class="px10 py1"
+        color="primary"
+        (click)="onUpdate()"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+    <!-- end actions button -->
+  </mat-card>
+</div>

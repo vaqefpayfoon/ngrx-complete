@@ -1,0 +1,63 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.business {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+  $self: &;
+
+  &__divider {
+    position: relative;
+  }
+
+  .mat-mini-fab {
+    .mat-icon {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+
+  &__general {
+    mat-label {
+      font-size: 13px;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    #{ $self }__account {
+      overflow: hidden;
+      cursor: pointer;
+      height: 120px;
+      width: 310px;
+      @include round(7px);
+      background-color: map-get($map: $colors, $key: white);
+      box-shadow: 0 0px 6px 0px rgba($color: map-get($map: $colors, $key: doveGray), $alpha: 0.4);
+      color: map-get($map: $colors, $key: theme);
+
+      &--title{
+        color: map-get($map: $colors, $key: black);
+        font-size: 1.1rem;
+      }
+
+      &--detail {
+        h2 {
+          font-size: 0.9rem;
+          color: map-get($map: $colors, $key: doveGray);
+          &:last-of-type {
+            font-size: 0.7rem;
+          }
+        }
+      }
+
+      &--image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<div class="reservation" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="title" [breadcrumbs]="bc" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-completed-assign-operation-team-form [selectedBranch]="selectedBranch$ | async" [team]="team$ | async" [reservation]="reservation$ | async" (assignTeam)="createOperationTeam($event)" (loaded)="onLoad($event)" (branchChange)="onBranchChange($event)"></neural-completed-assign-operation-team-form>
+    </div>
+</div>

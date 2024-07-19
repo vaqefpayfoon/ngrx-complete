@@ -1,0 +1,356 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="panelOpenState">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+        </mat-panel-title>
+        <mat-panel-description
+          *ngIf="!enabledGeneralForm && !formDisabled"
+          fxLayoutAlign="end center"
+        >
+          <mat-icon color="warn">info</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card class="corporate p4 my8">
+        <mat-card-content>
+          <div
+            fxLayout="column"
+            fxFlex="100"
+            class="corporate__general my8"
+            fxLayoutAlign="space-evenly space-between"
+            fxLayoutGap="1rem"
+            fxFlexOffset="8rem"
+          >
+            <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center">
+              <div *ngIf="!!corporate?.image" fxLayout="row" fxFlex="35">
+                <img
+                  class="corporate__image"
+                  fxFlex="100"
+                  [src]="corporate?.image"
+                  [alt]="corporate?.name"
+                />
+              </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                <mat-label>Type</mat-label>
+                <div
+                  class="form-group selectedMat mb4"
+                  [ngClass]="{
+                    'selectedMat--disabled': formDisabled,
+                    'ng-invalid': type.invalid && type.touched,
+                    'ng-valid': type.valid
+                  }"
+                  fxFlex="100"
+                >
+                  <mat-select
+                    placeholder="Select type of Corporate"
+                    formControlName="type"
+                  >
+                    <mat-option
+                      *ngFor="let type of types | keyvalue"
+                      [value]="type.value"
+                    >
+                      {{ type.value }}
+                    </mat-option>
+                  </mat-select>
+                  <neural-show-errors
+                    [control]="form.controls.type"
+                  ></neural-show-errors>
+                </div>
+              </div>
+              <div class="form-group" fxFlex="35" fxLayout="column">
+                <mat-label>Name</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  class="form-control"
+                  formControlName="name"
+                  placeholder="Name"
+                  autocomplete="off"
+                />
+                <neural-show-errors
+                  [control]="form.controls.name"
+                ></neural-show-errors>
+              </div>
+            </div>
+            <div fxLayout="row" fxFlex="100">
+              <div class="form-group" fxFlex="35">
+                <mat-label>Registration Number</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  class="form-control"
+                  formControlName="registrationNumber"
+                  placeholder="Registration Number"
+                  autocomplete="off"
+                />
+                <neural-show-errors
+                  [control]="form.controls.registrationNumber"
+                ></neural-show-errors>
+              </div>
+            </div>
+            <div
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              fxFlex="100"
+              fxLayoutGap="2rem"
+              *ngIf="exists && !!corporate"
+            >
+              <div class="form-group" fxLayout="column">
+                <input
+                  type="file"
+                  #myImageInput
+                  accept="image/*"
+                  name="file"
+                  hidden
+                  class="form-control"
+                  placeholder="Image"
+                  autocomplete="off"
+                  (change)="showPreview($event)"
+                />
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="start center"
+                  fxLayoutGap="1rem"
+                >
+                  <button
+                    type="button"
+                    [disabled]="form.disabled"
+                    color="warn"
+                    mat-flat-button
+                    (click)="myImageInput.click()"
+                  >
+                    Select Image
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="!!file.value && !formDisabled">
+                {{ file?.value?.name }}
+              </div>
+              <div *ngIf="!formDisabled">
+                <button
+                  type="button"
+                  mat-flat-button
+                  class="px10 py1"
+                  color="primary"
+                  [disabled]="!file.value"
+                  (click)="onUpload(file)"
+                >
+                  Upload
+                </button>
+              </div>
+            </div>
+            <div fxLayout="row" fxFlex="100">
+              <div class="form-group" fxFlex="35">
+                <mat-label>Description</mat-label>
+                <textarea
+                  matInput
+                  rows="7"
+                  class="form-control"
+                  formControlName="description"
+                  placeholder="Description"
+                  autocomplete="off"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+          <button
+            mat-stroked-button
+            type="button"
+            class="mr4 px10 py1"
+            [disabled]="!updatePermission && !createPermission"
+            (click)="onAction('cancel')"
+          >
+            Cancel
+          </button>
+          <button
+            mat-flat-button
+            type="button"
+            *ngIf="exists && form.disabled"
+            [disabled]="!updatePermission"
+            class="px10 py1"
+            color="primary"
+            (click)="onAction('edit')"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="form.enabled"
+            class="px10 py1"
+            color="primary"
+            [disabled]="!enabledGeneralForm || !createPermission"
+            (click)="toggleCorporate(form)"
+          >
+            {{ corporate ? 'Save' : 'Next' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="exists">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="h6 text-capitalize font-semi-thick my0">APP Identifier</h2>
+        </mat-panel-title>
+        <mat-panel-description
+          *ngIf="!appIdentifiers && !formDisabled"
+          fxLayoutAlign="end center"
+        >
+          <mat-icon color="warn">info</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <neural-corporate-app-identifire
+        [permissions]="permissions"
+        [corporate]="corporate"
+        *ngIf="exists"
+        [parent]="form"
+        (action)="onAction($event)"
+        (created)="createCorporate($event, form)"
+        (updated)="onUpdate($event, form)"
+      ></neural-corporate-app-identifire>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="exists">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="h6 text-capitalize font-semi-thick my0">
+            People in Charge
+          </h2>
+        </mat-panel-title>
+        <mat-panel-description
+          *ngIf="form.get('peopleInCharge').invalid && !formDisabled"
+          fxLayoutAlign="end center"
+        >
+          <mat-icon color="warn">info</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <neural-corporate-charge
+        [permissions]="permissions"
+        [corporate]="corporate"
+        *ngIf="exists"
+        [parent]="form"
+        (added)="addPeopleInCharge($event)"
+        (removed)="removePeopleInCharge($event)"
+        (created)="createCorporate($event, form)"
+        (updated)="onUpdate($event, form)"
+        (action)="onAction($event)"
+      ></neural-corporate-charge>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="exists">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="h6 text-capitalize font-semi-thick my0">Social Account</h2>
+        </mat-panel-title>
+        <mat-panel-description
+          *ngIf="form.get('socialAccounts').invalid && !formDisabled"
+          fxLayoutAlign="end center"
+        >
+          <mat-icon color="warn">info</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <neural-corporate-social
+        [permissions]="permissions"
+        [uploadedSocialIcon]="uploadedSocialIcon$ | async"
+        [corporate]="corporate"
+        *ngIf="exists"
+        [parent]="form"
+        (added)="addSocialAccounts($event)"
+        (removed)="removeSocialAccounts($event)"
+        (created)="createCorporate($event, form)"
+        (updated)="onUpdate($event, form)"
+        (action)="onAction($event)"
+        (iconModel)="uploadedSocialImage($event)"
+      ></neural-corporate-social>
+    </mat-expansion-panel>
+
+    
+    <mat-expansion-panel *ngIf="exists">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="h6 text-capitalize font-semi-thick my0">Configuration</h2>
+        </mat-panel-title>
+        <mat-panel-description
+          *ngIf="form.get('configuration').invalid && !formDisabled"
+          fxLayoutAlign="end center"
+        >
+          <mat-icon color="warn">info</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <neural-corporate-configuration
+        [isSuperAdmin]="isSuperAdmin"
+        [operations]="operations"
+        [permissions]="permissions"
+        [corporateBranches]="corporateBranches"
+        [corporate]="corporate"
+        *ngIf="exists"
+        [parent]="form"
+        (added)="addServiceCenterConfigurationService($event)"
+        (removed)="removeCreateServiceCenterConfigurationService($event)"
+        (addedModule)="addSubscriptionModules($event)"
+        (addedModuleOption)="addSubscriptionModulesOption($event)"
+        (addedVehicleCoverage)="addVehicleCoverage($event)"
+        (removedModule)="removeModule($event)"
+        (removedVehicleCoverage)="removeVehicleCoverage($event)"
+        (created)="createCorporate($event, form)"
+        (updated)="onUpdate($event, form)"
+        (action)="onAction($event)"
+        [countries]="countries"
+        (countryChange)="searchInCodes($event)"
+        (addBranchSchema)="addedCalendarSchemaBranches($event)"
+        (removedBranchSchema)="removeCalendarSchemaBranches($event)"
+        (addCalendarService)="addedCalendarService($event)"
+        (removedCalendarService)="removeCalendarService($event)"
+        (addListItem)="addListItem($event)"
+        (removeListItem)="removeListItem($event)"
+        (uploadFeatureImage)="uploadFeatureImage($event)"
+        (addNewBank)="addNewBanks($event)"
+        (removedNewBank)="removeNewBanks($event)"
+        (addUsedBank)="addUsedBanks($event)"
+        (removedUsedBank)="removeUsedBanks($event)"
+        (removedWidget)="removeWidget($event)"
+        (addVehicleWidget)="addVehicleWidget($event)"
+        (removedVehicleWidget)="removeVehicleWidget($event)"
+        (addWidget)="addWidget($event)"
+        [watermarkImage]="watermarkImage$ | async"
+        (uploadWatermarkImage)="uploadWatermarkImage($event)"
+        (addWebHookVersion)="addWebhookVersion($event)"
+        (removeWebHookVersion)="removeWebhookVersion($event)"
+        (addKeyValue)="addAccountProfileDocumentTypes($event)"
+        (removeKeyValue)="removeAccountProfileDocumentTypes($event)"
+      ></neural-corporate-configuration>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="exists">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="h6 text-capitalize font-semi-thick my0">Model</h2>
+        </mat-panel-title>
+        <mat-panel-description
+          *ngIf="model.invalid && !formDisabled"
+          fxLayoutAlign="end center"
+        >
+          <mat-icon color="warn">info</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <neural-corporate-model
+        [permissions]="permissions"
+        [corporate]="corporate"
+        *ngIf="exists"
+        [parent]="form"
+        (addedFullFillment)="addFulfillment($event)"
+        (fullFillmentTypeChanges)="addFullFillmentObjects($event)"
+        (removeFullFillment)="removeFulfillments($event)"
+        (created)="createCorporate($event, form)"
+        (updated)="onUpdate($event, form)"
+        (action)="onAction($event)"
+      ></neural-corporate-model>
+    </mat-expansion-panel>
+  </mat-accordion>
+</form>

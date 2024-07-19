@@ -1,0 +1,65 @@
+  <form autocomplete="off" novalidate>
+    <mat-card class="service-center p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="model__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <mat-horizontal-stepper linear>
+                <mat-step>
+                  <ng-template matStepLabel>Select a customer</ng-template>
+
+                  <!-- <neural-customer-accounts [header]="false" (selected)="selectCustomer($event)"></neural-customer-accounts> -->
+
+                  <div>
+                    <button mat-button matStepperNext type="button">Next</button>
+                  </div>
+                </mat-step>
+                <mat-step>
+                  <ng-template matStepLabel>Service Type</ng-template>
+                  ...
+                  <div>
+                    <button mat-button matStepperPrevious type="button">Back</button>
+                    <button mat-button matStepperNext type="button">Next</button>
+                  </div>
+                </mat-step>
+                <mat-step>
+                  <ng-template matStepLabel>Select Vehicle</ng-template>
+                  ...
+                  <div>
+                    <button mat-button matStepperPrevious type="button">Back</button>
+                    <button mat-button matStepperNext type="button">Next</button>
+                  </div>
+                </mat-step>
+                <mat-step>
+                  <ng-template matStepLabel>Select Service Center</ng-template>
+                  ...
+                  <div>
+                    <button mat-button matStepperPrevious type="button">Back</button>
+                    <button mat-button matStepperNext type="button">Next</button>
+                  </div>
+                </mat-step>
+                <mat-step>
+                  <ng-template matStepLabel>Date and Time</ng-template>
+                  ...
+                  <div>
+                    <button mat-button matStepperPrevious type="button">Back</button>
+                    <button mat-button matStepperNext type="button">Next</button>
+                  </div>
+                </mat-step>
+                <mat-step>
+                  <ng-template matStepLabel>Booking Summary</ng-template>
+                  ...
+                  <div>
+                    <button mat-button matStepperPrevious type="button">Back</button>
+                    <button mat-button matStepperNext type="button">Next</button>
+                  </div>
+                </mat-step>
+              </mat-horizontal-stepper>
+        </mat-card-content>
+    </mat-card>
+</form>

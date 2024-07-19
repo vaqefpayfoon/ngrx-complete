@@ -1,0 +1,19 @@
+@import 'styles-variables';
+.roles {
+  $self: &;
+
+  &__wrapper {
+    #{$self}__item {
+      min-height: 65vh;
+    }
+  }
+
+  &__loading,
+  &__not-found {
+    font-size: 48px;
+    color: map-get($map: $colors, $key: shark);
+    font-weight: $font-thicker;
+    text-align: center;
+    padding: 150px 0;
+  }
+}

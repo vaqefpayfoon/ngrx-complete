@@ -1,0 +1,22 @@
+<div
+  fxLayout="column"
+  fxFlex="100"
+  fxLayoutAlign="start space-between"
+  fxLayoutGap="1rem"
+  class="lead"
+>
+  <neural-lead-details
+    [lead]="lead"
+    [wishList]="wishList"
+    [purchaseQuotes]="purchaseQuotes"
+    [testDrives]="testDrives"
+    (update)="onUpdate($event)"
+    [permissions]="permissions"
+    [selectedCorporate]="selectedCorporate"
+    [selectedBranch]="selectedBranch"
+    [brands]="brands"
+    [corporates]="corporates"
+    [isSuperAdmin]="isSuperAdmin"
+    [account]="account"
+  ></neural-lead-details>
+</div>

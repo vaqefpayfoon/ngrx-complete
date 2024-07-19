@@ -1,0 +1,33 @@
+<div class="templates" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="title" [breadcrumbs]="bc" [link]="(permissions$ | async)?.CREATE_TEMPLATE ? 'new' : null" (refreshChange)="onRefresh($event)" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="templates__header">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <span class="templates__header--item font-normal" fxFlex="20">Name</span>
+                <span class="templates__header--item font-normal" fxFlex="20">Subject</span>
+                <span class="templates__header--item font-normal" fxFlex="20">Status</span>
+                <span class="templates__header--item font-normal" fxFlex="5">Actions</span>
+            </div>
+        </mat-card>
+            <ng-container *ngIf="!(loading$ | async)">
+                <div class="mb3" *ngFor="let template of (templates$ | async)">
+                    <neural-template-card [permissions]="permissions$ | async" [template]="template" (status)="openDialog($event)" (remove)="openRemoveDialog($event)"></neural-template-card>
+                </div>
+            </ng-container>
+            <div *ngIf="(loading$ | async)" class="templates__loading">
+                Loading...
+            </div>
+            <div class="templates__not-found" *ngIf="(error$ | async)">
+                <neural-error [error]="error$ | async"></neural-error>
+            </div>
+    </div>
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+        <mat-paginator [length]="total$ | async"
+            [pageSize]="(templatesConfig$ | async).limit"
+            [pageIndex]="(templatesConfig$ | async).page - 1"
+            (page)="changePage($event)" showFirstLastButtons>
+        </mat-paginator>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div
+  class="search"
+  fxLayout="row wrap"
+  fxFlex="100"
+  fxLayoutGap="1rem grid"
+  fxFlexAlign="start center"
+  [formGroup]="searchForm"
+>
+  <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+    <h2
+      class="h6 text-capitalize font-semi-thick my0"
+      fxLayoutAlign="space-between center"
+    >
+      Filters
+    </h2>
+  </div>
+  <div class="search__divider" fxFlex="100">
+    <mat-divider></mat-divider>
+  </div>
+  <div fxFlex="33" class="form-group" fxLayout="column">
+    <mat-label>Email</mat-label>
+    <input
+      formControlName="email"
+      type="text"
+      matInput
+      class="form-control"
+      placeholder="Email"
+      autocomplete="off"
+    />
+  </div>
+
+  <div fxLayout="column" fxFlex="33" fxLayoutGap="0.5rem">
+    <mat-label style="font-size: 13px;">Country code</mat-label>
+    <div class="form-group selectedMat" [ngClass]="{'selectedMat--disabled':searchForm.disabled || searchForm.controls['phone.code'].disabled, 'ng-invalid': searchForm.controls['phone.code'].invalid && searchForm.controls['phone.code'].touched, 'ng-valid': searchForm.controls['phone.code'].valid && searchForm.controls['phone.code'].dirty}">
+      <mat-select
+        placeholder="Select Country Code"
+        formControlName="phone.code"
+      >
+        <mat-option *ngFor="let code of codes" [value]="code.code">
+          {{ code.name }} ( +{{ code.code }} )
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
+
+  <div fxFlex="33" class="form-group" fxLayout="column">
+    <mat-label>Phone Number</mat-label>
+    <input
+      type="text"
+      formControlName="phone.number"
+      matInput
+      class="form-control"
+      placeholder="Phone Number"
+      autocomplete="off"
+    />
+  </div>
+
+  <div fxFlex="33" class="form-group" fxLayout="column">
+    <mat-label>Full Name</mat-label>
+    <input
+      formControlName="identity.fullName"
+      type="text"
+      matInput
+      class="form-control"
+      placeholder="Full Name"
+      autocomplete="off"
+    />
+  </div>
+  <div fxFlex="33" class="mt6">
+    <button mat-stroked-button color="primary" type="button" class="mr4 px10 py1" (click)="searchForm.disable()">
+      Cancel
+    </button>
+    <button mat-flat-button color="primary" *ngIf="searchForm.enabled" type="button" class="mr4 px10 py1" [disabled]="searchForm.invalid || searchForm.pristine" (click)="onSearch(searchForm)">
+      Search
+    </button>
+    <button mat-flat-button color="primary" *ngIf="searchForm.disabled" type="button" class="mr4 px10 py1" (click)="searchForm.enable()">
+      Edit
+    </button>
+  </div>
+</div>

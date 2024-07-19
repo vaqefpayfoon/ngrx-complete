@@ -1,0 +1,46 @@
+<div class="mt8 customer-search">
+  <mat-accordion class="customer-search__panel">
+    <mat-expansion-panel [expanded]="panelOpenState">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="h6 text-capitalize font-semi-thick my0">Advance search</h2>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card class="customer-search__card p4 my8">
+        <!-- content -->
+        <mat-card-content>
+          <div fxLayout="column" fxFlex="100" class="customer-search__general" fxLayoutAlign="start space-between"
+            fxLayoutGap="1rem" fxFlexOffset="1rem">
+            <!-- form -->
+            <div [formGroup]="form" fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+              <!-- email -->
+              <div fxFlex="30" class="form-group" fxLayout="column">
+                <mat-label>Email</mat-label>
+                <div fxLayout="row" class="form-group__wrapper">
+                  <input type="text" matInput class="form-control" formControlName="email" maxlength="100"
+                    placeholder="John@Email.Com" autocomplete="off" (keyup)="onSearch(form)" />
+                  <button class="form-group__remove" *ngIf="customerEmail.value" mat-button matSuffix mat-icon-button
+                    (click)="clearEmail(form)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <!-- customer name -->
+              <div fxFlex="30" class="form-group" fxLayout="column">
+                <mat-label>Name</mat-label>
+                <div fxLayout="row" class="form-group__wrapper" formGroupName="identity">
+                  <input type="text" matInput class="form-control" formControlName="fullName" autocomplete="off"
+                    (keyup)="onSearch(form)" maxlength="50" placeholder="John Wick Doe" />
+                  <button class="form-group__remove" *ngIf="fullNameAccount.value" mat-button matSuffix mat-icon-button
+                    (click)="clearName(form)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

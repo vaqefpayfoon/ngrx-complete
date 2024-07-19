@@ -1,0 +1,213 @@
+<div [formGroup]="form">
+  <!-- start general form -->
+  <mat-card class="inbox-message p4 my8">
+    <!-- start card title -->
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+      </div>
+    </mat-card-title>
+    <!-- end card title -->
+
+    <!-- start title divider -->
+    <div class="inbox-message__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <!-- end title divider -->
+
+    <!-- start card content -->
+    <mat-card-content>
+      <div
+        class="inbox-message__general my8"
+        fxLayout="column"
+        fxFlex="100"
+        fxLayoutAlign="space-evenly space-between"
+        fxFlexOffset="8rem"
+        fxLayoutGap="1rem"
+      >
+        <!-- start form controls -->
+        <div fxLayout="row" fxFlex="100">
+          <!-- type -->
+          <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+            <mat-label>Type</mat-label>
+            <div
+              class="form-group selectedMat mb4"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid': type.invalid && type.touched,
+                'ng-valid': type.valid
+              }"
+              fxFlex="100"
+            >
+              <mat-select
+                placeholder="Select type of inbox-message"
+                formControlName="type"
+              >
+                <mat-option
+                  *ngFor="let type of (messageTypes | keyvalue)"
+                  [value]="type.value"
+                >
+                  {{ type.value }}
+                </mat-option>
+              </mat-select>
+              <neural-show-errors
+                [control]="form.controls.type"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+        <div
+          fxLayout="column"
+          fxFlex="100"
+          class="inbox-message__general"
+          formGroupName="payload"
+          fxLayoutGap="1rem"
+        >
+          <!-- start form controls -->
+          <div fxLayout="row" fxFlex="100" *ngIf="type.value===messageTypes.CAMPAIGN">
+            <!-- type -->
+            <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+              <mat-label>Search and Select Campaign</mat-label>
+              <div fxFlex="35" class="form-group" fxLayout="column">
+                <input
+                  type="text"
+                  matInput
+                  class="form-control"
+                  placeholder="Search Campaign"
+                  autocomplete="off"
+                  (keyup)="onSearchCampaign($event)"
+                />
+              </div>
+              <div fxFlex="100" *ngIf="campaigns.length>0">
+                <div class="mb3">
+                  <mat-label>Select One of The Recent Campaigns</mat-label>
+                </div>
+                 <mat-radio-group fxLayout="column" formControlName="campaignUuid">
+                    <mat-radio-button class="mb2" color="primary" *ngFor="let campaign of campaigns" [value]="campaign?.uuid" >{{ campaign?.name }}</mat-radio-button>
+                 </mat-radio-group >
+                </div>
+              <div *ngIf="loading">
+                <h2 class="h6 text-capitalize mt2">Loading...</h2>
+              </div>
+              <div *ngIf="!loading && campaigns.length<1">
+                <h2 class="h6 text-capitalize mt2">Campaign not found or inactive.</h2>
+              </div>
+            </div>
+          </div>
+          <!-- Title -->
+          <div fxFlex="100" fxLayout="row">
+            <div fxFlex="35" class="form-group" fxLayout="column">
+              <mat-label>Title</mat-label>
+              <input
+                type="text"
+                matInput
+                class="form-control"
+                formControlName="title"
+                placeholder="Title"
+                autocomplete="off"
+              />
+              <neural-show-errors
+                [control]="payload.controls.title"
+              ></neural-show-errors>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div fxFlex="100" fxLayout="row">
+            <div fxFlex="35" class="form-group" fxLayout="column">
+              <mat-label>Description</mat-label>
+              <textarea
+                class="form-control"
+                formControlName="description"
+                placeholder="Ex. description..."
+                rows="7"
+              ></textarea>
+              <neural-show-errors
+                [control]="payload.controls.description"
+              ></neural-show-errors>
+            </div>
+          </div>
+
+          <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxFlex="100"
+          fxLayoutGap="2rem"
+        >
+          <div class="form-group" fxLayout="column">
+            <input
+              type="file"
+              #myFileInput
+              accept=".html"
+              name="file"
+              hidden
+              class="form-control"
+              placeholder="Image"
+              autocomplete="off"
+              (change)="showPreview($event)"
+            />
+            <div
+              fxFlex="100"
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              fxLayoutGap="1rem"
+            >
+              <button
+                type="button"
+                [disabled]="form.disabled"
+                color="accent"
+                mat-flat-button
+                (click)="myFileInput.click()"
+              >
+                Select HTML file
+              </button>
+            </div>
+            <mat-hint *ngIf="!myFileInput.value" class="mt1">*HTML file is required</mat-hint>
+          </div>
+        </div>
+
+          <!-- HTML -->
+          <div fxFlex="100" fxLayout="row">
+            <div fxFlex="70" class="form-group" fxLayout="column">
+              <mat-label>HTML</mat-label>
+              <ejs-richtexteditor
+                [height]="height"
+                [width]="width"
+                formControlName="htmlBody"
+                #customRTE
+                [toolbarSettings]="tools"
+              ></ejs-richtexteditor>
+              <neural-show-errors
+                [control]="payload.controls.htmlBody"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <!-- end card content -->
+
+    <!-- start actions button -->
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        [disabled]="!createPermission"
+        (click)="form.disable()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!createPermission"
+        class="px10 py1"
+        color="primary"
+        (click)="onCreate(form)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+    <!-- end actions button -->
+  </mat-card>
+</div>

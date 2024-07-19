@@ -1,0 +1,192 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.header {
+
+  height: 100%;
+
+  &__general {
+    @include breakpoint(lt-md) {
+      width: 100%;
+    }
+    .mat-stroked-button {
+      font-weight: $font-semi-thick;
+      background-color: white;
+      color: black;
+      padding: 0.15rem 1rem !important;
+    }
+  }
+
+  &__logo {
+    height: 100%;
+    &--link {
+      background-color: transparent !important;
+      border: none !important;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+      img {
+        filter: brightness(0) invert(1);
+      }
+    }
+  }
+  
+  &__switcher {
+    @include breakpoint(lt-md) {
+      width: 100%;
+    }
+
+    &--input {
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      line-height: 1;
+      position: relative;
+
+      .mat-icon {
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        top: -5px;
+        bottom: 0;
+        margin: auto;
+        height: 18px;
+        width: 18px;
+        font-size: 18px;
+        line-height: 18px;
+        opacity: 1;
+        color: map-get($map: $colors, $key: seashell);
+      }
+
+      input {
+        width: 100%;
+        border: none;
+        font-size: 13px;
+        background: none;
+        border-bottom: 1px solid rgba($color: map-get($map: $colors, $key: white), $alpha: 0.5);
+        color: map-get($map: $colors, $key: white) !important;
+        display: block;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+        font-weight: $font-semi-thick;
+        cursor: pointer;
+      }
+
+      ::-webkit-input-placeholder {
+        /* Edge */
+        font-size: 13px;
+        text-transform: capitalize;
+        color: map-get($map: $colors, $key: white) !important;
+        opacity: 0.5;
+      }
+    
+      :-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        font-size: 13px;
+        text-transform: capitalize;
+        color: map-get($map: $colors, $key: white) !important;
+        opacity: 0.5;
+      }
+    
+      ::placeholder {
+        font-size: 13px;
+        text-transform: capitalize;
+        color: map-get($map: $colors, $key: white) !important;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  &__notification {
+    height: 100%;
+    border-right: 1px solid rgba($color: #000000, $alpha: 0.1);
+    border-left: 1px solid rgba($color: #000000, $alpha: 0.1);
+    .mat-icon {
+      height: 28px !important;
+      width: 28px !important;
+      font-size: 28px !important;
+    }
+  }
+
+  &__account {
+    height: 100%;
+    cursor: pointer;
+    &--avatar {
+      display: inline-flex;
+      width: 50px;
+      height: 50px;
+      object-position: center;
+      object-fit: cover;
+      @include round(50%);
+      border: 2px solid map-get($map: $colors, $key: white);
+    }
+    &--detail {
+      h1,
+      h6 {
+        line-height: 1;
+        font-weight: $font-semi-thick;
+      }
+      h1 {
+        font-size: 14px;
+        text-transform: capitalize;
+      }
+      h6 {
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.menu-toolbar {
+  background-color: map-get($map: $colors, $key: white);
+  box-shadow: 0 2px 5px 0px rgba($color: #727272, $alpha: 0.3);
+  .menu {
+    height: 100%;
+  
+    &__objects {
+      .mat-button {
+        transition: color 0.3s ease;
+
+        span {
+          line-height: 18px;
+          display: inline-flex;
+          vertical-align: middle;
+          height: 18px !important;
+          padding: 0 5px;
+          text-transform: capitalize;
+        }
+
+        
+        &:hover:enabled, &.active:enabled {
+          span {
+            color: map-get($map: $colors, $key: theme);
+          }
+          .mat-icon > svg{
+            fill: map-get($map: $colors, $key: theme);
+          }
+        }
+
+
+        &.active {
+          span {
+            color: map-get($map: $colors, $key: theme);
+            font-weight: $font-semi-thick;
+          }
+        }
+        .mat-icon{
+          width: 18px !important;
+          font-size: 18px !important;
+        }
+      }
+    }
+  
+  }
+}
+
+
+.mat-select {
+  font-size: 13px !important;
+}

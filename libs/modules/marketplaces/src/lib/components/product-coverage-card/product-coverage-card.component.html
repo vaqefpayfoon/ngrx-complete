@@ -1,0 +1,37 @@
+<mat-card class="card" [ngClass]="{deactive: !active}">
+    <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+        class="card__header"
+    >
+        <div fxFlex="10" class="font-semi-thick card__header--image">
+            {{unit?.brand}}
+        </div>
+        <div fxFlex="20" class="font-semi-thick card__header--name">
+            {{unit?.model}}
+        </div>
+        <div fxFlex="20" class="font-semi-thick card__header--name">
+            <img *ngIf="services && serviceIcon" [src]="serviceIcon" alt="{{serviceName | titlecase}}" width="50" height="50">
+        </div>
+        <div fxFlex="15" class="font-semi-thick card__header--status">
+            <mat-slide-toggle color="primary" matTooltipPosition="above" [matTooltip]="[active ? 'Deactivate' : 'Activate']" (click)="toggleStatus($event)" [checked]="active"></mat-slide-toggle>
+        </div>
+        <div fxFlex="5" class="font-semi-thick card__header--actions">
+        <button mat-icon-button [disabled]="!statusPermission && !deletePermission" [matMenuTriggerFor]="actions">
+            <mat-icon svgIcon="action_off"></mat-icon>
+        </button>
+        <mat-menu #actions="matMenu">
+            <button mat-menu-item [disabled]="!statusPermission" [routerLink]="['../inventory/'+uuid]">
+                <mat-icon svgIcon="preview_off"></mat-icon>
+                <span>Preview</span>
+            </button>
+            <button mat-menu-item [disabled]="!deletePermission" (click)="toggleDelete()">
+                <mat-icon svgIcon="delete_off"></mat-icon>
+                <span>Delete</span>
+              </button>
+        </mat-menu>
+        </div>
+    </div>
+</mat-card>
+  

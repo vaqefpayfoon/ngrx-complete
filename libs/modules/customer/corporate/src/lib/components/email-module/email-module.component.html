@@ -1,0 +1,55 @@
+<div [formGroup]="form">
+    <div formArrayName="modules" fxFlex="100" fxLayout="column" fxFlexOffset="8rem">
+        <div fxFlex="100">
+            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Modules</h2>
+                <button mat-mini-fab color="primary" [disabled]="formDisabled" (click)="addEmailModuleBranch()">
+                    <mat-icon svgIcon="add"></mat-icon>
+                </button>
+            </div>
+        </div>
+        <ng-container *ngIf="modules.controls.length;else showError">
+            <div *ngFor="let item of modules.controls; let i = index;">
+                <div fxLayout="column" fxFlex="100" class="branch__general my8"
+                    fxLayoutAlign="space-evenly space-between" [formGroup]="moduleIndex(i)">
+                    <button class="branch__general--close" matTooltip="Remove" (click)="removeEmailModuleBranch(i)" [disabled]="formDisabled" mat-icon-button
+                        color="warn">
+                        <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                    </button>
+                    <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                            <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                                <mat-label>Title</mat-label>
+                                <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':formDisabled, 'ng-invalid': modules.controls[i].get('title').invalid, 'ng-valid': modules.controls[i].get('title').valid}"
+                                    fxFlex="100">
+                                    <mat-select placeholder="Select a title" formControlName="title"
+                                        (selectionChange)="onChangeTitle($event, i)">
+                                        <mat-option *ngFor="let title of moduleTitles | keyvalue" [value]="title.value">
+                                            {{title.value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxLayout="row">
+                            <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                <mat-label>active</mat-label>
+                                <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                        <div fxFlex="100">
+                            <neural-module-event [formDisabled]="formDisabled" [moduleEvents]="emailModule ? emailModule[i]?.events : null"></neural-module-event>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #showError>
+    <div class="branch__not-found" fxLayout="column" fxLayoutGap="1rem">
+        <span>Add a new module</span>
+    </div>
+</ng-template>

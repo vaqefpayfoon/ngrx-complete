@@ -1,0 +1,39 @@
+<div
+  class="reservation"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="
+        (reservation$ | async)?.referenceNumber
+          ? (reservation$ | async)?.referenceNumber
+          : 'Create a reservation'
+      "
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-manual-reservation-form
+      [serviceLineloading]="serviceLineloading$ | async"
+      [branchInfo]="branchInfo$ | async"
+      [serviceLines$]="serviceLines$"
+      [permissions]="permissions$ | async"
+      [corporateInfo]="corporateInfo$ | async"
+      [operations]="operations$ | async"
+      [serviceTypes]="(filters$ | async)?.selectedTypes"
+      [selectedSlot]="selectedSlot$ | async"
+      [timeZone]="timeZone$ | async"
+      [selectedBranch]="selectedBranch$ | async"
+      [reservation]="reservation$ | async"
+      (loaded)="onLoad($event)"
+      (updateBcTime)="onUpdateBcTime($event)"
+      (created)="onCreate($event)"
+      (updated)="onUpdate($event)"
+      (searchServiceLine)="onSearchServiceLine($event)"
+      (branchChange)="onBranchChange($event)"
+      [customTag]="customTag"
+    ></neural-manual-reservation-form>
+  </div>
+</div>

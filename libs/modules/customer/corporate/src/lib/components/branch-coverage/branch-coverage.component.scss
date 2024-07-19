@@ -1,0 +1,61 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.branch {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+
+  &__divider {
+    position: relative;
+  }
+
+  .mat-mini-fab {
+    .mat-icon {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+
+  &__general {
+    position: relative;
+
+    .form-group {
+      overflow: hidden;
+      position: relative;
+      border: none !important;
+
+
+      .form-control {
+        @include round(7px);
+        padding: 0 15px !important;
+        border: 1px solid map-get($map: $colors, $key: aquaHaze) !important;
+      }
+    }
+
+    &--close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: auto;
+    }
+  }
+
+  .mat-chip {
+    @include round(7px);
+    font-size: 14px;
+    background-color: map-get($map: $colors, $key: theme);
+    color: map-get($map: $colors, $key: white);
+    z-index: 1;
+
+    .mat-icon {
+      color: map-get($map: $colors, $key: white) !important;
+    }
+  }
+}
+
+.selected {
+  background-color: map-get($map: $colors, $key: heather) !important;
+}

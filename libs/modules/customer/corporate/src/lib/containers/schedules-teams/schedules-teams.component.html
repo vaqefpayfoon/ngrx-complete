@@ -1,0 +1,61 @@
+<div
+  class="schedules"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <div class="dynamic-header" fxFlex="100" fxLayoutAlign="space-between center" fxLayout="row wrap">
+        <div fxLayout="column" fxFlex="50" class="dynamic-header__header" fxLayoutAlign="start start">
+            <h1 fxFlex="100" class="mt0 mb3 font-semi-thick text-capitalize h2" fxFlexFill>Teams</h1>
+            <div *ngIf="bc && !!bc.length" class="breadcrumb" fxLayoutAlign="start center">
+              <a class="text-uppercase breadcrumb__active" routerLink="/">Home</a>
+              <span class="arrow">
+                  <mat-icon svgIcon="arrow_right_off"></mat-icon>
+              </span>
+              <ng-template ngFor let-item [ngForOf]="bc" let-i="index">
+                  <span class="text-uppercase" *ngIf="!item.path" [routerLink]="item.path">{{item?.name}}</span>
+                  <a class="text-uppercase" [class.breadcrumb__active]="!!item.path" *ngIf="item?.path" [routerLink]="item.path">{{item?.name}}</a>
+                  <span class="arrow" *ngIf="i !== bc.length - 1">
+                      <mat-icon svgIcon="arrow_right_off"></mat-icon>
+                  </span>
+              </ng-template>
+            </div>
+        </div>
+
+        <div class="dynamic-header__actions" fxFlex="50" fxLayoutAlign="end center" fxLayout="row wrap" fxLayoutGap="10px grid">
+          <div fxLayoutGap="10px">
+              <button (click)="addTeam()"  mat-mini-fab color="primary" [disabled]="!(permissions$ | async)?.CREATE_BRANCH_TEAM">
+                  <mat-icon svgIcon="add"></mat-icon>
+              </button>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <mat-card class="schedulers__header">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <span class="schedules__header--item font-normal" fxFlex="20"
+          >Name</span
+        >
+      </div>
+    </mat-card>
+    <ng-container *ngIf="!(loading$ | async)">
+      <div class="mb3" *ngFor="let team of (teamsList | async)?.teams">
+        <neural-schedules-team-card
+          [permissions]="permissions$ | async"
+          [team]="team"
+          (deleteEvent)="onDelete($event)"
+        ></neural-schedules-team-card>
+      </div>
+    </ng-container>
+    <div *ngIf="loading$ | async" class="schedules__loading">Loading...</div>
+    <div class="schedules__not-found" *ngIf="!(teamsList | async)?.teams?.length">
+        <neural-error [error]="error$ | async"></neural-error>
+    </div>
+  </div>
+</div>

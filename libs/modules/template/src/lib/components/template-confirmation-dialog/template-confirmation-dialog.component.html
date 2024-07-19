@@ -1,0 +1,19 @@
+<h1 mat-dialog-title class="font-thick text-black">Are you sure?</h1>
+
+<mat-dialog-content>
+  <p>
+    {{ name }}'s template will be
+    {{ [isActive ? 'deactivated' : 'activated'] }}.
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions class="text-right">
+  <button
+    mat-button
+    (click)="toggleStatus()"
+    [color]="[isActive ? 'warn' : 'primary']"
+  >
+    Yes
+  </button>
+  <button mat-button (click)="close()">No</button>
+</mat-dialog-actions>

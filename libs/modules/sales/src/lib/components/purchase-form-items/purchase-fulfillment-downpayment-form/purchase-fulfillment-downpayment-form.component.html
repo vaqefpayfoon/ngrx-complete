@@ -1,0 +1,368 @@
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+  <mat-card fxFlex class="sale">
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <div
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="1rem"
+        >
+          <h2 class="h6 text-capitalize font-semi-thick my0">
+            {{ purchase.fulfillments[index]?.title }}
+          </h2>
+        </div>
+        <div fxLayoutGap="1rem">
+          <button
+            *ngIf="purchase?.badge?.edit"
+            mat-stroked-button
+            color="primary"
+            matBadgeColor="warn"
+            matBadge="1"
+            (click)="onClearBadge()"
+            [disabled]="!updatePermission"
+          >
+            Clear
+          </button>
+          <button
+            mat-stroked-button
+            type="button"
+            class="px10 py1"
+            color="primary"
+            (click)="onLock(form)"
+            [disabled]="!updatePermission || (purchase.fulfillments[index]?.downPayment?.status !== downPaymentStatus.PENDING)"
+          >
+            {{ !purchase.fulfillments[index]?.isLocked ? 'Lock' : 'Unlock' }}
+          </button>
+        </div>
+      </div>
+    </mat-card-title>
+    <div class="sale__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100">
+        <ng-container *ngIf="edit; else editForms">
+          <div fxFlex="100">
+            <mat-list>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">
+                    Final Vehicle Price(RM)
+                  </h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.breakDown
+                        ?.finalPurchasePrice
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">
+                    Final Trade-In Value(RM)
+                  </h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.breakDown
+                        ?.finalTradeInValue
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Approved Loan(RM)</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.breakDown
+                        ?.approvedLoan
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Booking Fee Paid</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.breakDown
+                        ?.bookingFeePaid
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Insurance And Road Tax</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.breakDown
+                        ?.insuranceAndRoadTax
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Other Fees</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.breakDown
+                        ?.otherFees
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">
+                    Balance Downpayment Due
+                  </h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.breakDown
+                        ?.balanceDownpaymentDue
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Payment Status</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.payment?.status
+                        | titlecase
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Payment Receipt Number</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.payment
+                        ?.receiptNumber
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Payment Remark</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                      purchase.fulfillments[index]?.downPayment?.payment?.remark
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+        </ng-container>
+        <ng-template #editForms>
+          <form [formGroup]="form" novalidate>
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              class="sale__general mt8"
+              fxLayoutAlign="space-evenly space-between"
+              fxLayoutGap="1rem"
+            >
+              <div
+                fxLayout="row wrap"
+                fxLayoutAlign="space-between center"
+                fxLayoutGap="1rem"
+              >
+                <h2 class="h6 text-capitalize font-semi-thick my0">Payment</h2>
+              </div>
+              <div
+                fxLayout="row"
+                fxFlex="100"
+                fxLayoutAlign="start center"
+                formGroupName="payment"
+                fxLayoutGap="1rem"
+              >
+                <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                  <mat-label style="font-size: 13px">Payment Status</mat-label>
+                  <div
+                    class="form-group selectedMat my0"
+                    [ngClass]="{
+                      'selectedMat--disabled': formDisabled,
+                      'ng-invalid': status.invalid && status.touched,
+                      'ng-valid': status.valid && status.touched
+                    }"
+                    fxFlex="100"
+                  >
+                    <mat-select
+                      formControlName="status"
+                      placeholder="Select a Status"
+                      (selectionChange)="onChangeStatus($event)"
+                    >
+                      <mat-option
+                        *ngFor="let status of paymentStatus | keyvalue"
+                        [value]="status.value"
+                      >
+                        {{ status.key | titlecase }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="form-group" fxFlex="30">
+                  <mat-label>Receipt Number</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    class="form-control"
+                    formControlName="receiptNumber"
+                    placeholder="Receipt Number"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100" formGroupName="payment">
+                <div
+                  class="form-group"
+                  fxFlex="90"
+                  fxLayout="column"
+                  fxLayoutGap="0.5rem"
+                >
+                  <mat-label>Remarks</mat-label>
+                  <textarea
+                    matInput
+                    rows="7"
+                    formControlName="remark"
+                    class="form-control"
+                    placeholder="Remarks"
+                  ></textarea>
+                </div>
+              </div>
+              <div
+                fxLayout="row wrap"
+                fxLayoutAlign="space-between center"
+                fxLayoutGap="1rem"
+              >
+                <h2 class="h6 text-capitalize font-semi-thick my0">
+                  Break Down
+                </h2>
+              </div>
+              <div
+                fxLayout="row"
+                fxFlex="100"
+                formGroupName="breakDown"
+                fxLayoutGap="1rem"
+              >
+                <div class="form-group" fxFlex="30">
+                  <mat-label>Insurance And Road Tax</mat-label>
+                  <input
+                    type="number"
+                    matInput
+                    class="form-control"
+                    formControlName="insuranceAndRoadTax"
+                    placeholder="Ex. 30,000"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group" fxFlex="30">
+                  <mat-label>Other Fees</mat-label>
+                  <input
+                    type="number"
+                    matInput
+                    class="form-control"
+                    formControlName="otherFees"
+                    placeholder="Ex. 30,000"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="py4" fxLayoutAlign="end center">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        (click)="edit = true"
+        [disabled]="!updatePermission"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        class="px10 py1"
+        color="primary"
+        *ngIf="edit"
+        (click)="edit = !edit"
+        [disabled]="!updatePermission"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        class="px10 py1"
+        color="primary"
+        *ngIf="!edit"
+        (click)="onUpdate(form)"
+        [disabled]="form.invalid || !updatePermission"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

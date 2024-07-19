@@ -1,0 +1,24 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.inspections {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+  $self: &;
+
+  &__name {
+    font-size: 1rem;
+  }
+
+  &__divider {
+    position: relative;
+  }
+
+  &__accordion {
+    @include round(7px);
+    box-shadow: 0 0 1px 0 rgba($color: #000000, $alpha: 0.4);
+  }
+
+}

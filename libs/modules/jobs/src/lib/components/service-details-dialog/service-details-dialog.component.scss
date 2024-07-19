@@ -1,0 +1,28 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.service{
+    color: map-get($map: $colors, $key: shark) !important;
+    border: 1px solid map-get($map: $colors, $key: aquaHaze);
+    @include round(7px);
+    box-shadow: none;
+
+    &__textShadow{
+      border: 1px solid map-get($map: $colors, $key: aquaHaze);
+      @include round(7px);
+      box-shadow: none;
+      width: fit-content;
+    }
+    &__title{
+     background-color: #F2F3F5;
+     border: 1px solid map-get($map: $colors, $key: aquaHaze);
+     @include round(7px);
+    }
+    &__loading{
+      font-size: 35px;
+      color: map-get($map: $colors, $key: shark);
+      font-weight: $font-thicker;
+      text-align: center;
+      padding: 150px 0;
+    }
+}

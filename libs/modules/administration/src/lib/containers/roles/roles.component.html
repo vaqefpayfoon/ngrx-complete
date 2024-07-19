@@ -1,0 +1,31 @@
+<div class="roles">
+  <neural-dynamic-header
+    [title]="'roles'"
+    [breadcrumbs]="bc"
+    [link]="(permissions$ | async)?.CREATE_ACCOUNT_ROLE ? '../role/new' : null"
+    (refreshChange)="onRefresh($event)"
+    (searchChange)="onSubmit($event)"
+    [isSearch]="search"
+    [loading]="loading$ | async"
+  ></neural-dynamic-header>
+
+  <div class="roles__wrapper my8">
+      <cdk-virtual-scroll-viewport [itemSize]="(roles$ | async).length" class="roles__item">
+        <div *cdkVirtualFor="let role of roles$ | async">
+          <neural-role-card
+            [tagPermissions]="permissions$ | async"
+            (delete)="openDialog($event)"
+            [role]="role"
+          ></neural-role-card>
+        </div>
+      </cdk-virtual-scroll-viewport>
+  </div>
+
+
+  <div *ngIf="loading$ | async" class="roles__loading">
+    Loading...
+  </div>
+  <div class="roles__not-found" *ngIf="error$ | async">
+    <span> {{ error$ | async }} </span>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<form autocomplete="off" novalidate [formGroup]="parent">
+    <mat-card class="branch p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Location</h2>
+            </div>
+        </mat-card-title>
+        <div class="branch__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="branch__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem" formGroupName="location">
+                    <div fxLayout="column" fxFlex="35">
+                        <div class="form-group" fxFlex="100">
+                            <mat-label>Country</mat-label>
+                            <input type="text" matInput #countryInput formControlName="country" class="form-control" placeholder="Country" autocomplete="off" [matAutocomplete]="autoCountries">
+                        </div>
+                        <neural-show-errors [control]="location.controls.country"></neural-show-errors>
+                    </div>
+
+                    <div fxLayout="column" fxFlex="35">
+                        <mat-label>State</mat-label>
+                        <div fxFlex="100" class="form-group selectedMat" fxLayout="column" [ngClass]="{'selectedMat--disabled':formDisabled || location.controls.state.disabled, 'ng-invalid': location.controls.state.invalid, 'ng-valid': location.controls.state.valid}">
+                            <mat-select placeholder="Select a state" formControlName="state">
+                                <mat-option *ngFor="let state of allStates?.states" [value]="state">
+                                        {{state}}
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem" formGroupName="location">
+                    <div fxLayout="column" fxFlex="35">
+                        <mat-label>Timezone</mat-label>
+                        <div fxFlex="100" class="form-group selectedMat" fxLayout="column" [ngClass]="{'selectedMat--disabled':formDisabled || location.controls.timezone.disabled, 'ng-invalid': location.controls.timezone.invalid, 'ng-valid': location.controls.timezone.valid}">
+                            <mat-select placeholder="Select a timezone" formControlName="timezone">
+                                <mat-option *ngFor="let time of timeZoneList" [value]="time?.utc">
+                                        {{time?.value}} ( {{time?.utc}} )
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                        <neural-show-errors [control]="location.controls.timezone"></neural-show-errors>
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex="100"> 
+                    <div class="form-group" fxFlex="71">
+                        <mat-label>Search address</mat-label>
+                        <input type="text" [disabled]="parent.disabled || location.controls.state.invalid" #search matInput class="form-control" placeholder="type..." autocomplete="off">
+                        <neural-show-errors [control]="location.controls.address"></neural-show-errors>
+                    </div>
+                </div>
+                <div *ngIf="location.controls.state.valid && addressInput.invalid">
+                    <mat-hint>Please search branch location</mat-hint>
+                </div>
+                <div *ngIf="location.controls.googlePlaceId.invalid">
+                    <mat-hint>Google Place Id is missing, use search input to update data</mat-hint>
+                </div>
+            </div>
+            <div>
+                <mat-autocomplete #autoCountries="matAutocomplete" (optionSelected)="selectCountry($event)">
+                    <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
+                        {{ country }}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+        </mat-card-content>
+        <ng-content></ng-content>
+    </mat-card>
+</form>

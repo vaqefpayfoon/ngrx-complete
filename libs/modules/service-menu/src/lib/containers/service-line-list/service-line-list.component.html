@@ -1,0 +1,67 @@
+<div class="serviceLine" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+  <div fxFlex="100" fxFlexFill>
+    <!-- [link]="(permissions$ | async)?.CREATE_PROMO ? '../service-line/list/new' : null" -->
+    <neural-dynamic-header [title]="'Service'" [breadcrumbs]="bc"
+      [link]="(permissions$ | async)?.CREATE_SERVICE_LINE ? '../new' : null" (refreshChange)="onRefresh($event)"
+      [loading]="loading$ | async" (syncDMS)="syncServiceLineDMS($event)"></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill>
+    <neural-service-line-search
+      [filters]="serviceLineFilter$ | async"
+      [permissions]="permissions$ | async"
+      [selectedCorporate]="selectedCorporate$ | async"
+      [selectedBranch]="selectedBranch$ | async"
+      (searched)="onFilter($event)"
+      [services]="serviceTypes$ | async"
+    ></neural-service-line-search>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <mat-card class="serviceLine__header">
+      <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+        <span class="serviceLine__header--item font-normal" fxFlex="20">
+          NAME
+        </span>
+        <span class="serviceLine__header--item font-normal" fxFlex="15">
+          OPERATION CODE
+        </span>
+        <span class="serviceLine__header--item font-normal" fxFlex="15">
+          TYPE
+        </span>
+        <span class="serviceLine__header--item font-normal" fxFlex="15">
+          ESTIMATED PRICE &nbsp;({{(branchInfo$ | async)?.payments?.sales?.currency}})
+        </span>
+        <span class="serviceLine__header--item font-normal" fxFlex="10">
+          ACTIVE
+        </span>
+        <span class="serviceLine__header--item font-normal" fxFlex="10">
+          CUSTOMER VIEW
+        </span>
+        <span class="serviceLine__header--item font-normal" fxFlex="5">
+          ACTION
+        </span>
+      </div>
+    </mat-card>
+    <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+      <div class="mb3" *ngFor="let serviceLine of serviceLines$ | async">
+        <neural-service-line-card 
+        [serviceLine]="serviceLine" 
+        [permissions]="permissions$ | async"
+        (activeStatusChange)="onActiveChange($event)"
+        (customerViewStatusChange)="onCustomerView($event)"
+        (resetToggle)="onResetToggle($event)"
+          ></neural-service-line-card>
+      </div>
+    </ng-container>
+    <div *ngIf="loading$ | async" class="promotions__loading">
+      Loading...
+    </div>
+    <div class="promotions__not-found" *ngIf="(error$ | async) && !(total$ | async)">
+      <neural-error [error]="error$ | async"></neural-error>
+    </div>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="total$ | async">
+    <mat-paginator [length]="total$ | async" [pageSize]="(serviceLineConfig$ | async).limit"
+      [pageIndex]="(serviceLineConfig$ | async).page - 1" (page)="changePage($event)" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,107 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="model p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="model__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div fxLayout="column" *ngIf="!!model?.image && exists" fxFlex="100" fxLayoutAlign="center center" fxLayoutGap="1rem">
+                        <img [src]="model?.image" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/placeholder.jpg'" class="model__galleries">
+                        <div fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="space-evenly start">
+                            <h2 class="h4 text-capitalize font-semi-thick my0">{{model?.unit?.brand}} {{model?.unit?.model}} {{model?.unit?.variant}}</h2>
+                            <h2 class="h5 text-capitalize font-thick my0">{{model?.unit?.series}}</h2>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0">Unit</h2>
+                    </div>
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" formGroupName="unit">
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Brand</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="brand" placeholder="Brand" autocomplete="off">
+                            <neural-show-errors [control]="unit.controls.brand"></neural-show-errors>
+                        </div>
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Model</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="model" placeholder="Model" autocomplete="off">
+                            <neural-show-errors [control]="unit.controls.model"></neural-show-errors>
+                        </div>
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Actual Model</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="actualModel" placeholder="Actual Model" autocomplete="off">
+                            <neural-show-errors [control]="unit.controls.actualModel"></neural-show-errors>
+                        </div>
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Display</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="display" placeholder="Display" autocomplete="off">
+                            <neural-show-errors [control]="unit.controls.display"></neural-show-errors>
+                        </div>
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Variant</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="variant" placeholder="Variant" autocomplete="off">
+                            <neural-show-errors [control]="unit.controls.variant"></neural-show-errors>
+                        </div>
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Actual Variant</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="actualVariant" placeholder="Actual Variant" autocomplete="off">
+                            <neural-show-errors [control]="unit.controls.actualVariant"></neural-show-errors>
+                        </div>
+                        <div class="form-group" fxFlex="35">
+                            <mat-label>Series</mat-label>
+                            <input type="text" matInput class="form-control" formControlName="series" placeholder="Series" autocomplete="off">
+                            <neural-show-errors [control]="unit.controls.series"></neural-show-errors>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                        <mat-label>Type</mat-label>
+                        <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':formDisabled, 'ng-invalid': type.invalid && type.touched, 'ng-valid': type.valid && type.touched}" fxFlex="100">
+                            <mat-select placeholder="Select a type" formControlName="type">
+                                <mat-option *ngFor="let type of types | keyvalue" [value]="type.value">
+                                  {{type.value}}
+                                </mat-option>
+                            </mat-select>
+                            <neural-show-errors [control]="form.controls.type"></neural-show-errors>
+                        </div>
+                    </div>  
+                    <div class="form-group" fxFlex="35">
+                        <mat-label>Price</mat-label>
+                        <input type="number" min="1" matInput class="form-control" formControlName="price" placeholder="Price" autocomplete="off">
+                        <neural-show-errors [control]="form.controls.price"></neural-show-errors>
+                    </div>
+                </div>
+                <!-- <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div class="form-group" fxFlex="35">
+                        <mat-label>Order</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="order" placeholder="Order" autocomplete="off">
+                        <neural-show-errors [control]="form.controls.order"></neural-show-errors>
+                    </div>
+                </div> -->
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!updatePermission && !createPermission" (click)="onAction('cancel')">Cancel</button>
+            <button mat-flat-button type="button" *ngIf="exists && form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="onAction('edit')">Edit</button>
+            <button mat-flat-button *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!enabledGeneralForm || !createPermission" (click)="toggleModel(form)">{{exists ? 'Save' : 'Next'}}</button>
+        </mat-card-actions>
+    </mat-card>
+    <neural-model-sales [permissions]="permissions" [model]="model" [parent]="form" *ngIf="exists" (action)="onAction($event)" (created)="createModel($event, form)" (updated)="updateModel($event, form)"></neural-model-sales>
+    <neural-model-promotion [permissions]="permissions" [model]="model" [parent]="form" *ngIf="exists" (action)="onAction($event)" (created)="createModel($event, form)" (updated)="updateModel($event, form)"></neural-model-promotion>
+    <neural-model-brochure [permissions]="permissions" [model]="model" *ngIf="exists" [parent]="form" (added)="addBrochure($event)" (removed)="removeBrochure($event)" (created)="createModel($event, form)" (updated)="updateModel($event, form)" (action)="onAction($event)"></neural-model-brochure>
+    <neural-model-spec [permissions]="permissions" [model]="model" *ngIf="exists" [parent]="form" (added)="addSpecs($event)" (removed)="removeSpecs($event)" (created)="createModel($event, form)" (updated)="updateModel($event, form)" (action)="onAction($event)"></neural-model-spec>
+    <neural-model-loan [permissions]="permissions" [model]="model" *ngIf="exists" [parent]="form" (created)="createModel($event, form)" (updated)="updateModel($event, form)" (action)="onAction($event)"></neural-model-loan>
+    <neural-model-gallery [tempGalleryColorImage]="tempGalleryImage$ | async" [permissions]="permissions" [model]="model" *ngIf="!!model" [parent]="form" (updated)="updateModel($event, form)" (action)="onAction($event)" (addedInterior)="addInterior($event)" (addedExterior)="addExterior($event)" (uploadInteriorGalleryColorImage)="uploadInteriorGalleryColorImage($event)" (uploadExteriorGalleryColorImage)="uploadExteriorGalleryColorImage($event)" (uploadInteriorGalleryImages)="uploadInteriorGalleryImages($event)" (uploadExteriorGalleryImages)="uploadExteriorGalleryImages($event)" (removedInterior)="onRemoveInterior($event)" (removedExterior)="removeExterior($event)" (updateModelImage)="updateModelImage($event)" (removedInteriorGalleryImage)="onRemoveGalleryImage($event)" (removedExteriorGalleryImage)="onRemoveGalleryImage($event)"></neural-model-gallery>
+    <neural-model-branch [model]="model" *ngIf="exists && !!model" [permissions]="permissions" [selectedCorporate]="selectedCorporate" (setBranches)="setBranches($event)"></neural-model-branch>
+    <neural-model-pre-owned [displayAdditionalInformation]="model?.displayAdditionalInformation" *ngIf="exists">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!updatePermission && !createPermission" (click)="onAction('cancel')">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="exists && form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="onAction('edit')">Edit</button>
+        <button mat-flat-button *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!enabledGeneralForm || !createPermission" (click)="toggleModel(form)">{{exists ? 'Save' : 'Next'}}</button>
+    </neural-model-pre-owned>
+</form>

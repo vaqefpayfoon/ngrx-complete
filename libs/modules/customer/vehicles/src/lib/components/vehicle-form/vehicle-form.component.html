@@ -1,0 +1,161 @@
+<div fxLayout="column" *ngIf="exists; else loading;">
+    <mat-card class="vehicle p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+                <div fxLayout="column" fxFlex="1 1 auto" class="vehicle__name font-semi-thick mb2" fxLayoutAlign="start start">
+                    Customer Details
+                </div>
+                <div *ngIf="searchedVehicle" fxLayout="column" fxLayoutAlign="end start"> 
+                    <mat-slide-toggle 
+                        color="primary"
+                        [formControl]="this.active"
+                        [matTooltip]="[this.active.value ? 'Deactivate' : 'Activate']"
+                        [attr.disabled]="!this.searchedVehicleStatusPermission"
+                        class="vehicle__status font-semi-thick mb2"
+                        matTooltipPosition="above"
+                        (click)="toggleStatus($event)"
+                    >Status</mat-slide-toggle>
+                </div>
+            </div>
+        </mat-card-title>
+        <div class="vehicle__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column">
+                <div class="vehicle__customer my8"  fxFlex="1 0 100">
+                    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between start">
+                        <div class="vehicle__customer--image" fxLayoutAlign="center center" fxFlex="1 0 10">
+                            <img src="https://d3gyzh3f9mj82k.cloudfront.net/test/avatar.jpg" alt="customer">
+                        </div>
+                        <div class="vehicle__customer--detail" fxFlex="1 0 90">
+                            <div fxLayout="row wrap" fxFlex="60" fxLayoutAlign="space-between center" fxLayoutGap="30px grid" [formGroup]="accountForm">
+                                <div class="form-group" fxFlex="1 0 50" formGroupName="identity">
+                                    <mat-label>Full Name</mat-label>
+                                    <input type="text" matInput class="form-control" formControlName="fullName" placeholder="Full Name" autocomplete="off">
+                                </div>
+                                <div class="form-group" fxFlex="0 0 50">
+                                    <mat-label>Email</mat-label>
+                                    <input type="text" matInput class="form-control" formControlName="email" placeholder="email" autocomplete="off">
+                                </div>
+                                <div fxLayout="row wrap" fxFlex="0 0 100" formGroupName="phone" fxLayoutGap="15px grid">
+                                    <div class="form-group" fxFlex="1 0 50">
+                                        <mat-label>Code</mat-label>
+                                        <input type="text" matInput class="form-control" formControlName="code" placeholder="Code" autocomplete="off">
+                                    </div>
+                                    <div class="form-group" fxFlex="1 0 50">
+                                        <mat-label>Number</mat-label>
+                                        <input type="text" matInput class="form-control" formControlName="number" placeholder="Number" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+                <div fxLayout="row"  fxFlex="1 0 100" fxLayoutAlign="space-between center">
+                    <div fxLayout="column" fxFlex="1 1 auto" class="vehicle__name font-semi-thick mb2" fxLayoutAlign="start start">
+                            Vehicle Details
+                    </div>
+                </div>
+                <div class="vehicle__divider">
+                    <mat-divider></mat-divider>
+                </div>
+                <form novalidate [formGroup]="form" autocomplete="off">
+                    <div class="vehicle__customer my8"  fxFlex="1 0 100">
+                        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between start">
+                            <div fxFlex="1 0 10"></div>
+                            <div class="vehicle__customer--detail" fxFlex="1 0 90">
+                                <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="30px grid">
+                                    <div class="form-group" fxFlex="0 1 30">
+                                        <mat-label>VIN</mat-label>
+                                        <input type="text" matInput class="form-control" formControlName="identificationNumber" placeholder="VIN" autocomplete="off">
+                                    </div>
+                                    <div class="form-group" fxFlex="0 1 30">
+                                        <mat-label>Number Plate</mat-label>
+                                        <input type="text" matInput class="form-control" formControlName="numberPlate" placeholder="Number Plate" autocomplete="off">
+                                    </div>
+                                    <div fxFlex="0 1 30">
+                                        <mat-label>Owner Type</mat-label>
+                                        <div class="form-group selectedMat"  [ngClass]="{'selectedMat--disabled':form.disabled}">
+                                            <mat-select placeholder="Select Owner Type" formControlName="ownerType">
+                                                <mat-option *ngFor="let item of OWNERTYPE | keyvalue" [value]="item.value">
+                                                    {{item.value | titlecase}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxFlex="0 0 90" fxLayoutGap="30px">
+                                        <div fxLayout="row" fxFlex="100">
+                                            <mat-label>Specification</mat-label>
+                                        </div>
+                                        <div fxLayout="row" fxFlex="100" fxLayoutGap="30px grid" formGroupName="unit">
+                                            <div fxFlex="0 0 33" fxLayout="column" *ngIf="list?.brands">
+                                                <mat-label>Brand</mat-label>
+                                                <div class="form-group selectedMat" fxFlex="100" [ngClass]="{'selectedMat--disabled':formDisabled || unit.disabled}">
+                                                    <mat-select placeholder="Select a brand" formControlName="brand" (selectionChange)="onBrandSelected($event)">
+                                                        <mat-option *ngFor="let brand of list?.brands" [value]="brand">
+                                                          {{brand}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="0 0 33" fxLayout="column" *ngIf="list.models" >
+                                                <mat-label>Model</mat-label>
+                                                <div class="form-group selectedMat" fxFlex="100" [ngClass]="{'selectedMat--disabled':formDisabled || unit.disabled}">
+                                                    <mat-select placeholder="Select a model" formControlName="model" (selectionChange)="onModelSelected($event)">
+                                                        <mat-option *ngFor="let model of list?.models" [value]="model">
+                                                          {{model}}
+                                                        </mat-option>
+                                                    </mat-select>                                                
+                                                </div>
+                                            </div>
+                                            <div fxFlex="0 0 33" fxLayout="column" *ngIf="list.variants">
+                                                <mat-label>Variant</mat-label>
+                                                <div class="form-group selectedMat" fxFlex="100" [ngClass]="{'selectedMat--disabled':formDisabled || unit.disabled}">
+                                                    <mat-select placeholder="Select a variant" formControlName="variant">
+                                                        <mat-option *ngFor="let item of list?.variants" [value]="item.uuid">
+                                                          {{item.variant}}
+                                                        </mat-option>
+                                                    </mat-select>                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row" fxFlex="100">
+                                            <div class="mt4" >
+                                                <mat-label>Fuel Type</mat-label>
+                                                <div>
+                                                    <mat-button-toggle-group name="fueltype" formControlName="fuelType" aria-label="Fuel Type">
+                                                        <mat-button-toggle [value]="item.value" *ngFor="let item of FUELTYPE | keyvalue">{{item.value}}</mat-button-toggle>
+                                                    </mat-button-toggle-group>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                
+                    </div>
+                </form>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+            <button mat-flat-button *ngIf="exists && form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+            <button mat-flat-button *ngIf="exists && form.enabled" class="px10 py1" [disabled]="!form.valid || form.pristine || !updatePermission" color="primary" (click)="updateVehicle(form)">Save</button>
+            <button mat-flat-button *ngIf="!exists" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !createPermission" (click)="createVehicle(form)">Save</button>
+        </mat-card-actions>         
+    </mat-card>
+    <div fxLayout="column" fxFlex="100">
+        <neural-car-tyre-specs *ngIf="exists && type.value === FLEETTYPE.CAR; else bikeTyre;" [rearTyre]="rearTyre$ | async" [vehicle]="vehicle || searchedVehicle" [tyre]="tyre$ | async" (rearWidth)="updateRearWidth()" (rearAspectRatio)="updateRearAspectRatio($event)" (rearRim)="updateRearRim($event)" (aspectRatio)="updateAspectRatio($event)" (rim)="updateRim($event)"  (update)="onUpdateTyreSpecs($event)" [carTyreSpecs]="carTyreSpecs"></neural-car-tyre-specs>
+        <ng-template #bikeTyre>
+            <neural-bike-tyre-specs *ngIf="exists" [vehicle]="vehicle" [tyre]="tyre$ | async" [rearTyre]="rearTyre$ | async" (rearWidth)="updateRearWidth()" (rearAspectRatio)="updateRearAspectRatio($event)" (rearRim)="updateRearRim($event)" (aspectRatio)="updateAspectRatio($event)" (rim)="updateRim($event)" [bikeTyreSpecs]="bikeTyreSpecs" (update)="onUpdateTyreSpecs($event)"></neural-bike-tyre-specs>
+        </ng-template>
+        <neural-vehicle-warranty-package *ngIf="exists && warrantyPackages" [warrantyPackages]="warrantyPackages"></neural-vehicle-warranty-package>
+        <neural-vehicle-inspections *ngIf="exists && inspections" [inspections]="inspections"></neural-vehicle-inspections>
+    </div>
+</div>
+<ng-template #loading>
+    <div class="loading">
+        Please type number plate
+    </div>
+</ng-template> 

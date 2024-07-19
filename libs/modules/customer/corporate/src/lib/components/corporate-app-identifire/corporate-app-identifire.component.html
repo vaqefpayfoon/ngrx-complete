@@ -1,0 +1,40 @@
+<mat-card class="corporate p4 my8">
+    <mat-card-content>
+        <div class="corporate__general my8">
+            <div class="form-group">
+                <mat-chip-list #chipList aria-label="App Identifier">
+                    <mat-chip
+                        *ngFor="let appIF of (appIdentifiersControl).value"
+                        [selectable]="selectable"
+                        [disabled]="formDisabled"
+                        [removable]="removable"
+                        (removed)="remove(appIF)">
+                        {{appIF}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                    placeholder="Add a new app identifire"
+                    #appIFInput
+                    [readonly]="formDisabled"
+                    class="form-control"
+                    [formControl]="appIdentifireCtrl"
+                    [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let appIF of filteredAppIdentifire | async" [ngClass]="{selected: selectedValue(appIF)}" [value]="appIF">
+                    {{appIF}}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" (click)="onAction('cancel')" [disabled]="!createPermission && !updatePermission">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="parent.disabled"  class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="onAction('edit')">Edit</button>
+        <button mat-flat-button type="button" *ngIf="parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || parent.pristine || !updatePermission || !createPermission" (click)="onSave(parent)">Save</button>
+    </mat-card-actions>
+</mat-card>

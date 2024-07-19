@@ -1,0 +1,11 @@
+<mat-card class="card">
+  <mat-card-content class="card__general">
+    <div class="card__search" fxLayoutAlign="center center" fxLayoutGap="1rem">
+      <div class="form-group" fxFlex="35">
+        <input type="email" matInput class="form-control" [formControl]="email" placeholder="email" autocomplete="off">
+        <neural-show-errors [control]="email"></neural-show-errors>
+      </div>
+      <button mat-flat-button type="button" class="px10 py1" color="primary" [disabled]="email.invalid" (click)="onSearch(email)">Search</button>
+    </div>
+  </mat-card-content>
+</mat-card>

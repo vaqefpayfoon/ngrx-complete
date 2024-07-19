@@ -1,0 +1,10 @@
+<div *ngIf="element?.available" class="center-create">
+  <div fxFlex="100" fxFlexOffset="4rem">
+    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="center center">
+      <div>
+        Create New <strong>{{ element?.type }}</strong> Manual Reservation
+        <span style="cursor: pointer;text-decoration: underline;color:rgb(70, 70, 214)" (click)="onCreate()">Click Here</span>
+      </div>
+    </div>
+  </div>
+</div>

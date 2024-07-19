@@ -1,0 +1,138 @@
+<mat-card class="specs p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxFlex="1 1 auto" class="specs__name font-semi-thick mb2" fxLayoutAlign="space-between center">
+                <span>Tyre Specs</span>
+                <button mat-button disabled>Skip</button>
+            </div>
+        </div>
+    </mat-card-title>
+    <div class="specs__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <form novalidate autocomplete="off" [formGroup]="form">
+            <div class="specs__container" fxLayout="column">
+                <!-- <div class="specs__container--title">
+                    <p class="my0">My fuel has fuel tyre specification</p>
+                    <div>
+                        <mat-button-toggle-group>
+                            <mat-button-toggle value="left" aria-label="Text align left"></mat-button-toggle>
+                            <mat-button-toggle value="center" aria-label="Text align center"></mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+                </div> -->
+                <div class="mt5" fxLayout="row wrap" fxLayoutAlign="end center">
+                    <div fxLayout="column" fxLayoutAlign="center center">
+                        <mat-slide-toggle (change)="sameTyreToggle($event)" formControlName="sameTyre" color="primary">Same front and rear tyre</mat-slide-toggle>
+                    </div>
+                </div> 
+                <div class="specs__input" fxLayout="row wrap" fxFlex="1 0 100" fxLayoutAlign="center stretch">
+                    <div fxFlex="33" fxLayout="column" fxLayoutAlign="space-around center">
+                        <div class="specs__input--top" formGroupName="frontLeft">
+                            <h6 class="specs__caption text-right mb4 mt0 font-semi-thick" >
+                                Front Left
+                            </h6>
+                            <div class="form-group mb2" data-placeholder="Width">
+                                <input type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput class="form-control" formControlName="width" autocomplete="off" [matAutocomplete]="frontLeftWidths">
+                                <mat-autocomplete #frontLeftWidths="matAutocomplete" (optionSelected)="sameTyre.value ? onSelectWidth($event, frontLeft, [frontLeft, frontRight, rearLeft, rearRight], false) : onSelectWidth($event, frontLeft, [frontLeft, frontRight], false)">
+                                    <mat-option *ngFor="let width of tyre.widths" [value]="width">
+                                        {{width}}
+                                    </mat-option>
+                                </mat-autocomplete>                                
+                            </div>    
+                            <div class="form-group mb2" data-placeholder="Aspect Ratio">
+                                <input [readonly]="frontLeftAspectRatio.value" type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput class="form-control" formControlName="aspectRatio" autocomplete="off" [matAutocomplete]="frontLeftAspectRatios">
+                                <mat-autocomplete #frontLeftAspectRatios="matAutocomplete" (optionSelected)="sameTyre.value ? onSelectAspectRatio($event, frontLeft, [frontLeft, frontRight, rearLeft, rearRight], false) : onSelectAspectRatio($event, frontLeft, [frontLeft, frontRight], false)">
+                                    <mat-option *ngFor="let aspectRatio of tyre.aspectRatios" [value]="aspectRatio">
+                                        {{aspectRatio}}
+                                    </mat-option>
+                                </mat-autocomplete>                                
+                            </div>    
+                            <div class="form-group mb2" data-placeholder="Rim Size">
+                                <input [readonly]="frontLeftRimSize.value" type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput class="form-control" formControlName="rimSize" autocomplete="off" [matAutocomplete]="frontLeftRims">
+                                <mat-autocomplete #frontLeftRims="matAutocomplete" (optionSelected)="sameTyre.value ? onSelectRim(frontLeft, [frontLeft, frontRight, rearLeft, rearRight]) : onSelectRim(frontLeft, [frontLeft, frontRight])">
+                                    <mat-option *ngFor="let rim of tyre.rims" [value]="rim">
+                                        {{rim}}
+                                    </mat-option>
+                                </mat-autocomplete>                                 
+                            </div>
+                        </div>
+                        <div class="specs__input--bottom" formGroupName="rearLeft">
+                            <h6 class="specs__caption text-right mb4 mt0 font-semi-thick" >
+                                Rear Left
+                            </h6>
+                            <div class="form-group mb2" data-placeholder="Width">
+                                <input [readonly]="sameTyre.value" type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput [ngClass]="{'form-control--readonly' : sameTyre.value}" class="form-control" formControlName="width" autocomplete="off" [matAutocomplete]="rearLeftWidths">
+                                <mat-autocomplete #rearLeftWidths="matAutocomplete" (optionSelected)="sameTyre.value ? null : onSelectWidth($event, rearLeft, [rearLeft, rearRight], true)">
+                                    <mat-option *ngFor="let width of (sameTyre.value ? tyre.widths : rearTyre.widths)" [value]="width">
+                                        {{width}}
+                                    </mat-option>
+                                </mat-autocomplete>                                
+                            </div>    
+                            <div class="form-group mb2" data-placeholder="Aspect Ratio">
+                                <input [readonly]="sameTyre.value || rearLeftAspectRatio.value" type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput [ngClass]="{'form-control--readonly' : sameTyre.value}" class="form-control" formControlName="aspectRatio" autocomplete="off" [matAutocomplete]="rearLeftAspectRatios">
+                                <mat-autocomplete #rearLeftAspectRatios="matAutocomplete" (optionSelected)="sameTyre.value ? null : onSelectAspectRatio($event, rearLeft, [rearLeft, rearRight], true)">
+                                    <mat-option *ngFor="let aspectRatio of (sameTyre.value ? tyre.aspectRatios : rearTyre.aspectRatios)" [value]="aspectRatio">
+                                        {{aspectRatio}}
+                                    </mat-option>
+                                </mat-autocomplete>                                
+                            </div>    
+                            <div class="form-group mb2" data-placeholder="Rim Size">
+                                <input [readonly]="sameTyre.value || rearLeftRimSize.value" type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput [ngClass]="{'form-control--readonly' : sameTyre.value}" class="form-control" formControlName="rimSize" autocomplete="off" [matAutocomplete]="rearLeftRims">
+                                <mat-autocomplete #rearLeftRims="matAutocomplete" (optionSelected)="sameTyre.value ? null : onSelectRim(rearLeft, [rearLeft, rearRight])">
+                                    <mat-option *ngFor="let rim of (sameTyre.value ? tyre.rims : rearTyre.rims)" [value]="rim">
+                                        {{rim}}
+                                    </mat-option>
+                                </mat-autocomplete>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div fxFlex="33" class="specs__vehicle">
+                        <img
+                            class="specs__image"
+                            src="https://d3gyzh3f9mj82k.cloudfront.net/images/vehicles/car.png"
+                            alt="Car"
+                            height="700"
+                        />
+                    </div>
+                    <div fxFlex="33" fxLayout="column" fxLayoutAlign="space-around center">
+                        <div class="specs__input--top" formGroupName="frontRight">
+                            <h6 class="specs__caption text-left mb4 mt0 font-semi-thick" >
+                                Front Right
+                            </h6>
+                            <div class="form-group mb2" data-placeholder="Width">
+                                <input readonly type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput class="form-control form-control--readonly" formControlName="width" placeholder="Width" autocomplete="off">
+                            </div>    
+                            <div class="form-group mb2" data-placeholder="Aspect Ratio">
+                                <input readonly type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput class="form-control form-control--readonly" formControlName="aspectRatio" placeholder="Aspect Ratio" autocomplete="off">
+                            </div>    
+                            <div class="form-group mb2" data-placeholder="Rim Size">
+                                <input readonly type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput class="form-control form-control--readonly" formControlName="rimSize" placeholder="Rim Size" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="specs__input--bottom" formGroupName="rearRight">
+                            <h6 class="specs__caption text-left mb4 mt0 font-semi-thick" >
+                                Rear Right
+                            </h6>
+                            <div class="form-group mb2" data-placeholder="Width">
+                                <input readonly type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput class="form-control form-control--readonly" formControlName="width" placeholder="Width" autocomplete="off">
+                            </div>    
+                            <div class="form-group mb2" data-placeholder="Aspect Ratio">
+                                <input readonly type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput class="form-control form-control--readonly" formControlName="aspectRatio" placeholder="Aspect Ratio" autocomplete="off">
+                            </div>    
+                            <div class="form-group mb2" data-placeholder="Rim Size">
+                                <input readonly type="text" inputmode="numeric" pattern="[0-9]*" neuralNumbersOnly matInput class="form-control form-control--readonly" formControlName="rimSize" placeholder="Rim Size" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml18 p0">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="form.disable()">Cancel</button>
+        <button mat-flat-button *ngIf="form.disabled" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+        <button mat-flat-button *ngIf="form.enabled" class="px10 py1" [disabled]="!form.valid || form.pristine" color="primary" (click)="updateTyreSpecs(form)">Save</button>
+    </mat-card-actions>         
+</mat-card>

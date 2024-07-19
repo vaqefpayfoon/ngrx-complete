@@ -1,0 +1,67 @@
+<mat-card class="card">
+    <div
+      fxLayout="row wrap"
+      fxLayout.lt-md="column"
+      fxFlex="100"
+      fxLayoutAlign="space-between center"
+      fxLayoutAlign.lt-md="start start"
+      class="card__header"
+      fxLayoutGap.lt-md="1rem"
+    >
+      <div
+        fxFlex="10"
+        fxFlex.lt-md="100"
+        class="font-semi-thick card__header--createdAt"
+        fxLayout="column"
+        fxLayoutGap="0.5rem"
+        fxFlexOrder.lt-md="2"
+      >
+        <div>
+          {{ wishItem?.createdAt }}
+        </div>
+      </div>
+      <div
+        fxFlex="10"
+        fxFlex.lt-md="100"
+        class="font-semi-thick card__header--price"
+        fxFlexOrder.lt-md="3"
+      >
+        {{ wishItem?.vehicle?.price }}
+      </div>
+      <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--monthlyPayment"
+      fxLayoutAlign="center"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ wishItem?.vehicle?.monthlyPayment }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--model"
+      fxLayoutAlign="center"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ wishItem?.vehicle?.unit?.model }}
+    </div>
+    <div
+    fxFlex="15"
+    fxFlex.lt-md="100"
+    class="font-semi-thick card__header--series"
+    fxFlexOrder.lt-md="3"
+  >
+    {{ wishItem?.vehicle?.unit?.series }}
+  </div>
+  <div
+    fxFlex="10"
+    fxFlex.lt-md="100"
+    class="font-semi-thick card__header--variant"
+    fxFlexOrder.lt-md="3"
+  >
+    {{ wishItem?.vehicle?.unit?.variant }}
+  </div>
+    </div>
+  </mat-card>
+  

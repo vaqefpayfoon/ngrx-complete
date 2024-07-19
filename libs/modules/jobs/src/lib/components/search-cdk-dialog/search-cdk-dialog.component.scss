@@ -1,0 +1,25 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.search {
+    color: map-get($map: $colors, $key: shark) !important;
+    border: 1px solid map-get($map: $colors, $key: aquaHaze);
+    @include round(7px);
+    box-shadow: none;
+
+    &__fixedHight{
+       max-height: 450px;
+      overflow-y: auto;
+      overflow-x: hidden !important;
+    }
+    &__loading{
+      font-size: 35px;
+      color: map-get($map: $colors, $key: shark);
+      font-weight: $font-thicker;
+      text-align: center;
+      padding: 150px 0;
+    }
+  }
+  ::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}

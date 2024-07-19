@@ -1,0 +1,61 @@
+<form novalidate [formGroup]="form" autocomplete="off">
+    <mat-card class="role-card p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+                <div fxLayout="column" fxFlex="1 1 auto" class="role-card__name" fxLayoutAlign="start start">
+                    <div fxLayout="row" class="mb2" fxFlexFill fxFlex="100"  fxLayoutAlign="start center">
+                        <mat-icon svgIcon="Costumer_on"></mat-icon>
+                        <span>Country</span>
+                    </div>
+                    <div fxFlex="100" fxFlexFill>
+                        <mat-chip-list #chipList aria-label="Country selection">
+                        <mat-chip
+                            *ngIf="countries"
+                            [selectable]="selectable"
+                            [removable]="removable"
+                            (removed)="remove()">
+                            {{countries}}
+                            <mat-icon matChipRemove *ngIf="removable" svgIcon="close_on"></mat-icon>
+                        </mat-chip>
+                        <input type="text" *ngIf="!isSelect" #countryInput [formControl]="countryCtrl" [matAutocomplete]="auto"
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]="addOnBlur"
+                            (matChipInputTokenEnd)="add($event)" matInput placeholder="Country name..." autocomplete="off">
+                        </mat-chip-list>                    
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                            <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
+                            {{country}}
+                            </mat-option>
+                        </mat-autocomplete>                    
+                    </div>
+                </div>
+                <mat-card-actions class="m0 p0">
+                    <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+                    <button mat-flat-button *ngIf="exists && form.disabled" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+                    <button mat-flat-button *ngIf="exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !createPermission" (click)="updateCountry(form)">Save</button>
+                    <button mat-flat-button *ngIf="!exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !updatePermission" (click)="createCountry(form)">Save</button>
+                </mat-card-actions> 
+            </div>
+        </mat-card-title>
+        <div class="role-card__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxFlex="100" *ngIf="!isSelect && !loading" fxLayout="row">
+                <h4 fxFlex="100" class="my0 py10 font-thicker h5 text-center" >
+                    Select a country from list.
+                </h4>        
+            </div>       
+            <div fxFlex="100" *ngIf="loading" fxLayout="row">
+                <h4 fxFlex="100" class="my0 py10 font-thicker h5 text-center" >
+                    Loading...
+                </h4>        
+            </div>       
+            <div fxFlex="100" *ngIf="isSelect && !loading">
+                <neural-currency-tags formControlName="currencies" [currencies]="currencies" [formDisabled]="formDisabled"></neural-currency-tags>
+                <neural-country-tags formControlName="states" [states]="states" [formDisabled]="formDisabled"></neural-country-tags>
+            </div>
+        </mat-card-content>         
+    </mat-card>
+</form>

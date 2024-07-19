@@ -1,0 +1,475 @@
+<div [formGroup]="form">
+  <!-- start general form -->
+  <mat-card class="inbox-message p4 my8">
+    <!-- start card title -->
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">Target</h2>
+      </div>
+    </mat-card-title>
+    <!-- end card title -->
+
+    <!-- start title divider -->
+    <div class="inbox-message__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <!-- end title divider -->
+
+    <!-- start card content -->
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="inbox-message__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div fxLayout="row wrap" fxFlex="100">
+          <!-- target -->
+          <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+            <mat-label>Type</mat-label>
+            <div
+              class="form-group selectedMat mb4"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid': target.invalid && target.touched,
+                'ng-valid': target.valid
+              }"
+              fxFlex="100"
+            >
+              <mat-select placeholder="Select Target" formControlName="target">
+                <mat-option *ngFor="let target of targets" [value]="target">
+                  {{ target | titlecase }}
+                </mat-option>
+              </mat-select>
+              <neural-show-errors
+                [control]="form.controls.target"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+
+        <div
+          fxLayout="row wrap"
+          fxFlex="100"
+          *ngIf="target.valid && target.value === targetEnum.SELECTIVE"
+        >
+          <div fxLayout="row wrap" fxFlex="100">
+            <mat-radio-group
+              color="primary"
+              [disabled]="form.disabled"
+              name="customerList"
+              fxLayout="column"
+              fxLayoutAlign="start start"
+              fxLayoutGap="1rem"
+              [(ngModel)]="chosenTargetType"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="onChangeTargetType($event)"
+            >
+              <mat-radio-button
+                name="customerList"
+                *ngFor="let type of TargetTypes | keyvalue"
+                [value]="type.value"
+              >
+                {{ type.value }}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div
+            *ngIf="chosenTargetType === TargetTypes.AccountId"
+            fxLayout="row wrap"
+            class="my10"
+            fxFlex="100"
+          >
+            <div fxLayout="row wrap" fxFlex="100">
+              <div
+                fxFlex="35"
+                fxLayout="column"
+                fxLayoutGap="0.5rem"
+                *ngIf="accounts"
+              >
+                <mat-label>Accounts</mat-label>
+                <div class="form-group selectedMat mb4" fxFlex="100">
+                  <mat-select
+                    placeholder="Select An Account"
+                    multiple
+                    formControlName="accountUuids"
+                  >
+                    <mat-option
+                      *ngIf="accounts && accounts.length > 0"
+                      #allAccountSelected
+                      (click)="toggleAllSelection(TargetTypes.AccountId)"
+                      [value]="'0'"
+                      >All</mat-option
+                    >
+                    <mat-option 
+                    (click)="turnOffSelectAll(TargetTypes.AccountId)"
+                    *ngFor="let acc of accounts" [value]="acc.uuid">
+                      {{ acc.identity?.fullName | titlecase }} (
+                      {{ acc.email }} / {{ acc?.phone?.code }}
+                      {{ acc?.phone?.number }} )
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </div>
+
+            <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+              <div
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <span>Account ID</span>
+              </div>
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxFlex="35"
+                  fxLayout="column"
+                  class="form-group"
+                  fxLayoutGap="0.5rem"
+                >
+                  <input
+                    type="text"
+                    [disabled]="form.disabled"
+                    #accID
+                    matInput
+                    class="form-control"
+                    placeholder="Search By Account ID"
+                    autocomplete="off"
+                  />
+                </div>
+                <button
+                  mat-flat-button
+                  type="button"
+                  [disabled]="!accID.value || form.disabled"
+                  color="primary"
+                  (click)="
+                    onSearch({ uuid: accID.value, active: true });
+                    accID.value = ''
+                  "
+                >
+                  Add
+                </button>
+              </div>
+              <div
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <span>Email</span>
+              </div>
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxFlex="35"
+                  fxLayout="column"
+                  class="form-group"
+                  fxLayoutGap="0.5rem"
+                >
+                  <input
+                    type="email"
+                    matInput
+                    #email
+                    class="form-control"
+                    placeholder="Search By Email Address"
+                    autocomplete="off"
+                  />
+                </div>
+                <button
+                  mat-flat-button
+                  type="button"
+                  [disabled]="!email.value || form.disabled"
+                  color="primary"
+                  (click)="
+                    onSearch({ email: email.value, active: true });
+                    email.value = ''
+                  "
+                >
+                  Add
+                </button>
+              </div>
+              <div
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <span> Excel File </span>
+              </div>
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <div class="form-group" fxLayout="column">
+                  <input
+                    type="file"
+                    #myCustomerExcelInput
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    name="file"
+                    hidden
+                    class="form-control"
+                    placeholder="Excel file"
+                    autocomplete="off"
+                    (change)="showAccountPreview($event)"
+                  />
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="1rem"
+                  >
+                    <button
+                      type="button"
+                      [disabled]="form.disabled"
+                      color="primary"
+                      mat-flat-button
+                      (click)="myCustomerExcelInput.click()"
+                    >
+                      Import
+                    </button>
+                    <a
+                      href="https://wm-sandbox-document.s3-ap-southeast-1.amazonaws.com/Account+Eligibility.xlsx"
+                      target="_blank"
+                      type="button"
+                      [disabled]="form.disabled"
+                      color="warn"
+                      mat-flat-button
+                    >
+                      Sample file
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="chosenTargetType !== TargetTypes.AccountId"
+            fxLayout="row wrap"
+            class="my10"
+            fxFlex="100"
+          >
+            <div fxLayout="row wrap" fxFlex="100">
+              <div
+                fxFlex="35"
+                fxLayout="column"
+                fxLayoutGap="0.5rem"
+                *ngIf="vehicles"
+              >
+                <mat-label>Vehicles</mat-label>
+                <div class="form-group selectedMat mb4" fxFlex="100">
+                  <mat-select
+                    placeholder="Select a vehicle"
+                    multiple
+                    formControlName="identificationNumbers"
+                  >
+                    <mat-option
+                      *ngIf="vehicles && vehicles.length > 0"
+                      #allVehicleSelected
+                      (click)="toggleAllSelection(TargetTypes.FilterByVin)"
+                      [value]="'0'"
+                      >All</mat-option
+                    >
+                    <mat-option
+                      *ngFor="let vehicle of vehicles"
+                      [value]="vehicle.identificationNumber"
+                      (click)="turnOffSelectAll(TargetTypes.FilterByVin)"
+                    >
+                      {{ vehicle?.account?.identity?.fullName }} (
+                      {{ vehicle.identificationNumber }} /
+                      {{ vehicle.numberPlate }}
+                      )
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </div>
+
+            <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+              <div
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <span>VIN</span>
+              </div>
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxFlex="35"
+                  fxLayout="column"
+                  class="form-group"
+                  fxLayoutGap="0.5rem"
+                >
+                  <input
+                    type="text"
+                    [disabled]="form.disabled"
+                    #Vin
+                    matInput
+                    class="form-control"
+                    placeholder="Search By VIN"
+                    autocomplete="off"
+                  />
+                </div>
+                <button
+                  mat-flat-button
+                  type="button"
+                  [disabled]="!Vin.value || form.disabled"
+                  color="primary"
+                  (click)="
+                    onSearchVehicle({ identificationNumber: Vin.value });
+                    Vin.value = ''
+                  "
+                >
+                  Add
+                </button>
+              </div>
+              <div
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <span>Number Plate</span>
+              </div>
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxFlex="35"
+                  fxLayout="column"
+                  class="form-group"
+                  fxLayoutGap="0.5rem"
+                >
+                  <input
+                    type="text"
+                    matInput
+                    #numberPlate
+                    class="form-control"
+                    placeholder="Search By Number Plate"
+                    autocomplete="off"
+                  />
+                </div>
+                <button
+                  mat-flat-button
+                  type="button"
+                  [disabled]="!numberPlate.value || form.disabled"
+                  color="primary"
+                  (click)="
+                    onSearchVehicle({ numberPlate: numberPlate.value });
+                    numberPlate.value = ''
+                  "
+                >
+                  Add
+                </button>
+              </div>
+              <div
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <span> Excel File </span>
+              </div>
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <div class="form-group" fxLayout="column">
+                  <input
+                    type="file"
+                    #myVehicleExcelInput
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    name="file"
+                    hidden
+                    class="form-control"
+                    placeholder="Excel file"
+                    autocomplete="off"
+                    (change)="showVehiclePreview($event)"
+                  />
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="1rem"
+                  >
+                    <button
+                      type="button"
+                      [disabled]="form.disabled"
+                      color="primary"
+                      mat-flat-button
+                      (click)="myVehicleExcelInput.click()"
+                    >
+                      Import
+                    </button>
+                    <a
+                      href="https://wm-sandbox-document.s3-ap-southeast-1.amazonaws.com/vin.xlsx"
+                      target="_blank"
+                      type="button"
+                      [disabled]="form.disabled"
+                      color="warn"
+                      mat-flat-button
+                    >
+                      Sample file
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          formGroupName="notification"
+          fxLayout="column"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+        >
+          <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+            <div fxFlex="35" class="form-group" fxLayout="column">
+              <mat-label>Title</mat-label>
+              <input
+                type="text"
+                matInput
+                class="form-control"
+                formControlName="title"
+                placeholder="Title of Push Notification"
+                autocomplete="off"
+              />
+              <neural-show-errors
+                [control]="notification.controls.title"
+              ></neural-show-errors>
+            </div>
+          </div>
+
+          <div fxFlex="100" fxLayout="row">
+            <div fxFlex="35" class="form-group" fxLayout="column">
+              <mat-label>Body</mat-label>
+              <textarea
+                class="form-control"
+                matInput
+                formControlName="body"
+                placeholder="Body Text of Push Notification"
+                rows="7"
+              ></textarea>
+              <neural-show-errors
+                [control]="notification.controls.body"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        [disabled]="!createPermission"
+        (click)="form.disable()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!form.valid || !createPermission"
+        *ngIf="formEnabled"
+        class="px10 py1"
+        color="primary"
+        (click)="onCreate(form)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

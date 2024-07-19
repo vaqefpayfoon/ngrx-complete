@@ -1,0 +1,38 @@
+<div class="campaigns" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'campaigns'" [breadcrumbs]="bc" [link]="(permissions$ | async)?.GET_CAMPAIGN ? 'new' : null" (refreshChange)="onRefresh($event)" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="campaigns__header">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <span class="campaigns__header--item font-normal" fxFlex="15">Name</span>
+                <span class="campaigns__header--item font-normal" fxFlex="10">Type</span>
+                <span class="campaigns__header--item font-normal" fxFlex="15">Start date</span>
+                <span class="campaigns__header--item font-normal" fxFlex="15">End date</span>
+                <span class="campaigns__header--item font-normal" fxFlex="10">Status</span>
+                <span class="campaigns__header--item font-normal" fxFlex="10">Feature</span>
+                <span class="campaigns__header--item font-normal" fxFlex="10">View rate</span>
+                <span class="campaigns__header--item font-normal" fxFlex="10">Application rate</span>
+                <span class="campaigns__header--item font-normal" fxFlex="5">Actions</span>
+            </div>
+        </mat-card>
+            <ng-container *ngIf="!(loading$ | async)">
+                <div class="mb3" *ngFor="let campaign of (campaigns$ | async)">
+                    <neural-campaign-card [permissions]="permissions$ | async" [campaign]="campaign" (status)="openDialog($event)" (isFeatured)="openDialogFeatured($event)" (send)="sendPush($event)"></neural-campaign-card>
+                </div>
+            </ng-container>
+            <div *ngIf="(loading$ | async)" class="campaigns__loading">
+                Loading...
+            </div>
+            <div class="campaigns__not-found" *ngIf="(error$ | async)">
+                <neural-error [error]="error$ | async"></neural-error>
+            </div>
+    </div>
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+        <mat-paginator [length]="total$ | async"
+            [pageSize]="(campaignsConfig$ | async).limit"
+            [pageIndex]="(campaignsConfig$ | async).page - 1"
+            (page)="changePage($event)" showFirstLastButtons>
+        </mat-paginator>
+    </div>
+</div>

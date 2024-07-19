@@ -1,0 +1,145 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.sale {
+  $self: &;
+
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+
+  &__not-found {
+    overflow: hidden;
+    font-size: 48px;
+    color: map-get($map: $colors, $key: shark);
+    font-weight: $font-thicker;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+
+    &--file {
+      font-size: 35px;
+      font-weight: $font-thicker;
+      min-height: 100px;
+    }
+  }
+
+  &__avatar {
+    object-fit: cover;
+    object-position: center;
+    width: 80px;
+    height: 80px;
+    @include round(50%);
+    box-shadow: 0px 0px 0px 3px map-get($map: $colors, $key: theme);
+  }
+
+  &__spec {
+    object-fit: cover;
+    object-position: center;
+    width: 60px;
+    height: 60px;
+    @include round(7px);
+    box-shadow: 0px 0px 0px 3px map-get($map: $colors, $key: aquaHaze);
+  }
+
+  &__divider {
+    position: relative;
+  }
+
+  .mat-mini-fab {
+    .mat-icon {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+
+  &__general {
+    mat-label {
+      font-size: 13px;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .form-group {
+      position: relative;
+
+      .mat-icon {
+        cursor: pointer;
+        position: absolute;
+        top: 24px;
+        right: 4px;
+        bottom: 0;
+        margin: auto;
+
+        height: 18px;
+        width: 18px;
+        line-height: 18px;
+      }
+    }
+  }
+
+  &__general-data {
+    mat-label {
+      font-size: 13px;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .form-group {
+      position: relative;
+
+      .form-control {
+        border-radius: none !important;
+        border: none !important;
+        border-bottom: 1px solid map-get($map: $colors, $key: aquaHaze) !important;
+        padding-left: 0 !important;
+      }
+
+      .mat-icon {
+        cursor: pointer;
+        position: absolute;
+        top: 24px;
+        right: 4px;
+        bottom: 0;
+        margin: auto;
+
+        height: 18px;
+        width: 18px;
+        line-height: 18px;
+      }
+    }
+  }
+
+  &__galleries {
+    width: 600px;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
+    @include round(7px);
+
+    @include breakpoint(xs) {
+      max-width: 100%;
+    }
+  }
+
+  &__loan {
+    #{$self} {
+      &__loan-lists {
+        .mat-list {
+          position: relative;
+        }
+      }
+    }
+  }
+
+  &__clear-all {
+    position: fixed;
+    right: 100px;
+    bottom: 50px;
+    z-index: 3;
+  }
+}

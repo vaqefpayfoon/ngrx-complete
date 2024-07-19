@@ -1,0 +1,190 @@
+{
+  "bankLists": [
+    {
+      "uuid": "d9bd07e0-769d-4b8d-8c38-8291a69d8fe4",
+      "logo": "https://wm-sandbox-asset.s3-ap-southeast-1.amazonaws.com/other/banks/maybank.jpeg",
+      "name": "Maybank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "ddceee04-4650-4c00-ab08-e5aacec43874",
+      "logo": "https://wm-sandbox-asset.s3-ap-southeast-1.amazonaws.com/other/banks/cimb.jpeg",
+      "name": "CIMB",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "040a48a3-a15c-4371-b212-751c84d7b4ef",
+      "logo": "https://wm-sandbox-asset.s3-ap-southeast-1.amazonaws.com/other/banks/public-bank.jpeg",
+      "name": "Public Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "00d66524-a0b5-4506-b8fe-e4173c7d440b",
+      "logo": "https://wm-sandbox-asset.s3-ap-southeast-1.amazonaws.com/other/banks/hongleong.jpeg",
+      "name": "Hong Leong",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "08efd702-2574-4632-a821-8d056ff3ee5a",
+      "logo": "https://wm-sandbox-asset.s3-ap-southeast-1.amazonaws.com/other/banks/amBank.jpeg",
+      "name": "AM Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "67ac4286-53d9-4e00-8f39-7a530df00cf5",
+      "logo": "https://wm-sandbox-asset.s3-ap-southeast-1.amazonaws.com/other/banks/Affin-bank.jpeg",
+      "name": "Affin Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "3b1eff00-2a48-4607-a6f0-1af60c3dde64",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/kkb-bca.jpg",
+      "name": "KKB BCA",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "25b03a4d-4f9b-490c-901c-357973919e14",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/mandiri-tunas-finance.jpg",
+      "name": "Mandiri Tunas Finance",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "3cf6810d-4b6a-44d4-b87a-0f904f0efa61",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/mega-auto-finance.jpg",
+      "name": "Mega Auto Finance",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "d8d70f98-a864-4e64-a9fb-2662c454fa47",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/cimb-niag.jpg",
+      "name": "CIMB NIAGA",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "34c05bf9-af27-4f11-a770-eef18daaebe3",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/bmw-credit.jpg",
+      "name": "BMW Credit",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "3aedb908-3f78-441f-a2eb-825f01773326",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/rhb-bank.jpg",
+      "name": "RHB Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "830c7640-9eba-4a29-9854-b2cdd21106ec",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/bank-rakyat.jpg",
+      "name": "Bank Rakyat",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "d74bda33-44ba-437e-96b2-65f6fc4dbcb0",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/ocbc-bank.jpg",
+      "name": "OCBC Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "4979e022-f808-494b-8dc0-ab9880203184",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/hsbc.jpg",
+      "name": "HSBC Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "cc65c600-6935-49c6-8adc-724ea143dc8b",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/bank-islam.jpg",
+      "name": "Bank Islam",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "4e67e168-5978-4b1d-9d5c-ff8dc2c235e0",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/alliance-bank.jpg",
+      "name": "Alliance Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "7b022f67-3cba-4140-815f-6bc04a769c9c",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/standard-chartered.jpg",
+      "name": "Standard Chartered Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "40472ef3-0ad3-4d91-b197-f6f79a2d1669",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/MBSB-BANK.jpg",
+      "name": "MBSB Bank Berhad",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "c5407f1b-126b-4dfd-a9d3-a511fb18af67",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/citibank.jpg",
+      "name": "Citibank Malaysia",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "27e7921e-6728-43aa-8926-471a5dfb8e61",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/bsn.jpg",
+      "name": "Bank Simpanan Nasional (BSN)",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "7b384729-24cc-4e45-8f78-4cf471ff7350",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/bank-muamalat.jpg",
+      "name": "Bank Muamalat Malaysia Berhad",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "e62e0a5c-ccdb-4fbb-aea1-e8ce5621a547",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/agro-bank.jpg",
+      "name": "Agrobank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "52ea8bf3-eb16-403c-98aa-9bb845130599",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/al-rajhi-bank.jpg",
+      "name": "Al-Rajhi Malaysia",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "bbccfcec-16d6-400e-9661-06761e47351f",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/co-opbank-pertama.jpg",
+      "name": "Co-op Bank Pertama",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "75dabe57-bbc8-4a8b-9e1f-42dd73ef33c0",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/bank-of-singapore.jpg",
+      "name": "Bank of Singapore",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "42899dc2-a612-423a-94d5-536a4c2099d7",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/dbs.jpg",
+      "name": "DBS Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "0a2d69c6-9f73-4596-80f7-cdf96b442f01",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/posb.jpg",
+      "name": "POSB Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "0d6d8b22-4d8a-4dc0-ad87-9e1a30693a7a",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/uob.jpg",
+      "name": "United Overseas Bank",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "2c700b03-b1cb-4fa4-806b-880d3ab373da",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/toyota-financial-services.jpg",
+      "name": "Toyota Financial Services",
+      "interestRate": 2.5
+    },
+    {
+      "uuid": "35837c7c-4246-4e96-a0ca-bcaf5b269dbd",
+      "logo": "https://wm-sandbox-asset.s3.ap-southeast-1.amazonaws.com/other/banks/tokyo-century-leasing.jpg",
+      "name": "Tokyo Century Leasing",
+      "interestRate": 2.5
+    }
+  ]
+}

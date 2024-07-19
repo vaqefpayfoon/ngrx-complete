@@ -1,0 +1,47 @@
+<mat-card class="card" [ngClass]="{deactive: !account.active}">
+  <div
+    fxLayout="row wrap"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    class="card__header"
+  >
+    <div fxFlex="20" class="font-semi-thick card__header--name" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+      <img *ngIf="qrcode" class="card__pointer" [src]="qrcode" width="20" (click)="toggleQrCode()"> <span>{{account?.identity?.salutation | titlecase}} {{account?.identity?.fullName | titlecase}}</span>
+    </div>
+    <div fxFlex="30" class="font-semi-thick card__header--email">
+      {{account.email | lowercase}}
+    </div>
+    <div fxFlex="20" class="font-semi-thick card__header--phone">
+      {{account.phone ? account.phone.code + account.phone.number : '-'}}
+    </div>
+    <div fxFlex="15" *ngIf="groupName" class="font-semi-thick card__header--group">
+      {{groupName}}
+    </div>
+    <div fxFlex="10" class="font-semi-thick card__header--status">
+      <mat-slide-toggle color="primary" [disabled]="!statusPermission" matTooltipPosition="above" [matTooltip]="[account.active ? 'Deactivate' : 'Activate']" (click)="toggleStatus($event)" [checked]="account.active"></mat-slide-toggle>
+    </div>
+    <div fxFlex="5" class="font-semi-thick card__header--actions">
+      <button mat-icon-button [disabled]="!permissions?.GET_ACCOUNT" [matMenuTriggerFor]="actions">
+        <mat-icon svgIcon="action_off"></mat-icon>
+      </button>
+      <mat-menu #actions="matMenu">
+        <button (mouseover)="buttons.previewIcon = buttonTypes.PREVIEWON" (mouseout)="buttons.previewIcon = buttonTypes.PREVIEWOFF" mat-menu-item [disabled]="!permissions?.GET_ACCOUNT" [routerLink]="[account.uuid]">
+          <mat-icon [svgIcon]="buttons.previewIcon"></mat-icon>
+          <span>Preview</span>
+        </button>
+        <button (mouseover)="buttons.deleteIcon = buttonTypes.DELETEON" (mouseout)="buttons.deleteIcon = buttonTypes.DELETEOFF" mat-menu-item [disabled]="!permissions?.PURGE_ACCOUNT" (click)="toggleDelete()">
+          <mat-icon [svgIcon]="buttons.deleteIcon"></mat-icon>
+          <span>Delete</span>
+        </button>
+        <button (mouseover)="buttons.resyncIcon = buttonTypes.RESYNCON" (mouseout)="buttons.resyncIcon = buttonTypes.RESYNCOFF" mat-menu-item [disabled]="!permissions?.RESYNC_ACCOUNT" (click)="toggleResync()">
+          <mat-icon [svgIcon]="buttons.resyncIcon"></mat-icon>
+          <span>DMS Resync</span>
+        </button>
+        <button (mouseover)="buttons.firebaseResyncIcon= buttonTypes.FIRBASERESYNCON" (mouseout)="buttons.firebaseResyncIcon = buttonTypes.FIRBASERESYNCOFF" mat-menu-item [disabled]="!permissions.RESYNC_ACCOUNT" (click)="toggleFirebaseResync()">
+          <mat-icon [svgIcon]="buttons.firebaseResyncIcon"></mat-icon>
+          <span>Firebase Resync</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-card>

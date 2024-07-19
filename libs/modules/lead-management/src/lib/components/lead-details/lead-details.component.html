@@ -1,0 +1,851 @@
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center">
+  <div fxFlex="100">
+    <mat-card fxFlex class="lead">
+      <mat-card-title class="mb2">
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutAlign="space-between center"
+          *ngIf="leadDetail"
+        >
+          <div
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="1rem"
+          >
+            <h2 class="h6 text-capitalize font-semi-thick my0">Lead Details</h2>
+          </div>
+          <div
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="1rem"
+            fxLayoutAlign="end end"
+            style="font-size: medium"
+          >
+            <span style="padding-bottom: 5px;">{{ getPriorityText(lead?.priority) }}</span>
+            <button mat-button [matMenuTriggerFor]="menu">
+              <mat-icon>list-status</mat-icon>&nbsp;
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="changePriority('HIGH')">
+                High
+              </button>
+              <button mat-menu-item (click)="changePriority('MEDIUM')">
+                Medium
+              </button>
+              <button mat-menu-item (click)="changePriority('LOW')">Low</button>
+              <button mat-menu-item (click)="changePriority('NO_PRIORITY')">
+                No Priority
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </mat-card-title>
+      <div class="lead__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-card-content>
+        <div fxLayout="column" fxFlex="100">
+          <ng-container *ngIf="leadDetail; else leadDetailForm">
+            <div fxFlex="100">
+              <mat-list>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between"
+                  >
+                    <h2 class="h6 text-capitalize my0">Name</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ lead?.fullName }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between"
+                  >
+                    <h2 class="h6 text-capitalize my0">Email</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ lead?.email }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Mobile Number</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ lead?.phone?.code }}{{ lead?.phone?.number }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Nationality</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ lead?.nationality }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Monthly Income</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ lead?.monthlyIncome }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Date Of Birth</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ lead?.dateOfBirth | date: 'mediumDate' }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Status</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ lead?.status }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">
+                      Last Customer Activity
+                    </h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ lead?.lastCustomerActivity }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </ng-container>
+          <ng-template #leadDetailForm>
+            <form [formGroup]="form">
+              <div
+                fxLayout="column"
+                fxFlex="100"
+                class="lead__general mt8 mb4"
+                fxLayoutAlign="space-evenly space-between"
+                fxLayoutGap="1rem"
+              >
+                <div
+                  fxLayout="row wrap"
+                  fxLayoutAlign="start center"
+                  fxFlex="100"
+                  fxLayoutGap="1rem grid"
+                >
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label>Nationality</mat-label>
+                    <div class="form-group selectedMat my0" fxFlex="30">
+                      <!-- <mat-select
+                          placeholder="Select an item"
+                          formControlName="nationality"
+                          (selectionChange)="selected($event.value)"
+                        >
+                          <mat-option *ngFor="let option of countries" [value]="option.name">
+                            {{option.name}}
+                            </mat-option
+                          >
+                        </mat-select> -->
+                      <input
+                        type="text"
+                        placeholder="Nationality"
+                        aria-label="Number"
+                        matInput
+                        class="form-control"
+                        [formControl]="myControl"
+                        [matAutocomplete]="auto"
+                      />
+                      <!-- (onSelectionChange)="selected(option)" -->
+                      <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option
+                          *ngFor="let option of filteredCountries | async"
+                          [value]="option.country"
+                        >
+                          {{ option.country }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </div>
+                  </div>
+                  <div
+                    fxFlex="30"
+                    class="form-group"
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                  >
+                    <mat-label>Date Of Birth</mat-label>
+                    <div fxLayout="row">
+                      <input
+                        formControlName="dateOfBirth"
+                        matInput
+                        readonly
+                        class="form-control"
+                        [matDatepicker]="dateOfBirthPicker"
+                        (dateChange)="changeDateOfBirth($event)"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="dateOfBirthPicker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #dateOfBirthPicker></mat-datepicker>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label>Monthly Income</mat-label>
+                    <div class="form-group selectedMat my0" fxFlex="100">
+                      <mat-select
+                        placeholder="Select an item"
+                        formControlName="monthlyIncome"
+                      >
+                        <mat-option
+                          *ngFor="let item of monthlyIncomes"
+                          [value]="item"
+                        >
+                          {{ item }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </ng-template>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="py4" fxLayoutAlign="end center">
+        <button
+          mat-stroked-button
+          type="button"
+          class="mr4 px10 py1"
+          [disabled]="!updateLeadPermission"
+          (click)="leadDetail = true"
+        >
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          class="px10 py1"
+          color="primary"
+          *ngIf="leadDetail"
+          [disabled]="!updateLeadPermission"
+          (click)="leadDetail = !leadDetail"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          class="px10 py1"
+          color="primary"
+          *ngIf="!leadDetail"
+          [disabled]="form.invalid || !updateLeadPermission"
+          (click)="onUpdate(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div fxFlex="100" *ngIf="leadDetail" style="height: 600px; overflow: auto">
+    <div fxLayout="column" fxFlex="100">
+      <mat-card fxFlex class="lead">
+        <mat-card-title style="border: none">
+          <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <div
+              fxLayout="row wrap"
+              fxLayoutAlign="space-between center"
+              fxLayoutGap="1rem"
+            >
+              <h2 class="h6 text-capitalize font-semi-thick my0">Notes</h2>
+            </div>
+            <button
+              mat-mini-fab
+              color="primary"
+              [disabled]="!createNotePermission"
+              (click)="noteState(-1, true)"
+            >
+              <mat-icon svgIcon="add"></mat-icon>
+            </button>
+          </div>
+        </mat-card-title>
+        <mat-card-content>
+          <div fxLayout="column">
+            <mat-card>
+              <mat-card-content *ngFor="let note of sortNotes; let i = index">
+                <div fxLayout="row">
+                  <div fxFlex="20">
+                    <span style="word-wrap: break-word;">{{ note?.fullName }}</span>
+                  </div>
+                  <div fxFlex="60">
+                    <span style="word-wrap: break-word;">
+                      {{ note?.value }}  
+                    </span>
+                    <br /><br />
+                      <span *ngIf="note?.isEdited" style="font-size: small" class="text-success"
+                          >Edited - {{ note?.dateAndTime }}</span
+                        >
+                      <span *ngIf="!note?.isEdited" style="font-size: small" class="text-success">{{
+                        note?.dateAndTime
+                      }}</span>
+                  </div>
+                  <div fxFlex="10">
+                    <button
+                        *ngIf="ownerOfNote(note?.fullName)"
+                        (click)="noteState(i, true)"
+                        class="button-icon"
+                        [disabled]="!updateNotePermission"
+                        color="primary"
+                        aria-label="icon"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                  </div>
+                  <div fxFlex="10">
+                    <button
+                        *ngIf="ownerOfNote(note?.fullName)"
+                        [disabled]="!deleteNotePermission"
+                        class="button-icon"
+                        (click)="deleteNote(i, true)"
+                        color="warn"
+                      >
+                        <mat-icon class="text-danger">delete</mat-icon>
+                      </button>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<div
+  class="container"
+  fxLayout
+  fxLayout.xs="column"
+  fxLayoutAlign="center"
+  *ngIf="leadDetail"
+>
+  <!-- && (isSuperAdmin || salesAdvisorPermission) -->
+  <div fxFlex="100">
+    <mat-card>
+      <mat-card-title class="mb2">
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutAlign="space-between center"
+          *ngIf="salesAdvisorDetail"
+        >
+          <div
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="1rem"
+          >
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Assign Sales Advisor
+            </h2>
+          </div>
+        </div>
+      </mat-card-title>
+      <mat-card-content>
+        <div fxLayout="column" fxFlex="100">
+          <ng-container *ngIf="salesAdvisorDetail; else salesAdvisorDetailForm">
+            <div fxFlex="100">
+              <mat-list>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Sales Advisor</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ lead?.salesAdvisor?.identity?.salutation }}
+                      {{ lead?.salesAdvisor?.identity?.fullName }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </ng-container>
+          <ng-template #salesAdvisorDetailForm>
+            <form [formGroup]="assignForm">
+              <div
+                fxLayout="column"
+                fxFlex="100"
+                class="lead__general mt8 mb4"
+                fxLayoutAlign="space-evenly space-between"
+                fxLayoutGap="1rem"
+              >
+                <div
+                  fxLayout="row wrap"
+                  fxLayoutAlign="start center"
+                  fxFlex="100"
+                  fxLayoutGap="1rem grid"
+                >
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="60">
+                    <mat-label style="font-size: 13px">Branches</mat-label>
+                    <div class="form-group selectedMat my0" fxFlex="100">
+                      <mat-select
+                        placeholder="Select a branch"
+                        formControlName="branchUuid"
+                        (selectionChange)="onBranchChanged()"
+                      >
+                        <mat-option
+                          *ngFor="let branch of branches()"
+                          [value]="branch?.uuid"
+                        >
+                          {{ branch?.name }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  fxLayout="row wrap"
+                  fxLayoutAlign="start center"
+                  fxFlex="100"
+                  fxLayoutGap="1rem grid"
+                >
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label style="font-size: 13px">Brand</mat-label>
+                    <div class="form-group selectedMat my0" fxFlex="100">
+                      <mat-select
+                        placeholder="Select a brand"
+                        formControlName="brandUuid"
+                        (selectionChange)="onSalesAdvisorChanged($event.value)"
+                      >
+                        <mat-option>-- None --</mat-option>
+                        <mat-option
+                          *ngFor="let brand of brands"
+                          [value]="brand"
+                        >
+                          {{ brand }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="60">
+                    <mat-label style="font-size: 13px">Sales Advisor</mat-label>
+                    <div class="form-group selectedMat my0" fxFlex="100">
+                      <mat-select
+                        placeholder="Select a Sales Advisor"
+                        formControlName="salesAdvisorUuid"
+                      >
+                        <mat-option
+                          *ngFor="let option of filteredOptions | async"
+                          [value]="option.uuid"
+                        >
+                          {{ option?.identity?.fullName }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </ng-template>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="py4" fxLayoutAlign="end center" *ngIf="getRole">
+        <button
+          mat-stroked-button
+          type="button"
+          class="mr4 px10 py1"
+          [disabled]="!updateLeadPermission"
+          (click)="salesAdvisorDetail = true"
+        >
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          class="px10 py1"
+          color="primary"
+          *ngIf="salesAdvisorDetail"
+          [disabled]="!updateLeadPermission"
+          (click)="salesAdvisorDetail = !salesAdvisorDetail"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          class="px10 py1"
+          color="primary"
+          *ngIf="!salesAdvisorDetail"
+          [disabled]="assignForm.invalid || !updateLeadPermission"
+          (click)="onAssign(assignForm)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+<br />
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center">
+  <div fxFlex="100">
+    <mat-accordion *ngIf="leadDetail" class="lead-search__panel">
+      <mat-expansion-panel [expanded]="panelOpenState">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h2 class="h6 text-capitalize font-semi-thick my0">Reminders</h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card class="lead-search__card p4 my8">
+          <mat-card-content>
+            <mat-card class="leads__header">
+              <div fxFlex="100">
+                <mat-list>
+                  <mat-list-item>
+                    <div
+                      fxFlex="50"
+                      fxLayout="row"
+                      fxLayoutAlign="space-between"
+                    >
+                      <h2
+                        class="h6 text-capitalize my0"
+                        *ngIf="lead?.reminder?.createdAt"
+                      >
+                        Created At:
+                        <b>{{
+                          lead?.reminder?.createdAt | date: 'mediumDate'
+                        }}</b>
+                      </h2>
+                    </div>
+                    <div
+                      fxFlex="50"
+                      fxLayout="row"
+                      fxLayoutAlign="space-between"
+                    >
+                      <button
+                        mat-flat-button
+                        class="px10 py1"
+                        color="primary"
+                        [disabled]="lead?.reminder?.isManuallyInvited"
+                        (click)="onSendEmail()"
+                      >
+                        Send Invitation Email
+                      </button>
+                    </div>
+                    <div></div>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <div class="padding-top"></div>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <div
+                      fxFlex="100"
+                      fxLayout="row"
+                      fxLayoutAlign="space-between"
+                    >
+                      <div fxFlex="50">
+                        <h2
+                          class="h6 text-capitalize my4"
+                          *ngIf="lead?.reminder?.manualInvitations"
+                        >
+                          Invite By
+                        </h2>
+                        <ul>
+                          <li
+                            *ngFor="
+                              let item of lead?.reminder?.manualInvitations
+                            "
+                          >
+                            {{ item.name }} -
+                            {{ item.dateAndTime | date: 'mediumDate' }}
+                          </li>
+                        </ul>
+                      </div>
+                      <div fxFlex="50">
+                        <br />
+                        <h2
+                          class="h6 text-capitalize my0"
+                          *ngIf="lead?.reminder?.datesAndTimes"
+                        >
+                          Dates
+                        </h2>
+                        <ul>
+                          <li
+                            *ngFor="let item of lead?.reminder?.datesAndTimes"
+                          >
+                            {{ item | date: 'mediumDate' }}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <br />
+                  </mat-list-item>
+                </mat-list>
+              </div>
+            </mat-card>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+      <br />
+      <mat-expansion-panel
+        [expanded]="panelOpenState"
+        [disabled]="!(wishList?.length > 0)"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h2 class="h6 text-capitalize font-semi-thick my0">Wish List</h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card class="lead-search__card p4 my8">
+          <mat-card-content>
+            <mat-card class="leads__header">
+              <div
+                fxLayout="row wrap"
+                fxLayout.lt-md="column"
+                fxFlex="100"
+                fxLayoutGap.lt-md="1rem"
+                fxLayoutAlign="space-between center"
+                fxLayoutAlign.lt-md="start start"
+              >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign="center"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Created At</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Price</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Monthly Payment</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Model</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Series</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Monthly Variant</span
+                >
+              </div>
+            </mat-card>
+            <div class="mb3" *ngFor="let wish of wishList">
+              <neural-wish-list [wishItem]="wish"> </neural-wish-list>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+      <br />
+      <mat-expansion-panel
+        [expanded]="panelOpenState"
+        [disabled]="!(purchaseQuotes?.length > 0)"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Purchase Quotes
+            </h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card class="lead-search__card p4 my8">
+          <mat-card-content>
+            <mat-card class="leads__header">
+              <div
+                fxLayout="row wrap"
+                fxLayout.lt-md="column"
+                fxFlex="100"
+                fxLayoutGap.lt-md="1rem"
+                fxLayoutAlign="space-between center"
+                fxLayoutAlign.lt-md="start start"
+              >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign="center"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Created At</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Full Name</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign="center"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Status</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Price</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Brand</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Model</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Series</span
+                >
+              </div>
+            </mat-card>
+            <div class="mb3" *ngFor="let item of purchaseQuotes">
+              <neural-purchase-quote [purchaseItem]="item">
+              </neural-purchase-quote>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+      <br />
+      <mat-expansion-panel
+        [expanded]="panelOpenState"
+        [disabled]="!(testDrives?.length > 0)"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h2 class="h6 text-capitalize font-semi-thick my0">Test Drive</h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card class="lead-search__card p4 my8">
+          <mat-card-content>
+            <mat-card class="leads__header">
+              <div
+                fxLayout="row wrap"
+                fxLayout.lt-md="column"
+                fxFlex="100"
+                fxLayoutGap.lt-md="1rem"
+                fxLayoutAlign="space-between center"
+                fxLayoutAlign.lt-md="start start"
+              >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign="center"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Created At</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Sales Advisor</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Location</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign="center"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Status</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Brand</span
+                >
+                <span
+                  class="leads__header--item font-normal"
+                  fxLayoutAlign.lt-md="start start"
+                  fxFlex.lt-md="100"
+                  fxFlex="10"
+                  >Price</span
+                >
+              </div>
+            </mat-card>
+            <div class="mb3" *ngFor="let item of testDrives">
+              <neural-test-drive [testDriveItem]="item"> </neural-test-drive>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

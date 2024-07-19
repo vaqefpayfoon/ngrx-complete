@@ -1,0 +1,362 @@
+<mat-dialog-content>
+  <mat-card class="summary">
+    <mat-card-title fxLayoutAlign="center">
+      <h2 class="h3 text-capitalize font-semi-thick my0">
+        Reservation Summary
+      </h2>
+    </mat-card-title>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100">
+        <div fxLayout="column">
+          <div fxFlex="100" class="mt5">
+            <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+          </div>
+          <div class="divider">
+            <mat-divider></mat-divider>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Branch</h2>
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              {{ data?.branch?.name | titlecase }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Service Type</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data?.calendar?.serviceTypes[0] | titlecase }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Date and time</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data?.calendar?.slot | date: 'd MMM h:mm a':data?.timeZone }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Logistic Method</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ handleDropWait(data?.calendar?.logistic) | titlecase }}
+            </h2>
+          </div>
+        </div>
+        <div fxLayout="column">
+          <div fxFlex="100" class="mt5">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Account</h2>
+          </div>
+          <div class="divider">
+            <mat-divider></mat-divider>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Name</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data.account?.fullName | titlecase }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Email</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data.account?.email ? data.account?.email : '-' }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Phone</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data.account?.phone ? data.account?.phone : '-' }}
+            </h2>
+          </div>
+        </div>
+        <div fxLayout="column">
+          <div fxFlex="100" class="mt5">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Vehicle</h2>
+          </div>
+          <div class="divider">
+            <mat-divider></mat-divider>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+            *ngIf="!data.isCdkCustomerExist"
+          >
+            <h2 class="h6 text-capitalize my0">Make</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data.accountVehicle?.brand ? data.accountVehicle?.brand : '-' }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Model</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{
+                data.accountVehicle?.model?.name
+                  ? data.accountVehicle?.model?.name
+                  : '-'
+              }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+            *ngIf="!data.isCdkCustomerExist"
+          >
+            <h2 class="h6 text-capitalize my0">Year</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data.accountVehicle?.year ? data.accountVehicle?.year : '-' }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Number Plate</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{
+                data.accountVehicle?.numberPlate
+                  ? data.accountVehicle?.numberPlate
+                  : '-'
+              }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">
+              Vehicle Identification Number
+            </h2>
+            <h2 class="h6 text-capitalize my0">
+              {{
+                data.accountVehicle?.identificationNumber
+                  ? data.accountVehicle?.identificationNumber
+                  : '-'
+              }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Mileage</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{
+                data.accountVehicle?.mileage
+                  ? data.accountVehicle?.mileage
+                  : '-'
+              }}
+            </h2>
+          </div>
+        </div>
+        <div
+          fxLayout="column"
+          *ngIf="data.serviceLineUuids && data.serviceLineUuids.length"
+        >
+          <div fxFlex="100" class="mt5">
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Recommended Services
+            </h2>
+          </div>
+          <div class="divider">
+            <mat-divider></mat-divider>
+          </div>
+          <div
+            *ngFor="let service of data.serviceLineUuids"
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">
+              {{ service.service?.title | titlecase }}
+            </h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ service.service?.type | titlecase }}
+            </h2>
+          </div>
+        </div>
+        <div *ngIf="data.integration?.cdk" fxLayout="column">
+          <div fxFlex="100" class="mt5">
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Integration(CDK)
+            </h2>
+          </div>
+          <div class="divider">
+            <mat-divider></mat-divider>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Customer Id</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data.integration?.cdk?.customerId | titlecase }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Vehicle Id</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data.integration?.cdk?.vehicleId | titlecase }}
+            </h2>
+          </div>
+        </div>
+        <div
+          *ngIf="data.serviceLines && data.serviceLines.length"
+          fxLayout="column"
+        >
+          <div fxFlex="100" class="mt5">
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Service Recommendation
+            </h2>
+          </div>
+          <div class="divider">
+            <mat-divider></mat-divider>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0"><b>Title</b></h2>
+            <h2 class="h6 text-capitalize my0"><b>Operation Code</b></h2>
+          </div>
+          <div
+            *ngFor="let service of data.serviceLines"
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">
+              {{ service.service?.title | titlecase }}
+            </h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ service.operationCode | titlecase }}
+            </h2>
+          </div>
+        </div>
+        <div fxLayout="column">
+          <div fxFlex="100" class="mt5">
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Additional Remarks
+            </h2>
+          </div>
+          <div class="divider">
+            <mat-divider></mat-divider>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Remarks</h2>
+            <h2 class="h6 text-capitalize my0" fxFlex="30" fxLayoutAlign="end">
+              {{ data?.remark ? data?.remark : '-' }}
+            </h2>
+          </div>
+        </div>
+        <div fxLayout="column">
+          <div fxFlex="100" class="mt5">
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Service Advisor
+            </h2>
+          </div>
+          <div class="divider">
+            <mat-divider></mat-divider>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Name</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data?.operation?.identity?.fullName | titlecase }}
+            </h2>
+          </div>
+          <div
+            fxLayout="row"
+            class="mt2"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <h2 class="h6 text-capitalize my0">Phone</h2>
+            <h2 class="h6 text-capitalize my0">
+              {{ data?.operation?.phone?.code
+              }}{{ data?.operation?.phone?.number }}
+            </h2>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" class="mt5" fxLayoutAlign="space-evenly">
+  <button mat-stroked-button class="mr4 px10 py1" (click)="onClose()">
+    Cancel
+  </button>
+  <button
+    mat-flat-button
+    class="px10 py1"
+    color="primary"
+    (click)="onConfirm()"
+  >
+    Confirm
+  </button>
+</mat-dialog-actions>

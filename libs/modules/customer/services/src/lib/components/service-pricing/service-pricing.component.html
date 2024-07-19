@@ -1,0 +1,152 @@
+<form autocomplete="off" novalidate [formGroup]="parent">
+    <mat-card class="service p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Pricing</h2>
+            </div>
+        </mat-card-title>
+        <div class="service__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="service__general my8" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div class="form-group mb3" fxFlex="0 0 33">
+                        <mat-label>Flat Rate Unit*</mat-label>
+                        <input type="number" matInput class="form-control" formControlName="flatRateUnit" placeholder="Flat Rate Unit" autocomplete="off">
+                        <neural-show-errors [control]="parent.controls.flatRateUnit"></neural-show-errors>
+                    </div>
+                    <div class="form-group mb3" fxFlex="0 0 33">
+                        <mat-label>Tax*</mat-label>
+                        <input type="number" matInput class="form-control" formControlName="tax" placeholder="Tax" autocomplete="off">
+                        <neural-show-errors [control]="parent.controls.tax"></neural-show-errors>
+                    </div>
+                </div>
+                <div *ngIf="typeP" formGroupName="pricing" fxLayout="column" fxFlex="100" fxLayoutAlign="start space-between">
+                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem" class="mb4">   
+                        <div class="form-group selectedMat" [class.ng-valid]="pricingType.valid" [class.ng-invalid]="!pricingType.valid" [class.selectedMat--disabled]="parent.disabled" fxFlex="0 0 33">
+                            <mat-select placeholder="Select Type" formControlName="type" (selectionChange)="selectType($event)">
+                                <mat-option *ngFor="let item of pricingTypes | keyvalue" [value]="item.key">
+                                    {{item.key}}
+                                </mat-option>
+                            </mat-select>
+                            <neural-show-errors [control]="pricing.controls.type"></neural-show-errors>
+                        </div> 
+                    </div>
+                    <div  class="none" [ngClass]="{'block':pricingType.value === pricingTypes.RIM_SIZE}" fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                        <div fxLayout="column" fxFlex="0 0 33" fxLayoutGap="1rem" formGroupName="unitBuyingPriceRim">
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0">Unit Buying Price Rim</h2>
+                            </div>                        
+                            <div class="form-group mb6">
+                                <mat-label>Small*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="SMALL" placeholder="Small" autocomplete="off">
+                                <neural-show-errors [control]="unitBuyingPriceRim.controls.SMALL"></neural-show-errors>
+                            </div>
+                            <div class="form-group mb6">
+                                <mat-label>Medium*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="MEDIUM" placeholder="Medium" autocomplete="off">
+                                <neural-show-errors [control]="unitBuyingPriceRim.controls.MEDIUM"></neural-show-errors>
+                            </div>
+                            <div class="form-group mb6">
+                                <mat-label>Large*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="LARGE" placeholder="Large" autocomplete="off">
+                                <neural-show-errors [control]="unitBuyingPriceRim.controls.LARGE"></neural-show-errors>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxFlex="0 0 33" fxLayoutGap="1rem" formGroupName="recommendedRetailPriceRim">
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0">Recommended Retail Price Rim</h2>
+                            </div>                            
+                            <div class="form-group mb6">
+                                <mat-label>Small*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="SMALL" placeholder="Small" autocomplete="off">
+                                <neural-show-errors [control]="recommendedRetailPriceRim.controls.SMALL"></neural-show-errors>
+                            </div>
+                            <div class="form-group mb6">
+                                <mat-label>Medium*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="MEDIUM" placeholder="Medium" autocomplete="off">
+                                <neural-show-errors [control]="recommendedRetailPriceRim.controls.MEDIUM"></neural-show-errors>
+                            </div>
+                            <div class="form-group">
+                                <mat-label>Large*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="LARGE" placeholder="Large" autocomplete="off">
+                                <neural-show-errors [control]="recommendedRetailPriceRim.controls.LARGE"></neural-show-errors>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="none" [ngClass]="{'block':pricingType.value === pricingTypes.BODY_STYLE}" fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                        <div fxLayout="column" fxFlex="0 0 33" fxLayoutGap="1rem" formGroupName="unitBuyingPriceBody">
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0">Unit Buying Price Rim</h2>
+                            </div>                            
+                            <div class="form-group mb6">
+                                <mat-label>Light Weight*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="LIGHT_WEIGHT" placeholder="Light Weight" autocomplete="off">
+                                <neural-show-errors [control]="unitBuyingPriceBody.controls.LIGHT_WEIGHT"></neural-show-errors>
+                            </div>
+                            <div class="form-group mb6">
+                                <mat-label>Medium Weight*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="MEDIUM_WEIGHT" placeholder="Medium Weight" autocomplete="off">
+                                <neural-show-errors [control]="unitBuyingPriceBody.controls.MEDIUM_WEIGHT"></neural-show-errors>
+                            </div>
+                            <div class="form-group mb6">
+                                <mat-label>Heavy Weight*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="HEAVY_WEIGHT" placeholder="Heavy Weight" autocomplete="off">
+                                <neural-show-errors [control]="unitBuyingPriceBody.controls.HEAVY_WEIGHT"></neural-show-errors>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxFlex="0 0 33" fxLayoutGap="1rem" formGroupName="recommendedRetailPriceBody">
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0">Recommended Retail Price Rim</h2>
+                            </div>                            
+                            <div class="form-group mb6">
+                                <mat-label>Light Weight*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="LIGHT_WEIGHT" placeholder="Light Weight" autocomplete="off">
+                                <neural-show-errors [control]="recommendedRetailPriceBody.controls.LIGHT_WEIGHT"></neural-show-errors>
+                            </div>
+                            <div class="form-group mb6">
+                                <mat-label>Medium Weight*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="MEDIUM_WEIGHT" placeholder="Medium Weight" autocomplete="off">
+                                <neural-show-errors [control]="recommendedRetailPriceBody.controls.LIGHT_WEIGHT"></neural-show-errors>
+                            </div>
+                            <div class="form-group">
+                                <mat-label>Heavy Weight*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="HEAVY_WEIGHT" placeholder="Heavy Weight" autocomplete="off">
+                                <neural-show-errors [control]="recommendedRetailPriceBody.controls.LIGHT_WEIGHT"></neural-show-errors>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="none" [ngClass]="{'block':pricingType.value === pricingTypes.NORMAL}" fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                        <div fxLayout="column" fxFlex="0 0 33" fxLayoutGap="1rem" formGroupName="unitBuyingPriceNormal">
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0">Unit Buying Price Rim</h2>
+                            </div>
+                            <div class="form-group mb6">
+                                <mat-label>Normal*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="NORMAL" placeholder="Normal" autocomplete="off">
+                                <neural-show-errors [control]="unitBuyingPriceNormal.controls.NORMAL"></neural-show-errors>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxFlex="0 0 33" fxLayoutGap="1rem" formGroupName="recommendedRetailPriceNormal">
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                <h2 class="h6 text-capitalize font-semi-thick my0">Recommended Retail Price Rim</h2>
+                            </div>                            
+                            <div class="form-group">
+                                <mat-label>Normal*</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="NORMAL" placeholder="Normal" autocomplete="off">
+                                <neural-show-errors [control]="recommendedRetailPriceNormal.controls.NORMAL"></neural-show-errors>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button type="button" (click)="enableForm(false);" class="mr4 px10 py1">Cancel</button>
+            <button mat-flat-button type="button" *ngIf="parent.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="enableForm(true)">Edit</button>
+            <button mat-flat-button type="button" *ngIf="!exists && parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || !createPermission" (click)="createService(parent)">Save</button>
+            <button mat-flat-button type="button" *ngIf="exists && parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || !updatePermission" (click)="updateService(parent)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

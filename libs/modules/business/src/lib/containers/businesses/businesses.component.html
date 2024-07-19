@@ -1,0 +1,36 @@
+<div class="businesses" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+  <div fxFlex="100" fxFlexFill>
+      <neural-dynamic-header [title]="'businesses'" [breadcrumbs]="bc" [link]="(permissions$ | async)?.CREATE_BUSINESS ? 'new' : null" (refreshChange)="onRefresh($event)" [loading]="(loading$ | async)"></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+      <mat-card class="businesses__header">
+          <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+              <span class="businesses__header--item font-normal" fxFlex="25">Name</span>
+              <span class="businesses__header--item font-normal" fxFlex="25">Registration Number</span>
+              <span class="businesses__header--item font-normal" fxFlex="10">Status</span>
+              <span class="businesses__header--item font-normal" fxFlex="5">Actions</span>
+          </div>
+      </mat-card>
+        <ng-container *ngIf="!(loading$ | async)">
+          <div class="mb3" *ngFor="let business of (businesses$ | async)">
+            <neural-business-card [business]="business" [permissions]="permissions$ | async" (status)="openDialog($event)"></neural-business-card>
+          </div>
+        </ng-container>
+        <div *ngIf="(loading$ | async)" class="businesses__loading">
+            Loading...
+        </div>
+        <div class="businesses__not-found" *ngIf="(error$ | async) && !(businesses$ | async)">
+          <span> {{ (error$ | async) }} </span>
+        </div>
+        <div class="businesses__not-found" *ngIf="!(total$ | async) && !(error$ | async)">
+          <span> Please add a new account </span>
+        </div>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+    <mat-paginator [length]="total$ | async"
+          [pageSize]="(businessesConfig$ | async).limit"
+          [pageIndex]="(businessesConfig$ | async).page - 1"
+          (page)="changePage($event)" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

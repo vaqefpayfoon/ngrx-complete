@@ -1,0 +1,36 @@
+<input
+  #statusUuid
+  [value]="(appsConfig$ | async)?.corporateUuid"
+  type="hidden"
+/>
+<input
+  #corporateName
+  [value]="(corporate$ | async)?.name"
+  type="hidden"
+/>
+<div class="corporates" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+  <div fxFlex="100" fxFlexFill>
+      <neural-dynamic-header [title]="(corporate$ | async)?.name" [breadcrumbs]="bc" [link]="(permissions$ | async)?.CREATE_CORPORATE_APP ? 'new' : null" (refreshChange)="onRefresh($event, statusUuid.value)" [loading]="(loading$ | async)"></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+      <mat-card class="corporates__header">
+          <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+              <span class="corporates__header--item font-normal" fxFlex="20">Name</span>
+              <span class="corporates__header--item font-normal" fxFlex="30">Type</span>
+              <span class="corporates__header--item font-normal" fxFlex="15">Status</span>
+              <span class="corporates__header--item font-normal" fxFlex="5">Actions</span>
+          </div>
+      </mat-card>
+      <ng-container *ngIf="!(loading$ | async)">
+          <div class="mb3" *ngFor="let app of (apps$ | async)">
+              <neural-corporate-app-card [app]="app" [permissions]="permissions$ | async" (status)="openDialog($event)" (generateChange)="onRegenerateAppToken($event)"></neural-corporate-app-card>
+          </div>
+      </ng-container>
+      <div *ngIf="(loading$ | async)" class="corporates__loading">
+          Loading...
+      </div>
+      <div class="corporates__not-found" *ngIf="(error$ | async)">
+          <span> {{ (error$ | async) }} </span>
+      </div>
+  </div>
+</div>

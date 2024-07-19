@@ -1,0 +1,37 @@
+<div class="inbox-messages" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="title" [breadcrumbs]="bc"
+            [link]="(permissions$ | async)?.CREATE_INBOX_MESSAGE ? 'new' : null" (refreshChange)="onRefresh($event)"
+            [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-inbox-messages-search [filters]="InboxMessagesFilters$ | async" (searched)="onSearch($event)"></neural-inbox-messages-search>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="inbox-messages__header">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <span class="inbox-messages__header--item font-normal" fxFlex="20">Title</span>
+                <span class="inbox-messages__header--item font-normal" fxFlex="20">Type</span>
+                <span class="inbox-messages__header--item font-normal" fxFlex="20">View Rate</span>
+                <span class="inbox-messages__header--item font-normal" fxFlex="5">Actions</span>
+            </div>
+        </mat-card>
+        <ng-container *ngIf="!(loading$ | async)">
+            <div class="mb3" *ngFor="let inboxMessage of (inboxMessages$ | async)">
+                <neural-inbox-message-card [permissions]="permissions$ | async"
+                    [inboxMessage]="inboxMessage"></neural-inbox-message-card>
+            </div>
+        </ng-container>
+        <div *ngIf="(loading$ | async)" class="inbox-messages__loading">
+            Loading...
+        </div>
+        <div class="inbox-messages__not-found" *ngIf="(error$ | async)">
+            <neural-error [error]="error$ | async"></neural-error>
+        </div>
+    </div>
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+        <mat-paginator [length]="total$ | async" [pageSize]="(inboxMessagesConfig$ | async).limit"
+            [pageIndex]="(inboxMessagesConfig$ | async).page - 1" (page)="changePage($event)" showFirstLastButtons>
+        </mat-paginator>
+    </div>
+</div>

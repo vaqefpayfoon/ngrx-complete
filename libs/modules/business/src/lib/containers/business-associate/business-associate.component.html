@@ -1,0 +1,32 @@
+<div
+  class="business"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="
+        (business$ | async) ? (business$ | async)?.name : 'Assosiate Accounts'
+      "
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxLayout="column" fxLayoutGap="2rem" fxFlexFill class="my8">
+    <neural-accounts-search
+      [permissions]="permissions$ | async"
+      [business]="business$ | async"
+      (search)="onSearch($event)"
+      (loaded)="onload($event)"
+    ></neural-accounts-search>
+    <neural-business-associate-form
+      *ngIf="!!(accounts$ | async)?.length"
+      [business]="business$ | async"
+      [loading]="loadingAccounts$ | async"
+      [pagination]="pagination$ | async"
+      [accounts]="accounts$ | async"
+      (update)="onAssociate($event)"
+      (changed)="onChanged($event)"
+    ></neural-business-associate-form>
+  </div>
+</div>

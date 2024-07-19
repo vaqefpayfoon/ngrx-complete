@@ -1,0 +1,772 @@
+<mat-card class="servicePackage p4 my8">
+  <mat-card-content>
+    <mat-horizontal-stepper>
+      <mat-step>
+        <ng-template matStepLabel>Service</ng-template>
+        <div
+          class="serviceLine"
+          fxFlex="100"
+          fxLayoutAlign="start start"
+          fxLayout="column"
+        >
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxFlexFill
+            class="my8"
+            fxLayoutAlign="start center"
+          >
+            <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="40">
+              <mat-label>Search Service</mat-label>
+              <div class="form-group" fxFlex="30">
+                <input
+                  type="text"
+                  placeholder="Type service name or OP CODE"
+                  matInput
+                  [formControl]="myControl"
+                  [matAutocomplete]="auto"
+                  class="form-control"
+                  aria-label="services"
+                  [readonly]="form.disabled"
+                />
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  (optionSelected)="serviceSelected($event)"
+                >
+                  <mat-option
+                    *ngFor="let option of serviceLines$ | async"
+                    [value]="option?.service?.title"
+                    [disabled]="disableSelectedService(option.uuid)"
+                  >
+                    {{ option?.service?.title }} &nbsp;-&nbsp;
+                    {{ option?.operationCode }}
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+            </div>
+          </div>
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxFlexFill
+            fxLayoutAlign="space-between center"
+          >
+            <mat-card
+              class="serviceLine__header"
+              fxFlex="100"
+              *ngIf="selectedServiceLines && selectedServiceLines.length"
+            >
+              <div fxLayout="row wrap" fxFlex="100">
+                <span class="serviceLine__header--item font-normal" fxFlex="20">
+                  NAME
+                </span>
+                <span class="serviceLine__header--item font-normal" fxFlex="15">
+                  OPERATION CODE
+                </span>
+                <span class="serviceLine__header--item font-normal" fxFlex="15">
+                  TYPE
+                </span>
+                <span class="serviceLine__header--item font-normal" fxFlex="20">
+                  ESTIMATED DURATION
+                </span>
+                <span class="serviceLine__header--item font-normal" fxFlex="20">
+                  ESTIMATED PRICE &nbsp;({{
+                    branchInfo?.payments?.sales?.currency
+                  }})
+                </span>
+                <span class="serviceLine__header--item font-normal" fxFlex="5">
+                </span>
+              </div>
+            </mat-card>
+          </div>
+          <div
+            fxLayout="row"
+            fxFlex="100"
+            fxFlexFill
+            fxLayoutAlign="start center"
+            *ngFor="let serviceLine of selectedServiceLines; let i = index"
+          >
+            <mat-card class="card" fxFlex="100">
+              <div
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutAlign="start center"
+                class="card__header"
+              >
+                <div
+                  [class.disabled]="!serviceLine.active"
+                  fxFlex="20"
+                  class="font-semi-thick text-wrapper"
+                  fxLayoutAlign="start center"
+                  fxLayoutGap="0.5rem"
+                >
+                  {{ serviceLine?.service?.title }}
+                </div>
+                <div
+                  [class.disabled]="!serviceLine.active"
+                  fxFlex="15"
+                  class="font-semi-thick card__header--operationCode"
+                  fxLayoutAlign="start center"
+                >
+                  {{ serviceLine?.operationCode }}
+                </div>
+                <div
+                  [class.disabled]="!serviceLine.active"
+                  fxFlex="15"
+                  class="font-semi-thick card__header--type"
+                  fxLayoutAlign="start center"
+                >
+                  {{ serviceLine?.service?.type }}
+                </div>
+                <div
+                  [class.disabled]="!serviceLine.active"
+                  fxFlex="20"
+                  class="font-semi-thick card__header--value"
+                  fxLayoutAlign="start center"
+                >
+                  {{ serviceLine?.service?.duration }}
+                </div>
+                <div
+                  [class.disabled]="!serviceLine.active"
+                  fxFlex="20"
+                  class="font-semi-thick card__header--value"
+                  fxLayoutAlign="start center"
+                >
+                  {{ serviceLine?.service?.price?.value?.toFixed(2) }}
+                </div>
+                <div fxFlex="5">
+                  <button
+                    type="button"
+                    color="warn"
+                    mat-mini-fab
+                    [disabled]="form.disabled"
+                    (click)="removeSelectedServiceLines(i)"
+                    aria-label="remove"
+                    fxLayoutAlign="cenetr center"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          class="my8"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="end center"
+        >
+          <button mat-stroked-button (click)="cancel()">Cancel</button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.disabled"
+            type="button"
+            color="primary"
+            [disabled]="!updatePermission"
+            (click)="edit()"
+          >
+            Edit
+          </button>
+          <button mat-flat-button type="button" color="primary" matStepperNext>
+            Next
+          </button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Package</ng-template>
+        <form [formGroup]="form">
+          <div
+            fxLayout="column"
+            fxFlex="100"
+            class="my8"
+            fxLayoutAlign="space-evenly space-between"
+            fxLayoutGap="1rem"
+          >
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              fxLayoutAlign="space-evenly space-between"
+              fxLayoutGap="1rem"
+              formGroupName="package"
+            >
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxFlex="30"
+                  fxLayout="column"
+                  class="form-group"
+                  fxLayoutGap="0.5rem"
+                >
+                  <mat-label>Name</mat-label>
+                  <input
+                    matInput
+                    formControlName="title"
+                    class="form-control"
+                    placeholder="Name"
+                  />
+                </div>
+                <div
+                  class="form-group form-group--inline"
+                  fxLayoutAlign="start center"
+                  fxLayoutGap="1rem"
+                >
+                  <mat-label>Manufacturer Recommended</mat-label>
+                  <mat-slide-toggle
+                    #isManufactureRecommended
+                    fxLayout="row-reversed"
+                    color="primary"
+                    formControlName="isManufactureRecommended"
+                    (change)="isManufactureRecommendedChanges($event)"
+                  >
+                  </mat-slide-toggle>
+                </div>
+                <div
+                  class="form-group form-group--inline"
+                  fxLayoutAlign="start center"
+                  fxLayoutGap="1rem"
+                >
+                  <mat-label>Limited Time Specials</mat-label>
+                  <mat-slide-toggle
+                    #isLimitedTimeSpecials
+                    fxLayout="row-reversed"
+                    color="primary"
+                    formControlName="isLimitedTimeSpecials"
+                    (change)="isLimitedTimeSpecialsChanges($event)"
+                  >
+                  </mat-slide-toggle>
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxFlex="30"
+                  fxLayout="column"
+                  class="form-group"
+                  fxLayoutGap="0.5rem"
+                >
+                  <mat-label>Campaign Date (optional)</mat-label>
+                  <div
+                    fxLayout="row"
+                    fxFlex="100"
+                    fxLayoutGap="1rem"
+                    formGroupName="date"
+                  >
+                    <mat-date-range-input
+                      class="form-control"
+                      [ngClass]="{
+                        'form-control--disabled': form.disabled,
+                        'form-control--ng-invalid':
+                          date.invalid && date.touched,
+                        'form-control--ng-valid': date.valid && date.touched
+                      }"
+                      [rangePicker]="picker"
+                    >
+                      <input
+                        formControlName="start"
+                        matStartDate
+                        placeholder="Start date"
+                        (dateChange)="changeStartDate($event)"
+                      />
+                      <input
+                        formControlName="end"
+                        matEndDate
+                        placeholder="End date"
+                        (dateChange)="changeEndDate($event)"
+                      />
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                  </div>
+                  <mat-date-range-picker #picker></mat-date-range-picker>
+                </div>
+                <div
+                  fxFlex="30"
+                  fxLayout="column"
+                  class="form-group"
+                  formGroupName="price"
+                  fxLayoutGap="0.5rem"
+                >
+                  <mat-label
+                    >Estimated Price &nbsp;({{
+                      branchInfo?.payments?.sales?.currency
+                    }})</mat-label
+                  >
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="value"
+                    class="form-control"
+                    placeholder="2500.15"
+                  />
+                </div>
+                <div
+                  fxFlex="30"
+                  fxLayout="column"
+                  class="form-group"
+                  formGroupName="price"
+                  fxLayoutGap="0.5rem"
+                >
+                  <mat-label>Including Tax</mat-label>
+                  <mat-checkbox formControlName="taxIncluded"></mat-checkbox>
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                  <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div
+                      fxFlex="70"
+                      fxLayout="column"
+                      class="form-group"
+                      fxLayoutGap="0.5rem"
+                    >
+                      <mat-label>Description</mat-label>
+                      <textarea
+                        matInput
+                        rows="7"
+                        formControlName="description"
+                        class="form-control"
+                        placeholder="Change engine oil and filter, rotate tires, multi point inspection,Change engine oil and filter Manual Transmission Fluid"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="end center"
+        >
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button mat-flat-button type="button" color="primary" matStepperNext>
+            Next
+          </button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Targeted Vehicle</ng-template>
+        <form [formGroup]="form">
+          <div
+            fxLayout="column"
+            fxFlex="100"
+            class="my8"
+            fxLayoutAlign="space-evenly space-between"
+            fxLayoutGap="1rem"
+            fxFlexOffset="8rem"
+            formGroupName="eligibility"
+          >
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutAlign="space-between center"
+            >
+              <h2 class="h6 text-capitalize font-semi-thick my0">Brand</h2>
+            </div>
+            <mat-radio-group
+              color="primary"
+              [disabled]="form.disabled"
+              aria-labelledby="Brand"
+              name="brandList"
+              fxLayout="column"
+              fxLayoutAlign="start start"
+              fxLayoutGap="1rem"
+              [(ngModel)]="choseBrand"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="onChangeVehicle($event)"
+            >
+              <mat-radio-button
+                name="brandList"
+                *ngFor="let type of brandEligibility | keyvalue"
+                [value]="type.value"
+              >
+                {{ type.value }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="choseBrand === brandEligibility.BRAND">
+              <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxLayout="row"
+                  fxFlex="100"
+                  fxLayoutGap="1rem"
+                  fxLayoutAlign="end center"
+                >
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    type="button"
+                    fxLayoutAlign="space-evenly space-between"
+                    [disabled]="form.disabled"
+                    (click)="addBrand()"
+                  >
+                    <mat-icon svgIcon="add"></mat-icon>
+                  </button>
+                </div>
+                <ng-container formGroupName="vehicles">
+                  <div
+                    fxLayout="row"
+                    fxFlex="100"
+                    class="form-group"
+                    fxLayoutGap="1rem"
+                    formArrayName="brands"
+                    *ngFor="let brandCtrl of brandsForm.controls; let i = index"
+                  >
+                    <div
+                      [formGroupName]="i"
+                      fxFlex="100"
+                      fxLayoutGap="1rem"
+                      fxLayoutAlign="start center"
+                    >
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                      >
+                        <mat-label>Brand</mat-label>
+                        <div
+                          class="form-group selectedMat mb4"
+                          [ngClass]="{
+                            'selectedMat--disabled': form.disabled,
+                            'ng-invalid':
+                              brandsForm.controls[i].get('brand').invalid &&
+                              brandsForm.controls[i].get('brand').touched,
+                            'ng-valid':
+                              brandsForm.controls[i].get('brand').valid &&
+                              brandsForm.controls[i].get('brand').touched
+                          }"
+                          fxFlex="100"
+                        >
+                          <mat-select
+                            placeholder="Select brand"
+                            formControlName="brand"
+                          >
+                            <mat-option
+                              *ngFor="
+                                let item of allBrands
+                                  | orderBy: 'brand':false:true
+                              "
+                              [value]="item.brand"
+                            >
+                              {{ item.brand }}
+                            </mat-option>
+                          </mat-select>
+                        </div>
+                      </div>
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                      >
+                        <mat-label>Models</mat-label>
+                        <div
+                          class="form-group selectedMat mb4"
+                          [ngClass]="{
+                            'selectedMat--disabled': form.disabled,
+                            'ng-invalid':
+                              brandsForm.controls[i].get('models').invalid &&
+                              brandsForm.controls[i].get('models').touched,
+                            'ng-valid':
+                              brandsForm.controls[i].get('models').valid &&
+                              brandsForm.controls[i].get('models').touched
+                          }"
+                          fxFlex="100"
+                        >
+                          <mat-select
+                            placeholder="Select model"
+                            formControlName="models"
+                            multiple
+                          >
+                            <mat-option
+                              *ngFor="
+                                let model of filterModelsByBrand(
+                                  brandsForm.controls[i].get('brand')?.value
+                                ) | orderBy: 'actual':false:true
+                              "
+                              [value]="model.actual"
+                            >
+                              {{ model?.actual }}
+                              {{ model?.display ? '(' : '' }}
+                              {{ model?.display }}
+                              {{ model?.display ? ')' : '' }}
+                            </mat-option>
+                          </mat-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="m-alignment">
+                      <button
+                        type="button"
+                        color="warn"
+                        [disabled]="form.disabled"
+                        mat-mini-fab
+                        (click)="removeBrand(i)"
+                        aria-label="remove"
+                        fxLayoutAlign="cenetr center"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutAlign="space-between center"
+            >
+              <div fxLayout="row" fxFlex="100">
+                <mat-divider></mat-divider>
+                <br />
+              </div>
+              <div fxLayout="row" fxFlex="100">
+                <h2 class="h6 text-capitalize font-semi-thick my0">
+                  Year Make
+                </h2>
+              </div>
+            </div>
+            <mat-radio-group
+              color="primary"
+              [disabled]="form.disabled"
+              aria-labelledby="Make Year"
+              name="yearMakeList"
+              fxLayout="column"
+              fxLayoutAlign="start start"
+              fxLayoutGap="1rem"
+              [(ngModel)]="choseYearMake"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="onChangeYearMake($event)"
+            >
+              <mat-radio-button
+                fxFlex="35"
+                fxLayout="column"
+                class="form-group"
+                fxLayoutGap="0.5rem"
+                name="yearMakeList"
+                *ngFor="let type of yearMakeEligibility | keyvalue"
+                [value]="type.value"
+              >
+                {{ type.value }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <br />
+            <div
+              *ngIf="choseYearMake === yearMakeEligibility.YEARMAKE"
+              fxFlex="100"
+              fxLayoutAlign="start center"
+              fxFlex="50"
+              class="form-group"
+            >
+              <mat-select
+                class="form-control"
+                fxFlex="50"
+                placeholder="Select Make Year"
+                formControlName="registrationYears"
+                multiple
+              >
+                <mat-option *ngFor="let year of yearList" [value]="year">
+                  {{ year }}
+                </mat-option>
+              </mat-select>
+            </div>
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutAlign="space-between center"
+            >
+              <div fxLayout="row" fxFlex="100">
+                <mat-divider></mat-divider>
+                <br />
+              </div>
+              <div fxLayout="row" fxFlex="100">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Mileage</h2>
+              </div>
+            </div>
+            <mat-radio-group
+              color="primary"
+              [disabled]="form.disabled"
+              aria-labelledby="Mileage"
+              name="mileageList"
+              fxLayout="column"
+              fxLayoutAlign="start start"
+              fxLayoutGap="1rem"
+              [(ngModel)]="choseMileage"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="onChangeMileage($event)"
+            >
+              <mat-radio-button
+                name="mileageList"
+                *ngFor="let type of mileageEligibility | keyvalue"
+                [value]="type.value"
+              >
+                {{ type.value }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <div fxLayout="row">
+              <span
+                style="font-size: 12px; color: #aeaeb2"
+                *ngIf="choseMileage === mileageEligibility.MILEAGE"
+                >Activate the Mileage App Feature to display services by mileage
+                in the customer app</span
+              >
+            </div>
+            <div *ngIf="choseMileage === mileageEligibility.MILEAGE">
+              <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxLayout="row"
+                  fxFlex="100"
+                  fxLayoutGap="1rem"
+                  fxLayoutAlign="end center"
+                >
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    type="button"
+                    fxLayoutAlign="space-evenly space-between"
+                    [disabled]="form.disabled"
+                    (click)="addMileage()"
+                  >
+                    <mat-icon svgIcon="add"></mat-icon>
+                  </button>
+                </div>
+                <ng-container
+                  formArrayName="mileages"
+                  *ngFor="
+                    let mileageCtrl of mileagesForm.controls;
+                    let i = index
+                  "
+                >
+                  <div
+                    fxLayout="row"
+                    fxFlex="100"
+                    class="form-group"
+                    fxLayoutGap="1rem"
+                  >
+                    <div
+                      [formGroupName]="i"
+                      fxFlex="100"
+                      fxLayoutGap="1rem"
+                      fxLayoutAlign="start center"
+                    >
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                        [ngClass]="{
+                          'ng-invalid':
+                            mileagesForm.controls[i].errors?.mismatch,
+                          'ng-valid': !mileagesForm.controls[i].mismatch
+                        }"
+                      >
+                        <mat-label>From</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          formControlName="from"
+                          class="form-control"
+                          placeholder="From"
+                        />
+                      </div>
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                        [ngClass]="{
+                          'ng-invalid':
+                            mileagesForm.controls[i]?.errors?.mismatch,
+                          'ng-valid': !mileagesForm.controls[i]?.errors
+                            ?.mismatch
+                        }"
+                      >
+                        <mat-label>To</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          formControlName="to"
+                          class="form-control"
+                          placeholder="To"
+                        />
+                      </div>
+                    </div>
+                    <div class="m-alignment">
+                      <button
+                        type="button"
+                        [disabled]="form.disabled"
+                        color="warn"
+                        mat-mini-fab
+                        (click)="removeMileage(i)"
+                        aria-label="remove"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex="100" *ngIf="mileagesForm?.controls && mileagesForm?.controls.length">
+                    <span style="color: red" *ngIf="mileagesForm?.controls[i]?.get('from')?.errors?.min">
+                      Value of "From" must be greater than 0
+                    </span>
+                  </div>
+                  <div
+                    fxLayout="row"
+                    fxFlex="100"
+                    *ngIf="
+                      mileagesForm?.controls && mileagesForm?.controls.length
+                    "
+                  >
+                    <span
+                      style="color: red"
+                      *ngIf="mileagesForm?.controls[i]?.errors?.mismatch"
+                    >
+                      Value of "To" must be greater than or equal to "From"
+                    </span>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="end center"
+        >
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.disabled"
+            type="button"
+            color="primary"
+            [disabled]="!updatePermission"
+            (click)="edit()"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="form.enabled"
+            type="button"
+            color="primary"
+            [disabled]="
+              form.disabled ||
+              isDableServiceLine ||
+              form.invalid ||
+              !selectedServiceLines?.length
+            "
+            (click)="saveServicePackage(form)"
+          >
+            Save
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </mat-card-content>
+</mat-card>

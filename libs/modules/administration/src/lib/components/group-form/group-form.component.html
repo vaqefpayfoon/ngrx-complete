@@ -1,0 +1,48 @@
+<form novalidate [formGroup]="form" autocomplete="off">
+    <mat-card class="role-card p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+                <div fxLayout="column" fxFlex="1 1 auto" class="role-card__name" fxLayoutAlign="start start">
+                    <div fxLayout="row" class="mb2" fxFlexFill fxFlex="100" fxLayoutAlign="start center">
+                        <mat-icon svgIcon="Costumer_on"></mat-icon>
+                        <span *ngIf="!exists">{{form.get('name').value ? (form.get('name').value) : 'Group Name' }}</span>
+                        <span *ngIf="exists;">{{ group?.name }}</span>
+                    </div>
+                    <div fxFlex="100" fxFlexFill>
+                        <input type="text" formControlName="name" placeholder="Group name...">
+                    </div>
+                </div>
+                <mat-card-actions class="m0 p0">
+                    <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+                    <button mat-flat-button *ngIf="form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="enable()">Edit</button>
+                    <button mat-flat-button *ngIf="!exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !createPermission" (click)="createGroup(form)">Save</button>
+                    <button mat-flat-button *ngIf="exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !updatePermission" (click)="updateGroup(form)">Save</button>
+                </mat-card-actions> 
+            </div>
+        </mat-card-title>
+        <div class="role-card__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxFlex="100" *ngIf="!selectedRoles.length" fxLayout="row">
+                <h4 fxFlex="100" class="my0 py10 font-thicker h5 text-center" >
+                    Select roles from below pane.
+                </h4>        
+            </div>            
+            <div *ngIf="!!selectedRoles.length" fxFlex="100" fxLayout="column" class="role-card__content">
+                <div class="py4 role-card__content--title" fxLayout="row" fxFlexFill fxFlex="100" fxLayoutAlign="start center">
+                    <mat-icon svgIcon="tag"></mat-icon>
+                    <span class="font-semi-thick">Selected Tags</span>
+                </div>
+                <div class="role-card__content--chips selected" fxLayout="row wrap" fxFlexFill fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="10px grid">
+                    <div *ngFor="let role of selectedRoles">
+                        <ng-template ngFor let-item [ngForOf]="roles">
+                            <span *ngIf="role === item.uuid">{{item.name}}</span>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>        
+    </mat-card>
+    <neural-group-tags  [roles]="roles" formControlName="roleUuids" [formDisabled]="formDisabled"></neural-group-tags>
+</form>

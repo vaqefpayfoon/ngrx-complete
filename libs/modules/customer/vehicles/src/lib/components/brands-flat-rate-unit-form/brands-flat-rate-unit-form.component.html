@@ -1,0 +1,42 @@
+<form novalidate [formGroup]="form" autocomplete="off">
+    <mat-card class="fru p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+                <div fxLayout="row" fxFlex="1 1 auto" class="fru__name font-semi-thick mb2" fxLayoutAlign="start center">
+                    Brands
+                </div>
+            </div>
+        </mat-card-title>
+        <div class="fru__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div class="fru__main mt8" formArrayName="flatRateUnits" fxLayout="row wrap" fxLayoutAlign="start start" fxFlex="100">
+                <ng-template ngFor let-item [ngForOf]="flatRateUnits" let-i="index">
+                    <div [formGroupName]="i" fxFlex="100" fxLayoutAlign="space-between center" fxLayout="row" fxLayoutGap="30px" class="mb8">
+                        <div fxFlex="33">
+                            <div class="form-group" >
+                                <input type="text" matInput class="form-control" formControlName="brand"  placeholder="Brand" autocomplete="off">
+                            </div>
+                        </div>
+                        <div fxFlex="33">
+                            <div class="form-group">
+                                <input type="number" matInput class="form-control" formControlName="hourlyFee"  placeholder="Hourly Fee" autocomplete="off">
+                            </div>
+                        </div>
+                        <div  fxFlex="33">
+                            <div class="form-group">
+                                <input type="number" matInput class="form-control" formControlName="unitsPerHour"  placeholder="Units Per Hour" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 p0">
+            <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+            <button mat-flat-button *ngIf="form.disabled" class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="form.enable()">Edit</button>
+            <button mat-flat-button *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine || !updatePermission" (click)="updateBrandsFlatRateUnit(form)">Save</button>
+        </mat-card-actions>         
+    </mat-card>
+</form>

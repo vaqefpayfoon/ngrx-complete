@@ -1,0 +1,12 @@
+<h5 mat-dialog-title class="font-thick text-gray">Create new reservation</h5>
+<mat-dialog-content>
+    <div class="font-normal text-gray">
+        Would you like to proceed with creating a <br>
+        reservation as an existing customer or a <br>
+        new customer? <br>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button (click)="OnConfirm(true)">Existing Customer</button>
+    <button mat-button (click)="OnConfirm(false)" class="foreColor">New Customer</button>
+</mat-dialog-actions>

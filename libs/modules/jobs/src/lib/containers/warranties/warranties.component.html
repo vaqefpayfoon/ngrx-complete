@@ -1,0 +1,37 @@
+<div class="warranties" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'Reminders'" [link]="(permissions$ | async)?.CREATE_SERVICE_RECALL ? '../new' : null" [breadcrumbs]="bc" [sort]="sort" (refreshChange)="onRefresh($event)" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-reminders-reports [reports]="reports$ | async"></neural-reminders-reports>
+    </div>    
+    <div fxFlex="100" fxFlexFill class="my8 pt4">
+        <mat-card class="warranties__header">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <span class="warranties__header--item font-normal" fxFlex="35">Status</span>
+                <span class="warranties__header--item font-normal" fxFlex="15">DateTime</span>
+                <span class="warranties__header--item font-normal" fxFlex="20">Number Plate</span>
+                <span class="warranties__header--item font-normal" fxFlex="25">Account</span>
+                <span class="warranties__header--item font-normal" fxFlex="5">Actions</span>
+            </div>
+        </mat-card>        
+        <ng-container *ngIf="!(loading$ | async)">
+            <div class="mb12" *ngFor="let warranty of (warranties$ | async)">
+                <neural-warranty-card [permissions]="permissions$ | async" [warranty]="warranty" (closeChange)="openDialog($event)"></neural-warranty-card>
+            </div>
+        </ng-container>
+        <div *ngIf="(loading$ | async)" class="warranties__loading">
+            Loading...
+        </div>
+        <div class="warranties__not-found" *ngIf="(error$ | async) && !(loading$ | async)">
+            <neural-error [error]="error$ | async"></neural-error>
+          </div>
+    </div>
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+        <mat-paginator [length]="total$ | async"
+            [pageSize]="(warrantiesConfig$ | async).limit"
+            [pageIndex]="(warrantiesConfig$ | async).page - 1"
+            (page)="changePage($event)" showFirstLastButtons>
+        </mat-paginator>
+    </div>    
+</div>

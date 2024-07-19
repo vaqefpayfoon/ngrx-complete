@@ -1,0 +1,39 @@
+<mat-card class="card" [ngClass]="{deactive: !active}">
+  <div
+    fxLayout="row wrap"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    class="card__header"
+  >
+    <div fxFlex="10" class="font-semi-thick card__header--icon">
+      <img [src]="icon" alt="icon">
+    </div>
+    <div fxFlex="50" class="font-semi-thick card__header--email">
+        <span class="font-semi-thick">{{title}}</span> <br>
+        <small class="font-normal">{{subTitle | titlecase}}</small>
+    </div>
+    <div fxFlex="10" class=" card__header--phone">
+        {{flatRateUnit}}
+    </div>
+    <div fxFlex="10" class="font-semi-thick card__header--phone">
+        <mat-icon [matTooltip]="category | titlecase" [svgIcon]="category === categoryType.LABOUR ? 'labor' : 'product_new'"></mat-icon>
+    </div>
+    <div fxFlex="10" class="font-semi-thick card__header--phone">
+      <mat-icon [svgIcon]="isMainService ? 'like' : 'dislike'"></mat-icon>
+    </div>
+    <div fxFlex="5" class="font-semi-thick card__header--status">
+      <mat-slide-toggle [disabled]="!statusPermission" color="primary" matTooltipPosition="above" [matTooltip]="[active ? 'Deactivate' : 'Activate']" (click)="toggleStatus($event)" [checked]="active"></mat-slide-toggle>
+    </div>
+    <div fxFlex="5" class="font-semi-thick card__header--actions">
+        <button mat-icon-button [disabled]="!previewPermission" [matMenuTriggerFor]="actions">
+            <mat-icon svgIcon="action_off"></mat-icon>
+        </button>
+        <mat-menu #actions="matMenu">
+            <button [disabled]="!previewPermission" mat-menu-item [routerLink]="['../action/'+uuid]">
+            <mat-icon svgIcon="preview_off"></mat-icon>
+            <span>Preview</span>
+            </button>
+        </mat-menu>
+    </div>
+  </div>
+</mat-card>

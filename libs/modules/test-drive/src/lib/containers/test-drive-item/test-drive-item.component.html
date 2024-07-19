@@ -1,0 +1,33 @@
+<div
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+  fxLayoutGap="2rem"
+>
+  <!-- start breadcrumb and title -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <!-- end breadcrumb and title -->
+
+  <!-- start test drive form -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-test-drive-form
+      [timeZone]="timeZone$ | async"
+      [permissions]="permissions$ | async"
+      [testDrive]="testDrive$ | async"
+      [salesAdvisors]="salesAdvisors$ | async"
+      [calendars]="testDriveCalendar$ | async"
+      [selectedBranch]="selectedBranch$ | async"
+      [branch]="branch$ | async"
+      (branchChange)="onBranchChange($event)"
+      (loaded)="onLoad($event)"
+      (update)="onUpdate($event)"
+      (calendarChange)="onChangeCalendar($event)"
+    ></neural-test-drive-form>
+  </div>
+  <!-- end test drive form -->
+</div>

@@ -1,0 +1,26 @@
+.form-group {
+    position: relative;
+
+    &__reset{
+        position: absolute;
+        top: -24px;
+        right: 25px;
+        left: auto;
+        bottom: 0;
+        margin: auto;
+    }
+}
+.text-info {
+    color: gray;
+}
+.text-success {
+    color: rgb(12, 78, 12);
+}
+.padding-top {
+    margin-top: 10px;
+}
+.button-icon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

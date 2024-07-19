@@ -1,0 +1,63 @@
+<h1 mat-dialog-title>{{data.isScheduler ? 'Scheduler' : 'Team'}}</h1>
+<div mat-dialog-content>
+    <form autocomplete="off" novalidate [formGroup]="parent">
+        <mat-card class="branch p4 my8">
+          <!-- <mat-card-title class="mb2">
+            <div
+              fxLayout="row wrap"
+              fxFlex="grow"
+              fxLayoutAlign="space-between center"
+            >
+              <h2 class="h6 text-capitalize font-semi-thick my0">Scheduler</h2>
+            </div>
+          </mat-card-title> -->
+          
+          <mat-card-content>
+            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                <div
+                  fxFlex="35"
+                  fxLayout="column"
+                  class="form-group"
+                  fxLayoutGap="0.5rem"
+                >
+                  <mat-label>Name</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    class="form-control"
+                    formControlName="name"
+                    placeholder="{{data.isScheduler ? 'Scheduler Name' : 'Team Name'}}"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem" *ngIf="data.isScheduler">
+                  <mat-label>Type</mat-label>
+                  <div class="form-group selectedMat mb4" fxFlex="100">
+                    <mat-select
+                      placeholder="Select a Type"
+                      formControlName="type"
+                    >
+                      <mat-option value="SALES">Sales</mat-option>
+                      <mat-option value="AFTER_SALES">After Sales</mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+              </div>
+          </mat-card-content>
+          <ng-content></ng-content>
+        </mat-card>
+      </form>
+      
+</div>
+<div mat-dialog-actions>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onConfirm()"
+    [disabled]="parent.invalid"
+  >
+    Save
+  </button>
+  <button mat-stroked-button (click)="onClose()">Cancel</button>
+</div>

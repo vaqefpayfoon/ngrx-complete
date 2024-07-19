@@ -1,0 +1,746 @@
+<input
+  type="text"
+  hidden
+  [value]="(states$ | async)?.codes?.currency"
+  #curreny
+/>
+<form autocomplete="off" novalidate [formGroup]="form">
+  <mat-card class="branch p4 my8">
+    <mat-card-title class="mb2">
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+      </div>
+    </mat-card-title>
+    <div class="branch__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="branch__general my8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+      >
+        <div
+          fxFlex="100"
+          fxLayout="row"
+          *ngIf="branch?.image"
+          fxLayoutAlign="center center"
+        >
+          <img
+            [src]="branch?.image"
+            onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/placeholder.jpg'"
+            [alt]="branch?.image"
+            class="branch__image"
+          />
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="35">
+            <mat-label>Name</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control"
+              formControlName="name"
+              placeholder="Name"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="35">
+            <mat-label>Landing Phone</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control"
+              formControlName="landingPhone"
+              placeholder="Landing Phone"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35">
+            <mat-label>Email</mat-label>
+            <input
+              type="text"
+              matInput
+              class="form-control"
+              formControlName="email"
+              placeholder="Email"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem" *ngIf="exists">
+          <div class="form-group" fxFlex="35">
+            <mat-label>Priority</mat-label>
+            <div
+              class="form-group selectedMat"
+              [ngClass]="{
+                'selectedMat--disabled': formDisabled,
+                'ng-invalid': order.invalid,
+                'ng-valid': order.valid
+              }"
+            >
+              <mat-select
+                formControlName="order"
+                placeholder="Select branch priority"
+              >
+                <mat-option *ngFor="let order of orders" [value]="order">
+                  {{ order }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" fxFlex="100">
+          <div class="form-group" fxLayout="column" fxFlex="100">
+            <mat-label>Image</mat-label>
+            <input
+              type="file"
+              #myImageInput
+              name="image"
+              hidden
+              class="form-control"
+              placeholder="Image"
+              autocomplete="off"
+              (change)="showPreview($event)"
+            />
+            <div
+              fxFlex="100"
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              fxLayoutGap="1rem"
+            >
+              <button
+                type="button"
+                [disabled]="formDisabled"
+                color="accent"
+                mat-flat-button
+                (click)="myImageInput.click()"
+              >
+                Select Image
+              </button>
+              <span>{{
+                image.value && image.value.name ? image.value.name : ''
+              }}</span>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" fxFlex="100">
+          <div
+            class="form-group form-group--inline"
+            fxLayoutAlign="start center"
+            fxLayoutGap="1rem"
+          >
+            <mat-label>Is HQ?</mat-label>
+            <mat-slide-toggle
+              fxLayout="row-reversed"
+              color="primary"
+              formControlName="isHq"
+            >
+            </mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+      <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        *ngIf="formDisabled"
+        [disabled]="!updatePermission"
+        class="px10 py1"
+        color="primary"
+        (click)="onAction()"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        *ngIf="form.enabled && !exists"
+        class="px10 py1"
+        color="primary"
+        [disabled]="!generalValidation() || !createPermission"
+        (click)="createBranch(form)"
+      >
+        Save
+      </button>
+      <button
+        mat-flat-button
+        *ngIf="form.enabled && exists"
+        class="px10 py1"
+        color="primary"
+        [disabled]="!generalValidation() || !updatePermission"
+        (click)="updateBranch(form)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <div>
+    <neural-branch-location
+      [permissions]="permissions"
+      [formDisabled]="formDisabled"
+      [branch]="branch"
+      [parent]="form"
+      [exists]="exists"
+      [allCountries]="countries$ | async"
+      [allStates]="states$ | async"
+      (countryChange)="onSelectCountry($event)"
+    >
+      <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="!updatePermission"
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </neural-branch-location>
+  </div>
+
+  <div>
+    <neural-fortellis-branch
+      [permissions]="permissions"
+      [parent]="form"
+      [exists]="exists"
+    >
+      <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="!updatePermission"
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </neural-fortellis-branch>
+  </div>
+
+  <div>
+    <neural-cdk-branch
+      [permissions]="permissions"
+      [parent]="form"
+      [exists]="exists"
+    >
+      <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="!updatePermission"
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </neural-cdk-branch>
+  </div>
+
+  <div>
+    <neural-adtorque-branch
+      [permissions]="permissions"
+      [parent]="form"
+      [formDisabled]="
+        !corporate?.configuration?.appFeatures?.preOwned?.stream?.active
+      "
+    >
+      <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="
+            !updatePermission ||
+            !corporate?.configuration?.appFeatures?.preOwned?.stream?.active
+          "
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </neural-adtorque-branch>
+  </div>
+
+  <div>
+    <neural-leaseGenius-branch
+      [permissions]="permissions"
+      [parent]="form"
+      [formDisabled]="
+        !corporate?.configuration?.appFeatures?.preOwned?.stream?.active
+      "
+    >
+      <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="
+            !updatePermission ||
+            !corporate?.configuration?.appFeatures?.preOwned?.stream?.active
+          "
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </neural-leaseGenius-branch>
+  </div>
+
+  <div>
+    <neural-branch-calendar
+      [corporate]="corporate"
+      [permissions]="permissions"
+      [parent]="form"
+      [exists]="exists"
+      (removed)="removeWorkshop($event)"
+    >
+      <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="!updatePermission"
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </neural-branch-calendar>
+  </div>
+  <div>
+    <neural-branch-coverage
+      [parent]="form"
+      [permissions]="permissions"
+      [branch]="branch"
+      [exists]="exists"
+    >
+      <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="!updatePermission"
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </neural-branch-coverage>
+  </div>
+  <div [formGroup]="configuration">
+    <div [formGroup]="notification">
+      <neural-branch-notification-email
+        [formDisabled]="formDisabled"
+        [emailGroup]="branch?.configuration?.notification?.email"
+      >
+        <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+          <button
+            mat-stroked-button
+            class="mr4 px10 py1"
+            (click)="this.cancel()"
+          >
+            Cancel
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="formDisabled"
+            [disabled]="!updatePermission"
+            class="px10 py1"
+            color="primary"
+            (click)="onAction()"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="form.enabled && !exists"
+            class="px10 py1"
+            color="primary"
+            [disabled]="!generalValidation() || !createPermission"
+            (click)="createBranch(form)"
+          >
+            Save
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="form.enabled && exists"
+            class="px10 py1"
+            color="primary"
+            [disabled]="!generalValidation() || !updatePermission"
+            (click)="updateBranch(form)"
+          >
+            Save
+          </button>
+        </mat-card-actions>
+      </neural-branch-notification-email>
+    </div>
+  </div>
+  <div [formGroup]="configuration">
+    <div [formGroup]="notification">
+      <neural-branch-notification-sms
+        [formDisabled]="formDisabled"
+        [smsGroup]="branch?.configuration?.notification?.sms"
+      >
+        <mat-card-actions class="my0 ml32 p0" *ngIf="exists">
+          <button
+            mat-stroked-button
+            class="mr4 px10 py1"
+            (click)="this.cancel()"
+          >
+            Cancel
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="formDisabled"
+            [disabled]="!updatePermission"
+            class="px10 py1"
+            color="primary"
+            (click)="onAction()"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="form.enabled && !exists"
+            class="px10 py1"
+            color="primary"
+            [disabled]="!generalValidation() || !createPermission"
+            (click)="createBranch(form)"
+          >
+            Save
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="form.enabled && exists"
+            class="px10 py1"
+            color="primary"
+            [disabled]="!generalValidation() || !updatePermission"
+            (click)="updateBranch(form)"
+          >
+            Save
+          </button>
+        </mat-card-actions>
+      </neural-branch-notification-sms>
+    </div>
+  </div>
+  <div *ngIf="!!curreny.value">
+    <neural-branch-payment
+      [parent]="form"
+      [branch]="branch"
+      [permissions]="permissions"
+      [exists]="exists"
+      [currencies]="states$ | async"
+      (added)="createPayment($event)"
+      (selectedMethod)="createPaymentMethod($event)"
+      (created)="createBranch($event)"
+      (updated)="updateBranch($event)"
+      (cancelled)="cancel($event)"
+    >
+      <mat-card-actions sale class="my0 ml32 p0" *ngIf="!!curreny.value">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="!updatePermission"
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+      <mat-card-actions afterSale class="my0 ml32 p0" *ngIf="!!curreny.value">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="!updatePermission"
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!generalValidation() || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </neural-branch-payment>
+  </div>
+  <div>
+    <neural-branch-schedule
+      [parent]="form"
+      [branch]="branch"
+      [brands]="brands"
+      [accounts]="accounts"
+      [permissions]="permissions"
+      [exists]="exists"
+      [currencies]="states$ | async"
+      (added)="createPayment($event)"
+      (selectedMethod)="createPaymentMethod($event)"
+      (save)="updateBranch($event)"
+      (cancelled)="cancel($event)"
+      (typeEvent)="onTypeEvent($event)"
+    >
+      <mat-card-actions afterSale class="my0 ml32 p0" *ngIf="!!curreny.value">
+        <button mat-stroked-button class="mr4 px10 py1" (click)="this.cancel()">
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="formDisabled"
+          [disabled]="!updatePermission"
+          class="px10 py1"
+          color="primary"
+          (click)="onAction()"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && !exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!validateSchedule || !createPermission"
+          (click)="createBranch(form)"
+        >
+          Save
+        </button>
+        <button
+          mat-flat-button
+          *ngIf="form.enabled && exists"
+          class="px10 py1"
+          color="primary"
+          [disabled]="!validateSchedule || !updatePermission"
+          (click)="updateBranch(form)"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </neural-branch-schedule>
+  </div>
+</form>

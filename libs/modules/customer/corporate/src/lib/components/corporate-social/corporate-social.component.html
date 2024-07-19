@@ -1,0 +1,66 @@
+<mat-card class="corporate p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="end center">
+            <button mat-mini-fab color="primary" (click)="onAdd()" [disabled]="formDisabled">
+                <mat-icon svgIcon="add"></mat-icon>
+            </button>              
+        </div>
+    </mat-card-title>
+    <div class="corporate__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content >
+        <div [formGroup]="parent">
+            <div formArrayName="socialAccounts">
+                <div *ngFor="let item of socialAccounts; let i = index;">
+                    <div fxLayout="column" fxFlex="100" class="corporate__general my8" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between" [formGroupName]="i">
+                        <button class="corporate__general--close" *ngIf="i !== 0" matTooltip="Remove" [disabled]="formDisabled" (click)="onRemove(i)" mat-icon-button color="warn">
+                            <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                        </button>
+                        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                                    <mat-label>Account</mat-label>
+                                    <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':parent.disabled, 'ng-invalid': socialAccounts[i].get('account').invalid, 'ng-valid': socialAccounts[i].get('account').valid}" fxFlex="100" >
+                                        <mat-select placeholder="Select an account" formControlName="account">
+                                            <mat-option *ngFor="let social of socialAccountTypes | keyvalue" [value]="social.value">
+                                              {{social.key}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <neural-show-errors [control]="socialAccounts[i].get('account')"></neural-show-errors>
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                <div class="form-group" fxFlex="0 0 35">
+                                    <mat-label>URL</mat-label>
+                                    <input type="text" matInput class="form-control" formControlName="url" placeholder="URL" autocomplete="off">
+                                    <neural-show-errors [control]="socialAccounts[i].get('url')"></neural-show-errors>
+                                </div>
+                                <div class="form-group" fxFlex="0 0 35">
+                                    <mat-label>Icon</mat-label>
+                                    <input type="text" [readonly]="!!corporate" matInput class="form-control" formControlName="icon" placeholder="Icon" autocomplete="off">
+                                    <neural-show-errors [control]="socialAccounts[i].get('icon')"></neural-show-errors>
+                                </div>
+                                <div class="corporate__social-icon" *ngIf="!!socialAccounts[i].get('icon').value">
+                                    <img [src]="socialAccounts[i].get('icon').value" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/images/errors/placeholder.jpg'">
+                                </div>
+                                <div class="form-group mt4" fxFlex="35" fxLayout="column" *ngIf="!!corporate">
+                                    <input type="file" #myImageInput accept="image/*" name="file" hidden class="form-control" placeholder="Image" autocomplete="off" (change)="showPreview($event,i)">
+                                    <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center">
+                                        <button type="button" [disabled]="parent.disabled" color="warn" mat-flat-button (click)="myImageInput.click()" >Select Image</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" (click)="onAction('cancel')" [disabled]="!updatePermission && !createPermission">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="parent.disabled"  class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="onAction('edit')">Edit</button>
+        <button mat-flat-button type="button" *ngIf="parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || parent.pristine || !updatePermission" (click)="onSave(parent)">Save</button>
+    </mat-card-actions>
+</mat-card>

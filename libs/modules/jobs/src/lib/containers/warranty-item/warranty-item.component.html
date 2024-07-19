@@ -1,0 +1,8 @@
+<div class="reservation" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="(warranty$ | async) ? (warranty$ | async)?.accountVehicle.numberPlate : 'Reminder'" [breadcrumbs]="bc" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>    
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-warranty-form [selectedBranch]="selectedBranch$ | async" [permissions]="permissions$ | async" [warranty]="warranty$ | async" [vehicle]="vehicle$ | async" (vinChange)="vinSelected($event)" (create)="onCreate($event)" (loaded)="onLoad($event)" (branchChange)="onBranchChange($event)"></neural-warranty-form>
+    </div>
+</div>

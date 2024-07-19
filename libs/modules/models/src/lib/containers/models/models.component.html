@@ -1,0 +1,37 @@
+<div class="models" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'car models'" [breadcrumbs]="bc" [link]="(permissions$ | async)?.CREATE_MODEL ? 'new' : null" (refreshChange)="onRefresh($event)" [loading]="loading$ | async"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+      <neural-model-config [permissions]="permissions$ | async"></neural-model-config>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="models__header">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <span class="models__header--item font-normal" fxFlex="20">Unit</span>
+                <span class="models__header--item font-normal" fxFlex="30">Series</span>
+                <span class="models__header--item font-normal" fxFlex="20">Price</span>
+                <span class="models__header--item font-normal" fxFlex="10">Status</span>
+                <span class="models__header--item font-normal" fxFlex="5">Actions</span>
+            </div>
+        </mat-card>
+          <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+            <div class="mb3" *ngFor="let model of (models$ | async)">
+              <neural-model-card [permissions]="permissions$ | async" [model]="model" (status)="openDialog($event)"></neural-model-card>
+            </div>
+          </ng-container>
+          <div *ngIf="(loading$ | async)" class="models__loading">
+              Loading...
+          </div>
+          <div class="models__not-found" *ngIf="(error$ | async) && !(total$ | async)">
+            <span> {{ (error$ | async) }} </span>
+          </div>
+    </div>
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+      <mat-paginator [length]="total$ | async"
+            [pageSize]="(modelsConfig$ | async).limit"
+            [pageIndex]="(modelsConfig$ | async).page - 1"
+            (page)="changePage($event)" showFirstLastButtons>
+      </mat-paginator>
+    </div>
+</div>

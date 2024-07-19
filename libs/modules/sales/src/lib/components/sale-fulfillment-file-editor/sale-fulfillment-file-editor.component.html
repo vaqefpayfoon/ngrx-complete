@@ -1,0 +1,97 @@
+<div
+  class="viewer py4 px4"
+  fxFlex="100"
+  fxLayout="column"
+  fxLayoutAlign="space-between center"
+  fxLayoutGap="1rem"
+>
+  <div *ngIf="!this.loading; else isLoading"></div>
+  <ng-template #isLoading>
+    <div class="viewer__loading">
+      Select a PDF...
+    </div>
+  </ng-template>
+  <div
+    fxFlex="100"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+    fxLayoutGap="2rem"
+  >
+    <div fxFlex="50" fxLayoutGap="1rem" fxLayout="row">
+      <!-- <div class="form-group" fxLayout="column">
+        <input
+          type="file"
+          #myFileInput
+          accept="application/pdf"
+          name="file"
+          hidden
+          class="form-control"
+          placeholder="Image"
+          autocomplete="off"
+          (change)="onFileSelected($event)"
+        />
+        <div
+          fxFlex="100"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="1rem"
+        >
+          <button
+            type="button"
+            color="accent"
+            mat-flat-button
+            (click)="myFileInput.click()"
+          >
+            Select PDF
+          </button>
+        </div>
+      </div> -->
+      <div fxFlex="100" fxLayoutGap="1rem" fxLayout="row">
+        <div>
+          <button
+            mat-flat-button
+            class="px10 py1"
+            color="primary"
+            (click)="toggleStatus()"
+            [disabled]="loading"
+          >
+            Save
+          </button>
+        </div>
+        <div>
+          <button
+            mat-flat-button
+            class="px10 py1"
+            (click)="close()"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- actions -->
+  <div class="viewer__actions viewer__actions--left">
+    <button
+      [disabled]="page === 1 || this.loading"
+      mat-mini-fab
+      color="primary"
+      aria-label="left"
+      (click)="onPerv()"
+    >
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+  </div>
+
+  <div class="viewer__actions viewer__actions--right">
+    <button
+      [disabled]="page === totalPages || this.loading"
+      mat-mini-fab
+      color="primary"
+      aria-label="right"
+      (click)="onNext()"
+    >
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+</div>

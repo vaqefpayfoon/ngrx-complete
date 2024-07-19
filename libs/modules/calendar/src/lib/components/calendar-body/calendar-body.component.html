@@ -1,0 +1,80 @@
+<div
+  class="calendar"
+  fxLayout="column"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  [ngClass]="{ 'calendar--disable': day?.isBlocked }"
+>
+  <span class="calendar__block pt8" *ngIf="day?.isBlocked">{{ day?.day }} was blocked.</span>
+  <ng-template ngFor let-item [ngForOf]="times" let-i="index">
+    <div
+      fxLayout="row wrap"
+      fxFlex="100"
+      fxLayoutGap="1rem grid"
+      fxLayoutAlign="start start"
+      fxFlexFill
+    >
+      <div fxFlex="8">
+        <div class="calendar__time">{{ item | date: 'hh:mm a' : timeZone }}</div>
+      </div>
+      <div fxFlex="92">
+        <mat-card class="calendar__card px0">
+          <div
+            fxLayout="row wrap"
+            fxLayoutGap="1rem grid"
+            fxLayoutAlign="start center"
+          >
+            <ng-template ngFor let-slot [ngForOf]="day?.slots">
+              <div
+                *ngIf="
+                  (slot.iso) >= times[i] &&
+                  (slot.iso) < times[i + 1]
+                "
+              >
+                <div
+                  fxLayout="row"
+                  fxLayoutGap="1rem"
+                  fxLayoutAlign="start center"
+                  class="calendar__slot pl4 pr1"
+                  [ngClass]="{'calendar__slot--disable' : slot?.isBlocked}"
+                  [matBadge]="slot?.count"
+                  [matBadgeDisabled]="slot?.isBlocked"
+                  matBadgePosition="after"
+                  matBadgeColor="primary"
+                >
+                  <span>
+                    {{ slot.time }}
+                  </span>
+                  <button
+                    class="mr0"
+                    mat-icon-button
+                    [matMenuTriggerFor]="menu"
+                    aria-label="menu"
+                  >
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button
+                      mat-menu-item
+                      [disabled]="!updatePermission"
+                      (click)="openDialog(slot, day?.uuid)"
+                    >
+                      <span>{{ slot?.isBlocked ? 'Unblock' : 'Block' }}</span>
+                    </button>
+                    <button
+                      mat-menu-item
+                      (click)="reserve({selectedDay: day, selectedSlot: slot})"
+                      [disabled]="!listPermission"
+                    >
+                      <span>Reservations</span>
+                    </button>
+                  </mat-menu>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,88 @@
+<mat-card class="card">
+  <div
+    fxLayout="row wrap"
+    fxLayout.lt-md="column"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    fxLayoutAlign.lt-md="start start"
+    class="card__header"
+    fxLayoutGap.lt-md="1rem"
+  >
+    <div
+    fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--name"
+      fxLayoutAlign="space-between start"
+      fxLayoutAlign.lt-md="start start"
+      fxLayout="column"
+      fxLayoutGap="0.5rem"
+      fxFlexOrder.lt-md="1"
+    >
+    {{ inventory?.createdAt | date:'medium' }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--name"
+      fxLayoutAlign.lt-md="start start"
+      fxLayout="column"
+      fxLayoutAlign="space-between start"
+      fxLayoutGap="0.5rem"
+      fxFlexOrder.lt-md="2"
+    >
+      <div>
+        {{ inventory.updatedAt | date:'medium' }}
+      </div>
+    </div>
+
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--name"
+      fxLayoutAlign="start start"
+      fxLayout="column"
+      fxLayoutAlign="space-between start"
+      fxLayoutGap="0.5rem"
+      fxFlexOrder.lt-md="1"
+    >
+      <div>
+        {{ inventory?.status }}
+      </div>
+    </div>
+
+    <div
+    fxFlex="10"
+    fxFlex.lt-md="100"
+    class="font-semi-thick card__header--name"
+    fxLayoutAlign="space-between center"
+    fxLayoutAlign.lt-md="start start"
+    fxLayout="column"
+    fxLayoutGap="0.5rem"
+    fxFlexOrder.lt-md="1"
+    >
+      <div>
+        <button mat-icon-button (click)="onDownload(inventory)">
+
+        <mat-icon >download</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div
+    fxFlex="10"
+    fxFlex.lt-md="100"
+    class="font-semi-thick card__header--name"
+    fxLayoutAlign="space-between center"
+    fxLayoutAlign.lt-md="start start"
+    fxLayout="column"
+    fxLayoutGap="0.5rem"
+    fxFlexOrder.lt-md="1"
+    >
+      <div>
+        <button mat-icon-button (click)="onShowDetails(inventory)">
+        <mat-icon >view_list</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-card>

@@ -1,0 +1,17 @@
+<div
+  class="app__card app__card--transparent"
+  gdAreas="sidebar content"
+  gdColumns="20% 77%"
+  gdGap="3%"
+  gdAreas.lt-md="sidebar | content"
+  gdColumns.lt-md="none"      
+  gdGap.lt-md="1rem" 
+>
+  <div gdArea="sidebar">
+    <neural-account-sidebar></neural-account-sidebar>
+  </div>
+
+  <div gdArea="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

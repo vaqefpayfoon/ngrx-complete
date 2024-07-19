@@ -1,0 +1,15 @@
+<div
+  class="accounts"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-basic-dashboard
+      [permissions]="permissions$ | async"
+      [basic]="basic$ | async"
+      [loading]="loading$ | async"
+      [error]="error$ | async"
+    ></neural-basic-dashboard>
+  </div>
+</div>

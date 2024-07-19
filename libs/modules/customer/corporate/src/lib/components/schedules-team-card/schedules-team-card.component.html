@@ -1,0 +1,22 @@
+<mat-card class="card">
+    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center" class="card__header">
+      <div fxFlex="30" class="font-semi-thick card__header--name">
+        {{name | titlecase}} 
+      </div>
+      <div fxFlex="5" class="font-semi-thick card__header--actions">
+        <button mat-icon-button [matMenuTriggerFor]="actions">
+          <mat-icon svgIcon="action_off"></mat-icon>
+        </button>
+        <mat-menu #actions="matMenu">
+          <button mat-menu-item [routerLink]="[team?.uuid]" [disabled]="updatePermission">
+            <mat-icon>visibility</mat-icon>
+            <span>Preview</span>
+          </button>
+          <button mat-menu-item (click)="onDelete()" [disabled]="deletePermission">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card>

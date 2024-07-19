@@ -1,0 +1,16 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.fru {
+  color: map-get($map: $colors, $key: shark) !important;
+  border-top: none;
+  border-bottom: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(0);
+  box-shadow: none;
+  &__name {
+    font-size: 1rem;
+  }
+  &__divider {
+    position: relative;
+  }
+}

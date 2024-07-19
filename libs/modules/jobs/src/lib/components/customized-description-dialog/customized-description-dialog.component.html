@@ -1,0 +1,25 @@
+<!-- class="header" -->
+<div fxFlex="100" fxLayout="row wrap">
+    <div mat-dialog-title fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center" class="header">
+        <div fxFlex="95" fxFlexFill class="font-semi-thick">
+            <span [style.margin-left]="'3%'">{{data.operationCode}}</span>
+        </div>
+        <span fxFlex="5" class="close" fxLayoutGap="2px" (click)="onClose()">X</span>
+    </div>
+    <div fxFlex="100" fxLayout="row wrap">
+        <mat-dialog-content fxFlex="100" fxLayout="row wrap">
+            <div [style.margin-left]="'3%'" fxLayout="column">
+                <div fxLayout="column">
+                    <div fxFlex="70" fxLayout="column" class="form-group" fxLayoutGap="0.5rem">
+                        <mat-label>Description</mat-label>
+                        <textarea [(ngModel)]="data.description" class="form-control" cols="90" rows="6"
+                            maxlength="300"></textarea>
+                    </div>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions fxLayout="row" fxFlex="100" fxLayoutAlign="end center">
+            <button [style.margin-right]="'3%'"  mat-flat-button color="primary" (click)="onSave()">Save</button>
+        </mat-dialog-actions>
+    </div>
+</div>

@@ -1,0 +1,139 @@
+<mat-card class="card" [class.none]="warranty">
+    <mat-card-content class="card__general">
+        <ng-template [ngIf]="vehicle">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between start" class="my8">
+                <div fxLayout="column" fxFlex="50">
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center" fxLayoutGap="7px"><mat-icon>person</mat-icon> <span>Customer</span></h2>
+                    </div>           
+                    <div fxLayout="column" fxFlex="100" class="card__general my6" fxLayoutAlign="center start" fxLayoutGap="1rem">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+                            <img [src]="account.image" class="card__general--avatar" [alt]="account.identity.salutation + '' + account.identity.fullName" width="50" height="50">
+                            <div fxLayout="column" fxLayoutAlign="center start">
+                                <span>{{account.identity.salutation}} {{account.identity.fullName}}</span>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <mat-label>Email</mat-label>
+                            <span>{{account.email}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <mat-label>Phone</mat-label>
+                            <span>{{account.phone}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="column" fxFlex="50">
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center" fxLayoutGap="7px"><mat-icon>commute</mat-icon> <span>Vehicle</span></h2>
+                    </div>           
+                    <div fxLayout="row wrap" fxFlex="100" class="card__general my6" fxLayoutAlign="space-between center" fxLayoutGap="1rem grid">
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="100">
+                            <mat-label>Unit</mat-label>
+                            <span>{{unitName}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Fuel Type</mat-label>
+                            <span>{{accountVehicle.fuelType}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Number Plate</mat-label>
+                            <span>{{accountVehicle.numberPlate}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Registration Date</mat-label>
+                            <span>{{accountVehicle.registrationDate  | date: 'mediumDate'}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Identification Number</mat-label>
+                            <span>{{accountVehicle.identificationNumber}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Manufacturer Year</mat-label>
+                            <span>{{accountVehicle.manufacturerYear}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template [ngIf]="!vehicle">
+            <div class="card__search" fxLayoutAlign="center center">
+                <div class="form-group" fxFlex="35">
+                    <input type="text" #input matInput class="form-control" placeholder="VIN Number" autocomplete="off">
+                </div>
+            </div>
+            <div class="card__loading">
+                Please type VIN number
+            </div>      
+        </ng-template>
+        <div *ngIf="error || !vehicle" class="card__not-found">
+            {{error}}
+        </div>        
+    </mat-card-content>
+    <mat-card-actions class="my0 ml0 p0" *ngIf="vehicle">
+        <button mat-flat-button class="px10 py1" color="primary" [disabled]="!form.valid || !createPermission" (click)="createWarranty(form)">Send</button>
+    </mat-card-actions>
+</mat-card>
+<mat-card class="card" *ngIf="warranty">
+    <mat-card-content class="card__general">
+        <ng-template [ngIf]="warranty">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between start" class="my8">
+                <div fxLayout="column" fxFlex="50">
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center" fxLayoutGap="7px"><mat-icon>person</mat-icon> <span>Customer</span></h2>
+                    </div>           
+                    <div fxLayout="column" fxFlex="100" class="card__general my6" fxLayoutAlign="center start" fxLayoutGap="1rem">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+                            <img [src]="warranty?.account.image" class="card__general--avatar" [alt]="account?.identity?.salutation + '' + account?.identity?.fullName" width="50" height="50">
+                            <div fxLayout="column" fxLayoutAlign="center start">
+                                <span>{{warranty?.account?.identity?.salutation}} {{warranty?.account?.identity?.fullName}}</span>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <mat-label>Email</mat-label>
+                            <span>{{warranty?.account.email}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <mat-label>Phone</mat-label>
+                            <span>{{warranty?.account.phone}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="column" fxFlex="50">
+                    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                        <h2 class="h6 text-capitalize font-semi-thick my0" fxLayoutAlign="space-between center" fxLayoutGap="7px"><mat-icon>commute</mat-icon> <span>Vehicle</span></h2>
+                    </div>           
+                    <div fxLayout="row wrap" fxFlex="100" class="card__general my6" fxLayoutAlign="space-between center" fxLayoutGap="1rem grid">
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="100">
+                            <mat-label>Unit</mat-label>
+                            <span>{{unitNameW}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Fuel Type</mat-label>
+                            <span>{{warranty?.accountVehicle.fuelType}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Number Plate</mat-label>
+                            <span>{{warranty?.accountVehicle.numberPlate}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Registration Date</mat-label>
+                            <span>{{warranty?.accountVehicle.registrationDate  | date: 'mediumDate'}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Identification Number</mat-label>
+                            <span>{{warranty?.accountVehicle.identificationNumber}}</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFlex="25">
+                            <mat-label>Manufacturer Year</mat-label>
+                            <span>{{warranty?.accountVehicle.manufacturerYear}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <div *ngIf="error || !vehicle" class="card__not-found">
+            {{error}}
+        </div>        
+    </mat-card-content>
+</mat-card>

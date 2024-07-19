@@ -1,0 +1,343 @@
+<div [formGroup]="form">
+  <!-- start general form -->
+  <mat-card class="test-drive p4 my8">
+    <!-- start card title -->
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+      </div>
+    </mat-card-title>
+    <!-- end card title -->
+
+    <!-- start title divider -->
+    <div class="test-drive__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <!-- end title divider -->
+
+    <!-- start card content -->
+    <mat-card-content class="mb0">
+      <div
+        fxLayout="column"
+        fxFlex="100"
+        class="test-drive__general mt8"
+        fxLayoutAlign="space-evenly space-between"
+        fxLayoutGap="1rem"
+        fxFlexOffset="8rem"
+        formGroupName="payload"
+      >
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="35">
+            <mat-label>Name</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.account?.identity?.fullName | titlecase | formatString"
+              placeholder="Name"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35">
+            <mat-label>Email</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.account?.email | titlecase | formatString"
+              placeholder="Email"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="35">
+            <mat-label>Phone</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.account?.phone?.code + testDrive?.account?.phone?.number"
+              placeholder="Phone"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div class="test-drive__divider">
+          <mat-divider></mat-divider>
+        </div>
+
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="35">
+            <mat-label>Type</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.type | titlecase | formatString"
+              placeholder="Type"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="35">
+            <mat-label>Brand</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.unit?.brand"
+              placeholder="Brand"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35">
+            <mat-label>Model</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.unit?.model"
+              placeholder="Model"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="35">
+            <mat-label>Variant</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.unit?.variant"
+              placeholder="Variant"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35">
+            <mat-label>Display</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.unit?.display"
+              placeholder="Display"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div class="test-drive__divider">
+          <mat-divider></mat-divider>
+        </div>
+
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <!-- Location -->
+          <div class="form-group" fxFlex="35">
+            <mat-label>Country</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.location?.country ? testDrive?.location?.country : ''"
+              placeholder="Country"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35">
+            <mat-label>State</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.location?.state ? testDrive?.location?.state : ''"
+              placeholder="State"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <!-- Location -->
+          <div class="form-group" fxFlex="35">
+            <mat-label>Address</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.location?.address"
+              placeholder="Address"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+
+        <div class="test-drive__divider">
+          <mat-divider></mat-divider>
+        </div>
+
+        
+        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+          <mat-label>Selected Slots</mat-label>
+          <!-- Slots -->
+          <mat-chip-list aria-label="Time Slots">
+            <mat-chip [disabled]="form.disabled" *ngFor="let item of testDrive?.selectedSlots">{{item | date: 'd MMM yy,H:m' : timeZone }}</mat-chip>
+          </mat-chip-list>
+        </div>
+
+        <div class="test-drive__divider">
+          <mat-divider></mat-divider>
+        </div>
+
+
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <h2 class="h6 text-capitalize font-semi-thick my0">Actual Date And Time</h2>
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <div class="form-group" fxFlex="35">
+            <mat-label>Start Time</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.payload?.actualDateAndTime?.startTime | date: 'd MMM yy,H:m' : timeZone"
+              placeholder="Start Time"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group" fxFlex="35">
+            <mat-label>End Time</mat-label>
+            <input
+              disabled
+              matInput
+              class="form-control"
+              [value]="testDrive?.payload?.actualDateAndTime?.endTime | date: 'd MMM yy,H:m' : timeZone"
+              placeholder="End Time"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div class="test-drive__divider">
+          <mat-divider></mat-divider>
+        </div>
+        <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+          <!-- Sales Advisor -->
+          <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+            <mat-label>Sales Advisor</mat-label>
+            <div
+              class="form-group selectedMat mb4"
+              [ngClass]="{
+                'selectedMat--disabled': form.disabled,
+                'ng-invalid':
+                  payload.get('saleAdvisorUuid').invalid &&
+                  payload.get('saleAdvisorUuid').touched,
+                'ng-valid':
+                  payload.get('saleAdvisorUuid').valid &&
+                  payload.get('saleAdvisorUuid').touched
+              }"
+              fxFlex="100"
+            >
+              <mat-select
+                placeholder="Select a SA"
+                formControlName="saleAdvisorUuid"
+              >
+                <mat-option>-- None --</mat-option>
+                <mat-option
+                  *ngFor="let salesAdvisor of salesAdvisors"
+                  [value]="salesAdvisor.uuid"
+                >
+                  {{ salesAdvisor?.identity?.salutation }}
+                  {{ salesAdvisor?.identity?.fullName }}
+                </mat-option>
+              </mat-select>
+              <neural-show-errors
+                [control]="payload.controls.saleAdvisorUuid"
+              ></neural-show-errors>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="end center" class="mr32">
+          <div fxLayout="column" fxFlex="35" fxLayoutGap="0.5rem">
+            <div fxLayout="row">
+              <mat-form-field appearance="outline">
+                <mat-label>Calendar</mat-label>
+                <input
+                  placeholder="Select a date"
+                  matInput
+                  [matDatepicker]="dp"
+                  [formControl]="date"
+                  readonly
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="dp"
+                ></mat-datepicker-toggle>
+                <mat-datepicker
+                  #dp
+                  startView="multi-year"
+                  (yearSelected)="chosenYearHandler($event)"
+                  (monthSelected)="chosenMonthHandler($event, dp)"
+                  panelClass="example-month-picker"
+                >
+                </mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <div formGroupName="payload">
+        <div class="mx32" formGroupName="actualDateAndTime">
+          <neural-test-drive-calendar
+            [timeZone]="timeZone"
+            formControlName="startTime"
+            [calendars]="calendars"
+            [formDisabled]="form.disabled"
+            [isPreOwned]="(branch?.configuration?.subscriptions?.adtorque || testDrive.source === 'PRE_OWNED' || testDrive.source === 'PRE_OWNED_STREAM')"
+            (selected)="selected($event)"
+          ></neural-test-drive-calendar>
+        </div>
+      </div>
+    </mat-card-content>
+    <!-- end card content -->
+
+    <!-- start actions button -->
+    <mat-card-actions class="my0 ml32 p0">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        [disabled]="!updatePermission"
+        (click)="form.reset();form.disable();date.disable()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        [disabled]="!updatePermission || form.invalid"
+        *ngIf="form.disabled"
+        class="px10 py1"
+        color="primary"
+        (click)="form.enable();date.enable()"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        [disabled]="!updatePermission || form.invalid || !emptyForm(form)"
+        *ngIf="form.enabled"
+        class="px10 py1"
+        color="primary"
+        (click)="updateTestDrie(form)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+    <!-- end actions button -->
+  </mat-card>
+</div>

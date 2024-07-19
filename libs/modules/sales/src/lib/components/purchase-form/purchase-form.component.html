@@ -1,0 +1,139 @@
+<div
+  fxLayout="column"
+  fxFlex="100"
+  fxLayoutAlign="start space-between"
+  fxLayoutGap="1rem"
+  class="sale"
+>
+  <div fxLayoutGap="1rem" fxLayout="row" class="sale__clear-all">
+    <div *ngIf="purchase?.badgeTotal">
+      <button
+        mat-fab
+        color="primary"
+        matTooltip="Clear all"
+        (click)="onClearAllBadges()"
+      >
+        <mat-icon>clear_all</mat-icon>
+      </button>
+    </div>
+    <div>
+      <button mat-fab color="primary" matTooltip="Renew" (click)="onRefresh()">
+        <mat-icon>autorenew</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Customer & purchase details -->
+  <neural-customer-details
+    [unit]="unit$ | async"
+    [purchase]="purchase"
+    (brandSeriesChanges)="onBrandSeries($event)"
+    (modelBrandSeriesChanges)="onModelBrandSeries($event)"
+    (update)="onUpdate($event)"
+    (bagdeChanges)="onClearBadge($event)"
+    [permissions]="permissions"
+  ></neural-customer-details>
+
+  <!-- sales Advisor -->
+  <neural-sales-advisor
+    [purchase]="purchase"
+    [salesAdvisors]="salesAdvisors"
+    (update)="onUpdate($event)"
+    (badgeChanges)="onClearBadge($event)"
+    [permissions]="permissions"
+  ></neural-sales-advisor>
+
+    <!-- Trade-In Details -->
+    <neural-trade-in-details
+      [purchase]="purchase"
+      [tradeInUploadedFile]="tradeInUploadedFile$ | async"
+      [tradeInDeletedFile]="tradeInDeletedFile$ | async"
+      [globalVehicles]="globalVehicles$ | async"
+      (badgeChanges)="onClearBadge($event)"
+      (brandChanges)="onGlobalBrandChange($event)"
+      (variantChanges)="onGlobalVariantChange($event)"
+      (updateTradeIn)="onUpdateTradeIn($event)"
+      (createdTradeIn)="onCreateTradeIn($event)"
+      (fileChange)="onFileChange($event)"
+      [permissions]="permissions"
+      (deleteFile)="onDeleteFile($event)"
+    ></neural-trade-in-details>
+
+  <ng-container *ngIf="!!purchase?.tradeIn?.uuid">
+    <!-- Trade-In Offer -->
+    <neural-trade-in-offer
+      [purchase]="purchase"
+      [permissions]="permissions"
+      [tradeInOfferUploadedFile]="tradeInOfferUploadedFile$ | async"
+      [tradeInOfferDeletedFile]="tradeInOfferDeletedFile$ | async"
+      (badgeChanges)="onClearBadge($event)"
+      (update)="onUpdateTradeIn($event)"
+      (fileChange)="onFileOfferChange($event)"
+      (deleteFile)="onDeleteOfferFile($event)"
+    >
+    </neural-trade-in-offer>
+
+    <!-- Trade-In Inspection request -->
+    <neural-trade-in-inspection-request
+      [purchase]="purchase"
+      (badgeChanges)="onClearBadge($event)"
+      (update)="onUpdateTradeIn($event)"
+      [permissions]="permissions"
+      (lock)="onUpdateTradeIn($event)"
+    >
+    </neural-trade-in-inspection-request>
+
+    <!-- Trade-In Inspection offer -->
+    <neural-trade-in-inspection-offer
+      [purchase]="purchase"
+      [tradeInInspectionUploadedFile]="tradeInInspectionUploadedFile$ | async"
+      [tradeInInspectionDeletedFile]="tradeInInspectionDeletedFile$ | async"
+      [permissions]="permissions"
+      (badgeChanges)="onClearBadge($event)"
+      (update)="onUpdateTradeIn($event)"
+      (fileChange)="onFileInspectionChange($event)"
+      (deleteFile)="onDeleteInspectionFile($event)"
+    >
+    </neural-trade-in-inspection-offer>
+  </ng-container>
+
+  <!-- Loan calculator -->
+  <neural-bank-loan-application-form
+    [purchase]="purchase"
+    [bankLoanUploadedFile]="bankLoanUploadedFile$ | async"
+    [bankLoanDeletedFile]="bankLoanDeletedFile$ | async"
+    (created)="onCreateBankLoans($event)"
+    (fileChange)="onFileBankLoanChange($event)"
+    (deleteFile)="onDeleteBankLoanFile($event)"
+    (deleteLoan)="onDeleteLoan($event)"
+    [permissions]="permissions"
+    [countries]="countries$ | async"
+    [loansBySaleUuid]="loans$ | async"
+  ></neural-bank-loan-application-form>
+  <!-- Bank Loan Offer -->
+
+  <!-- bank loan application offers -->
+  <neural-bank-loan-application-offers
+    [bankLoanApplicationOffersUploadedFile]="
+      bankLoanApplicationOffersUploadedFile$ | async
+    "
+    [bankLoanApplicationOffersDeletedFile]="
+      bankLoanApplicationOffersDeletedFile$ | async
+    "
+    [purchase]="purchase"
+    [loans]="loans$ | async"
+    (updateFile)="onUploadBankLoanApplicationOffersFile($event)"
+    (deleteFile)="onDeleteBankLoanApplicationOffersFile($event)"
+    (updated)="onUpdateBankLoan($event)"
+    [permissions]="permissions"
+    [countries]="countries$ | async"
+  ></neural-bank-loan-application-offers>
+  <!-- bank loan application offers -->
+
+  <!-- Fulfillment -->
+  <neural-purchase-fulfillment
+    [purchase]="purchase"
+    (updateFullFillment)="onUpdateFullFillment($event)"
+    [permissions]="permissions"
+  ></neural-purchase-fulfillment>
+</div>

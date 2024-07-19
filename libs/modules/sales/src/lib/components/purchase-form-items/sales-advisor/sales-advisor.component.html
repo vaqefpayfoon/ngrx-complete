@@ -1,0 +1,75 @@
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+  <mat-card fxFlex class="sale">
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+          <h2 class="h6 text-capitalize font-semi-thick my0">Sales Advisor</h2>
+        </div>
+        <div>
+          <button *ngIf="purchase?.badge?.salesAdvisor" mat-stroked-button color="primary" matBadgeColor="warn"
+            matBadge="1" (click)="onClearBadge()" [disabled]="!updatePermission">
+            Clear
+          </button>
+        </div>
+      </div>
+    </mat-card-title>
+    <div class="sale__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100">
+        <ng-container *ngIf="sa; else salesAdvisorForm">
+          <div fxFlex="100">
+            <mat-list>
+              <mat-list-item>
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                  <h2 class="h6 text-capitalize my0">Selected Sales Advisor</h2>
+                  <h2 class="h6 text-capitalize font-semi-thick my0">
+                    {{ purchase?.salesAdvisor?.identity?.salutation }} {{ purchase?.salesAdvisor?.identity?.fullName }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+        </ng-container>
+        <ng-template #salesAdvisorForm>
+          <form [formGroup]="form">
+            <div fxLayout="column" fxFlex="100" class="sale__general my8" fxLayoutAlign="space-evenly space-between"
+              fxLayoutGap="1rem">
+              <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100" fxLayoutGap="1rem grid">
+                <div class="form-group" fxFlex="35">
+                  <mat-label>Select a Sales Advisor</mat-label>
+                  <input type="text" placeholder="type and search" class="form-control" aria-label="Sales advisor" matInput
+                    formControlName="saleAdvisorUuid" [matAutocomplete]="auto" neuralSalesAdvisor [salesAdvisors]="salesAdvisors" [selected]="saleAdvisorUuid">
+                    <button *ngIf="saleAdvisorUuid.valid" class="form-group__reset" mat-icon-button matSuffix (click)="onReset()" [attr.aria-label]="'reset value'">
+                      <mat-icon>close</mat-icon>
+                    </button>                
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                      {{ option.identity.fullName }}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-error class="mt4" *ngIf="errorMessage && saleAdvisorUuid.invalid">{{errorMessage}}</mat-error>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="py4" fxLayoutAlign="end center">
+      <button mat-stroked-button type="button" class="mr4 px10 py1" (click)="onCancel()" [disabled]="!updatePermission">
+        Cancel
+      </button>
+      <button mat-flat-button type="button" class="px10 py1" color="primary" *ngIf="sa" (click)="sa = !sa"
+        [disabled]="!updatePermission">
+        Edit
+      </button>
+      <button mat-flat-button class="px10 py1" color="primary" *ngIf="!sa" (click)="onUpdate(form)"
+        [disabled]="!updatePermission">
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

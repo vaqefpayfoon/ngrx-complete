@@ -1,0 +1,34 @@
+<mat-card class="card" [ngClass]="{deactive: !template?.active}">
+    <div
+      fxLayout="row wrap"
+      fxFlex="100"
+      fxLayoutAlign="space-between center"
+      class="card__header"
+    >
+      <div fxFlex="20" class="font-semi-thick card__header--email">
+        {{template?.name}}
+      </div>
+      <div fxFlex="20" class="font-semi-thick card__header--phone">
+        {{template?.subject}}
+      </div>
+      <div fxFlex="20" class="font-semi-thick card__header--status">
+        <mat-slide-toggle color="primary" [disabled]="!statusPermission" matTooltipPosition="above" [matTooltip]="[template?.active ? 'Deactivate' : 'Activate']" (click)="toggleStatus($event)" [checked]="template?.active"></mat-slide-toggle>
+      </div>
+      <div fxFlex="5" class="font-semi-thick card__header--actions">
+        <button mat-icon-button [matMenuTriggerFor]="actions">
+          <mat-icon svgIcon="action_off"></mat-icon>
+        </button>
+        <mat-menu #actions="matMenu">
+          <button mat-menu-item [disabled]="!getPermission" [routerLink]="[template?.uuid]">
+            <mat-icon svgIcon="preview_off"></mat-icon>
+            <span>Preview</span>
+          </button>
+          <button mat-menu-item [disabled]="!deletePermission" (click)="onDelete()">
+            <mat-icon svgIcon="delete_off"></mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+</mat-card>
+  

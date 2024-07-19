@@ -1,0 +1,163 @@
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+  <mat-card fxFlex class="sale">
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <div
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="1rem"
+        >
+          <h2 class="h6 text-capitalize font-semi-thick my0">
+            Trade-In Inspection Request
+          </h2>
+        </div>
+        <div fxLayoutGap="1rem">
+          <button
+            *ngIf="purchase?.badge?.tradeIn"
+            mat-stroked-button
+            color="primary"
+            matBadgeColor="warn"
+            matBadge="1"
+            (click)="onClearBadge()"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+    </mat-card-title>
+    <div class="sale__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100">
+        <ng-container *ngIf="tradeInInspection; else tradeInInspectionForms">
+          <div fxFlex="100">
+            <mat-list>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Date and Time</h2>
+                  <h2 class="h6 text-capitalize font-semi-thick my0">
+                    {{
+                      purchase?.tradeIn?.inspection?.request?.date
+                        | date: 'MMMM d Y, h:mm a'
+                    }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Remarks</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{ purchase?.tradeIn?.inspection?.request?.remark }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+        </ng-container>
+        <ng-template #tradeInInspectionForms>
+          <form [formGroup]="form">
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutAlign="start start"
+              fxLayoutGap="1rem grid"
+              class="mt8"
+              formGroupName="inspection"
+            >
+              <ng-container formGroupName="request">
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100">
+                  <div
+                    fxFlex="30"
+                    class="form-group"
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                  >
+                    <mat-label>Date and Time</mat-label>
+                    <div fxLayout="row">
+                      <input
+                        readonly
+                        matInput
+                        [min]="minDate"
+                        class="form-control"
+                        formControlName="date"
+                        [ngxMatDatetimePicker]="picker"
+                        placeholder="30 March 2021, 10:30am"
+                        (dateChange)="changeDate($event)"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                      ></mat-datepicker-toggle>
+                      <ngx-mat-datetime-picker
+                        #picker
+                      ></ngx-mat-datetime-picker>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayout="row" fxFlex="100">
+                  <div
+                    class="form-group"
+                    fxFlex="90"
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                  >
+                    <mat-label>Remarks</mat-label>
+                    <textarea
+                      matInput
+                      rows="7"
+                      class="form-control"
+                      placeholder="Remarks"
+                      formControlName="remark"
+                    ></textarea>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="py4" fxLayoutAlign="end center">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        (click)="tradeInInspection = true"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        class="px10 py1"
+        color="primary"
+        *ngIf="tradeInInspection"
+        (click)="onEdit()"
+        [disabled]="!updatePermission || customerDecisionAccepted"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        class="px10 py1"
+        color="primary"
+        *ngIf="!tradeInInspection"
+        (click)="onUpdateTradeIn(form)"
+        [disabled]="!updatePermission || customerDecisionAccepted"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,0 +1,97 @@
+<div class="mt8 lead-search">
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="panelOpenState">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h2 class="h6 text-capitalize font-semi-thick my0">Advance search</h2>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-card>
+            <!-- content -->
+            <mat-card-content>
+                <div fxLayout="column" fxFlex="100" class="nextService-search__general"
+                fxLayoutAlign="start space-between" fxLayoutGap="1rem" fxFlexOffset="1rem">
+                <!-- form -->
+                <div [formGroup]="form" fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                    <ng-container formGroupName="accountVehicle">
+                        <!-- start   -->
+                        <div fxFlex="30" class="form-group" fxLayout="column" fxLayoutGap="0.5rem" formGroupName="nextService">
+                            <mat-label>Start Next Service Due Date</mat-label>
+                            <div fxLayout="row" class="form-group__wrapper" formGroupName="estimatedEngineOilService">
+                                <input matInput class="form-control" [matDatepicker]="startPicker"
+                                    placeholder="11 May 2012" formControlName="from"
+                                    (dateChange)="changeStartDate($event)" />
+                                <button class="form-group__remove-date" type="button" *ngIf="!!from.value"
+                                    mat-button matSuffix mat-icon-button (click)="clearDate(form)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-datepicker-toggle matSuffix [for]="startPicker">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #startPicker></mat-datepicker>
+                            </div>
+                        </div>
+                        <!-- end-->
+                        <div fxFlex="30" class="form-group" formGroupName="nextService" fxLayout="column" fxLayoutGap="0.5rem">
+                            <mat-label>End Next Service Due Date</mat-label>
+                            <div fxLayout="row" class="form-group__wrapper" formGroupName="estimatedEngineOilService">
+                                <input matInput class="form-control" [matDatepicker]="endPicker"
+                                    placeholder="15 May 2012" formControlName="to"
+                                    (dateChange)="changeEndDate($event)" />
+                                <button class="form-group__remove-date" type="button" *ngIf="!!to.value"
+                                    mat-button matSuffix mat-icon-button (click)="clearDate(form)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endPicker></mat-datepicker>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- filter By -->
+                    <div fxFlex="30" fxLayout="column" fxLayoutGap="0.5rem">
+                        <mat-label>Filter By</mat-label>
+                        <ng-container>
+                            <div class="form-group selectedMat mb4" fxFlex="100">
+                                <mat-select placeholder="Upcoming Unscheduled" formControlName="type"
+                                    (selectionChange)="onSearch(form)">
+                                    <mat-option value="UPCOMING_UNSCHEDULED">Upcoming Unscheduled</mat-option>
+                                    <mat-option value="UPCOMING_SCHEDULED">Upcoming Scheduled</mat-option>
+                                    <mat-option value="MISSED_APPOINTMENTS">Missed Appointment</mat-option>
+                                </mat-select>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <!-- Brand -->
+                    <div fxFlex="30" class="form-group" fxLayout="column" formGroupName="accountVehicle">
+                        <mat-label>Brand</mat-label>
+                        <div fxLayout="row" fxFlex="100" class="form-group__wrapper"
+                            formGroupName="vehicleReference">
+                            <div fxLayout="row" fxFlex="100" class="form-group__wrapper" formGroupName="unit">
+                                <input type="text" matInput class="form-control" formControlName="display"
+                                    placeholder="Brand Name" autocomplete="off"
+                                    (keyup)="onSearch(form)" />
+                                <button class="form-group__remove" *ngIf="displayForm.value" mat-button
+                                    matSuffix mat-icon-button (click)="clearDisplay(form)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- email -->
+                    <div fxFlex="30" class="form-group" fxLayout="column" formGroupName="account">
+                        <mat-label>Email Address</mat-label>
+                        <div fxLayout="row" class="form-group__wrapper">
+                            <input type="text" matInput class="form-control" formControlName="email"
+                                placeholder="name@example.com" autocomplete="off" (keyup)="onSearch(form)" />
+                            <button class="form-group__remove" *ngIf="accountEmail.value" mat-button matSuffix
+                                mat-icon-button (click)="clearAccountEmail(form)">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-expansion-panel>
+      </mat-accordion>
+</div>

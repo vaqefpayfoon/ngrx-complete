@@ -1,0 +1,11 @@
+<h1 mat-dialog-title class="font-thick text-black">{{ name }} QR Code</h1>
+
+<mat-dialog-content>
+  <p>
+    <img [src]="qrcode">
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions class="text-right">
+  <button mat-button (click)="close()">OK</button>
+</mat-dialog-actions>

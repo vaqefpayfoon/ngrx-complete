@@ -1,0 +1,16 @@
+<neural-dynamic-header
+  [title]="title"
+  [breadcrumbs]="bc"
+></neural-dynamic-header>
+<neural-country-form
+  [loading]="loading$ | async"
+  [country]="country$ | async"
+  [selectedCountry]="selectedCountry$ | async"
+  [allCountries]="countryNames$ | async"
+  [currencies]="currencies$ | async"
+  [permissions]="permissions$ | async"
+  (countryChange)="selected($event)"
+  (create)="onCreate($event)"
+  (update)="onUpdate($event)"
+  (loaded)="onLoad($event)"
+></neural-country-form>

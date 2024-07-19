@@ -1,0 +1,40 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="reschedule p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Reschedule</h2>
+            </div>
+        </mat-card-title>
+        <div class="reschedule__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="reschedule__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                    <div *ngFor="let item of calendar" fxLayout="column" fxFlex="25">
+                        <div class="reschedule__slots p2" [ngClass]="{'reschedule__slots--disabled': !validateDate(item)}" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem">
+                            <span class="h6 text-capitalize font-semi-thick mt0" >{{item.day | date: 'd MMM'}}</span>
+                            <div fxLayout="row wrap" fxLayoutGap="1rem grid" fxLayoutAlign="center center">
+                                <div *ngFor="let date of item.slots">
+                                    <div 
+                                        class="reschedule__slots--time"
+                                        [ngClass]="{
+                                            'reschedule__slots--active': date.iso === slot.value,
+                                            'reschedule__slots--disabled':!validateDate(item) || !date.available
+                                        }"
+                                        (click)="onSelect(date.iso, date.available)">
+                                        {{date.time}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button class="mr4 px10 py1">Cancel</button>
+            <button mat-flat-button class="px10 py1" color="primary" [disabled]="!form.valid || !createPermission || disableSaveButton" (click)="rescheduleReservation(form)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

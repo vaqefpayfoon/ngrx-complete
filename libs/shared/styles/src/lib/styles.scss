@@ -1,0 +1,25 @@
+@import 'styles-font';
+
+@import 'styles-variables';
+@import 'styles-mixins';
+
+@import 'styles-reset';
+
+@import 'styles-utilities';
+
+@import 'styles-custom';
+
+@import '~@angular/material/theming';
+
+@import '~font-awesome/css/font-awesome.min.css';
+
+$general-typography: mat-typography-config(
+  $font-family: '"Proxima Nova", "Helvetica Neue", sans-serif',
+  $body-2: mat-typography-level(16px, 24px, 500)
+);
+
+@include mat-core($general-typography);
+
+@import 'default-theme';
+
+@include angular-material-theme($my-app-theme-custom);

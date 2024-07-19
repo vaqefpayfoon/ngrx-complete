@@ -1,0 +1,92 @@
+<div
+  class="valuations"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="'valuations'"
+      [breadcrumbs]="bc"
+      (refreshChange)="onRefresh($event)"
+      [loading]="loading$ | async"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill>
+
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <mat-card class="valuations__header">
+      <div
+        fxLayout="row wrap"
+        fxLayout.lt-md="column"
+        fxFlex="100"
+        fxLayoutGap.lt-md="1rem"
+        fxLayoutAlign="space-between center"
+        fxLayoutAlign.lt-md="start start"
+      >
+        <span
+          class="valuations__header--item font-normal"
+          fxFlex.lt-md="100"
+          fxFlex="10"
+          >Requested date</span
+        >
+        <span
+          class="valuations__header--item font-normal"
+          fxFlex.lt-md="100"
+          fxFlex="15"
+          >Account</span
+        >
+        <span
+          class="valuations__header--item font-normal"
+          fxFlex.lt-md="100"
+          fxFlex="15"
+          >Model</span
+        >
+        <span
+          class="valuations__header--item font-normal"
+          fxFlex.lt-md="100"
+          fxFlex="10"
+          >Reference No.</span
+        >
+        <span
+          class="valuations__header--item font-normal"
+          fxFlex.lt-md="100"
+          fxFlex="10"
+          >Valuation Status</span
+        >
+        <span
+          class="valuations__header--item font-normal"
+          fxFlex.lt-md="100"
+          fxFlexFill
+          fxLayoutAlign="center"
+          fxLayoutAlign.lt-md="end"
+          fxFlex="10"
+          >Actions</span
+        >
+      </div>
+    </mat-card>
+    <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+      <div class="mb3" *ngFor="let sale of [1, 2, 3, 4]">
+        <neural-valuation-card
+          [valuation]="valuation"
+          [permissions]="permissions$ | async"
+        ></neural-valuation-card>
+      </div>
+    </ng-container>
+    <div *ngIf="loading$ | async" class="sales__loading">Loading...</div>
+    <div class="sales__not-found" *ngIf="(error$ | async) && !(total$ | async)">
+      <neural-error [error]="error$ | async"></neural-error>
+    </div>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="total$ | async">
+    <mat-paginator
+      [length]="total$ | async"
+      [pageSize]="(valuationsConfig$ | async).limit"
+      [pageIndex]="(valuationsConfig$ | async).page - 1"
+      (page)="changePage($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
+</div>

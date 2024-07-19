@@ -1,0 +1,168 @@
+<div
+  class="lead"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <!-- (loaded)="onLoadLead($event)" -->
+  <div fxFlex="100" fxFlexFill class="my8">
+    <div
+    fxLayout="row"
+    fxFlex="100"
+    fxLayoutAlign="start stretch"
+    fxLayoutGap="1rem"
+  >
+    <div fxFlex="100">
+      <mat-card fxFlex class="lead">
+        <mat-card-title class="mb2">
+          <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <div
+              fxLayout="row wrap"
+              fxLayoutAlign="space-between center"
+              fxLayoutGap="1rem"
+            >
+              <h2 class="h6 text-capitalize font-semi-thick my0">Create Lead</h2>
+            </div>
+          </div>
+        </mat-card-title>
+        <div class="lead__divider">
+          <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+          <div fxLayout="column" fxFlex="80">
+            <form [formGroup]="form">
+              <div
+                fxLayout="column"
+                fxFlex="100"
+                class="lead__general mt8 mb4"
+                fxLayoutAlign="space-evenly space-between"
+                fxLayoutGap="1rem"
+              >
+                <div
+                  fxLayout="row wrap"
+                  fxLayoutAlign="start center"
+                  fxFlex="100"
+                  fxLayoutGap="1rem grid"
+                >
+                  <mat-error class="mt4" *ngIf="errorMessage">{{
+                    errorMessage
+                  }}</mat-error>
+                </div>
+                <div
+                  fxLayout="row wrap"
+                  fxLayoutAlign="start center"
+                  fxFlex="100"
+                  fxLayoutGap="1rem grid"
+                >
+                  <div
+                    fxLayout="row wrap"
+                    fxLayoutAlign="start center"
+                    fxFlex="100"
+                    fxLayoutGap="1rem grid"
+                  ></div>
+                  <div fxLayout="row" fxFlex="100">
+                    <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="50">
+                      <mat-label>Email</mat-label>
+                      <div class="form-group my0" fxFlex="100">
+                        <input
+                        type="email"
+                        matInput
+                        class="form-control"
+                        formControlName="email"
+                        placeholder="email"
+                        autocomplete="off"
+                      />
+                      </div>
+                    </div>
+                    <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="40">
+                      <mat-label>Full Name</mat-label>
+                      <div class="form-group ml2" fxFlex="100">
+                        <input
+                        type="text"
+                        matInput
+                        class="form-control"
+                        formControlName="fullName"
+                        placeholder="Full Name"
+                        autocomplete="off"
+                      />
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="60" *ngIf="getRole">
+                    <mat-label style="font-size: 13px">Branches</mat-label>
+                    <div class="form-group selectedMat my0" fxFlex="100">
+                      <mat-select
+                        placeholder="Select a branch"
+                        formControlName="branchUuid"
+                        (selectionChange)="onBranchChanged()"
+                      >
+                        <mat-option
+                          *ngFor="let branch of branches()"
+                          [value]="branch?.uuid"
+                        >
+                          {{ branch?.name }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30" *ngIf="getRole">
+                    <mat-label style="font-size: 13px">Brand</mat-label>
+                    <div class="form-group selectedMat my0" fxFlex="100">
+                      <mat-select
+                        placeholder="Select a brand"
+                        formControlName="brandUuid"
+                        (selectionChange)="onSalesAdvisorChanged($event.value)"
+                      >
+                      <mat-option>-- None --</mat-option>
+                        <mat-option
+                          *ngFor="let brand of brands$ | async"
+                          [value]="brand"
+                        >
+                          {{ brand }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="60" *ngIf="getRole">
+                    <mat-label style="font-size: 13px">Sales Advisor</mat-label>
+                    <div class="form-group selectedMat my0" fxFlex="100">
+                      <mat-select
+                        placeholder="Select a Sales Advisor"
+                        formControlName="salesAdvisorUuid"
+                      >
+                        <mat-option
+                          *ngFor="let option of filteredOptions | async"
+                          [value]="option.uuid"
+                        >
+                          {{ option?.identity?.fullName }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-card-content>
+        <mat-card-actions class="py4" fxLayoutAlign="end center">
+          <button
+            mat-flat-button
+            class="px10 py1"
+            color="primary"
+            [disabled]="form.invalid"
+            (click)="onCreate(form)"
+          >
+            Save
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  </div>
+</div>

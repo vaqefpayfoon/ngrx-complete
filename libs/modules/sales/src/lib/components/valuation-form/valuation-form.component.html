@@ -1,0 +1,1131 @@
+<div
+  fxLayout="column"
+  fxFlex="100"
+  fxLayoutAlign="start space-between"
+  fxLayoutGap="1rem"
+>
+  <!-- Customer -->
+  <div fxLayout="row" fxFlex="100">
+    <!-- Customer Details -->
+    <mat-card fxFlex class="sale">
+      <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <div
+            fxLayout="row wrap"
+            fxLayoutAlign="start center"
+            fxLayoutGap="1rem"
+          >
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Customer Details
+            </h2>
+          </div>
+        </div>
+      </mat-card-title>
+      <div class="sale__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <div
+              fxFlex="100"
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+            >
+              <h2 class="h6 text-capitalize my0">Name</h2>
+              <h2 class="h6 text-capitalize font-semi-thick my0">
+                Mr. Kanesh Avili
+              </h2>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div
+              fxFlex="100"
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+            >
+              <h2 class="h6 text-capitalize my0">Email</h2>
+              <h2 class="h6 font-semi-thick my0">ka@whipmobility.com</h2>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div
+              fxFlex="100"
+              fxLayout="row"
+              fxLayoutAlign="space-between center"
+            >
+              <h2 class="h6 text-capitalize my0">Mobile Number</h2>
+              <h2 class="h6 font-semi-thick my0">
+                <a href="tel:+60178080069" title="call ka">178080069</a>
+              </h2>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- valuation Request -->
+  <div fxLayout="row" fxFlex="100">
+    <mat-card fxFlex class="sale">
+      <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <div
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="1rem"
+          >
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Valuation Request
+            </h2>
+          </div>
+          <div>
+            <button mat-button type="button" class="px10 py1" color="primary">
+              Clear
+            </button>
+          </div>
+        </div>
+      </mat-card-title>
+      <div class="sale__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-card-content>
+        <div fxLayout="column" fxFlex="100">
+          <ng-container *ngIf="valuationRequest; else valuationRequestForm">
+            <div fxFlex="100">
+              <mat-list>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Brand</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">BMW</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Model</h2>
+                    <h2 class="h6 font-semi-thick my0">2 series 330i Sport</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Variant</h2>
+                    <h2 class="h6 font-semi-thick my0">330i sport</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">
+                      Estimated vehicle price (RM)
+                    </h2>
+                    <h2 class="h6 font-semi-thick my0">45,000.00</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Documents</h2>
+                    <div fxLayout="row" fxLayoutGap="1rem">
+                      <button
+                        mat-flat-button
+                        [disabled]="true"
+                        color="accent"
+                        type="button"
+                      >
+                        Copy of Valuation card 1
+                      </button>
+                      <button
+                        mat-flat-button
+                        [disabled]="true"
+                        color="accent"
+                        type="button"
+                      >
+                        Copy of Valuation Request 2
+                      </button>
+                    </div>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </mat-list>
+            </div>
+          </ng-container>
+          <ng-template #valuationRequestForm>
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              class="sale__general my8"
+              fxLayoutAlign="space-evenly space-between"
+              fxLayoutGap="1rem"
+            >
+              <div
+                fxLayout="row wrap"
+                fxLayoutAlign="start center"
+                fxFlex="100"
+                fxLayoutGap="1rem grid"
+              >
+                <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                  <mat-label style="font-size: 13px">Brand</mat-label>
+                  <div class="form-group selectedMat my0" fxFlex="100">
+                    <mat-select placeholder="Select Brand">
+                      <mat-option
+                        *ngFor="let brand of ['BWM', 'BENZ']"
+                        [value]="brand"
+                      >
+                        {{ brand }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                  <mat-label style="font-size: 13px">Model</mat-label>
+                  <div class="form-group selectedMat my0" fxFlex="100">
+                    <mat-select placeholder="Select Model">
+                      <mat-option
+                        *ngFor="let model of ['2 series 330i Sport']"
+                        [value]="model"
+                      >
+                        {{ model }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                  <mat-label style="font-size: 13px">Variant</mat-label>
+                  <div class="form-group selectedMat my0" fxFlex="100">
+                    <mat-select placeholder="Select Variant">
+                      <mat-option
+                        *ngFor="let variant of ['330i sport']"
+                        [value]="variant"
+                      >
+                        {{ variant }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="form-group" fxFlex="30">
+                  <mat-label>Estimated vehicle price (RM)</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    class="form-control"
+                    placeholder="price"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+            fxLayout="row"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+            class="mb4"
+          >
+            <div
+              fxLayout="column"
+              fxLayoutGap="0.5rem"
+              fxLayoutAlign="center start"
+            >
+              <mat-label>File</mat-label>
+              <input
+                type="file"
+                accept="application/pdf"
+                #valuationRequestDocs
+                multiple
+                name="docs"
+                hidden
+                class="form-control"
+                placeholder="File"
+                autocomplete="off"
+              />
+              <div
+                fxFlex="100"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+                fxLayoutGap="1rem"
+              >
+                <button
+                  type="button"
+                  color="accent"
+                  mat-flat-button
+                  (click)="onClickValuationRequest()"
+                >
+                  Select Documents
+                </button>
+                <mat-chip-list aria-label="files">
+                  <mat-chip
+                    color="primary"
+                    selected
+                    *ngFor="
+                      let file of valuationRequestDocsEle?.nativeElement
+                        ?.files
+                    "
+                  >
+                    {{ file?.name }}
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </div>
+          </div>
+          </ng-template>
+          <div fxFlex="100">
+            <mat-list>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Booking Fee (RM)</h2>
+                  <h2 class="h6 text-capitalize font-semi-thick my0">
+                    400,000.00
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">
+                    Booking Fee Receipt No.
+                  </h2>
+                  <h2 class="h6 font-semi-thick my0">6643234</h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Purchase Request Date</h2>
+                  <h2 class="h6 font-semi-thick my0">13 Mar 2020, 09:30am</h2>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="py4" fxLayoutAlign="end center">
+        <button
+          mat-stroked-button
+          type="button"
+          class="mr4 px10 py1"
+          (click)="valuationRequest = true"
+        >
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          class="px10 py1"
+          color="primary"
+          *ngIf="valuationRequest"
+          (click)="valuationRequest = !valuationRequest"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          class="px10 py1"
+          color="primary"
+          *ngIf="!valuationRequest"
+          (click)="valuationRequest = !valuationRequest"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <!-- valuation -->
+  <div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+    <mat-card fxFlex class="sale">
+      <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <div
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="1rem"
+          >
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Valuation
+            </h2>
+          </div>
+          <div fxLayoutGap="1rem">
+            <button
+              mat-stroked-button
+              type="button"
+              class="px10 py1"
+              color="primary"
+            >
+              Clear
+            </button>
+            <button
+              mat-stroked-button
+              type="button"
+              class="px10 py1"
+              color="primary"
+            >
+              Lock
+            </button>
+          </div>
+        </div>
+      </mat-card-title>
+      <div class="sale__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-card-content>
+        <div fxLayout="column" fxFlex="100">
+          <ng-container *ngIf="valuation; else valuationForms">
+            <div fxFlex="100">
+              <mat-list>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Request Status</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      Approved
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">
+                      Approximate Value (RM)
+                    </h2>
+                    <h2 class="h6 font-semi-thick my0">96,000.00</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Validity</h2>
+                    <h2 class="h6 font-semi-thick my0">22 Apr 2021</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Valuation Document</h2>
+                    <div fxLayout="row" fxLayoutGap="1rem">
+                      <button
+                        mat-flat-button
+                        [disabled]="true"
+                        color="accent"
+                        type="button"
+                      >
+                        Copy of valuation card
+                      </button>
+                    </div>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Remarks</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua. Ut enim ad minim veniam,
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Customer's Decision</h2>
+                    <h2 class="h6 font-semi-thick my0">Not Selected</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </mat-list>
+            </div>
+          </ng-container>
+          <ng-template #valuationForms>
+            <div
+              fxLayout="row"
+              fxFlex="100"
+              fxLayoutAlign="space-between start"
+              fxLayoutGap="1rem"
+              class="mt8"
+            >
+              <div fxLayout="column" fxFlex="70">
+                <div
+                  fxLayout="column"
+                  fxFlex="100"
+                  class="sale__general"
+                  fxLayoutAlign="space-evenly space-between"
+                  fxLayoutGap="1rem"
+                >
+                  <div
+                    fxLayout="row wrap"
+                    fxLayoutAlign="start center"
+                    fxFlex="100"
+                    fxLayoutGap="1rem grid"
+                  >
+                    <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                      <mat-label style="font-size: 13px"
+                        >Request Status</mat-label
+                      >
+                      <div class="form-group selectedMat my0" fxFlex="100">
+                        <mat-select placeholder="Select Status">
+                          <mat-option
+                            *ngFor="let status of ['Approved', 'Rejected']"
+                            [value]="status"
+                          >
+                            {{ status }}
+                          </mat-option>
+                        </mat-select>
+                      </div>
+                    </div>
+                    <div class="form-group" fxFlex="30">
+                      <mat-label>Approximate Value (RM)</mat-label>
+                      <input
+                        type="number"
+                        matInput
+                        class="form-control"
+                        placeholder="Registration number"
+                        autocomplete="off"
+                      />
+                    </div>
+                    <div
+                      fxFlex="30"
+                      class="form-group"
+                      fxLayout="column"
+                      fxLayoutGap="0.5rem"
+                    >
+                      <mat-label>Validity</mat-label>
+                      <div fxLayout="row">
+                        <input
+                          matInput
+                          readonly
+                          placeholder="30 March 2021"
+                          class="form-control"
+                          [matDatepicker]="ValidityPicker"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="ValidityPicker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #ValidityPicker></mat-datepicker>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayout="row" fxFlex="100">
+                  <div
+                    class="form-group"
+                    fxFlex="90"
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                  >
+                    <mat-label>Remarks</mat-label>
+                    <textarea
+                      matInput
+                      rows="7"
+                      class="form-control"
+                      placeholder="Remarks"
+                    ></textarea>
+                  </div>
+                </div>
+                <div
+                  fxLayout="row"
+                  fxFlex="100"
+                  fxLayoutAlign="space-between center"
+                  class="my4"
+                >
+                  <div
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                    fxLayoutAlign="center start"
+                  >
+                    <mat-label>File</mat-label>
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      #valuationDoc
+                      name="docs"
+                      hidden
+                      class="form-control"
+                      placeholder="File"
+                      autocomplete="off"
+                    />
+                    <div
+                      fxFlex="100"
+                      fxLayout="row"
+                      fxLayoutAlign="start center"
+                      fxLayoutGap="1rem"
+                    >
+                      <button
+                        type="button"
+                        color="accent"
+                        mat-flat-button
+                        (click)="onClickValuationDoc()"
+                      >
+                        Select doc
+                      </button>
+                      <mat-chip-list aria-label="files">
+                        <mat-chip
+                          color="primary"
+                          selected
+                          *ngFor="
+                            let file of valuationDocEle?.nativeElement?.files
+                          "
+                        >
+                          {{ file?.name }}
+                        </mat-chip>
+                      </mat-chip-list>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Customer Decision -->
+              <div fxLayout="row" fxFlex="30" fxLayoutAlign="end center">
+                <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="100">
+                  <mat-label style="font-size: 13px"
+                    >Customer's Decision</mat-label
+                  >
+                  <div class="form-group selectedMat my0" fxFlex="100">
+                    <mat-select placeholder="Select Decision">
+                      <mat-option
+                        *ngFor="let status of ['Approved', 'Rejected']"
+                        [value]="status"
+                      >
+                        {{ status }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="py4" fxLayoutAlign="end center">
+        <button
+          mat-stroked-button
+          type="button"
+          class="mr4 px10 py1"
+          (click)="valuation = true"
+        >
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          class="px10 py1"
+          color="primary"
+          *ngIf="valuation"
+          (click)="valuation = !valuation"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          class="px10 py1"
+          color="primary"
+          *ngIf="!valuation"
+          (click)="valuation = !valuation"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <!-- Inspection request -->
+  <div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+    <mat-card fxFlex class="sale">
+      <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <div
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="1rem"
+          >
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Inspection Request
+            </h2>
+          </div>
+          <div fxLayoutGap="1rem">
+            <button
+              mat-stroked-button
+              type="button"
+              class="px10 py1"
+              color="primary"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </mat-card-title>
+      <div class="sale__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-card-content>
+        <div fxLayout="column" fxFlex="100">
+          <ng-container *ngIf="inspectionRequest; else inspectionRequestForms">
+            <div fxFlex="100">
+              <mat-list>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Date and Time</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      22 Apr 2021, 11:30am
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Remarks</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua. Ut enim ad minim veniam,
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </mat-list>
+            </div>
+          </ng-container>
+          <ng-template #inspectionRequestForms>
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutAlign="start start"
+              fxLayoutGap="1rem grid"
+              class="mt8"
+            >
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100">
+                <div
+                  fxFlex="30"
+                  class="form-group"
+                  fxLayout="column"
+                  fxLayoutGap="0.5rem"
+                >
+                  <mat-label>Date and Time</mat-label>
+                  <div fxLayout="row">
+                    <input
+                      matInput
+                      readonly
+                      placeholder="30 March 2021, 10:30am"
+                      class="form-control"
+                      [matDatepicker]="inspectionDatePicker"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="inspectionDatePicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #inspectionDatePicker></mat-datepicker>
+                  </div>
+                </div>
+              </div>
+              <div fxLayout="row" fxFlex="100">
+                <div
+                  class="form-group"
+                  fxFlex="90"
+                  fxLayout="column"
+                  fxLayoutGap="0.5rem"
+                >
+                  <mat-label>Remarks</mat-label>
+                  <textarea
+                    matInput
+                    rows="7"
+                    class="form-control"
+                    placeholder="Remarks"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="py4" fxLayoutAlign="end center">
+        <button
+          mat-stroked-button
+          type="button"
+          class="mr4 px10 py1"
+          (click)="inspectionRequest = true"
+        >
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          class="px10 py1"
+          color="primary"
+          *ngIf="inspectionRequest"
+          (click)="inspectionRequest = !inspectionRequest"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          class="px10 py1"
+          color="primary"
+          *ngIf="!inspectionRequest"
+          (click)="inspectionRequest = !inspectionRequest"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <!-- Inspection request -->
+  <div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+    <mat-card fxFlex class="sale">
+      <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <div
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="1rem"
+          >
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Inspection Valuation
+            </h2>
+          </div>
+          <div fxLayoutGap="1rem">
+            <button
+              mat-stroked-button
+              type="button"
+              class="px10 py1"
+              color="primary"
+            >
+              Clear
+            </button>
+            <button
+              mat-stroked-button
+              type="button"
+              class="px10 py1"
+              color="primary"
+            >
+              Lock
+            </button>
+          </div>
+        </div>
+      </mat-card-title>
+      <div class="sale__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-card-content>
+        <div fxLayout="column" fxFlex="100">
+          <ng-container
+            *ngIf="inspectionValuation; else inspectionValuationForms"
+          >
+            <div fxFlex="100">
+              <mat-list>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">
+                      Final Value (RM)
+                    </h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      95,000.00
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Validity</h2>
+                    <h2 class="h6 font-semi-thick my0">11 Dec 2021</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Valuation Documents</h2>
+                    <div fxLayout="row" fxLayoutGap="1rem">
+                      <button
+                        mat-flat-button
+                        [disabled]="true"
+                        color="accent"
+                        type="button"
+                      >
+                        Copy of valuation doc
+                      </button>
+                    </div>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Remarks</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua. Ut enim ad minim veniam,
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Customer's Decision</h2>
+                    <h2 class="h6 font-semi-thick my0">Declined</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </mat-list>
+            </div>
+          </ng-container>
+          <ng-template #inspectionValuationForms>
+            <div
+              fxLayout="row"
+              fxFlex="100"
+              fxLayoutAlign="space-between start"
+              fxLayoutGap="1rem"
+              class="mt8"
+            >
+              <div fxLayout="column" fxFlex="70">
+                <div
+                  fxLayout="column"
+                  fxFlex="100"
+                  class="sale__general"
+                  fxLayoutAlign="space-evenly space-between"
+                  fxLayoutGap="1rem"
+                >
+                  <div
+                    fxLayout="row wrap"
+                    fxLayoutAlign="start center"
+                    fxFlex="100"
+                    fxLayoutGap="1rem grid"
+                  >
+                    <div class="form-group" fxFlex="30">
+                      <mat-label>Final Value (RM)</mat-label>
+                      <input
+                        type="number"
+                        matInput
+                        class="form-control"
+                        placeholder="Registration number"
+                        autocomplete="off"
+                      />
+                    </div>
+                    <div
+                      fxFlex="30"
+                      class="form-group"
+                      fxLayout="column"
+                      fxLayoutGap="0.5rem"
+                    >
+                      <mat-label>Validity</mat-label>
+                      <div fxLayout="row">
+                        <input
+                          matInput
+                          readonly
+                          placeholder="30 March 2021"
+                          class="form-control"
+                          [matDatepicker]="ValidityInspectionPicker"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="ValidityInspectionPicker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker
+                          #ValidityInspectionPicker
+                        ></mat-datepicker>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayout="row" fxFlex="100">
+                  <div
+                    class="form-group"
+                    fxFlex="90"
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                  >
+                    <mat-label>Remarks</mat-label>
+                    <textarea
+                      matInput
+                      rows="7"
+                      class="form-control"
+                      placeholder="Remarks"
+                    ></textarea>
+                  </div>
+                </div>
+                <div
+                  fxLayout="row"
+                  fxFlex="100"
+                  fxLayoutAlign="space-between center"
+                  class="my4"
+                >
+                  <div
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                    fxLayoutAlign="center start"
+                  >
+                    <mat-label>File</mat-label>
+                    <input
+                      type="file"
+                      #inspectionOfferDoc
+                      name="docs"
+                      accept="application/pdf"
+                      hidden
+                      class="form-control"
+                      placeholder="File"
+                      autocomplete="off"
+                    />
+                    <div
+                      fxFlex="100"
+                      fxLayout="row"
+                      fxLayoutAlign="start center"
+                      fxLayoutGap="1rem"
+                    >
+                      <button
+                        type="button"
+                        color="accent"
+                        mat-flat-button
+                        (click)="onClickInspectionOfferDoc()"
+                      >
+                        Select doc
+                      </button>
+                      <mat-chip-list aria-label="files">
+                        <mat-chip
+                          color="primary"
+                          selected
+                          *ngFor="
+                            let file of inspectionOfferDocEle
+                              ?.nativeElement?.files
+                          "
+                        >
+                          {{ file?.name }}
+                        </mat-chip>
+                      </mat-chip-list>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Customer Decision -->
+              <div fxLayout="row" fxFlex="30" fxLayoutAlign="end center">
+                <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="100">
+                  <mat-label style="font-size: 13px"
+                    >Customer's Decision</mat-label
+                  >
+                  <div class="form-group selectedMat my0" fxFlex="100">
+                    <mat-select placeholder="Select Decision">
+                      <mat-option
+                        *ngFor="let status of ['Approved', 'Declined']"
+                        [value]="status"
+                      >
+                        {{ status }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="py4" fxLayoutAlign="end center">
+        <button
+          mat-stroked-button
+          type="button"
+          class="mr4 px10 py1"
+          (click)="inspectionValuation = true"
+        >
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          class="px10 py1"
+          color="primary"
+          *ngIf="inspectionValuation"
+          (click)="inspectionValuation = !inspectionValuation"
+        >
+          Edit
+        </button>
+        <button
+          mat-flat-button
+          class="px10 py1"
+          color="primary"
+          *ngIf="!inspectionValuation"
+          (click)="inspectionValuation = !inspectionValuation"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div mat-dialog-content>
+  <div
+    fxLayout="column"
+    fxFlexFill
+    fxFlex="100"
+    fxLayoutGap="1rem"
+    fxLayoutAlign="start start"
+  >
+    <p>{{ data?.remark }}</p>
+  </div>
+</div>
+<div mat-dialog-actions class="text-right mt10">
+  <button mat-button (click)="close()">Close</button>
+</div>

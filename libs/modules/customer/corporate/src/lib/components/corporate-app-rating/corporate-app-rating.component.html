@@ -1,0 +1,28 @@
+<div fxFlex="100" fxLayoutGap="1rem" fxLayout="column" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between">
+    <div class="corporate__general my8" fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Rating</h2>
+            <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem"
+                [formGroup]="form">
+                <mat-label>active</mat-label>
+                <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                </mat-slide-toggle>
+            </div>
+        </div>
+        <div class="corporate__divider" fxFlex="100">
+            <mat-divider></mat-divider>
+        </div>
+        <div [formGroup]="form" fxFlex="100" fxLayout="column" fxLayoutGap="1rem">
+            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                <div class="form-group" fxFlex="30">
+                    <mat-label>Title</mat-label>
+                    <input type="text" matInput class="form-control" formControlName="title"
+                        placeholder="Title" autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div fxFlex="100">
+        <ng-content></ng-content>
+    </div>
+</div>

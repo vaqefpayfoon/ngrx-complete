@@ -1,0 +1,378 @@
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+  <mat-card fxFlex class="sale">
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <div
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="1rem"
+        >
+          <h2 class="h6 text-capitalize font-semi-thick my0">
+            Trade-In Inspection Offer
+          </h2>
+        </div>
+        <form [formGroup]="form">
+          <div fxLayoutGap="1rem">
+            <button
+              *ngIf="purchase?.badge?.tradeIn"
+              mat-stroked-button
+              color="primary"
+              matBadgeColor="warn"
+              matBadge="1"
+              (click)="onClearBadge()"
+            >
+              Clear
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-title>
+    <div class="sale__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100">
+        <ng-container
+          *ngIf="tradeInInspectionOffer; else tradeInInspectionOfferForms"
+        >
+          <div fxFlex="100">
+            <mat-list>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">
+                    Final Trade-In Value (RM)
+                  </h2>
+                  <h2 class="h6 text-capitalize font-semi-thick my0">
+                    {{ purchase?.tradeIn?.inspection?.offer?.finalValue }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Validity</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{
+                      purchase?.tradeIn?.inspection?.offer?.validity
+                        | date: 'MMMM d Y, h:mm a'
+                    }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Valuation Documents</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    <a
+                      mat-flat-button
+                      [disabled]="true"
+                      color="accent"
+                      type="button"
+                      [disabled]="
+                        !purchase?.tradeIn?.inspection?.offer?.valuation?.url
+                      "
+                      [href]="
+                        purchase?.tradeIn?.inspection?.offer?.valuation?.url
+                      "
+                      target="_blank"
+                    >
+                      {{
+                        !!purchase?.tradeIn?.inspection?.offer?.valuation?.title
+                          ? purchase?.tradeIn?.inspection?.offer?.valuation
+                              ?.title
+                          : 'Not selected'
+                      }}
+                    </a>
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Remarks</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{ purchase?.tradeIn?.inspection?.offer?.remark }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div
+                  fxFlex="100"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                >
+                  <h2 class="h6 text-capitalize my0">Customer's Decision</h2>
+                  <h2 class="h6 font-semi-thick my0">
+                    {{ purchase?.tradeIn?.inspection?.offer?.customerDecision }}
+                  </h2>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+        </ng-container>
+        <ng-template #tradeInInspectionOfferForms>
+          <form [formGroup]="form">
+            <div
+              fxLayout="row"
+              fxFlex="100"
+              fxLayoutAlign="space-between start"
+              fxLayoutGap="1rem"
+              class="mt8"
+              formGroupName="inspection"
+            >
+              <ng-container formGroupName="offer">
+                <div fxLayout="column" fxFlex="70">
+                  <div
+                    fxLayout="column"
+                    fxFlex="100"
+                    class="sale__general"
+                    fxLayoutAlign="space-evenly space-between"
+                    fxLayoutGap="1rem"
+                  >
+                    <div
+                      fxLayout="row wrap"
+                      fxLayoutAlign="start center"
+                      fxFlex="100"
+                      fxLayoutGap="1rem grid"
+                    >
+                      <div class="form-group" fxFlex="30">
+                        <mat-label>Final Trade-In Value (RM)</mat-label>
+                        <input
+                          type="number"
+                          matInput
+                          class="form-control"
+                          placeholder="Price"
+                          autocomplete="off"
+                          formControlName="finalValue"
+                        />
+                      </div>
+                      <div
+                        fxFlex="30"
+                        class="form-group"
+                        fxLayout="column"
+                        fxLayoutGap="0.5rem"
+                      >
+                        <mat-label>Validity</mat-label>
+                        <div fxLayout="row">
+                          <input
+                            matInput
+                            readonly
+                            placeholder="30 March 2021"
+                            class="form-control"
+                            formControlName="validity"
+                            [matDatepicker]="ValidityInspectionPicker"
+                            (dateChange)="changeDate($event)"
+                          />
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="ValidityInspectionPicker"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker
+                            #ValidityInspectionPicker
+                          ></mat-datepicker>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex="100">
+                    <div
+                      class="form-group"
+                      fxFlex="90"
+                      fxLayout="column"
+                      fxLayoutGap="0.5rem"
+                    >
+                      <mat-label>Remarks</mat-label>
+                      <textarea
+                        matInput
+                        rows="7"
+                        class="form-control"
+                        placeholder="Remarks"
+                        formControlName="remark"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div
+                    fxLayout="row"
+                    fxFlex="100"
+                    fxLayoutAlign="space-between center"
+                    class="my4"
+                  >
+                    <div
+                      fxLayout="column"
+                      fxLayoutGap="0.5rem"
+                      fxLayoutAlign="center start"
+                    >
+                      <mat-label>File</mat-label>
+                      <input
+                        type="file"
+                        #tradeInInspectionOfferDoc
+                        name="docs"
+                        hidden
+                        class="form-control"
+                        placeholder="File"
+                        autocomplete="off"
+                        (change)="onUploadFile($event)"
+                        accept="application/pdf"
+                      />
+                      <div
+                        fxFlex="100"
+                        fxLayout="row"
+                        fxLayoutAlign="start center"
+                        fxLayoutGap="1rem"
+                      >
+                        <button
+                          type="button"
+                          color="accent"
+                          mat-flat-button
+                          (click)="onClicktradeInInspectionOfferDoc()"
+                          [disabled]="!updatePermission"
+                        >
+                          Select doc
+                        </button>
+                        <mat-chip-list aria-label="files">
+                          <mat-chip
+                            color="primary"
+                            selected
+                            *ngFor="
+                              let file of tradeInInspectionOfferDocEle
+                                ?.nativeElement?.files
+                            "
+                          >
+                            {{ file?.name }}
+                          </mat-chip>
+                        </mat-chip-list>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Customer Decision -->
+                <div fxLayout="row" fxFlex="30" fxLayoutAlign="end center">
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="100">
+                    <mat-label style="font-size: 13px"
+                      >Customer's Decision</mat-label
+                    >
+                    <div
+                      class="form-group selectedMat my0"
+                      [ngClass]="{
+                        'selectedMat--disabled':
+                          formDisabled || customerDecisionCtrl.disabled,
+                        'ng-invalid':
+                          customerDecisionCtrl.invalid &&
+                          customerDecisionCtrl.touched,
+                        'ng-valid':
+                          customerDecisionCtrl.valid &&
+                          customerDecisionCtrl.touched
+                      }"
+                      fxFlex="100"
+                    >
+                      <mat-select
+                        placeholder="Select Decision"
+                        formControlName="customerDecision"
+                      >
+                        <mat-option>-- None --</mat-option>
+                        <mat-option
+                          *ngFor="let status of customerDecision | keyvalue"
+                          [value]="status.value"
+                        >
+                          {{ status.key }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </form>
+          <form [formGroup]="form" *ngIf="!!valuation.get('title').value">
+            <div formGroupName="inspection">
+              <div formGroupName="offer">
+                <div fxLayout="column">
+                  <div *ngIf="valuation">
+                    <div class="mb5" fxFlex="100">
+                      <h2 class="h6 text-capitalize font-semi-thick my0 mt10">
+                        Uploaded files
+                      </h2>
+                    </div>
+                  </div>
+                  <div fxLayout="row">
+                    <ng-container>
+                      <div
+                        fxLayout="row"
+                        fxFlex="100"
+                        formGroupName="valuation"
+                      >
+                        <neural-tradeIn-file
+                          [title]="
+                            valuation.get('title').value
+                              ? valuation.get('title').value
+                              : valuationTitle.VALUATION_DOCUMENT
+                          "
+                          formControlName="url"
+                          (remove)="onDeleteFile(valuation.get('url'))"
+                          [formDisabled]="form.disabled"
+                          [permissions]="permissions"
+                        ></neural-tradeIn-file>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="py4" fxLayoutAlign="end center">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        (click)="tradeInInspectionOffer = true"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        class="px10 py1"
+        color="primary"
+        *ngIf="tradeInInspectionOffer"
+        (click)="onEdit()"
+        [disabled]="!updatePermission || customerDecisionAccepted"
+      >
+        Edit
+      </button>
+      <button
+        mat-flat-button
+        class="px10 py1"
+        color="primary"
+        *ngIf="!tradeInInspectionOffer"
+        (click)="onUpdate(form)"
+        [disabled]="
+          !updatePermission || form.invalid || customerDecisionAccepted
+        "
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

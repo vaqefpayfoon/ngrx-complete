@@ -1,0 +1,30 @@
+<div
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+  fxLayoutGap="2rem"
+>
+  <!-- start breadcrumb and title -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header [breadcrumbs]="bc" [title]="title"></neural-dynamic-header>
+  </div>
+  <!-- end breadcrumb and title -->
+
+  <!-- start campaign form -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-inbox-message-send
+      [inboxMessage]="inboxMessage$ | async"
+      [codes]="codes$ | async"
+      [accounts]="accounts$ | async"
+      [vehicles]="vehicles$ | async"
+      [campaignTargets]="campaignTargets$ | async"
+      [permissions]="permissions$ | async"
+      (loadCampaignTargets)="onSetCampaignTargetsPage($event)"
+      (create)="onCreate($event)"
+      (loaded)="onLoad($event)"
+      (searchChange)="onSearch($event)"
+      (searchChangeVehicle)="onSearchVehicle($event)"
+    ></neural-inbox-message-send>
+  </div>
+  <!-- end campaign form -->
+</div>

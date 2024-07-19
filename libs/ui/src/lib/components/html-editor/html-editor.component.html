@@ -1,0 +1,6 @@
+<mat-dialog-content #dialogChild class="dialog" id="gjs"></mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button (click)="createNewsletter()">{{data?.html ? 'Edit' : 'Create'}}</button>
+</mat-dialog-actions>

@@ -1,0 +1,34 @@
+<div class="products" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'Inventory'" [breadcrumbs]="bc" [link]="(permissions$ | async)?.CREATE_PRODUCT_COVERAGE ? '../inventory/new' : null" [isSearch]="search" (searchChange)="onSubmit($event)" (refreshChange)="onRefresh($event)" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="products__header">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <span class="products__header--item font-normal" fxFlex="10">Brand</span>
+                <span class="products__header--item font-normal" fxFlex="20">Model</span>
+                <span class="products__header--item font-normal" fxFlex="20">Service</span>
+                <span class="products__header--item font-normal" fxFlex="15">Status</span>
+                <span class="products__header--item font-normal" fxFlex="5">Actions</span>
+            </div>
+        </mat-card>
+        <ng-container *ngIf="!(loading$ | async)">
+            <div class="mb3" *ngFor="let product of (products$ | async)">
+                <neural-product-coverage-card [permissions]="permissions$ | async" [services]="services$ | async" [product]="product" (status)="openDialog($event)" (delete)="onDelete($event)"></neural-product-coverage-card>
+            </div>
+        </ng-container>
+        <div *ngIf="(loading$ | async)" class="products__loading">
+            Loading...
+        </div>
+        <div class="products__not-found" *ngIf="(error$ | async)">
+            <span> {{ (error$ | async) }} </span>
+        </div>         
+    </div>    
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+        <mat-paginator [length]="total$ | async"
+            [pageSize]="(productsConfig$ | async).limit"
+            [pageIndex]="(productsConfig$ | async).page - 1"
+            (page)="changePage($event)" showFirstLastButtons>
+        </mat-paginator>
+    </div>
+</div>

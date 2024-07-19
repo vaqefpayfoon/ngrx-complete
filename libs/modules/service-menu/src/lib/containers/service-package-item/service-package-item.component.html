@@ -1,0 +1,13 @@
+<div fxFlex="100" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="2rem">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="title" [breadcrumbs]="bc"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill>
+        <neural-service-package-form [servicePackage]="servicePackage$ | async" [permissions]="permissions$ | async"
+            [selectedCorporate]="selectedCorporate$ | async" [selectedBranch]="selectedBranch$ | async"
+            [corporateInfo]="corporateInfo$ | async" [branchInfo]="branchInfo$ | async" [allBrands]="brands$ | async"
+            [serviceLines$]="serviceLines$" (create)="onCreatePromotion($event)"
+            (update)="onUpdatePromotion($event)" (corporateChange)="onCorporateChange($event)">
+        </neural-service-package-form>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<div fxLayout="row">
+  <a
+    mat-flat-button
+    type="button"
+    [disabled]="formDisabled"
+    target="_blank"
+    class="px10 py1"
+    color="accent"
+    [href]="value"
+  >
+    {{ title }}
+  </a>
+  <button
+    [disabled]="!deleteDocumentPermission"
+    mat-icon-button
+    color="warn"
+    matTooltip="Remove"
+    type="button"
+    (click)="removeFile()"
+  >
+    <mat-icon [svgIcon]="'close_off'"></mat-icon>
+  </button>
+</div>

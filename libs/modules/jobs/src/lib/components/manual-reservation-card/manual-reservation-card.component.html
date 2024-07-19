@@ -1,0 +1,135 @@
+<mat-card class="card">
+  <div fxLayout="row">
+    <div
+      class="card_status font-semi-thick"
+      fxLayoutAlign="start start"
+      [class.card__blue]="rawStatus === 'NO_SHOW'"
+      [class.card__green]="rawStatus === 'NOT_OPERATIONAL'"
+      [class.card__orange]="rawStatus === 'JOB_PENDING'"
+      [class.card__yellow]="rawStatus === 'FLEET_EN_ROUTE'"
+      [class.card__green]="rawStatus === 'JOB_IN_PROGRESS'"
+      [class.card__violet]="rawStatus === 'JOB_COMPLETED'"
+    >
+      <div fxFlexFill>
+        MANUAL <br />
+        {{ statusName(rawStatus) }}
+      </div>
+    </div>
+    <div *ngIf="reservation?.customerTag==='NEW_CUSTOMER'" fxLayoutAlign="start start"
+    class="card__newCustomer font-semi-thick"
+    >  
+      <div fxFlexFill>
+       New Customer
+      </div> 
+    </div>
+  </div>
+  <div fxFlex="100" fxFlexOffset="5rem">
+    <div
+      class="card__header"
+      fxLayout="row wrap"
+      fxFlex="100"
+      fxLayoutAlign="start center"
+    >
+      <div
+        fxFlex="0 0 15"
+        fxLayout="column"
+        class="font-semi-thick card__header--name"
+      >
+        <span>{{ reservation?.referenceNumber }}</span>
+      </div>
+      <div
+        fxFlex="0 0 15"
+        fxLayout="column"
+        class="font-semi-thick card__header--email"
+      >
+        <span>{{ reservation?.account?.fullName | titlecase }}</span>
+        <a href="tel:{{ reservation?.account?.phone }}">{{
+          reservation?.account?.phone
+        }}</a>
+      </div>
+      <div
+        fxFlex="0 0 15"
+        fxLayout="column"
+        class="font-semi-thick card__header--phone"
+      >
+        <span>{{ reservation?.accountVehicle?.model | titlecase }} </span>
+      </div>
+      <div fxFlex="0 0 15" fxLayout="column" class="font-semi-thick pl4">
+        <span
+          >{{ reservation?.operation?.identity?.salutation | titlecase }}
+          {{ reservation?.operation?.identity?.fullName | titlecase }}</span
+        >
+      </div>
+      <div fxFlex="0 0 15" fxLayout="column" class="font-semi-thick pl4">
+        <span>{{ reservation?.calendar?.serviceTypes[0] | titlecase }}</span>
+      </div>
+      <div fxFlex="0 0 15" fxLayout="column" class="font-semi-thick pl4">
+        <span>{{
+          handleDropWait(reservation?.calendar?.logistic) | titlecase
+        }}</span>
+      </div>
+      <div fxFlex="0 0 5" class="font-semi-thick card__header--actions">
+        <button
+          mat-icon-button
+          [disabled]="!previewPermission"
+          [matMenuTriggerFor]="actions"
+        >
+          <mat-icon svgIcon="action_off"></mat-icon>
+        </button>
+        <mat-menu #actions="matMenu">
+          <button
+            mat-menu-item
+            [disabled]="!previewPermission"
+            [routerLink]="[
+              '/app/hub/reservations/service-center/reserve',
+              reservation?.uuid,
+              reservation?.customerTag
+            ]"
+          >
+            <mat-icon>remove_red_eye</mat-icon>
+            <span>Preview</span>
+          </button>
+          <button
+            *ngIf="reschedule"
+            mat-menu-item
+            [disabled]="!previewPermission"
+            [routerLink]="[
+              '/app/hub/reservations/service-center/rescheduled',
+              reservation?.uuid
+            ]"
+          >
+            <mat-icon>remove_red_eye</mat-icon>
+            <span>Reschedule</span>
+          </button>
+          <button
+            *ngIf="complete"
+            mat-menu-item
+            [disabled]="!compeletePermission"
+            (click)="compeleteReservation()"
+          >
+            <mat-icon>done</mat-icon>
+            <span>Complete</span>
+          </button>
+          <button
+            *ngIf="reset"
+            mat-menu-item
+            [disabled]="!resetPermission"
+            (click)="resetReservation()"
+          >
+            <mat-icon>refresh</mat-icon>
+            <span>Reset</span>
+          </button>
+          <button
+            *ngIf="cancel"
+            mat-menu-item
+            [disabled]="!deletePermission"
+            (click)="cancelReservation()"
+          >
+            <mat-icon>cancel_outline</mat-icon>
+            <span>Cancel</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</mat-card>

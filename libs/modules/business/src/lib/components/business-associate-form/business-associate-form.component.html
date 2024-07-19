@@ -1,0 +1,40 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="business p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Select Accounts</h2>
+            </div>
+        </mat-card-title>
+        <div class="business__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="business__general my8" fxLayoutAlign="space-evenly space-between" fxFlexOffset="8rem">
+                <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" fxLayoutAlign="start center">
+                    <div *ngFor="let item of accounts">
+                        <div class="business__account" fxLayout="row" fxLayoutAlign="start center" (click)="selectAccount(item.uuid)" >
+                            <div fxLayout="column" fxFlex="70" fxLayoutAlign="center start" class="p4" fxLayoutGap="0.5rem">
+                                <mat-checkbox class="business__account--title" color="primary" [checked]="existsInAccounts(item.uuid)">{{item?.identity?.salutation | titlecase}}  {{item?.identity?.fullName | titlecase}}</mat-checkbox>
+                                <div class="business__account--detail" fxLayout="row" fxLayout="column" fxLayoutAlign="start start">
+                                    <h2 class="mt0 mb2" *ngIf="item.phone">{{item.phone.code}}{{item.phone.number}}</h2>
+                                    <h2 class="mt0 mb0">{{item.email}}</h2>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxFlex="30" fxFlexFill>
+                                <img [src]="item?.image ? item?.image : 'https://d3gyzh3f9mj82k.cloudfront.net/images/placeholder.png'" alt="{{item.email}}" class="business__account--image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row wrap" class="mt8" fxFlex="100" fxFlexFill fxLayoutAlign="center center" *ngIf="pagination && pagination.page < pagination.pages">
+                    <button mat-stroked-button [disabled]="loading" (click)="changePage()">Load More</button>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+            <button mat-flat-button *ngIf="form.disabled" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+            <button mat-flat-button *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid" (click)="onCreate(form)">Save</button>
+        </mat-card-actions>        
+    </mat-card>
+</form>

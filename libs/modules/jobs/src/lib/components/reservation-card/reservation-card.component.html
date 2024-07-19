@@ -1,0 +1,107 @@
+<mat-card class="card">
+  <div
+    class="card__status"
+    [class.card__red]="rawStatus === 'JOB_CANCELED'"
+    [class.card__violet]="rawStatus === 'BOOKING_ON_HOLD'"
+    [class.card__green]="rawStatus === 'NOT_OPERATIONAL'"
+  >
+    {{ statusName(rawStatus) }}
+  </div>
+  <div *ngIf="appointmentStatus" class="card__appoint font-semi-thick primary">
+    DMS Appointment
+  </div>
+  <div
+    *ngIf="address"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    class="font-semi-thick card__address"
+    fxLayoutGap="1rem"
+  >
+    <address fxLayoutAlign="start center" fxLayoutGap="7px">
+      <mat-icon>gps_fixed</mat-icon> <i>{{ address }}</i>
+    </address>
+  </div>
+  <div fxFlex="100" fxFlexOffset="4rem">
+    <div
+      class="card__header"
+      fxLayout="row wrap"
+      fxFlex="100"
+      fxLayoutAlign="space-between center"
+    >
+      <div
+        fxFlex="0 0 20"
+        fxLayout="column"
+        class="font-semi-thick card__header--email"
+      >
+        <div class="square">
+          <span>
+            {{ time | date: 'h:mm a':timeZone }} <br />
+            {{ time | date: 'd MMM':timeZone }}
+          </span>
+        </div>
+      </div>
+      <div
+        fxFlex="0 0 15"
+        fxLayout="column"
+        class="font-semi-thick card__header--email"
+      >
+        <span>{{ referenceNumber }}</span>
+      </div>
+      <div
+        fxFlex="0 0 15"
+        fxLayout="column"
+        class="font-semi-thick card__header--name"
+      >
+        <span
+          >{{ name?.salutation | titlecase }}
+          {{ name?.fullName | titlecase }}</span
+        >
+        <a href="tel:{{ phone.code }}{{ phone.number }}"
+          >{{ phone.code }}{{ phone.number }}</a
+        >
+      </div>
+      <div
+        fxFlex="0 0 15"
+        fxLayout="column"
+        class="font-semi-thick card__header--phone"
+      >
+        <span
+          >{{ unit.brand | titlecase }} {{ unit.model.display | titlecase }}
+        </span>
+        <span>{{ unit.variant.display | titlecase }}</span>
+      </div>
+      <div
+        fxFlex="0 0 15"
+        fxLayout="column"
+        class="font-semi-thick card__header--fleet pl4"
+        [ngClass]="{ 'card__header--fleet': !!fleet }"
+      >
+        <span
+          >{{ operation?.identity?.salutation | titlecase }}
+          {{ operation?.identity?.fullName | titlecase }}</span
+        >
+        <span>{{ fleet?.name }} </span>
+        <span>{{ fleet?.numberPlate }}</span>
+      </div>
+      <div fxFlex="0 0 5" class="font-semi-thick card__header--actions">
+        <button
+          mat-icon-button
+          [disabled]="!previewPermission"
+          [matMenuTriggerFor]="actions"
+        >
+          <mat-icon svgIcon="action_off"></mat-icon>
+        </button>
+        <mat-menu #actions="matMenu">
+          <button
+            mat-menu-item
+            [disabled]="!previewPermission"
+            [routerLink]="['../declined/', uuid]"
+          >
+            <mat-icon>remove_red_eye</mat-icon>
+            <span>Preview</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</mat-card>

@@ -1,0 +1,69 @@
+<mat-card class="card">
+    <div
+        fxLayout="row"
+        fxLayout.lt-md="column"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+        fxLayoutAlign.lt-md="start start"
+        class="card__header"
+        fxLayoutGap.lt-md="1rem"
+    >
+        <div fxFlex="1 1 10" fxFlex.lt-md="100" class="font-semi-thick card__object" fxFlexOrder.lt-md="2">
+            {{testDrive?.type | titlecase | formatString}}
+        </div>
+        <div fxFlex="1 0 20" fxFlex.lt-md="100" class="font-semi-thick card__object" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="3">
+            <div>{{testDrive?.account?.identity?.salutation}} {{testDrive?.account?.identity?.fullName}}</div>
+            <div>
+                <a title="call {{testDrive?.account?.identity?.fullName}}" href="tel:+{{testDrive?.account?.phone?.code}}{{testDrive?.account?.phone?.number}}">{{testDrive?.account?.phone?.code}}{{testDrive?.account?.phone?.number}}</a>
+            </div>
+        </div>
+        <div fxFlex="1 0 20" fxFlex.lt-md="100" class="font-semi-thick card__object" fxFlexOrder.lt-md="4">
+            {{testDrive?.payload?.unit?.brand ? testDrive?.payload?.unit?.brand : testDrive?.unit?.brand }} {{testDrive?.payload?.unit?.model ? testDrive?.payload?.unit?.model : testDrive?.unit?.model}} {{testDrive?.payload?.unit?.variant ? testDrive?.payload?.unit?.variant : testDrive?.unit?.variant}}
+        </div>
+        <div fxFlex="1 0 10" fxFlex.lt-md="100" class="font-semi-thick card__object" fxFlexOrder.lt-md="5">
+            <ng-template #slots>
+                <mat-chip-list aria-label="Time Slots">
+                  <mat-chip style="font-size: small;" *ngFor="let item of testDrive?.selectedSlots" selected>{{item | date: 'd MMM yy,H:m' : timeZone }}</mat-chip>
+                </mat-chip-list>
+            </ng-template>
+            <div *ngIf="!showSelectedSlots;else slots"> <button color="primary"  mat-stroked-button (click)="showSelectedSlots = !showSelectedSlots">Show</button> </div>
+          </div>
+        <div fxFlex="1 0 10" fxFlex.lt-md="100" class="font-semi-thick card__object" fxFlexOrder.lt-md="6">
+            {{testDrive?.payload?.actualDateAndTime?.startTime | date: 'd MMM yy,H:m' : timeZone}}
+        </div>
+        <div fxFlex="1 0 15" fxFlex.lt-md="100" class="font-semi-thick card__object"  fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="7">
+            <div>{{testDrive?.salesAdvisor?.name ? testDrive?.salesAdvisor?.name : testDrive?.payload?.salesAdvisor?.name ? testDrive?.payload?.salesAdvisor?.name :'Not selected'}}</div>
+            <div *ngIf="testDrive?.salesAdvisor?.phone?.phoneNumber">
+                <a title="call {{testDrive?.salesAdvisor?.phone?.phoneNumber}}" href="tel:+{{testDrive?.salesAdvisor?.phone?.code ? testDrive?.salesAdvisor?.phone?.code : ''}}{{testDrive?.salesAdvisor?.phone?.phoneNumber}}">{{testDrive?.salesAdvisor?.phone?.code ? testDrive?.salesAdvisor?.phone?.code : ''}}{{testDrive?.salesAdvisor?.phone?.phoneNumber}}</a>
+            </div>
+            <div *ngIf="testDrive?.payload?.salesAdvisor?.phone?.phoneNumber">
+                <a title="call {{testDrive?.payload?.salesAdvisor?.phone?.phoneNumber}}" href="tel:+{{testDrive?.payload?.salesAdvisor?.phone?.code}}{{testDrive?.payload?.salesAdvisor?.phone?.phoneNumber}}">{{testDrive?.payload?.salesAdvisor?.phone?.code}}{{testDrive?.payload?.salesAdvisor?.phone?.phoneNumber}}</a>
+            </div>
+        </div>
+        <div fxFlex="1 0 10" fxFlex.lt-md="100" class="font-semi-thick card__object" fxFlexOrder.lt-md="8">
+            {{testDrive?.status | titlecase | formatString}}
+        </div>
+        <div fxFlex="1 0 5" fxFlex.lt-md="100" class="font-semi-thick card__header--actions" fxLayoutAlign="start center" fxLayoutAlign.lt-md="end" fxLayout.lt-md="row" fxFlexFill fxFlexOrder.lt-md="1">
+            <button mat-icon-button [matMenuTriggerFor]="actions">
+                <mat-icon svgIcon="action_off"></mat-icon>
+            </button>
+        </div>
+    </div>
+    <div fxFlex="100" fxLayoutAlign="space-between center" class="font-semi-thick card__address" fxLayoutGap="1rem">
+        <address fxLayoutAlign="start center" fxLayoutGap="7px"><mat-icon>gps_fixed</mat-icon> <i>{{testDrive?.location?.address }}</i></address>
+    </div>
+    <mat-menu #actions="matMenu">
+        <button mat-menu-item [disabled]="false" [routerLink]="[testDrive.uuid]">
+            <mat-icon>remove_red_eye</mat-icon>
+            <span>Preview</span>
+        </button>
+        <button mat-menu-item  [disabled]="!cancel || !cancelPermission" (click)="cancelTestDrive(testDrive)">
+            <mat-icon>cancel</mat-icon>
+            <span>Cancel</span>
+          </button>
+          <button mat-menu-item  [disabled]="!complete || !completePermission" (click)="compeleteTestDrive(testDrive)">
+            <mat-icon>done</mat-icon>
+            <span>Complete</span>
+          </button>
+    </mat-menu>
+</mat-card>

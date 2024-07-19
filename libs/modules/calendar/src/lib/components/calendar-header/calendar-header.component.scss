@@ -1,0 +1,108 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.box-container {
+  position: relative;
+  box-sizing: border-box;
+  width: 800px;
+  height: 250px;
+  max-width: 90%;
+  min-width: 100%;
+}
+
+.content-container {
+  position: relative;
+
+  overflow: auto;
+  max-height: 110px;
+  min-height: 0;
+  
+}
+
+.vertical-container,
+.horizontal-container {
+  min-height: 0 !important;
+  position: relative;
+  .day__action {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.swiper-container {
+  position: absolute;
+  display: contents;
+  min-height: 110px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  .swiper-slide {
+    padding: 5px 0;
+    cursor: pointer;
+    color: #aaa;
+    background: transparent;
+
+    .swiper-slide__date {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      @include round(50%);
+      text-align: center;
+
+      font-size: $font-size * 1.3;
+
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 2px,
+        map-get($map: $colors, $key: aquaHaze) 2px,
+        map-get($map: $colors, $key: aquaHaze) 4px
+      );
+      /* with multiple color stop lengths */
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent 0 2px,
+        map-get($map: $colors, $key: aquaHaze) 2px 4px
+      );
+    }
+    &.swiper-slide-active {
+      overflow-y: hidden;
+      .swiper-slide__date {
+        position: relative;
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
+        background: map-get($map: $colors, $key: theme) !important;
+        color: map-get($map: $colors, $key: white);
+
+        &--disable {
+          background: map-get($map: $colors, $key: black) !important;
+        }
+      }
+      .swiper-slide__name {
+        font-weight: $font-semi-thick;
+        color: map-get($map: $colors, $key: theme);
+
+        &--disable {
+          color: map-get($map: $colors, $key: black) !important;
+        }
+      }
+    }
+  }
+}
+
+.form-group {
+  mat-label {
+    font-size: 13px;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+  }
+  &.selectedMat{
+    background-color: map-get($map: $colors, $key: white);
+  }
+  .form-control {
+    background-color: map-get($map: $colors, $key: white);
+  }
+}

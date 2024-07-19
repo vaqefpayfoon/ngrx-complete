@@ -1,0 +1,82 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="service p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="service__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="service__general mt8" fxLayoutAlign="start space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="0 0 33">
+                        <mat-label>Type*</mat-label>
+                        <div class="form-group selectedMat mb3" [class.selectedMat--disabled]="(form.disabled || type.disabled)" [class.ng-valid]="type.valid" [class.ng-invalid]="!type.valid">
+                            <mat-select placeholder="Select Type" formControlName="type" (selectionChange)="selectType($event)">
+                                <mat-option *ngFor="let item of types | keyvalue" [value]="item.key">
+                                    {{item.key}}
+                                </mat-option>
+                            </mat-select>
+                            <neural-show-errors [control]="form.controls.type"></neural-show-errors>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="0 0 33">
+                        <mat-label>Service Center*</mat-label>
+                        <div formGroupName="appointment" class="form-group selectedMat mb3" [class.selectedMat--disabled]="(form.disabled || serviceCenter.disabled)" [class.ng-valid]="serviceCenter.valid" [class.ng-invalid]="!serviceCenter.valid">
+                            <mat-select placeholder="Select service center" formControlName="serviceCenter">
+                                <mat-option *ngFor="let item of serviceCenterTypes | keyvalue" [value]="item.key">
+                                    {{item.key}}
+                                </mat-option>
+                            </mat-select>
+                            <neural-show-errors [control]="appointment.controls.serviceCenter"></neural-show-errors>
+                        </div> 
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div class="form-group mb3" fxFlex="0 0 33">
+                        <mat-label>Title*</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="title" placeholder="Title" autocomplete="off">
+                        <neural-show-errors [control]="form.controls.title"></neural-show-errors>
+                    </div>
+                    <div class="form-group mb3" fxFlex="0 0 33">
+                        <mat-label>Subtitle*</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="subtitle" placeholder="Subtitle" autocomplete="off" />
+                        <neural-show-errors [control]="form.controls.subtitle"></neural-show-errors>
+                    </div>                    
+                </div>
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem" formGroupName="appointment">
+                    <div class="form-group" fxFlex="35" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                        <mat-label class="mb0">Mobile Service</mat-label>
+                        <mat-slide-toggle formControlName="mobileService" color="primary"></mat-slide-toggle>
+                        <neural-show-errors [control]="appointment.controls.mobileService"></neural-show-errors>
+                    </div> 
+                </div>
+                <div fxLayout="row" fxFlex="100">
+                    <div class="form-group mb3" fxFlex="100">
+                        <mat-label>Description*</mat-label>
+                        <ejs-richtexteditor
+                            [height]="height"
+                            [width]="width"
+                            formControlName="description"
+                            #customRTE
+                            [toolbarSettings]="tools"
+                        >
+                        </ejs-richtexteditor>
+                        <neural-show-errors [control]="form.controls.description"></neural-show-errors>
+                    </div>
+                </div>
+                <mat-card-actions class="mt4 mb0 p0" *ngIf="exists">
+                    <button mat-stroked-button type="button" (click)="onResetForm(false);" class="mr4 px10 py1">Cancel</button>
+                    <button mat-flat-button type="button" *ngIf="form.disabled" [disabled]="!updatePermission" class="px10 py1" color="primary" (click)="onResetForm(true)">Edit</button>
+                    <button mat-flat-button type="button" *ngIf="!exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || !createPermission" (click)="createService(form)">Save</button>
+                    <button mat-flat-button type="button" *ngIf="exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || !updatePermission" (click)="updateService(form)">Save</button>
+                </mat-card-actions>            
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <div>
+        <neural-service-pricing [permissions]="permissions" [typeP]="types[type.value] && types[type.value] === category.LABOUR"  [exists]="exists" [parent]="form" [service]="service" (created)="createService($event)" (updated)="updateService($event)" (reseted)="onResetForm($event)"></neural-service-pricing >
+    </div>
+</form>

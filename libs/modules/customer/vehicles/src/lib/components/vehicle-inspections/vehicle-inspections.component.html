@@ -1,0 +1,58 @@
+<mat-card class="inspections p4 my8">
+  <mat-card-title class="mb2">
+      <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+          <div fxLayout="row" fxFlex="1 1 auto" class="inspections__name font-semi-thick mb2" fxLayoutAlign="space-between center">
+              <span>Vehicle Inspections</span>
+          </div>
+      </div>
+  </mat-card-title>
+  <div class="inspections__divider">
+      <mat-divider></mat-divider>
+  </div>
+  <mat-card-content class="p4">
+    <div fxLayout="column" fxFlex="100" fxLayoutAlign="start start" fxLayoutGap="1rem">
+        <mat-accordion fxFlex="100" fxFlexFill>
+          <ng-template ngFor let-item [ngForOf]="inspections">
+            <mat-expansion-panel class="inspections__accordion" [ngClass]="{'mb4':inspections.length !== 1}">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="font-semi-thick">
+                  {{item?.inspectedAt?.iso | date: 'medium'}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div fxLayoutGap="3rem" fxLayout="column">
+                <div *ngFor="let category of item?.categories" fxLayout="column" fxLayoutAlign="start start">
+                      <h2 class="h5 my4 font-semi-thick">{{category?.title}}</h2>
+                      <div fxFlex="100" fxFlexFill fxLayoutAlign="space-between center" fxLayoutGap="1rem grid">
+                        <ng-template ngFor let-checkup [ngForOf]="category?.checkups">
+                        <div fxFlex="50" [ngSwitch]="checkup.status">
+                            <mat-card class="card">
+                                <mat-card-title class="mb2">
+                                  <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+                                      <div fxLayout="column" fxFlex="1 1 auto" class="card__name h6 font-normal mb2" fxLayoutAlign="start start">
+                                        {{checkup.title}}
+                                      </div>
+                                  </div>
+                                </mat-card-title>
+                                <div class="card__divider">
+                                  <mat-divider></mat-divider>
+                                </div>
+                                <mat-card-content class="pt4">
+                                  <div class="font-semi-thick" fxLayoutAlign="space-between center" fxFlex="100">
+                                    <small>{{checkup.report}}</small>
+                                    <mat-icon *ngSwitchCase="status.OK" class="green">check_circle</mat-icon>
+                                    <mat-icon *ngSwitchCase="status.DANGEROUS" class="red">error</mat-icon>
+                                    <mat-icon *ngSwitchCase="status.CAUTIOUS" class="warn">warning</mat-icon>
+                                  </div>
+                                </mat-card-content>
+                            </mat-card>                
+                          </div>
+                        </ng-template>
+                      </div>
+                  </div>
+              </div>
+            </mat-expansion-panel>
+          </ng-template>
+        </mat-accordion>
+    </div>
+  </mat-card-content>
+</mat-card>

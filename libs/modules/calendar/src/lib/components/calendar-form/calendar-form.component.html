@@ -1,0 +1,70 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="calendar p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="calendar__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="calendar__general mt8" fxLayoutAlign="start space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div class="form-group selectedMat" [class.selectedMat--disabled]="(form.disabled || type.disabled)" [class.ng-valid]="type.valid" [class.ng-invalid]="!type.valid" fxFlex="35">
+                        <mat-select placeholder="Select Type" formControlName="type">
+                            <mat-option *ngFor="let item of CalendarType | keyvalue" [value]="item.value">
+                                {{item.value}}
+                            </mat-option>
+                        </mat-select>
+                        <neural-show-errors [control]="form.controls.type"></neural-show-errors>
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem"> 
+                    <mat-radio-group [disabled]="form.disabled" aria-label="Select an option" color="primary" fxLayoutGap="1rem" [(ngModel)]="dateTypeModel" [ngModelOptions]="{ standalone: true }" (change)="onChange($event)">
+                        <mat-radio-button [value]="type.value" *ngFor="let type of dateType | keyvalue">{{type.value | titlecase}}</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <ng-container *ngIf="dateTypeModel === dateType.RANGE; else daysInput">
+                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+
+                        <div fxFlex="35" class="form-group" fxLayout="column">
+                            <mat-label>Enter a date range</mat-label>
+                            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                              <mat-date-range-input class="form-control" [rangePicker]="picker">
+                                <input formControlName="start"  matStartDate placeholder="Start date" (dateChange)="changeStartDate($event)">
+                                <input formControlName="end" matEndDate placeholder="End date" (dateChange)="changeEndDate($event)">
+                              </mat-date-range-input>
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            </div>
+                            <mat-date-range-picker #picker></mat-date-range-picker>        
+                          </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #daysInput>
+                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                        <div fxFlex="35" class="form-group" fxLayout="column">
+                            <mat-label>Days</mat-label>
+                            <input
+                                min="1"
+                                type="number"
+                                matInput
+                                class="form-control"
+                                formControlName="days"
+                                placeholder="Days"
+                                autocomplete="off"
+                            />
+                          </div>
+                    </div>
+                </ng-template>
+                <mat-card-actions class="mt4 mb0 p0">
+                    <button mat-stroked-button type="button" (click)="cancel()" class="mr4 px10 py1">Cancel</button>
+                    <button mat-flat-button type="button" *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="form.invalid || !createPermission"  (click)="onCreate(form)">Save</button>
+                    <button mat-flat-button type="button" *ngIf="form.disabled" class="px10 py1" color="primary" [disabled]="!createPermission"  (click)="onEdit(form)">Edit</button>
+                </mat-card-actions>            
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

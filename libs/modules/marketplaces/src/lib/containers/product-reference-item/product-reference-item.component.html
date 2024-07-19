@@ -1,0 +1,8 @@
+<div class="fleet" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="(productReference$ | async) ? (productReference$ | async)?.unit?.brand + ' ' + (productReference$ | async)?.unit?.model  : 'Create a product'" [breadcrumbs]="bc"></neural-dynamic-header> 
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-product-reference-form [permissions]="permissions$ | async" [product]="productReference$ | async" (create)="onCreate($event)" (update)="onUpdate($event)" (loaded)="onload($event)"></neural-product-reference-form>
+    </div>
+</div>

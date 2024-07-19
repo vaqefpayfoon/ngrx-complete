@@ -1,0 +1,42 @@
+<div class="accounts" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+  <div fxFlex="100" fxFlexFill>
+      <neural-dynamic-header [title]="'accounts'" [breadcrumbs]="bc" [selectedSort]="(accountsConfig$ | async).sort" [sort]="sort" [link]="(permissions$ | async)?.CREATE_ACCOUNT ? 'new' : null" (selectedChange)="bySort($event)" (refreshChange)="onRefresh($event)" (searchChange)="onSubmit($event)" [isSearch]="this.search" [loading]="(loading$ | async)" [placeholder]="'Email Address'"></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill>
+    <neural-customer-search
+      [filters]="accountFilter$ | async"
+      [accounts]="accounts$ | async"
+      (searched)="onFilter($event)"
+    ></neural-customer-search>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+      <mat-card class="accounts__header">
+          <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+              <span class="accounts__header--item font-normal" fxFlex="20">Name</span>
+              <span class="accounts__header--item font-normal" fxFlex="30">Email</span>
+              <span class="accounts__header--item font-normal" fxFlex="20">Phone</span>
+              <span class="accounts__header--item font-normal" fxFlex="15">Group</span>
+              <span class="accounts__header--item font-normal" fxFlex="10">Status</span>
+              <span class="accounts__header--item font-normal" fxFlex="5">Actions</span>
+          </div>
+      </mat-card>
+        <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+          <div class="mb3" *ngFor="let account of (accounts$ | async | unfilter: !(isSuperAdmin$ | async) ? '01bc8c3f-7aa7-4911-8b20-d93b286a0cb7' : '')">
+            <neural-account-card [permissions]="permissions$ | async" [groups]="groups$ | async" [account]="account" (status)="openDialog($event)" (deleted)="openDeleteDialog($event)" (qrcodeChange)="openQrDialog($event)" (resynced)="openReSyncDialog($event)" (firebaseResynced)="openFirebaseReSyncDialog($event)"></neural-account-card>
+          </div>
+        </ng-container>
+        <div *ngIf="(loading$ | async)" class="accounts__loading">
+            Loading...
+        </div>
+        <div class="accounts__not-found" *ngIf="(error$ | async)">
+          <neural-error [error]="error$ | async"></neural-error>
+        </div>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+    <mat-paginator [length]="total$ | async"
+          [pageSize]="(accountsConfig$ | async).limit"
+          [pageIndex]="(accountsConfig$ | async).page - 1"
+          (page)="changePage($event)" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

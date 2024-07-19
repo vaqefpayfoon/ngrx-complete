@@ -1,0 +1,31 @@
+<div
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+  fxLayoutGap="2rem"
+>
+  <!-- start breadcrumb and title -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+    [title]="title"
+    [breadcrumbs]="bc"
+  ></neural-dynamic-header>
+  </div>
+  <!-- end breadcrumb and title -->
+
+  <!-- start template form -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-model-form
+    [permissions]="permissions$ | async"
+    [model]="model$ | async"
+    [selectedCorporate]="selectedCorporate$ | async"
+    (create)="onCreateModel($event)"
+    (update)="onUpdateModel($event)"
+    (updateBranches)="onUpdateModelBranches($event)"
+    (corporateChange)="onCorporateChange($event)"
+    (loaded)="onLoad($event)"
+    (deleted)="onDeleteImage($event)"
+  ></neural-model-form>
+  </div>
+  <!-- end template form -->
+</div>

@@ -1,0 +1,10 @@
+FROM gitlab.whipmobility.io:5050/infrastructure/containerisation/base-images/node-16.15.1-slim:v0.0.6
+
+ARG ProductionChangeCommit
+ARG AWS_DEFAULT_REGION
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+
+ADD . .
+
+RUN chmod +x ci/devops.sh && ci/devops.sh

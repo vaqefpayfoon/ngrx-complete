@@ -1,0 +1,63 @@
+<mat-card class="model p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Web calculator</h2>
+        </div>
+    </mat-card-title>
+    <div class="model__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content >
+        <div [formGroup]="parent">
+            <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                    <div class="form-group" fxFlex="35">
+                        <mat-label>Loan Link</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="loanLink" placeholder="Loan Link" autocomplete="off">
+                    </div>
+                </div>
+                <!-- <div formGroupName="loan" fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem">
+                    <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem"> 
+                        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                            <h2 class="h6 text-capitalize font-semi-thick my0">Down Payment</h2>
+                        </div>
+                        <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                            <div class="form-group" fxFlex="35">
+                                <mat-label>Minimum Down Payment</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="minDownPayment" placeholder="Min" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem"> 
+                        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                            <h2 class="h6 text-capitalize font-semi-thick my0">Period</h2>
+                        </div>
+                        <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" formGroupName="period">
+                            <div class="form-group" fxFlex="35">
+                                <mat-label>Min</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="min" placeholder="Min" autocomplete="off">
+                            </div>
+                            <div class="form-group" fxFlex="35">
+                                <mat-label>Max</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="max" placeholder="Max" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem"> 
+                        <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid">
+                            <div class="form-group" fxFlex="35">
+                                <mat-label>Interest Rate</mat-label>
+                                <input type="number" matInput class="form-control" formControlName="interestRate" placeholder="Interest Rate" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!createPermission && !updatePermission" (click)="onAction('cancel')">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="parent.disabled"  class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="onAction('edit')">Edit</button>
+        <button mat-flat-button type="button" *ngIf="parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || !createPermission || !updatePermission"  (click)="onSave(parent)">Save</button>
+    </mat-card-actions>
+</mat-card>

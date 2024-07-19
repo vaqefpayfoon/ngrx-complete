@@ -1,0 +1,32 @@
+stages:
+  - staging
+  - sandbox
+  - production
+
+staging:
+  stage: staging
+  script:
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/ci/docker/Dockerfile" --destination "$CI_REGISTRY/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}" --build-arg CI_COMMIT_BRANCH=staging --build-arg AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION_STAGING} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_STAGING} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_STAGING} --build-arg ARTIFACT_BUCKET_NAME=${ARTIFACT_BUCKET_NAME_STAGING} --no-push
+  rules:
+    - if: $CI_COMMIT_BRANCH == "staging"
+  tags:
+    - fargate
+
+sandbox:
+  stage: sandbox
+  script:
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/ci/docker/Dockerfile" --destination "$CI_REGISTRY/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}" --build-arg CI_COMMIT_BRANCH=sandbox --build-arg AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION_STAGING} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_STAGING} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_STAGING} --build-arg ARTIFACT_BUCKET_NAME=${ARTIFACT_BUCKET_NAME_STAGING} --no-push
+  rules:
+    - if: $CI_COMMIT_BRANCH == "sandbox"
+  tags:
+    - fargate
+
+production:
+  stage: production
+  script:
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/ci/docker/Dockerfile" --destination "$CI_REGISTRY/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}" --build-arg CI_COMMIT_BRANCH=production --build-arg AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION_PRODUCTION} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_PRODUCTION} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_PRODUCTION} --build-arg ARTIFACT_BUCKET_NAME=${ARTIFACT_BUCKET_NAME_PRODUCTION} --no-push
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/ci/docker/DockerfileDevOps" --destination "$CI_REGISTRY/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}" --build-arg AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION_PRODUCTION} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_PRODUCTION} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_PRODUCTION} --build-arg ProductionChangeCommit=${ProductionChangeCommit} --no-push
+  rules:
+    - if: $CI_COMMIT_BRANCH == "production"
+  tags:
+    - fargate

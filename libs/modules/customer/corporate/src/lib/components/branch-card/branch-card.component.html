@@ -1,0 +1,52 @@
+<mat-card class="branch-card">
+  <img
+    mat-card-image
+    class="branch-card__image m0"
+    [src]="image"
+    [alt]="name"
+  />
+  <mat-card-content class="branch-card__content">
+    <p class="branch-card__content--name mb0 mt2">{{ name | titlecase }}</p>
+    <div class="branch-card__menu">
+      <button mat-icon-button [matMenuTriggerFor]="actions">
+        <mat-icon svgIcon="action_off"></mat-icon>
+      </button>
+      <mat-menu #actions="matMenu">
+        <button
+          mat-menu-item
+          [disabled]="!getPermission"
+          [routerLink]="[couuid + '/' + uuid]"
+        >
+          <mat-icon svgIcon="preview_off"></mat-icon>
+          <span>Preview</span>
+        </button>
+        <button
+          mat-menu-item
+          [disabled]="!getPermission"
+          [routerLink]="[couuid + '/' + uuid + '/schedules']"
+        >
+        <mat-icon>calendar_today</mat-icon>
+          <span>Calendar schedule</span>
+        </button>
+        <button
+          mat-menu-item
+          [disabled]="!getPermission"
+          [matMenuTriggerFor]="priority"
+        >
+          <mat-icon>unfold_more</mat-icon>
+          <span>Priority</span>
+        </button>
+        <mat-menu #priority="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let order of orders"
+            [disabled]="order === branch?.order"
+            (click)="reOrder(order)"
+          >
+            Priority ( {{ order }} )
+          </button>
+        </mat-menu>
+      </mat-menu>
+    </div>
+  </mat-card-content>
+</mat-card>

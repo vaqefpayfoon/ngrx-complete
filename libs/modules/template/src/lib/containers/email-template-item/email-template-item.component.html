@@ -1,0 +1,34 @@
+<div
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+  fxLayoutGap="2rem"
+>
+  <!-- start breadcrumb and title -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <!-- end breadcrumb and title -->
+
+  <!-- start template form -->
+  <div fxFlex="100" fxFlexFill>
+    <neural-template-form
+      [router]="data$ | async"
+      [template]="template$ | async"
+      [images]="images$ | async"
+      [masterTemplates]="masterTemplates$ | async"
+      [selectedCorporate]="selectedCorporate$ | async"
+      [permissions]="permissions$ | async"
+      (corporateChange)="onCorporateChange($event)"
+      (create)="onCreate($event)"
+      (createFromMaster)="onCreateFromMaster($event)"
+      (update)="onUpdate($event)"
+      (loaded)="onLoad($event)"
+      (uploadImage)="uploadTemplateImage($event)"
+    ></neural-template-form>
+  </div>
+  <!-- end template form -->
+</div>

@@ -1,0 +1,8 @@
+<neural-login-form
+  [loading]="loading$ | async"
+  (submitted)="onSubmit($event)"
+  (contactUs)="OnContactUs()"
+  [anonymousToken]="anonymousToken$ | async"
+  [error]="error$ | async"
+  [version]="version"
+></neural-login-form>

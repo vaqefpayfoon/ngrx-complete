@@ -1,0 +1,24 @@
+<mat-card class="card">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 class="h6 text-capitalize font-semi-thick my0">Reminders Reports</h2>
+        </div>
+    </mat-card-title>
+    <div class="card__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <div class="card__data py8">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="start center">
+          <div fxLayout="column" *ngIf="reports && (reports.warranties); else empty">
+              <div class="my4" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                <a fxLayoutAlign="start center" fxLayoutGap="0.5rem" target="_blank" *ngIf="reports && reports.warranties" [href]="reports.warranties.url" class="card__data--status" ><mat-icon aria-hidden="false" aria-label="Download warranties report">attachment</mat-icon>Reminders report</a>
+              </div>
+          </div>
+          <ng-template #empty>
+            <div fxFlex="100" fxLayoutAlign="center center">
+              <h2 class="h4 text-capitalize text-center font-semi-thick my0">Reports Not found</h2>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+</mat-card>

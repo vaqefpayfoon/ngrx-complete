@@ -1,0 +1,10 @@
+<h1 mat-dialog-title class="font-thick my0">Are you sure?</h1>
+
+<mat-dialog-content>
+  <p>The selected group will be deleted permanently.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions class="text-right">
+  <button mat-button (click)="close()">No, Keep Group.</button>
+  <button mat-button (click)="deleted()" color="warn">Yes, Delete Group.</button>
+</mat-dialog-actions>

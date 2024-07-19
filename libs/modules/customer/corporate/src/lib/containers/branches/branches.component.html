@@ -1,0 +1,26 @@
+<div fxLayout="column">
+  <div fxFlex="100" fxFlexFill *ngIf="(branches$ | async)">
+      <neural-dynamic-header [title]="'Branches'" [loading]="loading$ | async" [link]="(permissions$ | async)?.CREATE_BRANCH ? '../'+ (corporate$ | async).uuid + '/branch/new' : null" (refreshChange)="onRefresh($event)" [loading]="(loading$ | async)"></neural-dynamic-header> 
+  </div>
+  <div fxFlex="100" fxLayout="row wrap" class="my8">
+    <div fxFlex="100" fxLayout="column"  class="branches" *ngIf="(permissions$ | async)?.LIST_BRANCH">
+        <ng-template [ngIf]="!(error$ | async)" [ngIfElse]="showError">
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="30px grid">
+                <div fxFlex="25" fxFlex.lt-md="50" fxFlex.xs="100" *ngFor="let branch of branches$ | async">
+                  <neural-branch-card [permissions]="permissions$ | async" [branch]="branch" [totalBranches]="total$ | async" (ordered)="ordered($event)"></neural-branch-card>
+                </div>
+            </div>      
+        </ng-template>
+        <ng-template [ngIf]="(loading$ | async)">
+          <div fxFlex="100" fxLayoutAlign="center center" class="branches__loading">
+            Loading...
+          </div>
+        </ng-template>
+        <ng-template #showError>
+            <div fxFlex="100" fxLayoutAlign="center center" class="branches__not-found">
+              {{error$ | async}}
+            </div>      
+        </ng-template>
+    </div>  
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="fleet" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="(fleet$ | async) ? (fleet$ | async)?.name : 'Create a fleet'"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-fleet-form
+      [permissions]="permissions$ | async"
+      [fleet]="fleet$ | async"
+      [branch]="branch$ | async"
+      (create)="onCreate($event)"
+      (update)="onUpdate($event)"
+      (loaded)="onload($event)"
+      (branchChange)="onBranchChange($event)"
+    ></neural-fleet-form>
+  </div>
+</div>

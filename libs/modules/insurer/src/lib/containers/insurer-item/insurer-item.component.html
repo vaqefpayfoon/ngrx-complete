@@ -1,0 +1,19 @@
+<div fxFlex="100" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="2rem">
+    <!-- start breadcrumb and title -->
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="title" [breadcrumbs]="bc"></neural-dynamic-header>
+    </div>
+    <!-- end breadcrumb and title -->
+
+    <!-- start insure form -->
+    <div fxFlex="100" fxFlexFill>
+        <neural-insurer-form [insurer]="insurer$ | async" [permissions]="permissions$ | async" [corporateUuid]="(corporate$ | async)?.uuid"
+            (created)="onCreate($event)" (updated)="onUpdate($event)" (loaded)="onLoad($event)"></neural-insurer-form>
+    </div>
+    <!-- end insure form -->
+</div>
+
+<ng-container *ngIf="corporate$ | async">
+    <input hidden type="text" #corporate [attr.data-name]="(corporate$ | async)?.name"
+        [attr.data-uuid]="(corporate$ | async)?.uuid">
+</ng-container>

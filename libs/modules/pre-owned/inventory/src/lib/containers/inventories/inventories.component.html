@@ -1,0 +1,22 @@
+<div fxFlex="100" fxFlexFill class="my8" >
+    <mat-card class="inventories__header" >
+        <div fxLayout="row wrap" fxLayout.lt-md="column" fxFlex="100" fxLayoutGap.lt-md="1rem" fxLayoutAlign="space-between center" fxLayoutAlign.lt-md="start start">
+            <span class="inventories__header--item font-normal" fxFlex.lt-md="100" fxFlex="10">Created date</span>
+            <span class="inventories__header--item font-normal" fxFlex.lt-md="100" fxFlex="10">Updated date</span>
+            <span class="inventories__header--item font-normal" fxFlex.lt-md="100" fxFlex="10">Status</span>
+            <span class="inventories__header--item font-normal" fxFlex.lt-md="100" fxFlex="10">Download</span>
+            <span class="inventories__header--item font-normal" fxFlex.lt-md="100" fxFlex="10">Details</span>
+        </div>
+    </mat-card>
+      <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+        <div class="mb3" *ngFor="let inventory of inventories$ | async">
+            <neural-inventory-card [inventory]="inventory" [permissions]="permissions$ | async" ></neural-inventory-card>
+          </div>
+      </ng-container>
+      <div *ngIf="(loading$ | async)" class="inventories__loading">
+          Loading...
+      </div>
+      <div class="inventories__not-found" *ngIf="(error$ | async) && !(total$ | async) ">
+        <neural-error [error]="(error$ | async)"></neural-error>
+      </div> 
+</div>

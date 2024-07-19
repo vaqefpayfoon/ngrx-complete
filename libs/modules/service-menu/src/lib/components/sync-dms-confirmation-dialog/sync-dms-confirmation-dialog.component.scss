@@ -1,0 +1,8 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.dms {
+    color: map-get($map: $colors, $key: shark) !important;
+    @include round(7px);
+    box-shadow: none;
+  }

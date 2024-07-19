@@ -1,0 +1,25 @@
+<div
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+  fxLayoutGap="2rem"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill>
+    <neural-inventory-form
+      [permissions]="permissions$ | async"
+      [selectedCorporate]="selectedCorporate$ | async"
+      (uploaded)="onUpload($event)"
+      (loaded)="onLoad($event)"
+      [inventoryUploadedFile]="inventoryUploadedFile$ | async"
+    ></neural-inventory-form>
+  </div>
+  <div fxFlex="100" fxFlexFill>
+    <neural-inventories></neural-inventories>
+  </div>
+</div>

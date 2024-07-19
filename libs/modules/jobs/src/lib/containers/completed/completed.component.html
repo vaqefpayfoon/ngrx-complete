@@ -1,0 +1,83 @@
+<input
+  #statusFilters
+  [value]="statuses$ | async"
+  type="hidden"
+/>
+<input
+  #dateFilter
+  [value]="(filters$ | async)['calendar.slot']"
+  type="hidden"
+/>
+<div
+  class="reservations"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [link]="null"
+      [breadcrumbs]="bc"
+      [sort]="sort"
+      (refreshChange)="onRefresh($event)"
+      [loading]="loading$ | async"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-confirmed-calendar
+      [currentDate]="(filters$ | async)['calendar.slot']"
+      [dayList]="dayList$ | async"
+      (incrementChange)="incrementDate($event)"
+      (decrementChange)="decrement($event)"
+      (dateChange)="dateChange($event)"
+    ></neural-confirmed-calendar>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-completed-statistics
+      [reports]="reports$ | async"
+      [reservations]="completedReservations$ | async"
+      [statuses]="statuses$ | async"
+      [total]="(completedReservations$ | async).length"
+      [totalSlot]="(completedReservations$ | async).length"
+      (serviceChange)="serviceChange($event)"
+      (jobsChange)="jobsChange($event)"
+      (amendedInvoicesChange)="amendedInvoicesChange($event)"
+    ></neural-completed-statistics>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8 pt4">
+    <ng-container *ngIf="!(loading$ | async)">
+      <div
+        class="mb12"
+        *ngFor="let reservation of (completedReservations$ | async)"
+      >
+        <ng-template [ngIf]="reservation.type === rosterType.RESERVATION" [ngIfElse]="manual">
+          <neural-completed-card
+            [permissions]="permissions$ | async"
+            [timeZone]="timeZone$ | async"
+            [reservation]="reservation"
+            (cancelChange)="cancel($event)"
+            (completeChange)="complete($event)"
+            (resetChange)="reset($event)"
+          ></neural-completed-card>
+        </ng-template>
+        <ng-template #manual>
+          <neural-manual-reservation-card
+          [permissions]="permissions$ | async"
+          [reservation]="reservation"
+          (deleted)="openDeleteDialog($event)"
+          ></neural-manual-reservation-card>
+        </ng-template>
+      </div>
+    </ng-container>
+    <div *ngIf="(loading$ | async)" class="reservations__loading">
+      Loading...
+    </div>
+    <div class="reservations__not-found" *ngIf="(error$ | async) && !(loading$ | async)">
+      <neural-error [error]="error$ | async"></neural-error>
+    </div>
+    <div class="reservations__not-found" *ngIf="!(error$ | async) && !(loading$ | async) && !(total$ | async)">
+      Reservation not found.
+    </div>
+  </div>
+</div>

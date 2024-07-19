@@ -1,0 +1,61 @@
+<div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start space-between">
+  <div fxFlex="1 0 50">
+    <mat-card class="card">
+      <mat-card-title class="mb2">
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+          <h2 class="h6 text-capitalize font-semi-thick my0">Booking Statistics</h2>
+        </div>
+      </mat-card-title>
+      <div class="card__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <div class="card__data pt8">
+          <div fxLayout="column">
+              <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                  <div class="card__data--slot font-semi-thick">
+                    Total Booking: {{total || 0 }}
+                  </div>
+              </div>
+              <div class="my4" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                <ng-template ngFor let-status [ngForOf]="statuses | keyvalue">
+                  <span class="card__data--status" [class.card__red]="status.value === 'JOB_CANCELED'" [class.card__violet]="status.value === 'BOOKING_ON_HOLD'" [class.card__green]="status.value === 'NOT_OPERATIONAL'" (click)="removeStatus(status.value)">{{statusName(status.value)}} : {{statusCount(status.value)}}</span>
+                </ng-template>
+              </div>
+          </div>
+      </div>
+    </mat-card>  
+  </div>
+  <div fxFlex="1 0 50">
+    <mat-card class="card">
+      <mat-card-title class="mb2">
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+          <h2 class="h6 text-capitalize font-semi-thick my0">Booking Reports</h2>
+        </div>
+      </mat-card-title>
+      <div class="card__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <div class="card__data">
+        <div fxLayout="column" fxFlex="100" fxLayoutAlign="start start" fxLayoutGap="1rem" class="my8">
+          <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="1rem">
+            <button mat-flat-button color="primary" [disabled]="!reservations?.length" (click)="getServiceReport()">Services report</button>
+            <button mat-flat-button color="primary" [disabled]="!reservations?.length" (click)="getJobsReport()">Jobs report</button>
+            <button mat-flat-button color="primary" [disabled]="!reservations?.length" (click)="getAmendedInvoicesReport()">Amended Invoices report</button>
+          </div>
+          <div fxLayout="column" *ngIf="reports && (reports.services || reports.jobs || reports.amendedInvoices); else empty">
+              <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                <a fxLayoutAlign="start center" fxLayoutGap="0.5rem" target="_blank" *ngIf="reports && reports.services" [href]="reports.services.url" class="card__data--status" ><mat-icon aria-hidden="false" aria-label="Download services report">attachment</mat-icon>Services report</a>
+                <a fxLayoutAlign="start center" fxLayoutGap="0.5rem" target="_blank" *ngIf="reports && reports.jobs" [href]="reports.jobs.url" class="card__data--status" ><mat-icon aria-hidden="false" aria-label="Download services report">attachment</mat-icon>Jobs report</a>
+                <a fxLayoutAlign="start center" fxLayoutGap="0.5rem" target="_blank" *ngIf="reports && reports.amendedInvoices" [href]="reports.amendedInvoices.url" class="card__data--status"><mat-icon aria-hidden="false" aria-label="Download services report">attachment</mat-icon>Amended Invoices report</a>
+              </div>
+          </div>
+          <ng-template #empty>
+            <div fxFlex="100" fxFlexFill fxLayoutAlign="center center">
+              <h2 class="h4 text-capitalize text-center font-semi-thick my0">Reports Not found</h2>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </mat-card>  
+  </div>
+</div>

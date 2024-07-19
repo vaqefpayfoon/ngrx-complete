@@ -1,0 +1,1308 @@
+<mat-card class="promotion p4 my8">
+  <mat-card-content>
+    <mat-horizontal-stepper>
+      <!-- General -->
+      <mat-step>
+        <ng-template matStepLabel>General</ng-template>
+        <form [formGroup]="form" novalidate>
+          <div
+            fxLayout="column"
+            fxFlex="100"
+            class="my8"
+            fxLayoutAlign="space-evenly space-between"
+            fxLayoutGap="1rem"
+            fxFlexOffset="8rem"
+          >
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <div fxFlex="30" fxLayout="column" fxLayoutGap="0.5rem">
+                <mat-label>Type</mat-label>
+                <ng-container>
+                  <div
+                    class="form-group selectedMat mb4"
+                    [ngClass]="{
+                      'selectedMat--disabled': form.disabled,
+                      'ng-invalid': branches.invalid && branches.touched,
+                      'ng-valid': branches.valid && branches.touched
+                    }"
+                    fxFlex="100"
+                  >
+                    <mat-select
+                      placeholder="Select a status"
+                      formControlName="type"
+                      (selectionChange)="onChangeMileage($event.value)"
+                    >
+                      <mat-option [value]="'MOBILE_SERVICE_FEE'"
+                        >MOBILE SERVICE</mat-option
+                      >
+                      <mat-option [value]="'INVOICE_FEE'">INVOICE</mat-option>
+                    </mat-select>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <div
+                fxFlex="35"
+                fxLayout="column"
+                class="form-group"
+                fxLayoutGap="0.5rem"
+              >
+                <mat-label>Title</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  class="form-control"
+                  formControlName="title"
+                  placeholder="Title"
+                  autocomplete="off"
+                />
+              </div>
+              <div
+                fxFlex="35"
+                fxLayout="column"
+                class="form-group"
+                fxLayoutGap="0.5rem"
+              >
+                <mat-label>Short Description</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  class="form-control"
+                  formControlName="shortDescription"
+                  placeholder="Short Description"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <div
+                fxFlex="71"
+                fxLayout="column"
+                class="form-group"
+                fxLayoutGap="0.5rem"
+              >
+                <mat-label>Description</mat-label>
+                <textarea
+                  matInput
+                  rows="7"
+                  formControlName="description"
+                  class="form-control"
+                  placeholder="Description"
+                ></textarea>
+              </div>
+            </div>
+
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <div
+                fxFlex="35"
+                fxLayout="column"
+                class="form-group"
+                fxLayoutGap="0.5rem"
+              >
+                <mat-label>Code *</mat-label>
+                <input
+                  #code
+                  type="text"
+                  matInput
+                  class="form-control"
+                  formControlName="code"
+                  placeholder="Code"
+                  autocomplete="off"
+                />
+                <neural-show-errors
+                  *ngIf="!form?.errors?.mismatch"
+                  [control]="form.controls.code"
+                ></neural-show-errors>
+                <div class="error-danger" *ngIf="form?.errors?.mismatch">
+                  Input must be a minimum of 3 alphanumeric characters.
+                </div>
+              </div>
+            </div>
+
+            <div
+              fxLayout="row"
+              fxFlex="100"
+              fxLayoutGap="1rem"
+              formGroupName="date"
+            >
+              <div
+                fxFlex="35"
+                fxLayout="column"
+                class="form-group"
+                fxLayoutGap="0.5rem"
+              >
+                <mat-label>Enter a date range</mat-label>
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                  <mat-date-range-input
+                    class="form-control"
+                    [ngClass]="{
+                      'form-control--disabled': form.disabled,
+                      'form-control--ng-invalid': date.invalid && date.touched,
+                      'form-control--ng-valid': date.valid && date.touched
+                    }"
+                    [rangePicker]="picker"
+                  >
+                    <input
+                      [min]="exists ? promotion.date.start : minDate"
+                      formControlName="start"
+                      matStartDate
+                      placeholder="Start date"
+                      (dateChange)="changeStartDate($event)"
+                    />
+                    <input
+                      [min]="
+                        start.valid
+                          ? getMinEndFromStart(start.value)
+                          : minEndDate
+                      "
+                      formControlName="end"
+                      matEndDate
+                      placeholder="End date"
+                      (dateChange)="changeEndDate($event)"
+                    />
+                  </mat-date-range-input>
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                </div>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </div>
+            </div>
+
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <div
+                fxFlex="35"
+                fxLayout="column"
+                class="form-group"
+                fxLayoutGap="0.5rem"
+              >
+                <mat-label>Location *</mat-label>
+                <div
+                  class="form-group selectedMat mb4"
+                  [ngClass]="{
+                    'selectedMat--disabled': form.disabled,
+                    'ng-invalid': branches.invalid && branches.touched,
+                    'ng-valid': branches.valid && branches.touched
+                  }"
+                  fxFlex="100"
+                >
+                  <mat-select
+                    placeholder="Select location"
+                    multiple
+                    formControlName="branches"
+                  >
+                    <mat-option
+                      *ngFor="let branch of selectedCorporate.branches"
+                      [value]="branch.uuid"
+                    >
+                      {{ branch.name }}
+                    </mat-option>
+                  </mat-select>
+                  <neural-show-errors [control]="form.controls.branches">
+                  </neural-show-errors>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="end center"
+        >
+          <button mat-stroked-button (click)="cancel()">Cancel</button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.disabled"
+            type="button"
+            color="primary"
+            [disabled]="!updatePermission"
+            (click)="edit()"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.enabled"
+            type="button"
+            color="primary"
+            [disabled]="
+              form.disabled ||
+              !generalStepValidity ||
+              !updatePermission ||
+              form.invalid ||
+              amountCtrl.invalid
+            "
+            (click)="updatePromo(form)"
+          >
+            Save
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="!exists"
+            type="button"
+            color="primary"
+            matStepperNext
+            [disabled]="
+              form.disabled || !generalStepValidity || !createPermission
+            "
+          >
+            Next
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.enabled"
+            type="button"
+            color="primary"
+            matStepperNext
+            [disabled]="form.disabled || !createPermission || !updatePermission"
+          >
+            Next
+          </button>
+        </div>
+      </mat-step>
+      <!-- Eligibility -->
+      <mat-step>
+        <ng-template matStepLabel>Eligibility (Optional)</ng-template>
+        <form [formGroup]="form" novalidate>
+          <div
+            fxLayout="column"
+            fxFlex="100"
+            class="my8"
+            fxLayoutAlign="space-evenly space-between"
+            fxLayoutGap="1rem"
+            fxFlexOffset="8rem"
+            formGroupName="eligibility"
+          >
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutAlign="space-between center"
+              formGroupName="customers"
+            >
+              <h2 class="h6 text-capitalize font-semi-thick my0">Customer</h2>
+            </div>
+            <mat-radio-group
+              color="primary"
+              [disabled]="form.disabled"
+              aria-labelledby="Customer Eligibility"
+              name="customerList"
+              fxLayout="column"
+              fxLayoutAlign="start start"
+              fxLayoutGap="1rem"
+              [(ngModel)]="chosenCustomerEligibility"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="onChangeAccount($event)"
+            >
+              <mat-radio-button
+                name="customerList"
+                *ngFor="let type of customerEligibility | keyvalue"
+                [value]="type.value"
+              >
+                {{ type.value }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="chosenCustomerEligibility === customerEligibility.UUID">
+              <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxLayout="row wrap"
+                  class="my10"
+                  fxFlex="100"
+                  formGroupName="customers"
+                >
+                  <div fxLayout="row wrap" fxFlex="100">
+                    <div
+                      fxFlex="35"
+                      fxLayout="column"
+                      fxLayoutGap="0.5rem"
+                      *ngIf="accountsList"
+                    >
+                      <mat-label>Accounts</mat-label>
+                      <div class="form-group selectedMat mb4" fxFlex="100">
+                        <mat-select
+                          placeholder="Select An Account"
+                          multiple
+                          formControlName="uuids"
+                        >
+                          <mat-option
+                            *ngIf="accountsList && accountsList.length > 0"
+                            #allAccountSelected
+                            (click)="toggleAccountSelection()"
+                            [value]="'0'"
+                            >All</mat-option
+                          >
+                          <mat-option
+                            (click)="turnOffAccountSelectAll()"
+                            *ngFor="let acc of accountsList"
+                            [value]="acc.uuid"
+                          >
+                            {{ acc.identity?.fullName | titlecase }} (
+                            {{ acc.email }} / {{ acc?.phone?.code }}
+                            {{ acc?.phone?.number }} )
+                          </mat-option>
+                        </mat-select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                    <div
+                      fxLayout="row wrap"
+                      fxFlex="100"
+                      fxLayoutAlign="space-between center"
+                    >
+                      <span>Account ID</span>
+                    </div>
+                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                      >
+                        <input
+                          type="text"
+                          [disabled]="form.disabled"
+                          #accID
+                          matInput
+                          class="form-control"
+                          placeholder="Search By Account ID"
+                          autocomplete="off"
+                        />
+                      </div>
+                      <button
+                        mat-flat-button
+                        type="button"
+                        [disabled]="!accID.value || form.disabled"
+                        color="primary"
+                        (click)="
+                          onSearch({ uuid: accID.value, active: 'true' });
+                          accID.value = ''
+                        "
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div
+                      fxLayout="row wrap"
+                      fxFlex="100"
+                      fxLayoutAlign="space-between center"
+                    >
+                      <span>Email</span>
+                    </div>
+                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                      >
+                        <input
+                          type="email"
+                          matInput
+                          #email
+                          class="form-control"
+                          placeholder="Search By Email Address"
+                          autocomplete="off"
+                        />
+                      </div>
+                      <button
+                        mat-flat-button
+                        type="button"
+                        [disabled]="!email.value || form.disabled"
+                        color="primary"
+                        (click)="
+                          onSearch({ email: email.value, active: 'true' });
+                          email.value = ''
+                        "
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div
+                      fxLayout="row wrap"
+                      fxFlex="100"
+                      fxLayoutAlign="space-between center"
+                    >
+                      <span> Excel File </span>
+                    </div>
+                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                      <div class="form-group" fxLayout="column">
+                        <input
+                          type="file"
+                          #myCustomerExcelInput
+                          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                          name="file"
+                          hidden
+                          class="form-control"
+                          placeholder="Excel file"
+                          autocomplete="off"
+                          (change)="showAccountPreview($event)"
+                        />
+                        <div
+                          fxFlex="100"
+                          fxLayout="row"
+                          fxLayoutAlign="start center"
+                          fxLayoutGap="1rem"
+                        >
+                          <button
+                            type="button"
+                            [disabled]="form.disabled"
+                            color="primary"
+                            mat-flat-button
+                            (click)="myCustomerExcelInput.click()"
+                          >
+                            Import
+                          </button>
+                          <a
+                            href="https://wm-sandbox-document.s3-ap-southeast-1.amazonaws.com/Account+Eligibility.xlsx"
+                            target="_blank"
+                            type="button"
+                            [disabled]="form.disabled"
+                            color="warn"
+                            mat-flat-button
+                          >
+                            Sample file
+                          </a>
+                        </div>
+                        <div
+                          fxFlex="100"
+                          fxLayout="row"
+                          fxLayoutAlign="start center"
+                          fxLayoutGap="1rem"
+                          class="my4"
+                        >
+                          {{ filename }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="row" fxFlex="100">
+              <mat-divider></mat-divider>
+              <br />
+            </div>
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutAlign="space-between center"
+              formGroupName="vehicles"
+            >
+              <h2 class="h6 text-capitalize font-semi-thick my0">Vehicle</h2>
+            </div>
+            <mat-radio-group
+              [disabled]="form.disabled"
+              color="primary"
+              aria-labelledby="Vehicle Eligibility"
+              name="vehicleList"
+              fxLayout="column"
+              fxLayoutAlign="start"
+              fxLayoutGap="1rem"
+              [(ngModel)]="chosenVehicleEligibility"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="onChangeVehicle($event)"
+            >
+              <mat-radio-button
+                name="vehicleList"
+                *ngFor="let type of vehicleEligibility | keyvalue"
+                [value]="type.value"
+              >
+                {{ type.value }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <!-- Brands -->
+            <div *ngIf="chosenVehicleEligibility === vehicleEligibility.BRANDS">
+              <div
+                fxLayout="column"
+                fxFlex="100"
+                fxLayoutGap="1rem"
+                formGroupName="vehicles"
+              >
+                <div
+                  fxLayout="row"
+                  fxFlex="100"
+                  fxLayoutGap="1rem"
+                  fxLayoutAlign="end center"
+                >
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    type="button"
+                    fxLayoutAlign="space-evenly space-between"
+                    [disabled]="form.disabled"
+                    (click)="addBrand()"
+                  >
+                    <mat-icon svgIcon="add"></mat-icon>
+                  </button>
+                </div>
+                <ng-container formArrayName="brands">
+                  <div
+                    fxLayout="row"
+                    fxFlex="100"
+                    class="form-group"
+                    fxLayoutGap="1rem"
+                    *ngFor="let brandCtrl of brands.controls; let i = index"
+                  >
+                    <div
+                      [formGroupName]="i"
+                      fxFlex="100"
+                      fxLayoutGap="1rem"
+                      fxLayoutAlign="start center"
+                    >
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                      >
+                        <mat-label>Brand *</mat-label>
+                        <div
+                          class="form-group selectedMat mb4"
+                          [ngClass]="{
+                            'selectedMat--disabled': form.disabled,
+                            'ng-invalid':
+                              brands.controls[i].get('brand').invalid &&
+                              brands.controls[i].get('brand').touched,
+                            'ng-valid':
+                              brands.controls[i].get('brand').valid &&
+                              brands.controls[i].get('brand').touched
+                          }"
+                          fxFlex="100"
+                        >
+                          <mat-select
+                            placeholder="Select brand"
+                            formControlName="brand"
+                          >
+                            <mat-option
+                              *ngFor="
+                                let item of allBrands
+                                  | orderBy: 'brand':false:true
+                              "
+                              [value]="item.brand"
+                            >
+                              {{ item.brand }}
+                            </mat-option>
+                          </mat-select>
+                        </div>
+                      </div>
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                        *ngIf="brands.controls[i].get('brand').valid"
+                      >
+                        <mat-label>Models (Optional)</mat-label>
+                        <div
+                          class="form-group selectedMat mb4"
+                          [ngClass]="{
+                            'selectedMat--disabled': form.disabled,
+                            'ng-invalid':
+                              brands.controls[i].get('models').invalid &&
+                              brands.controls[i].get('models').touched,
+                            'ng-valid':
+                              brands.controls[i].get('models').valid &&
+                              brands.controls[i].get('models').touched
+                          }"
+                          fxFlex="100"
+                        >
+                          <mat-select
+                            placeholder="Select model"
+                            formControlName="models"
+                            multiple
+                          >
+                            <mat-option
+                              *ngFor="
+                                let model of filterModelsByBrand(
+                                  brands.controls[i].get('brand')?.value
+                                ) | orderBy: 'actual':false:true
+                              "
+                              [value]="model.actual"
+                            >
+                              {{ model?.actual }}
+                              {{ model?.display ? '(' : '' }}
+                              {{ model?.display }}
+                              {{ model?.display ? ')' : '' }}
+                            </mat-option>
+                          </mat-select>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      color="warn"
+                      mat-mini-fab
+                      (click)="removeBrand(i)"
+                      aria-label="remove"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                  <ng-template [ngIf]="!brands.controls.length">
+                    <div
+                      fxFlex="100"
+                      class="h2 font-semi-thick"
+                      fxLayoutAlign="center center"
+                    >
+                      Please click + button to add a new brand.
+                    </div>
+                  </ng-template>
+                </ng-container>
+              </div>
+            </div>
+            <!-- VIN -->
+            <div *ngIf="chosenVehicleEligibility === vehicleEligibility.VIN">
+              <div fxLayout="row wrap" class="my10" fxFlex="100">
+                <div fxLayout="row wrap" fxFlex="100">
+                  <div
+                    fxFlex="35"
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                    *ngIf="vehiclesList"
+                  >
+                    <mat-label>Vehicles</mat-label>
+                    <div
+                      class="form-group selectedMat mb4"
+                      fxFlex="100"
+                      formGroupName="vehicles"
+                    >
+                      <mat-select
+                        placeholder="Select a vehicle"
+                        multiple
+                        formControlName="vins"
+                      >
+                        <mat-option
+                          *ngIf="vehiclesList && vehiclesList.length > 0"
+                          #allVehicleSelected
+                          (click)="toggleVehicleSelection()"
+                          [value]="'0'"
+                          >All</mat-option
+                        >
+                        <mat-option
+                          *ngFor="let vehicle of vehiclesList"
+                          [value]="vehicle.identificationNumber"
+                          (click)="turnOffVehicleSelectAll()"
+                        >
+                          {{ vehicle?.account?.identity?.fullName }} (
+                          {{ vehicle.identificationNumber }} /
+                          {{ vehicle.numberPlate }}
+                          )
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+
+                <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                  <div
+                    fxLayout="row wrap"
+                    fxFlex="100"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <span>VIN</span>
+                  </div>
+                  <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div
+                      fxFlex="35"
+                      fxLayout="column"
+                      class="form-group"
+                      fxLayoutGap="0.5rem"
+                    >
+                      <input
+                        type="text"
+                        [disabled]="form.disabled"
+                        #Vin
+                        matInput
+                        class="form-control"
+                        placeholder="Search By VIN"
+                        autocomplete="off"
+                      />
+                    </div>
+                    <button
+                      mat-flat-button
+                      type="button"
+                      [disabled]="!Vin.value || form.disabled"
+                      color="primary"
+                      (click)="
+                        onSearchVehicle({ identificationNumber: Vin.value });
+                        Vin.value = ''
+                      "
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <div
+                    fxLayout="row wrap"
+                    fxFlex="100"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <span>Number Plate</span>
+                  </div>
+                  <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div
+                      fxFlex="35"
+                      fxLayout="column"
+                      class="form-group"
+                      fxLayoutGap="0.5rem"
+                    >
+                      <input
+                        type="text"
+                        matInput
+                        #numberPlate
+                        class="form-control"
+                        placeholder="Search By Number Plate"
+                        autocomplete="off"
+                      />
+                    </div>
+                    <button
+                      mat-flat-button
+                      type="button"
+                      [disabled]="!numberPlate.value || form.disabled"
+                      color="primary"
+                      (click)="
+                        onSearchVehicle({ numberPlate: numberPlate.value });
+                        numberPlate.value = ''
+                      "
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <div
+                    fxLayout="row wrap"
+                    fxFlex="100"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <span> Excel File </span>
+                  </div>
+                  <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+                    <div class="form-group" fxLayout="column">
+                      <input
+                        type="file"
+                        #myVehicleExcelInput
+                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        name="file"
+                        hidden
+                        class="form-control"
+                        placeholder="Excel file"
+                        autocomplete="off"
+                        (change)="showVehiclePreview($event)"
+                      />
+                      <div
+                        fxFlex="100"
+                        fxLayout="row"
+                        fxLayoutAlign="start center"
+                        fxLayoutGap="1rem"
+                      >
+                        <button
+                          type="button"
+                          [disabled]="form.disabled"
+                          color="primary"
+                          mat-flat-button
+                          (click)="myVehicleExcelInput.click()"
+                        >
+                          Import
+                        </button>
+                        <a
+                          href="https://wm-sandbox-document.s3-ap-southeast-1.amazonaws.com/vin.xlsx"
+                          target="_blank"
+                          type="button"
+                          [disabled]="form.disabled"
+                          color="warn"
+                          mat-flat-button
+                        >
+                          Sample file
+                        </a>
+                      </div>
+                      <div
+                        fxFlex="100"
+                        fxLayout="row"
+                        fxLayoutAlign="start center"
+                        fxLayoutGap="1rem"
+                        class="my4"
+                      >
+                        {{ filename2 }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              *ngIf="chosenType === getPromotionType.INVOICE_FEE"
+              fxLayoutAlign="space-between center"
+            >
+              <div
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+              >
+                <div fxLayout="row" fxFlex="100">
+                  <mat-divider></mat-divider>
+                  <br />
+                </div>
+                <div fxLayout="row" fxFlex="100">
+                  <h2 class="h6 text-capitalize font-semi-thick my0">
+                    Mileage
+                  </h2>
+                </div>
+              </div>
+              <mat-radio-group
+                color="primary"
+                [disabled]="form.disabled"
+                aria-labelledby="Mileage"
+                name="mileageList"
+                fxLayout="column"
+                class="my3"
+                fxLayoutAlign="start start"
+                fxLayoutGap="1rem"
+                [(ngModel)]="chosenMileage"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="onChangeMileageType($event)"
+              >
+                <mat-radio-button
+                  name="mileageList"
+                  *ngFor="let type of mileageEligibility | keyvalue"
+                  [value]="type.value"
+                >
+                  {{ type.value }}
+                </mat-radio-button>
+              </mat-radio-group>
+              <div fxLayout="row wrap" fxFlex="100" class="my4">
+                <span
+                  style="font-size: 12px; color: #aeaeb2"
+                  *ngIf="chosenMileage === mileageEligibility.MILEAGE"
+                  >Activate the Mileage App Feature to display services by
+                  mileage in the customer app</span
+                >
+              </div>
+              <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                <div
+                  fxLayout="row"
+                  fxFlex="100"
+                  fxLayoutGap="1rem"
+                  fxLayoutAlign="end center"
+                >
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    type="button"
+                    fxLayoutAlign="space-evenly space-between"
+                    [disabled]="form.disabled"
+                    (click)="addMileage()"
+                  >
+                    <mat-icon svgIcon="add"></mat-icon>
+                  </button>
+                </div>
+                <ng-container
+                  formArrayName="mileages"
+                  *ngFor="
+                    let mileageCtrl of mileagesForm.controls;
+                    let i = index
+                  "
+                >
+                  <div
+                    fxLayout="row"
+                    fxFlex="100"
+                    class="form-group"
+                    fxLayoutGap="1rem"
+                  >
+                    <div
+                      [formGroupName]="i"
+                      fxFlex="100"
+                      fxLayoutGap="1rem"
+                      fxLayoutAlign="start center"
+                    >
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                        [ngClass]="{
+                          'ng-invalid':
+                            mileagesForm.controls[i].errors?.mismatch,
+                          'ng-valid': !mileagesForm.controls[i].errors?.mismatch
+                        }"
+                      >
+                        <mat-label>From</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          formControlName="from"
+                          class="form-control"
+                          placeholder="From"
+                        />
+                      </div>
+                      <div
+                        fxFlex="35"
+                        fxLayout="column"
+                        class="form-group"
+                        fxLayoutGap="0.5rem"
+                        [ngClass]="{
+                          'ng-invalid':
+                            mileagesForm.controls[i]?.errors?.mismatch,
+                          'ng-valid': !mileagesForm.controls[i]?.errors
+                            ?.mismatch
+                        }"
+                      >
+                        <mat-label>To</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          formControlName="to"
+                          class="form-control"
+                          placeholder="To"
+                        />
+                      </div>
+                    </div>
+                    <div class="m-alignment">
+                      <button
+                        type="button"
+                        [disabled]="form.disabled"
+                        color="warn"
+                        mat-mini-fab
+                        (click)="removeMileage(i)"
+                        aria-label="remove"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    fxLayout="row"
+                    fxFlex="100"
+                    *ngIf="
+                      mileagesForm?.controls && mileagesForm?.controls.length
+                    "
+                  >
+                    <span
+                      style="color: red"
+                      *ngIf="mileagesForm?.controls[i]?.errors?.mismatch"
+                    >
+                      Value of "To" must be greater than or equal to "From"
+                    </span>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="end center"
+        >
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.disabled"
+            type="button"
+            color="primary"
+            [disabled]="!updatePermission"
+            (click)="edit()"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.enabled"
+            type="button"
+            color="primary"
+            [disabled]="
+              form.disabled ||
+              !generalStepValidity ||
+              !updatePermission ||
+              form.invalid ||
+              amountCtrl.invalid
+            "
+            (click)="updatePromo(form)"
+          >
+            Save
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="form.enabled"
+            type="button"
+            color="primary"
+            matStepperNext
+            [disabled]="form.disabled || !createPermission || !updatePermission"
+          >
+            Next
+          </button>
+        </div>
+      </mat-step>
+      <!-- Discount -->
+      <mat-step>
+        <ng-template matStepLabel>Discount</ng-template>
+        <form [formGroup]="form" novalidate>
+          <div
+            fxLayout="column"
+            fxFlex="100"
+            class="my8"
+            fxLayoutAlign="space-evenly space-between"
+            fxLayoutGap="1rem"
+            fxFlexOffset="8rem"
+          >
+            <div
+              fxLayout="row"
+              fxFlex="100"
+              fxLayoutGap="1rem"
+              formGroupName="discount"
+            >
+              <div
+                fxFlex="35"
+                fxLayout="column"
+                class="form-group"
+                fxLayoutGap="0.5rem"
+              >
+                <div class="my4">
+                  <mat-radio-group
+                    formControlName="type"
+                    color="primary"
+                    fxLayoutGap="1rem"
+                  >
+                    <mat-radio-button
+                      (change)="discountTypeChange($event)"
+                      [value]="type.value"
+                      *ngFor="let type of discountType | keyvalue"
+                      >{{ type.value | titlecase }}</mat-radio-button
+                    >
+                  </mat-radio-group>
+                </div>
+
+                <input
+                  type="text"
+                  [formControl]="amountCtrl"
+                  matInput
+                  class="form-control"
+                  [placeholder]="
+                    discountType[type.value] === discountType.PERCENTAGE
+                      ? 'Amount (Limit - 1 - 100)'
+                      : 'Amount'
+                  "
+                  autocomplete="off"
+                  (change)="
+                    amount.patchValue(
+                      discountType[type.value] === discountType.PERCENTAGE
+                        ? amountCtrl.value / 100
+                        : +amountCtrl.value
+                    )
+                  "
+                />
+                <neural-show-errors [control]="amountCtrl"></neural-show-errors>
+              </div>
+            </div>
+
+            <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem">
+              <div
+                fxFlex="35"
+                fxLayout="column"
+                class="form-group"
+                fxLayoutGap="0.5rem"
+              >
+                <div
+                  class="form-group form-group--inline"
+                  fxLayoutAlign="start center"
+                  fxLayoutGap="1rem"
+                >
+                  <mat-label class="mb0">Auto Redeem</mat-label>
+                  <mat-slide-toggle
+                    formControlName="autoRedeem"
+                    fxLayout="row-reversed"
+                    color="primary"
+                  >
+                  </mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="end center"
+        >
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.disabled"
+            type="button"
+            color="primary"
+            [disabled]="!updatePermission"
+            (click)="edit()"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.enabled"
+            type="button"
+            color="primary"
+            [disabled]="
+              form.disabled ||
+              !generalStepValidity ||
+              !updatePermission ||
+              form.invalid ||
+              amountCtrl.invalid
+            "
+            (click)="updatePromo(form)"
+          >
+            Save
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="form.enabled"
+            type="button"
+            color="primary"
+            matStepperNext
+            [disabled]="
+              form.disabled ||
+              !createPermission ||
+              !updatePermission ||
+              this.amountCtrl.invalid
+            "
+          >
+            Next
+          </button>
+        </div>
+      </mat-step>
+      <!-- Terms and condition -->
+      <mat-step>
+        <ng-template matStepLabel>Terms and Conditions</ng-template>
+        <form [formGroup]="form" novalidate>
+          <div
+            fxLayout="column"
+            fxFlex="100"
+            class="my8"
+            fxLayoutAlign="space-evenly space-between"
+            fxLayoutGap="1rem"
+            fxFlexOffset="8rem"
+          >
+            <div
+              fxLayout="row"
+              fxFlex="100"
+              fxLayoutGap="1rem"
+              fxLayoutAlign="end center"
+            >
+              <button
+                mat-mini-fab
+                color="primary"
+                type="button"
+                fxLayoutAlign="space-evenly space-between"
+                [disabled]="form.disabled"
+                (click)="addTerm()"
+              >
+                <mat-icon svgIcon="add"></mat-icon>
+              </button>
+            </div>
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutGap="1rem grid"
+              fxLayoutAlign="space-between center"
+              formArrayName="terms"
+            >
+              <ng-container *ngIf="!!terms.controls.length; else noTerms">
+                <div
+                  fxLayout="row"
+                  fxFlex="100"
+                  class="form-group"
+                  fxLayoutGap="1rem"
+                  *ngFor="let term of terms.controls; let i = index"
+                >
+                  <input
+                    type="text"
+                    matInput
+                    [formControlName]="i"
+                    class="form-control"
+                    placeholder="Enter a terms and conditions"
+                    autocomplete="off"
+                  />
+                  <button
+                    type="button"
+                    color="warn"
+                    [disabled]="form.disabled"
+                    mat-mini-fab
+                    (click)="removeTerm(i)"
+                    aria-label="remove"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </ng-container>
+              <ng-template #noTerms>
+                <div
+                  fxFlex="100"
+                  class="h2 font-semi-thick"
+                  fxLayoutAlign="center center"
+                >
+                  Please click + button to add a new term.
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </form>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutGap="1rem"
+          fxLayoutAlign="end center"
+        >
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.disabled"
+            type="button"
+            color="primary"
+            [disabled]="!updatePermission"
+            (click)="edit()"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="!exists && form.enabled"
+            type="button"
+            color="primary"
+            matStepperNext
+            [disabled]="
+              form.disabled ||
+              form.invalid ||
+              !createPermission ||
+              form.invalid ||
+              amountCtrl.invalid
+            "
+            (click)="createPromo(form)"
+          >
+            Save
+          </button>
+          <button
+            mat-flat-button
+            *ngIf="exists && form.enabled"
+            type="button"
+            color="primary"
+            [disabled]="
+              form.disabled ||
+              !generalStepValidity ||
+              !updatePermission ||
+              form.invalid ||
+              amountCtrl.invalid
+            "
+            (click)="updatePromo(form)"
+          >
+            Save
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </mat-card-content>
+</mat-card>

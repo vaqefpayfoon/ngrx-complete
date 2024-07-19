@@ -1,0 +1,42 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="branch p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Operation Team</h2>
+            </div>
+        </mat-card-title>
+        <div class="branch__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="branch__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div class="form-group selectedMat" [class.selectedMat--disabled]="(form.disabled || operationUuid.disabled)" [class.ng-valid]="operationUuid.valid" [class.ng-invalid]="!operationUuid.valid" fxFlex="35">
+                        <mat-select placeholder="Select your Operation" formControlName="operationUuid">
+                            <mat-option *ngFor="let operation of team?.operation" [value]="operation.uuid">
+                              {{operation.fullname}}
+                            </mat-option>
+                        </mat-select>
+                        <neural-show-errors [control]="form.controls.operationUuid"></neural-show-errors>
+                    </div >
+                </div>
+                <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem" *ngIf="!!reservation?.mobileService">
+                    <div class="form-group selectedMat" [class.selectedMat--disabled]="(form.disabled || fleetUuid.disabled)" [class.ng-valid]="fleetUuid.valid" [class.ng-invalid]="!fleetUuid.valid" fxFlex="35">
+                        <mat-select placeholder="Select your Fleet" formControlName="fleetUuid">
+                            <mat-option>-- None ---</mat-option>
+                            <mat-option *ngFor="let fleet of team?.fleet" [value]="fleet.uuid">
+                              {{fleet.name}}
+                            </mat-option>
+                        </mat-select>
+                        <neural-show-errors [control]="form.controls.fleetUuid"></neural-show-errors>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button class="mr4 px10 py1" (click)="cancel()">Cancel</button>
+            <button mat-flat-button *ngIf="exists && form.disabled" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+            <button mat-flat-button *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid" (click)="onCreate(form)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

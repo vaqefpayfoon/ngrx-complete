@@ -1,0 +1,52 @@
+.disable-color {
+    background-color: #ebebe4;
+  }
+
+  .top-space {
+    margin-top: 5px;
+  }
+
+  .height-space {
+    height: auto !important;
+  }
+  .small-font {
+    font-size: 12px;
+}
+.medium-font {
+    font-size: 14px;
+}
+.disable-color {
+    background-color: #ebebe4;
+  }
+  .left-align {
+    padding-left: 5%;
+    height: 400px;
+    max-height: 400px;
+  }
+input[type="time"] {
+font-family: 'Gill Sans' !important;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+    background: none !important;
+}
+.steper-width {
+  width: auto;
+  max-width: 1300px;
+}
+.time-slot {
+  width: 50px; max-width: 50px !important;
+  text-align: center;
+}
+.main-col {
+  width: 200px; max-width: 250px !important;
+}
+
+.sec-col {
+  width: 160px; max-width: 180px !important;
+}
+
+.daily-border {
+  border-spacing: 0;
+  padding: 0;
+  margin: 0;
+}

@@ -1,0 +1,98 @@
+<mat-toolbar color="primary">
+  <div class="header" ngClass.lt-md="my4" fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start center" fxFlex="100" fxLayoutAlign="space-between center" fxLayoutGap.lt-md="1rem" fxLayoutGap="0">
+    <!-- switcher -->
+    <div *ngIf="!isOperation;else operationSwitcheer" class="header__switcher" fxFlex="1 0 20" fxLayout="column" fxLayoutAlign="start start" fxFlexOrder.lt-md="2" fxFlex.lt-md="100">
+        <mat-select *ngIf="!router?.state?.data?.corporate; else globalCorporte" [compareWith]="corporateCompareFn" [(value)]="selectedCorporate" placeholder="Select your corporate" (selectionChange)="onChangeCorporate($event)">
+          <mat-option *ngFor="let corporate of corporates" [value]="corporate">
+            {{corporate.name}}
+          </mat-option>
+        </mat-select>
+
+        <ng-template #globalCorporte>
+          <mat-select disabled [value]="'global'">
+            <mat-option value="global">
+              Global
+            </mat-option>
+          </mat-select>
+        </ng-template>
+
+        <mat-select *ngIf="!router?.state?.data?.branch;else globalBranch" [compareWith]="branchCompareFn" placeholder="Select your branch" [(value)]="selectedBranch" (selectionChange)="onChangeBranch($event)">
+          <mat-option *ngFor="let branch of branches" [value]="branch">
+            {{branch.name}}
+          </mat-option>
+        </mat-select>
+
+        <ng-template #globalBranch>
+          <mat-select disabled [value]="'global'">
+            <mat-option value="global">
+              Global
+            </mat-option>
+          </mat-select>
+        </ng-template>
+    </div>
+    <ng-template #operationSwitcheer>
+      <div  class="header__switcher" fxFlex="1 0 20" fxLayout="column" fxLayoutAlign="start start" fxFlexOrder.lt-md="2" fxFlex.lt-md="100">
+        <mat-select disabled [value]="'global'">
+          <mat-option value="global">
+            Global
+          </mat-option>
+        </mat-select>
+  
+        <mat-select disabled [value]="'global'">
+          <mat-option value="global">
+            Global
+          </mat-option>
+        </mat-select>
+      </div>
+    </ng-template>
+
+    <div fxFlex="1 0 80" fxFlex.lt-md="1 1 100" fxLayout="row" fxLayoutAlign="space-between center" class="header__general" fxFlexOrder.lt-md="1">
+      <!-- logo -->
+      <div class="header__logo" fxFlex="2 0 55" fxLayoutAlign.lt-md="start center" fxFlex.lt-md="0 0 55" fxLayoutAlign="center">
+        <button (click)="goToDashboard()" type="button" class="header__logo--link">
+          <img src="https://d3gyzh3f9mj82k.cloudfront.net/images/logo.svg" width="100" alt="logo">
+        </button>
+      </div>
+      <!-- notification -->
+      <!-- <div class="header__notification" fxFlex="1 0 5" fxLayoutAlign="center center">
+          <mat-icon svgIcon="notification"></mat-icon>
+          <mat-icon svgIcon="notification_on"></mat-icon>
+      </div> -->
+      <!-- account -->
+      <div [routerLink]="['profile']" class="header__account" fxFlex="1 0 20" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" fxLayoutAlign.lt-md="end center">
+          <img class="header__account--avatar" [src]="image" onerror="this.src='https://d3gyzh3f9mj82k.cloudfront.net/test/avatar.jpg'" [alt]="name.fullName | titlecase">
+          <div class="header__account--detail" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+            <h1 class="mt0">{{name?.salutation | titlecase}} {{name.fullName | titlecase}}</h1>
+            <h6 class="m0">{{permissions?.name}}</h6>
+          </div>
+      </div>
+      <div>
+        <button mat-stroked-button (click)="OnContactUs()">Need Help?</button>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>
+
+<!-- menu -->
+<mat-toolbar class="menu-toolbar">
+  <div class="menu" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+    <div class="menu__objects" fxFlex="100" fxLayout="row" fxLayoutAlign="start center" fxLayout.lt-md="row wrap" fxLayoutAlign.lt-md="space-between center">
+      <div fxFlex.lt-md="50">
+        <a mat-button routerLink="/app/home/basic">
+          <mat-icon>home</mat-icon>
+          <span>Home</span>
+        </a>
+      </div>
+      <ng-template ngFor let-nav [ngForOf]="menus">
+        <div fxFlex.lt-md="50">
+          <button mat-button [disabled]="!nav?.enabled || isPasswordExpired" [matMenuTriggerFor]="menu.childMenu">
+            <mat-icon [svgIcon]="nav.icon"></mat-icon>
+            <span>{{nav.category}}</span>
+            <mat-icon [svgIcon]="'arrow_down_off'"></mat-icon>
+          </button>
+          <neural-menu-item #menu [items]="nav.items"></neural-menu-item>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</mat-toolbar>

@@ -1,0 +1,14 @@
+<div class="groups">
+    <neural-dynamic-header [title]="'groups'" [breadcrumbs]="bc" [link]="(permissions$ | async)?.CREATE_ACCOUNT_GROUP ? '../group/new' : null" (refreshChange)="onRefresh($event)" (searchChange)="onSubmit($event)" [isSearch]="search" [loading]="(loading$ | async)"></neural-dynamic-header>
+    <ng-container *ngIf="!(loading$ | async)">
+        <div *ngFor="let group of groups$ | async | unfilter: !(isSuperAdmin$ | async) ? 'Superadmin' : ''">
+            <neural-group-card [permissions]="permissions$ | async" (delete)="openDialog($event)" [roles]="roles$ | async" [group]="group"></neural-group-card>
+        </div>
+    </ng-container>
+    <div *ngIf="(loading$ | async)" class="groups__loading">
+        Loading...
+    </div>
+    <div class="groups__not-found" *ngIf="(error$ | async)">
+        <span> {{ (error$ | async) }} </span>
+    </div>
+</div>

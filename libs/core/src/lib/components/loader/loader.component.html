@@ -1,0 +1,10 @@
+<!-- loader.component.html -->
+<div [hidden]="!(isLoading | async)" class="overlay">
+  <mat-progress-bar
+    class="spinner"
+    [color]="color"
+    [mode]="mode"
+    [value]="value"
+  >
+  </mat-progress-bar>
+</div>

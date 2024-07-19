@@ -1,0 +1,89 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@neural/package": ["package.json"],
+      "@neural/ngrx-router": ["libs/ngrx-router/src/index.ts"],
+      "@nerv/countries": ["apps/nerv/src/assets/countries.json"],
+      "@nerv/banks": ["apps/nerv/src/assets/bankLists.json"],
+      "@nerv/timezone": ["apps/nerv/src/assets/timezones.json"],
+      "@nerv/env/*": ["apps/nerv/src/environments/*"],
+      "@nexus/env/*": ["apps/nexus/src/environments/*"],
+      "@neural/environment": ["libs/environment/src/index.ts"],
+      "@neural/ui": ["libs/ui/src/index.ts"],
+      "@neural/shared/styles": ["libs/shared/styles/src/index.scss"],
+      "@neural/core": ["libs/core/src/index.ts"],
+      "@neural/layout": ["libs/layout/src/index.ts"],
+      "@neural/modules/dashboard": ["libs/modules/dashboard/src/index.ts"],
+      "@neural/modules/administration": [
+        "libs/modules/administration/src/index.ts"
+      ],
+      "@neural/auth": ["libs/auth/src/index.ts"],
+      "@neural/shared/data": ["libs/shared/data/src/index.ts"],
+      "@neural/modules/customer/vehicles": [
+        "libs/modules/customer/vehicles/src/index.ts"
+      ],
+      "@neural/modules/customer/corporate": [
+        "libs/modules/customer/corporate/src/index.ts"
+      ],
+      "@neural/shared/util/directives": [
+        "libs/shared/util/directives/src/index.ts"
+      ],
+      "@neural/modules/profile": ["libs/modules/profile/src/index.ts"],
+      "@neural/modules/customer/fleets": [
+        "libs/modules/customer/fleets/src/index.ts"
+      ],
+      "@neural/shared/util/pipes": ["libs/shared/util/pipes/src/index.ts"],
+      "@neural/modules/customer/services": [
+        "libs/modules/customer/services/src/index.ts"
+      ],
+      "@neural/modules/jobs": ["libs/modules/jobs/src/index.ts"],
+      "@neural/modules/marketplaces": [
+        "libs/modules/marketplaces/src/index.ts"
+      ],
+      "@neural/modules/business": ["libs/modules/business/src/index.ts"],
+      "@neural/modules/models": ["libs/modules/models/src/index.ts"],
+      "@neural/modules/marketing": ["libs/modules/marketing/src/index.ts"],
+      "@neural/modules/template": ["libs/modules/template/src/index.ts"],
+      "@neural/shared/classes": ["libs/shared/classes/src/index.ts"],
+      "@neural/modules/sales": ["libs/modules/sales/src/index.ts"],
+      "@neural/modules/test-drive": ["libs/modules/test-drive/src/index.ts"],
+      "@neural/modules/support-center": [
+        "libs/modules/support-center/src/index.ts"
+      ],
+      "@neural/modules/calendar": ["libs/modules/calendar/src/index.ts"],
+      "@neural/modules/rewards": ["libs/modules/rewards/src/index.ts"],
+      "@neural/modules/insurer": ["libs/modules/insurer/src/index.ts"],
+      "@neural/shared/google-location": [
+        "libs/shared/google-location/src/index.ts"
+      ],
+      "@neural/modules/pre-owned/inventory": [
+        "libs/modules/pre-owned/inventory/src/index.ts"
+      ],
+      "@neural/modules/lead-management": [
+        "libs/modules/lead-management/src/index.ts"
+      ],
+      "@neural/modules/next-service": [
+        "libs/modules/next-service/src/index.ts"
+      ],
+      "@neural/modules/service-menu": ["libs/modules/service-menu/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

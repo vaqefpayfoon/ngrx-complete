@@ -1,0 +1,12 @@
+.error {
+  min-height: 100vh;
+  &__container {
+    &--image {
+        display: block;
+        width: 369px;
+        height: 369px;
+        object-fit: cover;
+        object-position: center;
+    }
+  }
+}

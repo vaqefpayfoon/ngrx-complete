@@ -1,0 +1,20 @@
+@import 'styles-variables';
+
+.search {
+  color: map-get($map: $colors, $key: shark) !important;
+
+  &__divider {
+    position: relative;
+  }
+
+  .form-group {
+    mat-label {
+      font-size: 13px;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+    .form-control {
+        margin: 0 !important;
+    }
+  }
+}

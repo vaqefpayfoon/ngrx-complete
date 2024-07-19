@@ -1,0 +1,15 @@
+.small-font {
+    font-size: 12px;
+}
+.medium-font {
+    font-size: 14px;
+}
+.disable-color {
+    background-color: #ebebe4;
+  }
+input[type="time"] {
+font-family: 'Gill Sans' !important;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+    background: none !important;
+}

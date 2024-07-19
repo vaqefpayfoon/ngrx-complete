@@ -1,0 +1,93 @@
+<div class="dynamic-header" fxFlex="100" fxLayoutAlign="space-between center" fxLayout="row wrap">
+  <div fxLayout="column" fxFlex="50" class="dynamic-header__header" fxLayoutAlign="start start">
+      <h1 fxFlex="100" class="mt0 mb3 font-semi-thick text-capitalize h2" fxFlexFill>{{title}}</h1>
+      <div class="breadcrumb" *ngIf="breadcrumb">
+          <span class="text-uppercase breadcrumb__parent" routerLink="/">Home</span>
+          <span class="arrow">
+              <mat-icon svgIcon="arrow_right_off"></mat-icon>
+          </span>
+          <span class="text-uppercase breadcrumb__parent">{{breadcrumb ? breadcrumb.title: 'Dashboard'}}</span>
+          <span class="arrow">
+              <mat-icon svgIcon="arrow_right_off"></mat-icon>
+          </span>
+          <span class="text-uppercase">{{breadcrumb ? breadcrumb.subtitle: 'General'}}</span>
+          <span class="arrow" *ngIf="breadcrumb && breadcrumb.action">
+              <mat-icon svgIcon="arrow_right_off"></mat-icon>
+          </span>
+          <span class="text-uppercase" *ngIf="breadcrumb && breadcrumb.action">{{breadcrumb ? breadcrumb.action: 'New'}}</span>
+      </div>
+      <div *ngIf="breadcrumbs && !!breadcrumbs.length" class="breadcrumb" fxLayoutAlign="start center">
+        <a class="text-uppercase breadcrumb__active" routerLink="/">Home</a>
+        <span class="arrow">
+            <mat-icon svgIcon="arrow_right_off"></mat-icon>
+        </span>
+        <ng-template ngFor let-item [ngForOf]="breadcrumbs" let-i="index">
+            <span class="text-uppercase" *ngIf="!item.path" [routerLink]="item.path">{{item.name}}</span>
+            <a class="text-uppercase" [class.breadcrumb__active]="!!item.path" *ngIf="item.path" [routerLink]="item.path">{{item.name}}</a>
+            <span class="arrow" *ngIf="i !== breadcrumbs.length - 1">
+                <mat-icon svgIcon="arrow_right_off"></mat-icon>
+            </span>
+        </ng-template>
+      </div>
+  </div>
+  <!-- <div fxLayoutAlign="space-between center" fxLayout="row wrap" fxLayoutGap="40px">
+      <div fxLayoutAlign="space-between center" fxLayout="row wrap" fxLayoutGap="10px" *ngIf="false">
+          <form *ngIf="disableSearch" class="dynamic-header__search" [formGroup]="searchForm" novalidate (ngSubmit)="search(searchForm)" autocomplete="off">
+              <input class="dynamic-header__search--input py3 pl6 pr12" type="text" formControlName="email" matInput [placeholder]="placeholder ? placeholder : 'Search...'">
+              <mat-icon *ngIf="!isSearch" class="dynamic-header__search--icon" (click)="search(searchForm)" svgIcon="search"></mat-icon>
+              <mat-icon *ngIf="isSearch" class="dynamic-header__search--closeicon" (click)="cancel(searchForm)" svgIcon="close_off"></mat-icon>
+          </form>
+          <div class="dynamic-header__sort" *ngIf="disableSort && sortData && sortData.sortItems">
+              <button mat-button class="font-semi-thick" [matMenuTriggerFor]="sort" [matMenuTriggerData]="sortData">
+                  <small class="font-normal">Sort By: </small>
+                  <ng-template [ngIf]="selectedSort" [ngIfElse]="default">
+                      <span *ngFor="let item of selectedSort | keyvalue">{{item.key}}</span>
+                  </ng-template>
+                  <ng-template #default>
+                      Select
+                  </ng-template>
+                  <mat-icon class="ml3 font-normal" svgIcon="arrow_down_on"></mat-icon>
+              </button>
+              <ng-container>
+                  <mat-menu #sort="matMenu">
+                      <ng-template matMenuContent let-aliasSortItems="sortItems">
+                          <button mat-menu-item class="sort-menu-btn" *ngFor="let item of aliasSortItems | keyvalue" (click)="selectSort(item)">
+                              <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <span>{{item.key}}</span>
+                              </div>
+                          </button>
+                      </ng-template>
+                  </mat-menu>                    
+              </ng-container>
+          </div>
+      </div>
+  </div> -->
+  <div class="dynamic-header__actions" fxFlex="50" fxLayoutAlign="end center" fxLayout="row wrap" fxLayoutGap="10px grid" *ngIf="!isFormPage">
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center" fxFlex="70">
+        <ng-template ngFor let-filter [ngForOf]="filters | keyvalue">
+            <ng-template ngFor let-item [ngForOf]="filters[filter.key] | keyvalue">
+                <div fxLayout="column" fxFlex="50">
+                    <div class="form-group selectedMat selectedMat--white my0" fxFlex="100">
+                        <mat-select [placeholder]="'Filter by ' + item.key | titlecase" [(ngModel)]="!!filtered ? filtered[item.key]: defaultValue" (selectionChange)="onChangeFilter($event, item.key)">
+                            <mat-option>-- None ---</mat-option>
+                            <mat-option *ngFor="let option of item.value | keyvalue" [value]="option.value">{{option.key}}</mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+            </ng-template>
+        </ng-template>
+    </div>
+    <div fxLayoutGap="10px">
+        <button mat-icon-button [disabled]="loading" [ngClass]="{'neural-spin': loading}" (click)="refresh()">
+            <mat-icon svgIcon="refresh"></mat-icon>
+        </button>
+        <!-- todo: create a config for each element -->
+        <button *ngIf="link"  mat-mini-fab color="primary" [disabled]="loading || !link" [routerLink]="link">
+            <mat-icon svgIcon="add"></mat-icon>
+        </button>
+        <button *ngIf="title==='Service'" [disabled]="loading" mat-mini-fab color="primary" (click)="syncServiceLineDMS()">
+            <mat-icon svgIcon="bulk_inject"></mat-icon>
+        </button>
+    </div>
+  </div>
+</div>

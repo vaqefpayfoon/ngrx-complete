@@ -1,0 +1,100 @@
+<div [formGroup]="form">
+    <div formArrayName="events" fxFlex="100" fxLayout="column">
+        <div fxFlex="100">
+            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Events</h2>
+                <button mat-mini-fab color="primary" [disabled]="formDisabled" (click)="addModuleEventBranch()">
+                    <mat-icon svgIcon="add"></mat-icon>
+                </button>
+            </div>
+        </div>
+        <ng-container *ngIf="events.controls.length;else showError">
+            <div *ngFor="let item of events.controls; let i = index;">
+                <div fxLayout="column" fxFlex="100" class="branch__general my4"
+                    fxLayoutAlign="space-evenly space-between" [formGroupName]="i">
+                    <button class="branch__general--close" matTooltip="Remove" [disabled]="formDisabled"
+                        (click)="removeModuleEventBranch(i)" mat-icon-button color="warn">
+                        <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                    </button>
+                    <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                            <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                                <mat-label>Title</mat-label>
+                                <div class="form-group selectedMat mb4"
+                                    [ngClass]="{'selectedMat--disabled':formDisabled, 'ng-invalid': events.controls[i].get('title').invalid, 'ng-valid': events.controls[i].get('title').valid}" fxFlex="100">
+                                    <mat-select placeholder="Select a title" formControlName="title"
+                                        (selectionChange)="onChangeTitle($event, i)">
+                                        <mat-option *ngFor="let title of eventTitle | eventTitles: key.value | keyvalue" [value]="title.value">
+                                            {{title.value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-hint>Key: {{events.controls[i].get('key').value}}</mat-hint>
+                                    <button [disabled]="formDisabled" mat-icon-button aria-label="copy" [cdkCopyToClipboard]="events.controls[i].get('key').value">
+                                        <mat-icon>content_copy</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                            <div fxFlex="100" fxLayout="row">
+                                <div class="form-group form-group--inline" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                    <mat-label>active</mat-label>
+                                    <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="active">
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                            <div fxLayout="column" fxLayoutGap="0.5rem">
+                                <mat-label>TO</mat-label>
+                                <div>
+                                    <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="to" aria-label="to">
+                                        <mat-button-toggle *ngFor="let notification of branchNotification | keyvalue" [value]="notification.key">{{notification.value}}</mat-button-toggle>
+                                        <mat-button-toggle [checked]="!group.value">Other</mat-button-toggle>
+                                    </mat-button-toggle-group>
+                                </div>
+                            </div>
+                            <div class="form-group mt2" fxFlex="35" *ngIf="!group.value">
+                                <mat-label>Email</mat-label>
+                                <input type="text" matInput class="form-control" formControlName="to" placeholder="mail@domian.com" autocomplete="off">
+                            </div>                
+                        </div>
+                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                            <div fxFlex="70" fxLayout="column">
+                                <div fxLayout="column" fxLayoutGap="0.5rem">
+                                    <mat-label>CC</mat-label>
+                                    <div fxLayoutGap="1rem">
+                                        <ng-container *ngFor="let notification of branchNotification | keyvalue">
+                                            <mat-checkbox [disabled]="formDisabled" color="primary" [checked]="events.controls[i].get('cc').value | checkedEvents: notification.value " (change)="onChange($event, events.controls[i].get('cc'))" [value]="notification.value" >{{notification.value}}</mat-checkbox>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <mat-form-field>
+                                    <mat-label>CC</mat-label>
+                                    <mat-chip-list #ccList aria-label="cc" [disabled]="formDisabled">
+                                        <mat-chip *ngFor="let item of events.controls[i].get('cc').value"
+                                            [selectable]="selectable" [removable]="removable"
+                                            (removed)="remove(item,i)">
+                                            {{item}}
+                                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                        </mat-chip>
+                                        <input placeholder="New item..." [matChipInputFor]="ccList"
+                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                            [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event,i)">
+                                    </mat-chip-list>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+<ng-template #showError>
+    <div class="branch__not-found" fxLayout="column" fxLayoutGap="1rem">
+        <span>Add a new event</span>
+    </div>
+</ng-template>

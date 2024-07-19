@@ -1,0 +1,104 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.model {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+
+  $self: &;
+
+  &__divider {
+    position: relative;
+  }
+
+  .mat-mini-fab {
+    .mat-icon {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+
+  &__general {
+    position: relative;
+
+    mat-label {
+      font-size: 13px;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .form-group {
+      position: relative;
+
+      .mat-icon {
+        cursor: pointer;
+        position: absolute;
+        top: 24px;
+        right: 4px;
+        bottom: 0;
+        margin: auto;
+
+        height: 18px;
+        width: 18px;
+        line-height: 18px;
+      }
+    }
+
+    #{$self} {
+      &__color {
+        img {
+          display: inline-flex;
+          width: 50px;
+          height: 50px;
+          object-position: center;
+          object-fit: cover;
+          border-radius: 50% !important;
+          border: 2px solid map-get($map: $colors, $key: white);
+        }
+      }
+
+      &__images {
+        position: relative;
+        height: 400px;
+        @include round(4px);
+        width: 100%;
+        border: 1px dashed
+          rgba($color: map-get($map: $colors, $key: black), $alpha: 0.4);
+
+        #{$self} {
+          &__add-btn {
+            position: absolute;
+            right: 1rem;
+            top: -1rem;
+          }
+        }
+      }
+
+      &__galleries {
+        height: 150px;
+        width: 170px;
+        object-fit: cover;
+        object-position: center;
+        @include round(4px);
+      }
+    }
+
+    &--close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: auto;
+    }
+  }
+
+  &__not-found {
+    font-size: 48px;
+    color: map-get($map: $colors, $key: shark);
+    font-weight: $font-thicker;
+    text-align: center;
+    padding: 150px 0;
+  }
+}

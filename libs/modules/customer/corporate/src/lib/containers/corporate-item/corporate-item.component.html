@@ -1,0 +1,27 @@
+<div
+  class="corporate"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-corporate-form
+      [operations]="operations$ | async"
+      [isSuperAdmin]="(account$ | async)?.isSuperAdmin"
+      [permissions]="permissions$ | async"
+      [corporate]="corporate$ | async"
+      [corporateBranches]="branches$ | async"
+      [appImages]="appImages$ | async"
+      (create)="onCreate($event)"
+      (updated)="onUpdate($event)"
+      (loaded)="onload($event)"
+      (upload)="onUpload($event)"
+    ></neural-corporate-form>
+  </div>
+</div>

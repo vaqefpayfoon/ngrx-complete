@@ -1,0 +1,70 @@
+<div class="mt8 inbox-search">
+    <mat-accordion class="inbox-search__panel">
+      <mat-expansion-panel [expanded]="panelOpenState">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h2 class="h6 text-capitalize font-semi-thick my0">Advance search</h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+            <div
+              fxLayout="column"
+              fxFlex="100"
+              class="inbox-search__general my10"
+              fxLayoutAlign="start space-between"
+              fxLayoutGap="1rem"
+              fxFlexOffset="1rem"
+            >
+              <!-- form -->
+              <div
+                [formGroup]="form"
+                fxLayout="row wrap"
+                fxFlex="100"
+                fxLayoutAlign="start space-between"
+                fxLayoutGap="1rem grid"
+              >
+               
+              <div fxFlex="30" class="form-group mx5" fxLayout="column"  fxLayoutGap="0.5rem">
+                <mat-label>Title</mat-label>
+                <div fxLayout="row" class="form-group__wrapper">
+                  <input
+                    type="text"
+                    matInput
+                    class="form-control"
+                    formControlName="title"
+                    placeholder="search by title"
+                    autocomplete="off"
+                    (keyup)="onSearch(form)"
+                  />
+                  <button *ngIf="title.value" class="form-group__remove" mat-button matSuffix mat-icon-button
+                  (click)="clearTitle(form)">
+                  <mat-icon>close</mat-icon>
+              </button>
+                </div>
+              </div>
+  
+                <!-- messagesTypes -->
+                <div fxFlex="30" class="form-group mx5" fxLayout="column" fxLayoutGap="0.5rem">
+                  <mat-label>Type</mat-label>
+                  <div class="form-group selectedMat " fxFlex="100">
+                    <mat-select
+                      placeholder="Select type"
+                      formControlName="type"
+                      (selectionChange)="onSearch(form)"
+                    >
+                      <mat-option>-- None --</mat-option>
+                      <mat-option
+                        *ngFor="let type of types | keyvalue"
+                        [value]="type.value"
+                      >
+                        {{ type.value }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+            
+              </div>
+            </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  

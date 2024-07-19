@@ -1,0 +1,8 @@
+<div class="fleet" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="(productCoverage$ | async) ? (productCoverage$ | async)?.partNumber : 'Create'" [breadcrumbs]="bc"></neural-dynamic-header> 
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-product-coverage-form [permissions]="permissions$ | async" [branch]="branch$ | async" [list]="list$ | async" [product]="productCoverage$ | async" [services]="services$ | async" (create)="onCreate($event)" (update)="onUpdate($event)" (loaded)="onload($event)" (serviceChange)="onServiceSelect($event)" (branchChange)="onBranchChange($event)" (brandChange)="onBrandSelect($event)"></neural-product-coverage-form>
+    </div>
+</div>

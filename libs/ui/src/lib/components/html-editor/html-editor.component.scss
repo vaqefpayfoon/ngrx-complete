@@ -1,0 +1,28 @@
+.dialog {
+    padding: 0;
+    margin: 0;
+    max-height: 94%;
+}
+
+ .gjs-field input, .gjs-field select, .gjs-field textarea {
+    color: unset !important;
+    font-size: unset !important;
+}
+
+.gjs-btn-prim {
+    font-size: 14px !important;
+}
+
+.disable-upload {
+    .gjs-am-file-uploader {
+        display: none !important;
+    }
+    
+    .gjs-am-assets-cont {
+        width: 100% !important;
+    }
+}
+a img {
+    max-height: 30px;
+    max-width: 30px;
+}

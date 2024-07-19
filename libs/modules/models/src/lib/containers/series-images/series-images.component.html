@@ -1,0 +1,16 @@
+<div fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="'series images'"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-model-series-image
+      [brandAndSeries]="(unit$ | async)?.brandsAndSeries"
+      [permissions]="permissions$ | async"
+      [selectedCorporate]="selectedCorporate$ | async"
+      (create)="onCreate($event)"
+    ></neural-model-series-image>
+  </div>
+</div>

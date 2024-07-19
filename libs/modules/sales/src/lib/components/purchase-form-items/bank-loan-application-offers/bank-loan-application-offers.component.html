@@ -1,0 +1,245 @@
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+  <mat-card fxFlex class="sale">
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <div
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="1rem"
+        >
+          <h2 class="h6 text-capitalize font-semi-thick my0">
+            bank Loan Offers
+          </h2>
+        </div>
+      </div>
+    </mat-card-title>
+    <div class="sale__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100" class="sale__general">
+        <ng-container *ngIf="bankLoanOffer; else bankLoanOfferForms">
+          <div fxLayout="column" fxFlex="100" fxLayoutGap="2rem">
+            <ng-template ngFor let-bankLoan [ngForOf]="loans" let-i="index">
+              <mat-list>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Nationality</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ bankLoan?.account?.nationality }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Date Of Birth</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ bankLoan?.account?.dateOfBirth | date: 'MMM d, y' }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Identification</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ bankLoan?.account?.identification }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Bank</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ bankLoan?.bank?.name }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Status</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ bankLoan?.status | formatString | titlecase }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Loan Amount (RM)</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ bankLoan?.loan?.amount | number: '1.2-2' }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">
+                      Monthly instalment (RM)
+                    </h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ bankLoan?.loan?.monthlyInstallment | number: '1.2-2' }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Loan Period (Years)</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ bankLoan?.loan?.period }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Interest rate (%)</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ bankLoan?.bank?.interestRate * 100 | number: '1.2-2' }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">
+                      Loan Approval Document
+                    </h2>
+                    <div fxLayout="row" fxLayoutGap="1rem">
+                      <a
+                        mat-flat-button
+                        color="accent"
+                        type="button"
+                        *ngFor="let item of bankLoan?.documents"
+                        [href]="item?.url"
+                        target="_blank"
+                      >
+                        {{ item?.title }}
+                      </a>
+                    </div>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div
+                    fxFlex="100"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                  >
+                    <h2 class="h6 text-capitalize my0">Customer's Decision</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ bankLoan?.customerDecision }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </mat-list>
+            </ng-template>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!loans.length">
+          <div
+            fxFlex="100"
+            fxFlexFill
+            class="sale__not-found--file text-center mt15"
+            fxFlexFill
+          >
+            Please create a bank loan offer first
+          </div>
+        </ng-container>
+        <ng-template #bankLoanOfferForms>
+
+          <ng-container *ngFor="let item of loans; let i = index">
+            <neural-bank-loan-application-offer-form
+              [permissions]="permissions"
+              [purchase]="purchase"
+              [countries]="countries"
+              [enabledDecision]="loans | customerDecision: item"
+              [bankLoanApplicationOffersUploadedFile]="
+                bankLoanApplicationOffersUploadedFile
+              "
+              [bankLoanApplicationOffersDeletedFile]="
+                bankLoanApplicationOffersDeletedFile
+              "
+              [bankLoan]="item"
+              [index]="i"
+              (updated)="onUpdate($event)"
+              (fileChange)="onUploadFile($event, i)"
+              (deleteFile)="onDeleteFile($event, i)"
+            ></neural-bank-loan-application-offer-form>
+            <div class="sale__divider" fxFlexFill fxFlex="100">
+              <mat-divider></mat-divider>
+            </div>
+          </ng-container>
+        </ng-template>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="py4" fxLayoutAlign="end center">
+      <button
+        mat-stroked-button
+        type="button"
+        class="mr4 px10 py1"
+        (click)="bankLoanOffer = true"
+        [disabled]="!updatePermission"
+      >
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        class="px10 py1"
+        color="primary"
+        *ngIf="bankLoanOffer"
+        (click)="bankLoanOffer = !bankLoanOffer"
+        [disabled]="!updatePermission"
+      >
+        Edit
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

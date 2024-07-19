@@ -1,0 +1,21 @@
+@import 'styles-variables';
+
+.inbox-messages {
+  &__header {
+    background-color: transparent;
+    box-shadow: none;
+    text-transform: uppercase;
+
+    &--item {
+      font-size: 13px;
+    }
+  }
+
+  &__loading, &__not-found {
+    font-size: 48px;
+    color: map-get($map: $colors, $key: shark);
+    font-weight: $font-thicker;
+    text-align: center;
+    padding: 150px 0;
+  }
+}

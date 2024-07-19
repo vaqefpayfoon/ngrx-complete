@@ -1,0 +1,46 @@
+<mat-card class="warranty p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap"  fxFlex="100" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxFlex="1 1 auto" class="warranty__name font-semi-thick mb2" fxLayoutAlign="space-between center">
+                <span>Warranty Packages</span>
+            </div>
+        </div>
+    </mat-card-title>
+    <div class="warranty__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content class="p4">
+        <div fxLayoutGap="1rem" fxLayout="row wrap">
+        <ng-template ngFor let-warrantyPackage [ngForOf]="warrantyPackages" let-i="index">
+                <div>
+                    <div class="warranty__package p2" fxLayout="column" >
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <div fxLayout="column" class="mb2">
+                                <small>Name</small>
+                                <h2 class="my0 h6">{{ warrantyPackage?.packageName }}</h2>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <div fxLayout="column" class="mb2">
+                                <small>Start</small>
+                                <h4 class="my0 h6">{{ warrantyPackage?.dateRange?.startDate | date }}</h4>
+                            </div>
+                            <div fxLayout="column" class="mb2">
+                                <small>End</small>
+                                <h4 class="my0 h6">{{ warrantyPackage?.dateRange?.endDate | date }}</h4>
+                            </div>
+                        </div>
+                        <div fxLayout="column" class="mb2" fxLayoutAlign="space-between start">
+                            <small>Mileage</small>
+                            <h4 class="my0 h6">{{ warrantyPackage?.mileage | number }}</h4>
+                        </div>
+                        <div fxLayout="column" class="mb2" fxLayoutAlign="space-between start">
+                            <small>Duration</small>
+                            <h4 class="my0 h6">{{ warrantyPackage?.duration }} Months</h4>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>            
+    </mat-card-content>
+</mat-card>

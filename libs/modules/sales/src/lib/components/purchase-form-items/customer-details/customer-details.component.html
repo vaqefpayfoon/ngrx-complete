@@ -1,0 +1,327 @@
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch" fxLayoutGap="1rem">
+  <div fxFlex="30">
+    <mat-card fxFlex class="sale">
+      <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem">
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Customer Details
+            </h2>
+          </div>
+        </div>
+      </mat-card-title>
+      <div class="sale__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+              <h2 class="h6 text-capitalize my0">Name</h2>
+              <h2 class="h6 text-capitalize font-semi-thick my0">
+                {{ purchase?.account?.identity?.salutation }}
+                {{ purchase?.account?.identity?.fullName }}
+              </h2>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+              <h2 class="h6 text-capitalize my0">Email</h2>
+              <h2 class="h6 font-semi-thick my0">
+                {{ purchase?.account?.email }}
+              </h2>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+              <h2 class="h6 text-capitalize my0">Mobile Number</h2>
+              <h2 class="h6 font-semi-thick my0">
+                <a href="tel:+{{ purchase?.account?.phone?.code }}{{
+                    purchase?.account?.phone?.number
+                  }}" title="call {{ purchase?.account?.identity?.fullName }}">{{ purchase?.account?.phone?.code }}{{
+                  purchase?.account?.phone?.number }}</a>
+              </h2>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="70">
+    <mat-card fxFlex class="sale">
+      <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+            <h2 class="h6 text-capitalize font-semi-thick my0">
+              Purchase Details
+            </h2>
+          </div>
+          <div>
+            <button *ngIf="purchase?.badge?.purchase" mat-stroked-button color="primary" matBadgeColor="warn"
+              matBadge="1" (click)="onClearBadge()">
+              Clear
+            </button>
+          </div>
+        </div>
+      </mat-card-title>
+      <div class="sale__divider">
+        <mat-divider></mat-divider>
+      </div>
+      <mat-card-content>
+        <div fxLayout="column" fxFlex="100">
+          <ng-container *ngIf="purchaseDetail; else purchaseDetailForm">
+            <div fxFlex="100">
+              <mat-list>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Brand</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">
+                      {{ purchase?.model?.unit?.brand }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Model</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ purchase?.model?.unit?.model }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Variant</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ purchase?.model?.unit?.variant }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Exterior color</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ purchase.model?.exterior?.color?.name }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Interior color</h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ purchase.model?.interior?.color?.name }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">
+                      Registration Number
+                    </h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ purchase?.numberPlate }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">
+                      Estimated vehicle price (RM)
+                    </h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ purchase?.model?.price | number : '1.2-2' }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">Booking Fee (RM)</h2>
+                    <h2 class="h6 text-capitalize font-semi-thick my0">{{purchase?.payment?.payableAmount | number :
+                      '1.2-2'}}</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">
+                      Booking Fee Receipt No.
+                    </h2>
+                    <h2 class="h6 font-semi-thick my0">{{purchase?.payment?.receiptId}}</h2>
+                  </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 class="h6 text-capitalize my0">
+                      Purchase Request Date
+                    </h2>
+                    <h2 class="h6 font-semi-thick my0">
+                      {{ purchase?.createdAt | date: 'MMMM d Y, h:mm a' }}
+                    </h2>
+                  </div>
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </ng-container>
+          <ng-template #purchaseDetailForm>
+            <form [formGroup]="unitForm">
+              <div fxLayout="column" fxFlex="100" class="sale__general mt8 mb4"
+                fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem">
+                <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100" fxLayoutGap="1rem grid">
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label style="font-size: 13px">Brand</mat-label>
+                    <div class="form-group selectedMat my0" [ngClass]="{
+                        'selectedMat--disabled': formDisabled,
+                        'ng-invalid': brand.invalid && brand.touched,
+                        'ng-valid': brand.valid && brand.touched
+                      }" fxFlex="100">
+                      <mat-select formControlName="brand" placeholder="Select a brand"
+                        (selectionChange)="onResetUnitForm()">
+                        <mat-option *ngFor="let brand of unit?.brandsAndSeries" [value]="brand.name">
+                          {{ brand.name }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label style="font-size: 13px">Series </mat-label>
+                    <div class="form-group selectedMat my0" [ngClass]="{
+                        'selectedMat--disabled': formDisabled,
+                        'ng-invalid': series.invalid && series.touched,
+                        'ng-valid': series.valid && series.touched
+                      }" fxFlex="100">
+                      <mat-select formControlName="series" placeholder="Select a serie"
+                        (selectionChange)="onSeriesChange($event)">
+                        <mat-option *ngFor="let item of seriesList" [value]="item.name">
+                          {{ item.name }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label style="font-size: 13px">Model</mat-label>
+                    <div class="form-group selectedMat my0" [ngClass]="{
+                        'selectedMat--disabled': formDisabled,
+                        'ng-invalid': model.invalid && model.touched,
+                        'ng-valid': model.valid && model.touched
+                      }" fxFlex="100">
+                      <mat-select formControlName="model" placeholder="Select a model"
+                        (selectionChange)="onModelChange($event)" [compareWith]="compareFn">
+                        <mat-option *ngFor="let item of unit?.models" [value]="item">
+                          {{ item.name }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label style="font-size: 13px">Variant</mat-label>
+                    <div class="form-group selectedMat my0" [ngClass]="{
+                        'selectedMat--disabled': formDisabled,
+                        'ng-invalid': variant.invalid && variant.touched,
+                        'ng-valid': variant.valid && variant.touched
+                      }" fxFlex="100">
+                      <mat-select formControlName="variant" placeholder="Select Variant">
+                        <mat-option *ngFor="let item of unit?.variants" [value]="item?.unit?.variant">
+                          {{ item?.unit?.variant }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label style="font-size: 13px">Exterior color</mat-label>
+                    <div class="form-group selectedMat my0" [ngClass]="{
+                        'selectedMat--disabled': formDisabled,
+                        'ng-invalid':
+                          exteriorColor.invalid && exteriorColor.touched,
+                        'ng-valid': exteriorColor.valid && variant.touched
+                      }" fxFlex="100">
+                      <mat-select formControlName="exteriorColor" placeholder="Select color"
+                        (selectionChange)="onColorChange('exteriorColor', $event)">
+                        <mat-option *ngFor="let item of exteriorList" [value]="item?.color?.name">
+                          {{ item?.color?.name }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label style="font-size: 13px">Interior color</mat-label>
+                    <div class="form-group selectedMat my0" [ngClass]="{
+                        'selectedMat--disabled': formDisabled,
+                        'ng-invalid':
+                          interiorColor.invalid && interiorColor.touched,
+                        'ng-valid': interiorColor.valid && interiorColor.touched
+                      }" fxFlex="100">
+                      <mat-select formControlName="interiorColor" placeholder="Select color"
+                        (selectionChange)="onColorChange('interiorColor', $event)">
+                        <mat-option>-- None --</mat-option>
+                        <mat-option *ngFor="let item of interiorList" [value]="item?.color?.name">
+                          {{ item?.color?.name }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <form  [formGroup]="form" novalidate> 
+              <div fxLayout="column" fxFlex="100" class="sale__general mt8 mb4"
+                fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem">
+                <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100" fxLayoutGap="1rem grid">
+                  <div class="form-group" fxFlex="30">
+                    <mat-label>Registration Number</mat-label>
+                    <input type="text" matInput class="form-control" formControlName="numberPlate"
+                      placeholder="Ex. VCN123" autocomplete="off"
+                      (input)="numberPlate.setValue(numberPlate.value.toUpperCase().trim());numberPlate.updateValueAndValidity()" />
+                      <neural-show-errors [control]="numberPlate"></neural-show-errors>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <ng-container *ngIf="updateQuotePermission">
+              <form [formGroup]="form" novalidate>
+                <div fxLayout="column" fxFlex="100" class="sale__general mt8 mb4"
+                  fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem">
+                  <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100" fxLayoutGap="1rem grid"
+                    formGroupName="payment">
+                    <div class="form-group" fxFlex="30">
+                      <mat-label>Booking Fee (RM)</mat-label>
+                      <input type="number" matInput class="form-control" formControlName="payableAmount"
+                        placeholder="Ex. 30,000" autocomplete="off" />
+                    </div>
+                    <div class="form-group" fxFlex="30">
+                      <mat-label>Booking Fee Receipt No.</mat-label>
+                      <input type="number" matInput class="form-control" formControlName="receiptId"
+                        placeholder="Ex. 30,000" autocomplete="off" />
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </ng-container>
+          </ng-template>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="py4" fxLayoutAlign="end center">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]=" !updatePermission"
+          (click)="purchaseDetail = true">
+          Cancel
+        </button>
+        <button mat-flat-button type="button" class="px10 py1" color="primary" *ngIf="purchaseDetail"
+          [disabled]=" !updatePermission" (click)="purchaseDetail = !purchaseDetail">
+          Edit
+        </button>
+        <button mat-flat-button class="px10 py1" color="primary" *ngIf="!purchaseDetail"
+          [disabled]="form.invalid || !updatePermission" (click)="onUpdate(form)">
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

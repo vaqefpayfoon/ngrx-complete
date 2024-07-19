@@ -1,0 +1,154 @@
+<mat-card class="card" [ngClass]="{ deactive: !purchase?.active }">
+  <div
+    fxLayout="row wrap"
+    fxLayout.lt-md="column"
+    fxFlex="100"
+    fxLayoutAlign="space-between center"
+    fxLayoutAlign.lt-md="start start"
+    class="card__header"
+    fxLayoutGap.lt-md="1rem"
+  >
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--name"
+      fxLayoutAlign="start start"
+      fxLayout="column"
+      fxLayoutGap="0.5rem"
+      fxFlexOrder.lt-md="2"
+    >
+      {{
+        purchase.createdAt
+          ? (purchase.createdAt | date: 'MMMM d, Y')
+          : (purchase.updatedAt | date: 'MMMM d, Y')
+      }}
+    </div>
+    <div
+      fxFlex="15"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--name"
+      fxLayoutAlign="start start"
+      fxLayout="column"
+      fxLayoutGap="0.5rem"
+      fxFlexOrder.lt-md="2"
+    >
+      <div>
+        {{ purchase?.account?.identity?.salutation }}
+        {{ purchase?.account?.identity?.fullName | titlecase }}
+      </div>
+      <div fxHide.lt-md>{{ purchase?.account?.email }}</div>
+      <div fxHide.lt-md>
+        <a
+          title="Call {{ purchase?.account?.identity?.fullName | titlecase }}"
+          href="tel:+{{ purchase?.account?.phone?.code }}{{
+            purchase?.account?.phone?.number
+          }}"
+          >{{ purchase?.account?.phone?.code
+          }}{{ purchase?.account?.phone?.number }}</a
+        >
+      </div>
+    </div>
+    <div
+      fxFlex="15"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--email"
+      fxFlexOrder.lt-md="3"
+    >
+      {{ purchase?.model?.unit?.brand }} {{ purchase?.model?.unit?.model }}
+      {{ purchase?.model?.unit?.variant }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--phone"
+      fxFlexOrder.lt-md="4"
+    >
+      {{ purchase?.referenceNumber }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--phone"
+      fxFlexOrder.lt-md="5"
+    >
+      <ng-container *ngIf="!purchase?.tradeIn?.offer?.status">No offer</ng-container>
+      {{ purchase?.tradeIn?.offer?.status | formatString | titlecase }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--phone"
+      fxFlexOrder.lt-md="6"
+    >
+      {{ purchase?.status | formatString | titlecase }}
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--phone"
+      fxFlexOrder.lt-md="6"
+    >
+      <ng-container *ngIf="!purchase?.salesAdvisor">Not selected</ng-container>
+      <div>
+        {{ purchase?.salesAdvisor?.identity?.salutation }}
+        {{ purchase?.salesAdvisor?.identity?.fullName | titlecase }}
+      </div>
+      <div fxHide.lt-md>{{ purchase?.salesAdvisor?.email }}</div>
+      <div fxHide.lt-md>
+        <a
+          title="Call {{
+            purchase?.salesAdvisor?.identity?.fullName | titlecase
+          }}"
+          href="tel:+{{ purchase?.salesAdvisor?.phone?.code }}{{
+            purchase?.salesAdvisor?.phone?.number
+          }}"
+          >{{ purchase?.salesAdvisor?.phone?.code
+          }}{{ purchase?.salesAdvisor?.phone?.number }}</a
+        >
+      </div>
+    </div>
+    <div
+      fxFlex="10"
+      fxFlex.lt-md="100"
+      class="font-semi-thick card__header--actions"
+      fxLayoutAlign="center center"
+      fxLayoutAlign.lt-md="end"
+      fxLayout.lt-md="row"
+      fxFlexFill
+      fxFlexOrder.lt-md="1"
+    >
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="actions"
+        [matBadge]="purchase?.badgeTotal"
+        matBadgeColor="warn"
+        matBadgeOverlap="false"
+        [matBadgeHidden]="!purchase?.badgeTotal"
+      >
+        <mat-icon svgIcon="action_off"></mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-menu #actions="matMenu">
+    <button mat-menu-item [disabled]="!previewPermission" [routerLink]="['../purchase', purchase?.uuid]">
+      <mat-icon>remove_red_eye</mat-icon>
+      <span>Preview</span>
+    </button>
+    <button
+      [disabled]="inProcess || !cancelPermission"
+      mat-menu-item
+      (click)="cancelChange.emit(purchase)"
+    >
+      <mat-icon>cancel</mat-icon>
+      <span>Cancel</span>
+    </button>
+    <button
+      [disabled]="inProcess || !completePermission"
+      mat-menu-item
+      (click)="completeChange.emit(purchase)"
+    >
+      <mat-icon>done</mat-icon>
+      <span>Complete</span>
+    </button>
+  </mat-menu>
+</mat-card>

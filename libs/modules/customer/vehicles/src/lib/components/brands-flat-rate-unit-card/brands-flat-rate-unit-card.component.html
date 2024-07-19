@@ -1,0 +1,29 @@
+<mat-card class="fru p4 my8" *ngIf="permissions.GET_BRAND_FRU">
+    <mat-card-title class="fru__title p4 my8" class="mb0">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 fxLayoutAlign="start center" fxFlex="95" class="fru__title--name h6 text-capitalize font-semi-thick my0"> <span class="text-center mr2" *ngIf="pendingFRU !== 0">{{pendingFRU}}</span> Flat rate units</h2>
+                <div fxLayout="row wrap" fxFlex="5" fxLayoutAlign="space-between center">
+                    <button mat-icon-button [disabled]="!previewPermission" [matMenuTriggerFor]="actions">
+                        <mat-icon svgIcon="action_off"></mat-icon>
+                    </button>                   
+                </div>
+            </div>
+            <mat-menu #actions="matMenu">
+                <button mat-menu-item [disabled]="!previewPermission" [routerLink]="['../brandsfru/set']">
+                    <mat-icon  svgIcon="preview_off"></mat-icon>
+                    <span>Preview</span>
+                </button>
+            </mat-menu>
+            <button mat-icon-button *ngIf="pendingFRU !== 0" (click)="panelOpenState = !panelOpenState" class="fru__title--showmore">
+                <mat-icon [svgIcon]="!panelOpenState ? 'arrow_down_off' : 'arrow_up_off'"></mat-icon>
+            </button>        
+    </mat-card-title>
+    <div class="fru__divider" *ngIf="panelOpenState">
+        <mat-divider></mat-divider>
+    </div>  
+    <mat-card-content class="fru__remain pt4" *ngIf="panelOpenState">
+        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px">
+        <span *ngFor="let brand of remainingBrands" class="font-semi-thick">{{brand}}</span>
+        </div>
+    </mat-card-content>        
+</mat-card>

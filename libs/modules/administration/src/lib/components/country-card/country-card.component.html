@@ -1,0 +1,44 @@
+<mat-card class="role-card p4 my8" [ngClass]="{deactive: !country.isActive}">
+  <mat-card-title class="mb0">
+      <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+        <h2 fxFlex="90" class="h6 text-capitalize font-semi-thick my0">{{name}}</h2>
+        <div fxLayout="row wrap" fxFlex="10" fxLayoutAlign="space-between center">
+            <mat-slide-toggle [disabled]="!statusPermission" color="primary" matTooltipPosition="above" [matTooltip]="[country.isActive ? 'Deactivate' : 'Activate']" (click)="toggleStatus($event)" [checked]="country.isActive"></mat-slide-toggle >
+            <button mat-icon-button [disabled]="!permissions?.LIST_ALL_CURRENCIES || !permissions?.GET_COUNTRY_BY_NAME" [matMenuTriggerFor]="actions">
+                <mat-icon svgIcon="action_off"></mat-icon>
+            </button>
+        </div>
+      </div>
+        <mat-menu #actions="matMenu">
+            <button mat-menu-item [disabled]="!permissions?.LIST_ALL_CURRENCIES || !permissions?.GET_COUNTRY_BY_NAME" [routerLink]="['../country',country.uuid]">
+                <mat-icon svgIcon="preview_off"></mat-icon>
+            <span>Preview</span>
+            </button>
+        </mat-menu>      
+  </mat-card-title>
+  <div class="role-card__divider">
+      <mat-divider></mat-divider>
+  </div>
+  <mat-card-content>
+      <div fxFlex="100" fxLayout="column">
+          <div fxFlex="100" fxLayout="column" class="role-card__content">
+              <div class="py4 role-card__content--title" fxLayout="row" fxFlexFill fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="5px">
+                  <mat-icon svgIcon="currency"></mat-icon>
+                  <span class="font-semi-thick">Currency</span>
+              </div>
+              <div class="role-card__content--chip" fxLayout="row" fxFlexFill fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <span *ngFor="let currency of currencies">{{currency.code}}</span>
+              </div>
+          </div>
+          <div fxFlex="100" fxLayout="column" class="role-card__content">
+              <div class="py4 role-card__content--title" fxLayout="row" fxFlexFill fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="5px">
+                  <mat-icon svgIcon="state"></mat-icon>
+                  <span class="font-semi-thick">States</span>
+              </div>
+              <div class="role-card__content--chip" fxLayout="row" fxFlexFill fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <span *ngFor="let state of states">{{state.name}}</span>
+              </div>
+          </div>                
+      </div>
+  </mat-card-content>        
+</mat-card>

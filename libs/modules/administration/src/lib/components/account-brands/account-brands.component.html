@@ -1,0 +1,18 @@
+<mat-form-field appearance="fill">
+  <mat-label>Brands</mat-label>
+  <mat-chip-list #chipList aria-label="Brand selection" [disabled]="formDisabled">
+    <mat-chip *ngFor="let brand of myBrands" [selectable]="selectable" [removable]="removable"
+      (removed)="remove(brand)">
+      {{brand}}
+      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip>
+    <input placeholder="New brand..." [formControl]="brandCtrl" #brandInput [matAutocomplete]="auto"
+      [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)">
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let brand of filteredBrands | async" [value]="brand" [disabled]="isBrandSelected(brand)">
+      {{brand}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

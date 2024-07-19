@@ -1,0 +1,30 @@
+@import 'styles-mixins';
+
+.app {
+    overflow: hidden;
+  
+    &__header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      @include breakpoint(lt-md) {
+        position: relative;
+      }
+    }
+    &__content {
+      min-height: 100vh;
+      margin-top: 128px;
+      @include breakpoint(lt-md) {
+        margin-top: 0 !important;
+      }
+      padding: 70px;
+      position: relative;
+      overflow-y: hidden;
+      @include breakpoint(lt-md){
+        padding: 20px;
+        margin-top: 232px;
+      }
+    }
+  }
+  

@@ -1,0 +1,13 @@
+<div class="dms">
+
+  <mat-dialog-content>
+    <h1 class="h4 font-semi-thick text-black">Are you sure you want to sync service line DMS?</h1>
+  </mat-dialog-content>
+
+  <mat-dialog-actions fxLayout="row" class="mt5" fxLayoutAlign="space-evenly">
+    <button mat-flat-button class="px10 py1" (click)="onConfirmSync()" [color]="'primary'">
+      Yes
+    </button>
+    <button mat-stroked-button class="px10 py1" color="primary" type="button" (click)="close()">No</button>
+  </mat-dialog-actions>
+</div>

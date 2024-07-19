@@ -1,0 +1,56 @@
+<mat-card class="model p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Upload Series Image</h2>
+        </div>
+    </mat-card-title>
+    <div class="model__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+        <div [formGroup]="form">
+            <div fxLayout="column" fxFlex="100" class="model__general my8" fxLayoutGap="1rem" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between">
+                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                    <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                        <mat-label>Brand</mat-label>
+                        <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':formDisabled}" fxFlex="100">
+                            <mat-select placeholder="Select a brand" formControlName="brand">
+                                <mat-option *ngFor="let item of brandAndSeries" [value]="item.name">
+                                  {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+                    <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                        <mat-label>Series</mat-label>
+                        <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':(formDisabled || brand.invalid)}" fxFlex="100">
+                            <mat-select placeholder="Select series" formControlName="series">
+                                <mat-option *ngFor="let item of seriesList" [value]="item.name">
+                                  {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100" fxLayoutGap="2rem">
+                        <div class="form-group" fxLayout="column">
+                            <input type="file" #myFileInput accept="image/*" name="file" hidden class="form-control" placeholder="Image" autocomplete="off" (change)="showPreview($event)">
+                            <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                <button type="button" [disabled]="form.disabled" color="accent" mat-flat-button (click)="myFileInput.click()" >Select Image</button>
+                            </div>
+                        </div>
+                        <div *ngIf="!!image.value && !formDisabled">
+                            {{image?.value?.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" (click)="form.disable()">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="form.disabled" class="px10 py1" color="primary" (click)="form.enable()">Edit</button>
+        <button mat-flat-button type="button" *ngIf="form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || !createPermission" (click)="createSeriesImage(form)">Save</button>
+    </mat-card-actions>
+</mat-card>

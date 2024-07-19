@@ -1,0 +1,37 @@
+<mat-card class="card" [ngClass]="{ deactive: !servicePackage.active }">
+    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center" class="card__header">
+      <div fxFlex="20" class="font-semi-thick card__header--name" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+        {{ servicePackage?.package?.title }}
+      </div>
+      <div fxFlex="15" class="font-semi-thick card__header--phone">
+        {{ servicePackage?.package?.price?.value?.toFixed(2) }}
+      </div>
+      <div fxFlex="10" class="font-semi-thick card__header--status">
+        <mat-slide-toggle color="primary" [disabled]="!statusPermission" matTooltipPosition="above"
+          [matTooltip]="[servicePackage.active ? 'Deactivate' : 'Activate']" (change)="toggleStatusActive($event)"
+          [checked]="servicePackage.active"></mat-slide-toggle>
+      </div>
+      <div fxFlex="10" class="font-semi-thick card__header--status">
+        <mat-slide-toggle color="primary" [disabled]="!statusPermission || !servicePackage?.active" matTooltipPosition="above"
+          [matTooltip]="[servicePackage.isInCustomerApp ? 'Deactivate' : 'Activate']"
+          (change)="toggleStatusIsInCustomerApp($event)" [checked]="servicePackage.isInCustomerApp"></mat-slide-toggle>
+      </div>
+      <div fxFlex="5" class="font-semi-thick card__header--actions">
+        <button mat-icon-button [matMenuTriggerFor]="actions">
+          <mat-icon svgIcon="action_off"></mat-icon>
+        </button>
+        <mat-menu #actions="matMenu">
+          <button mat-menu-item [routerLink]="['../list', servicePackage.uuid]">
+            <mat-icon svgIcon="preview_off"></mat-icon>
+            <span>Preview</span>
+          </button>
+          <!-- <button
+              mat-menu-item
+            >
+              <mat-icon svgIcon="delete_off"></mat-icon>
+              <span>Delete</span>
+            </button> -->
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card>

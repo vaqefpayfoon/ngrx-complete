@@ -1,0 +1,195 @@
+<form [formGroup]="parent" novalidate>
+    <mat-card class="corporate p4 my8">
+        <mat-card-title class="mb2">
+            <div class="corporate__header" formGroupName="configuration" fxLayout="row" fxFlex="100"  fxLayoutAlign="end center">
+                <div class="form-group form-group--inline" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem" formGroupName="model">
+                    <mat-label>Active</mat-label>
+                    <mat-slide-toggle
+                        fxLayout="row-reversed"
+                        color="primary"
+                        formControlName="active">
+                    </mat-slide-toggle>
+                </div>
+            </div>
+        </mat-card-title>
+        <div class="corporate__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div formGroupName="configuration">
+                <div formGroupName="model">
+                    <div fxLayout="column" fxFlex="100" class="corporate__general my8" fxFlexOffset="8rem" fxLayoutGap="1rem" fxLayoutAlign="space-evenly space-between" formGroupName="sale">
+                        <div fxLayout="column" fxFlex="100">
+                            <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+                                <h2 class="h5 text-capitalize font-semi-thick my0 mb2">Fulfillments</h2>
+                                <button mat-mini-fab color="primary" type="button" [disabled]="parent.disabled"  (click)="addedFullFillment.emit()">
+                                    <mat-icon svgIcon="add"></mat-icon>
+                                </button>
+                            </div>
+                            <div formArrayName="fulfillments" fxLayout="column" fxFlex="100" fxLayoutGap="1rem" class="example-list" cdkDropList (cdkDropListDropped)="dropFullFillment($event)">
+                                <ng-template ngFor let-ful [ngForOf]="fulfillments.controls" let-i="index">
+                                    <div [formGroupName]="i" fxFlex="100" fxLayout="column" fxLayoutGap="1rem" cdkDrag [cdkDragDisabled]="parent.disabled" class="corporate__object example-box">
+                                        <button class="corporate__object--close" matTooltip="Remove" [disabled]="parent.disabled" (click)="removeFullFillment.emit(i)" mat-icon-button color="warn">
+                                            <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                                        </button>
+                                        <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                            <div class="form-group" fxFlex="35">
+                                                <mat-label>Title</mat-label>
+                                                <input type="text" matInput class="form-control" formControlName="title" placeholder="Title" autocomplete="off">
+                                                <neural-show-errors [control]="fulfillments.controls[i].get('title')"></neural-show-errors>
+                                            </div>
+                                            <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                                                <mat-label>Type</mat-label>
+                                                <div class="form-group selectedMat" fxFlex="100" [ngClass]="{'selectedMat--disabled':parent.disabled, 'ng-invalid':fulfillments.controls[i].get('type').invalid && fulfillments.controls[i].get('type').touched, 'ng-valid': fulfillments.controls[i].get('type').valid}">
+                                                    <mat-select formControlName="type" placeholder="Select type" (selectionChange)="onTypeChange($event,i)">
+                                                        <mat-option *ngFor="let type of modelSaleFulfillmentType | keyvalue" [value]="type.value">
+                                                            {{type.value}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </div>
+                                                <neural-show-errors [control]="fulfillments.controls[i].get('type')"></neural-show-errors>
+                                            </div>
+                                        </div>
+                                        <ng-template [ngIf]="ful.get('type').valid && modelSaleFulfillmentType[ful.get('type').value] === modelSaleFulfillmentType.DOCUMENT">
+                                            <div fxFlex="100" formGroupName="document" fxLayout="column" fxLayoutGap="1rem">
+                                                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                                    <div class="form-group" fxLayoutAlign="start center" formGroupName="signature" fxLayoutGap="1rem">
+                                                        <mat-label class="mb0">Is signature required?</mat-label>
+                                                        <mat-slide-toggle
+                                                            (change)="signatureChanged($event, { form: ful, name: 'document'})"
+                                                            #signature
+                                                            fxLayout="row-reversed"
+                                                            color="primary"
+                                                            formControlName="isRequired">
+                                                        </mat-slide-toggle>
+                                                    </div>
+                                                </div>
+                                                <div fxFlex="100" formGroupName="signature" *ngIf="signature.checked === true">
+                                                    <div fxFlex="100" formGroupName="position" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                                        <div class="form-group" fxFlex="15">
+                                                            <mat-label>Page</mat-label>
+                                                            <input type="number" matInput class="form-control" formControlName="page" placeholder="Page Number" autocomplete="off">
+                                                        </div>
+                                                        <div class="form-group" fxFlex="15">
+                                                            <mat-label>X</mat-label>
+                                                            <input type="number" matInput class="form-control" formControlName="x" placeholder="X" autocomplete="off">
+                                                        </div>
+                                                        <div class="form-group" fxFlex="15">
+                                                            <mat-label>Y</mat-label>
+                                                            <input type="number" matInput class="form-control" formControlName="y" placeholder="Y" autocomplete="off">
+                                                        </div>
+                                                        <div class="mt5">
+                                                            <button
+                                                            type="button"
+                                                            color="accent"
+                                                            mat-flat-button
+                                                            (click)="openEditor(getFulFilment(i).get('document'))"
+                                                          >
+                                                            Add signature position
+                                                          </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template [ngIf]="ful.get('type').valid && modelSaleFulfillmentType[ful.get('type').value] === modelSaleFulfillmentType.RCO">
+                                            <div fxFlex="100" formGroupName="rco" fxLayout="column" fxLayoutGap="1rem">
+                                                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                                    <div class="form-group" fxLayoutAlign="start center" formGroupName="signature" fxLayoutGap="1rem">
+                                                        <mat-label class="mb0">Is signature required?</mat-label>
+                                                        <mat-slide-toggle
+                                                            (change)="signatureChanged($event, {form: ful,name: 'rco'})"
+                                                            #signature
+                                                            fxLayout="row-reversed"
+                                                            color="primary"
+                                                            formControlName="isRequired">
+                                                        </mat-slide-toggle>
+                                                    </div>
+                                                </div>
+                                                <div fxFlex="100" formGroupName="signature" *ngIf="signature.checked === true">
+                                                    <div fxFlex="100" formGroupName="position" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                                        <div class="form-group" fxFlex="15">
+                                                            <mat-label>Page</mat-label>
+                                                            <input type="number" matInput class="form-control" formControlName="page" placeholder="Page Number" autocomplete="off">
+                                                        </div>
+                                                        <div class="form-group" fxFlex="15">
+                                                            <mat-label>X</mat-label>
+                                                            <input type="number" matInput class="form-control" formControlName="x" placeholder="X" autocomplete="off">
+                                                        </div>
+                                                        <div class="form-group" fxFlex="15">
+                                                            <mat-label>Y</mat-label>
+                                                            <input type="number" matInput class="form-control" formControlName="y" placeholder="Y" autocomplete="off">
+                                                        </div>
+                                                        <div class="mt5">
+                                                            <button
+                                                            type="button"
+                                                            color="accent"
+                                                            mat-flat-button
+                                                            (click)="openEditor(getFulFilment(i).get('rco'))"
+                                                          >
+                                                            Add signature position
+                                                          </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template [ngIf]="ful.get('type').valid && modelSaleFulfillmentType[ful.get('type').value] === modelSaleFulfillmentType.CALENDAR">
+                                            <div fxFlex="100" formGroupName="calendar">
+                                                <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+                                                    <div class="form-group" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                                        <mat-label class="mb0">Is calendar required?</mat-label>
+                                                        <mat-slide-toggle
+                                                            fxLayout="row-reversed"
+                                                            color="primary"
+                                                            formControlName="isRequired">
+                                                        </mat-slide-toggle>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template [ngIf]="ful.get('type').valid && modelSaleFulfillmentType[ful.get('type').value] === modelSaleFulfillmentType.DOWNPAYMENT">
+                                            <div fxFlex="100" formGroupName="downPayment">
+                                                <div fxFlex="100" formGroupName="payment" fxLayoutGap="1rem">
+                                                    <div class="form-group selectedMat" fxFlex="35" [ngClass]="{'selectedMat--disabled':parent.disabled, 'ng-invalid':getPaymentControl(i).get('method').invalid && getPaymentControl(i).get('method').touched, 'ng-valid': getPaymentControl(i).get('method').valid}">
+                                                        <mat-select formControlName="method" placeholder="Select a method">
+                                                            <mat-option *ngFor="let method of methodName | keyvalue" [value]="method.value">
+                                                                {{method.value}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                    <div class="form-group selectedMat" fxFlex="35" [ngClass]="{'selectedMat--disabled':parent.disabled, 'ng-invalid':getPaymentControl(i).get('currency').invalid && getPaymentControl(i).get('currency').touched, 'ng-valid': getPaymentControl(i).get('currency').valid}">
+                                                        <mat-select formControlName="currency" placeholder="Select a currency">
+                                                            <mat-option *ngFor="let currency of currenciesName | keyvalue" [value]="currency.value">
+                                                                {{currency.value}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <div fxLayout="row" fxFlex="100">
+                                            <div class="form-group" fxFlex="71">
+                                                <mat-label>Description</mat-label>
+                                                <textarea matInput rows="7" formControlName="description" class="form-control" placeholder="Description"></textarea>
+                                                <neural-show-errors [control]="fulfillments.controls[i].get('description')"></neural-show-errors>
+                                            </div>
+                                        </div>
+                                        <div class="corporate__divider" *ngIf="i !== fulfillments.controls.length - 1">
+                                            <mat-divider></mat-divider>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button type="button" class="mr4 px10 py1" (click)="onAction('cancel')" [disabled]="!createPermission && !updatePermission">Cancel</button>
+            <button mat-flat-button type="button" *ngIf="parent.disabled"  class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="onAction('edit')">Edit</button>
+            <button mat-flat-button type="button" *ngIf="parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid  || !createPermission || !updatePermission" (click)="onSave(parent)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

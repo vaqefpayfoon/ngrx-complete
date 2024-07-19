@@ -1,0 +1,8 @@
+<div class="corporate" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="(service$ | async) ? (service$ | async)?.title : 'create a service'" [breadcrumbs]="bc"></neural-dynamic-header> 
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-service-form [permissions]="permissions$ | async" [service]="service$ | async" [selectedCorporate]="selectedCorporate$ | async" [selectedBranch]="selectedBranch$ | async" (create)="onCreate($event)" (update)="onUpdate($event)" (loaded)="onLoad($event)" (branchChange)="onBranchChange($event)"></neural-service-form>
+    </div>
+</div>

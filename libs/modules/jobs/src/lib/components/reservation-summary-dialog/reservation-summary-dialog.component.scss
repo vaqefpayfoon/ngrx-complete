@@ -1,0 +1,13 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+
+.summary {
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+
+  &__divider {
+    position: relative;
+  }
+}

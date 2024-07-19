@@ -1,0 +1,41 @@
+<mat-card class="card" [ngClass]="{deactive: !active}">
+  <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center" class="card__header">
+    <div fxFlex="20" class="font-semi-thick card__header--name">
+      {{type | titlecase}}
+    </div>
+    <div fxFlex="30" class="font-semi-thick card__header--phone">
+      {{registrationNumber | uppercase}}
+    </div>
+    <div fxFlex="30" class="font-semi-thick card__header--email">
+      {{name | titlecase}}
+    </div>
+    <div fxFlex="15" class="font-semi-thick card__header--status">
+      <mat-slide-toggle [disabled]="!statusPermission" color="primary" matTooltipPosition="above"
+        [matTooltip]="[active ? 'Deactivate' : 'Activate']" (click)="toggleStatus($event)" [checked]="active">
+      </mat-slide-toggle>
+    </div>
+    <div fxFlex="5" class="font-semi-thick card__header--actions">
+      <button mat-icon-button [matMenuTriggerFor]="actions">
+        <mat-icon svgIcon="action_off"></mat-icon>
+      </button>
+      <mat-menu #actions="matMenu">
+        <button mat-menu-item [disabled]="!previewPermission" [routerLink]="[corporate.uuid]">
+          <mat-icon>visibility</mat-icon>
+          <span>Preview</span>
+        </button>
+        <button mat-menu-item [disabled]="!previewAppPermission" [routerLink]="[corporate.uuid+'/app']">
+          <mat-icon>developer_mode</mat-icon>
+          <span>Apps</span>
+        </button>
+        <button mat-menu-item [disabled]="!previewAgreementPermission" [routerLink]="[corporate.uuid+'/agreement']">
+          <mat-icon>security</mat-icon>
+          <span>T&C Agreement</span>
+        </button>
+        <button mat-menu-item [disabled]="!previewAgreementPermission" [routerLink]="['insurers',corporate.uuid]">
+          <mat-icon>accessibility</mat-icon>
+          <span>Insurers</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-card>

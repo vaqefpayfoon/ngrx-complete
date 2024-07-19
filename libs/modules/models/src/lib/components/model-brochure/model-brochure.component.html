@@ -1,0 +1,48 @@
+<mat-card class="model p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Brochures</h2>
+            <button mat-mini-fab color="primary" (click)="onAdd()" [disabled]="formDisabled">
+                <mat-icon svgIcon="add"></mat-icon>
+            </button>              
+        </div>
+    </mat-card-title>
+    <div class="model__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content >
+        <div [formGroup]="parent">
+            <div formArrayName="brochures">
+                <div *ngFor="let item of brochures; let i = index;">
+                    <div fxLayout="column" fxFlex="100" class="model__general my8" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between" [formGroupName]="i">
+                        <button class="model__general--close" matTooltip="Remove" [disabled]="formDisabled" (click)="onRemove(i)" mat-icon-button color="warn">
+                            <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                        </button>
+                        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                <div class="form-group" fxFlex="35">
+                                    <mat-label>Name</mat-label>
+                                    <input type="text" matInput class="form-control" formControlName="name" placeholder="Name" autocomplete="off">
+                                    <neural-show-errors [control]="brochures[i].get('name')"></neural-show-errors>
+                                </div>
+                                <div class="form-group" fxFlex="35">
+                                    <mat-label>Link</mat-label>
+                                    <input type="text" matInput class="form-control" formControlName="link" placeholder="URL" autocomplete="off">
+                                    <neural-show-errors [control]="brochures[i].get('link')"></neural-show-errors>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="model__not-found" *ngIf="!brochure.controls.length">
+                    Add a new brochure
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!createPermission && !updatePermission" (click)="onAction('cancel')">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="parent.disabled"  class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="onAction('edit')">Edit</button>
+        <button mat-flat-button type="button" *ngIf="parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || !createPermission || !updatePermission"  (click)="onSave(parent)">Save</button>
+    </mat-card-actions>
+</mat-card>

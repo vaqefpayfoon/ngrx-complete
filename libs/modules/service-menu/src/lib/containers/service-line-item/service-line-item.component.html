@@ -1,0 +1,13 @@
+<div fxFlex="100" fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="2rem">
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header [title]="title" [breadcrumbs]="bc"></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill>
+    <neural-service-line-form [serviceLine]="serviceLine$ | async" [permissions]="permissions$ | async"
+      [selectedCorporate]="selectedCorporate$ | async" [selectedBranch]="selectedBranch$ | async"
+      [fortellis]="fortellis$ | async" [corporateInfo]="corporateInfo$ | async" [branchInfo]="branchInfo$ | async"
+      [allBrands]="brands$ | async" [services]="serviceTypes$ | async" (create)="onCreatePromotion($event)"
+      (update)="onUpdatePromotion($event)" (corporateChange)="onCorporateChange($event)"
+      (foretellisChange)="onForetellisChange($event)"></neural-service-line-form>
+  </div>
+</div>

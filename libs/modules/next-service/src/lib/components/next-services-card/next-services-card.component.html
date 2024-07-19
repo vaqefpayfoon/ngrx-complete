@@ -1,0 +1,59 @@
+<mat-card class="card">
+    <div fxLayout="row wrap" fxLayout.lt-md="column" fxFlex="100" fxLayoutAlign="space-between center"
+        fxLayoutAlign.lt-md="start start" class="card__header" fxLayoutGap.lt-md="1rem">
+        <div fxFlex="25" fxFlex.lt-md="100" class="font-semi-thick card__header--fullName" fxLayoutAlign="start start"
+            fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="2">
+            <div>
+                {{ nextService.account?.identity?.salutation }}
+                {{ nextService.account?.identity?.fullName | titlecase }}
+            </div>
+            <div fxHide.lt-md>{{ nextService.account?.email }}</div>
+            <div fxHide.lt-md>
+                <a title="Call {{ nextService.account?.identity?.fullName | titlecase }}" href="tel:+{{ nextService.account?.phone?.code }}{{
+                nextService.account?.phone?.number
+            }}">{{ nextService.account?.phone?.code }}{{ nextService.account?.phone?.number }}</a>
+            </div>
+        </div>
+        <div fxFlex="20" fxFlex.lt-md="100" class="font-semi-thick card__header--brands" fxLayoutAlign="start start"
+            fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="2">
+            <div>
+                {{ nextService.accountVehicle?.numberPlate }}
+            </div>
+            <div fxHide.lt-md>{{ nextService.accountVehicle?.identificationNumber }}</div>
+            <div fxHide.lt-md>
+                {{ nextService.accountVehicle?.vehicleReference?.unit?.brand }}&nbsp;
+                {{ nextService.accountVehicle?.vehicleReference?.unit?.model?.display }}&nbsp;
+                {{ nextService.accountVehicle?.vehicleReference?.unit?.variant?.display }}
+            </div>
+        </div>
+
+        <div fxFlex="20" fxFlex.lt-md="100" class="font-semi-thick card__header--nextServiceDue"
+            fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="2">
+            <div>
+                {{ nextService.accountVehicle?.nextService?.estimatedEngineOilService | date: 'mediumDate' }}
+            </div>
+            <div fxHide.lt-md>{{ nextService.accountVehicle?.nextService?.upcomingEngineOilService }}</div>
+        </div>
+
+
+        <div fxFlex="15" fxFlex.lt-md="100" class="font-semi-thick card__header--lastService"
+            fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="2">
+            <ng-container *ngIf="nextService?.lastService; else lastService">
+                {{ nextService?.lastService }}
+            </ng-container>
+            <ng-template #lastService>
+                <span>-</span>
+            </ng-template>
+        </div>
+
+        <div fxFlex="15" fxFlex.lt-md="100" class="font-semi-thick card__header--scheduled" fxLayoutAlign="start start"
+            fxLayout="column" fxLayoutGap="0.5rem" fxFlexOrder.lt-md="2">
+            <ng-container *ngIf="nextService?.scheduled; else scheduled">
+                {{ nextService?.scheduled }}
+            </ng-container>
+            <ng-template #scheduled>
+                <span>-</span>
+            </ng-template>
+        </div>
+    </div>
+</mat-card>

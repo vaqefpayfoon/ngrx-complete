@@ -1,0 +1,37 @@
+<h1 mat-dialog-title class="font-thick text-black">Are you sure?</h1>
+
+<form autocomplete="off" novalidate [formGroup]="form">
+  <mat-dialog-content>
+    <div
+      fxLayout="column"
+      fxFlexFill
+      fxFlex="100"
+      fxLayoutGap="1rem"
+      fxLayoutAlign="start start"
+    >
+      <p>{{ name }}'s sale will be cancelled.</p>
+
+      <div class="form-group" fxFlexFill fxFlex="100">
+        <textarea
+          matInput
+          rows="7"
+          class="form-control"
+          formControlName="remark"
+          placeholder="Remark"
+          autocomplete="off"
+        ></textarea>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="text-right">
+    <button
+      mat-button
+      (click)="toggleStatus(form)"
+      [color]="'primary'"
+      [disabled]="form.invalid"
+    >
+      Yes
+    </button>
+    <button mat-button (click)="close()">No</button>
+  </mat-dialog-actions>
+</form>

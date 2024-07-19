@@ -1,0 +1,29 @@
+<div
+  class="corporate"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="(branche$ | async) ? (branche$ | async)?.name : title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-branch-form
+      [totalBranches]="total$ | async"
+      [corporates]="corporates$ | async"
+      [brands]="brands$ | async"
+      [accounts]="accounts$ | async"
+      [selectedCorporate]="selectedCorporate$ | async"
+      [permissions]="permissions$ | async"
+      [branch]="branche$ | async"
+      [corporate]="corporate$ | async"
+      (create)="createBranch($event)"
+      (update)="updateBranch($event)"
+      (loaded)="onLoad($event)"
+      (typeEvent)="onTypeEvent($event)"
+    ></neural-branch-form>
+  </div>
+</div>

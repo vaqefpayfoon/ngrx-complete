@@ -1,0 +1,17 @@
+<mat-card class="card">
+  <mat-card-title class="mb2">
+    <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+      <h2 class="h6 text-capitalize font-semi-thick my0">Booking Statistics</h2>
+    </div>
+  </mat-card-title>
+  <div class="card__divider">
+    <mat-divider></mat-divider>
+  </div>
+  <div class="card__data pt5">
+      <div fxLayout="column">
+          <div class="my4" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="1rem">
+            <span class="card__data--status" [class.card__red]="reservationStatus.JOB_CANCELED === 'JOB_CANCELED'" (click)="removeStatus(reservationStatus.JOB_CANCELED)">{{statusName(reservationStatus.JOB_CANCELED)}} : {{statusCount(reservationStatus.JOB_CANCELED)}}</span>
+          </div>
+      </div>
+  </div>
+</mat-card>

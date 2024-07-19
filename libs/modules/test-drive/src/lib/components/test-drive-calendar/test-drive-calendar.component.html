@@ -1,0 +1,39 @@
+<ng-container *ngIf="!calendars">
+  Loading calendar...
+</ng-container>
+<ng-container *ngIf="!!calendars && !calendars.length">
+  calendar not found
+</ng-container>
+<ng-template [ngIf]="!!calendars">
+  <mat-tab-group [selectedIndex]="0">
+    <mat-tab
+      *ngFor="let calendar of calendars; let index = index"
+      [label]="isPreOwned ? calendar?.day : calendar?.date"
+    >
+      <div fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="1rem">
+        <div
+          class="py6"
+          *ngFor="let slot of calendar?.slots; let index = index"
+        >
+          <span *ngIf="isPreOwned"
+            (click)="selectDate(slot)"
+            [ngClass]="{
+              active: slot === value,
+              disabled: formDisabled
+            }"
+            >{{ slot.iso | date: 'shortTime' : timeZone }}</span
+          >
+
+          <span *ngIf="!isPreOwned"
+            (click)="selectDate(slot)"
+            [ngClass]="{
+              active: slot === value,
+              disabled: formDisabled
+            }"
+            >{{ slot | date: 'shortTime' : timeZone }}</span
+          >
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</ng-template>

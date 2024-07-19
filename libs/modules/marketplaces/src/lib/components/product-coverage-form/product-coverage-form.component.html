@@ -1,0 +1,81 @@
+<form autocomplete="off" novalidate [formGroup]="form">
+    <mat-card class="product p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">General</h2>
+            </div>
+        </mat-card-title>
+        <div class="product__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div fxLayout="column" fxFlex="100" class="product__general my8" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem">
+                <div fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem"> 
+                    <div class="form-group mb4" fxFlex="35">
+                        <mat-label>Part Number</mat-label>
+                        <input type="text" matInput class="form-control" formControlName="partNumber" placeholder="Part Number" autocomplete="off">
+                        <neural-show-errors [control]="form.controls.partNumber"></neural-show-errors>
+                    </div>
+                    <div [formGroup]="selectForm" fxFlex="100">
+                        <div class="form-group selectedMat mb4" [class.ng-valid]="service.valid" [class.ng-invalid]="service.invalid && service.touched" [class.selectedMat--disabled]="formDisabled || service.disabled" fxFlex="35" >
+                            <mat-select placeholder="Select a service" formControlName="service" (selectionChange)="onChangeService($event)">
+                                <mat-option *ngFor="let service of services" [value]="service?.type">
+                                  {{service.title}}
+                                </mat-option>
+                            </mat-select>
+                            <neural-show-errors [control]="selectForm.controls.service"></neural-show-errors>
+                        </div>            
+                    </div>
+                </div>
+                <div [formGroup]="selectForm" fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem" *ngIf="list"> 
+                    <div *ngIf="list.brands" class="form-group mb4" fxFlex="35">
+                        <div fxFlex="100">
+                            <div class="form-group selectedMat mb4" [class.ng-valid]="brand.valid" [class.ng-invalid]="brand.invalid && brand.touched" [class.selectedMat--disabled]="formDisabled || brand.disabled">
+                                <mat-select placeholder="Select a brand" formControlName="brand" (selectionChange)="onChangeBrand($event)">
+                                    <mat-option *ngFor="let brand of list?.brands" [value]="brand">
+                                      {{brand}}
+                                    </mat-option>
+                                </mat-select>
+                                <neural-show-errors [control]="selectForm.controls.brand"></neural-show-errors>
+                            </div>            
+                        </div>
+                    </div>
+                    <div *ngIf="list.models" class="form-group mb4" fxFlex="35">
+                        <div fxFlex="100">
+                            <div class="form-group selectedMat mb4" [class.ng-valid]="model.valid" [class.ng-invalid]="model.invalid && model.touched" [class.selectedMat--disabled]="formDisabled || model.disabled">
+                                <mat-select placeholder="Select a model" formControlName="model" (selectionChange)="onChangeModel($event)">
+                                    <mat-option *ngFor="let model of list?.models" [value]="model.uuid">
+                                      {{model.model}}
+                                    </mat-option>
+                                </mat-select>
+                                <neural-show-errors [control]="selectForm.controls.model"></neural-show-errors>
+                            </div>            
+                        </div>
+                    </div>
+                </div>
+                <div formGroupName="pricing" fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                    <div fxLayout="row">
+                        <div class="form-group">
+                            <mat-label>Recommended Retail Price</mat-label>
+                            <input type="number" matInput class="form-control" formControlName="recommendedRetailPrice" placeholder="Recommended Retail Price" autocomplete="off">
+                            <neural-show-errors [control]="pricing.controls.recommendedRetailPrice"></neural-show-errors>
+                        </div>
+                    </div>
+                    <div fxLayout="row">
+                        <div class="form-group">
+                            <mat-label>Unit Buying Price</mat-label>
+                            <input type="number" matInput class="form-control" formControlName="unitBuyingPrice" placeholder="Unit Buying Price" autocomplete="off">
+                            <neural-show-errors [control]="pricing.controls.unitBuyingPrice"></neural-show-errors>
+                        </div>
+                    </div>               
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions class="my0 ml32 p0">
+            <button mat-stroked-button class="mr4 px10 py1" type="button" (click)="behaviourForm(true)">Cancel</button>
+            <button type="button" mat-flat-button *ngIf="form.disabled" class="px10 py1" color="primary" (click)="behaviourForm(false)">Edit</button>
+            <button type="submit" mat-flat-button *ngIf="exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine" (click)="updateProduct(form)">Save</button>
+            <button type="submit" mat-flat-button *ngIf="!exists && form.enabled" class="px10 py1" color="primary" [disabled]="!form.valid || form.pristine" (click)="createProduct(form)">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

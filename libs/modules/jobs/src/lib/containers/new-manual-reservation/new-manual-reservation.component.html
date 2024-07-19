@@ -1,0 +1,36 @@
+<div
+  class="reservation"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-new-reservation-form
+      [branchInfo]="branchInfo$ | async"
+      [loading]="loading$ | async"
+      [serviceLines$]="serviceLines$"
+      [corporateInfo]="corporateInfo$ | async"
+      [permissions]="permissions$ | async"
+      [timeZone]="timeZone$ | async"
+      (create)="onCreate($event)"
+      [iso]="iso"
+      [serviceType]="serviceType"
+      [selectedServiceAdvisor]="selectedServiceAdvisor"
+      [existingCustomer]="existingCustomer"
+      [selectedBranch]="selectedBranch$ | async"
+      [operations]="operations$ | async"
+      (branchChange)="onBranchChange($event)"
+      (modelRecall)="onRetrieveModel($event)"
+      (makeYearRecall)="onRetrieveYearMakes($event)"
+      [makes$]="makes$"
+      [models$]="models$"
+      [yearMakes$]="yearMakes$"
+    ></neural-new-reservation-form>
+  </div>
+</div>

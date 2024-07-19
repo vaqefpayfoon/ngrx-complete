@@ -1,0 +1,33 @@
+<div
+  class="vehicles"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header
+      [title]="title"
+      [breadcrumbs]="bc"
+    ></neural-dynamic-header>
+  </div>
+  <div class="mt8" fxFlex="100" fxFlexFill *ngIf="(data$ | async)?.state?.data?.type === vehicleType.SEARCH">
+    <neural-vehicle-search (searchedByNumberPlate)="onSearch($event)"></neural-vehicle-search>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-vehicle-form
+      [selectedCorporate]="selectedCorporate$ | async"
+      [permissions]="permissions$ | async"
+      [vehicle]="vehicle$ | async"
+      [searchedVehicle]="searchedVehicle$ | async"
+      [list]="list$ | async"
+      (model)="onBrandSelect($event)"
+      (variant)="onModelSelect($event)"
+      (update)="onUpdateVehicle($event)"
+      (updateSearchedVehicle)="onUpdateSearchedVehicle($event)"
+      (loadVehicle)="onVehicleLoad($event)"
+      (updateTyreSpecs)="onUpdateTyreSpecs($event)"
+      (corporateChange)="onCorporateChange($event)"
+      (status)="openDialog($event)"
+    ></neural-vehicle-form>
+  </div>
+</div>

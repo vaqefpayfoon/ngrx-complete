@@ -1,0 +1,256 @@
+<form autocomplete="off" novalidate [formGroup]="parent">
+    <mat-card class="branch p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">Sales</h2>
+            </div>
+        </mat-card-title>
+        <div class="branch__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div formGroupName="payments">
+                <div fxLayout="column" fxFlex="100" class="branch__general my8" formGroupName="sales" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem" *ngIf="activeSale;else salesText">
+                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem"> 
+                        <div class="form-group" fxFlex="31">
+                            <mat-label>Currency</mat-label>
+                            <input type="text" readonly matInput class="form-control" formControlName="currency" placeholder="Currency" autocomplete="off">
+                        </div>
+                    </div>
+                    <div  fxLayout="row" fxFlex="100" fxLayoutGap="1rem" formArrayName="methods"> 
+                        <div *ngFor="let item of methods;let i = index;" fxLayout="column">
+
+                            <div [formGroupName]="i" fxFlex="100" fxLayout="column">
+                                <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <h2 class="h6 text-capitalize font-semi-thick my0">Online Gateways</h2>
+                                    <button mat-mini-fab color="primary" type="button" [disabled]="parent.disabled" (click)="addOnlineGateway(methods[i])">
+                                        <mat-icon svgIcon="add"></mat-icon>
+                                    </button>
+                                </div>
+                                <div formArrayName="gateways" fxFlex="100" class="mt4" >
+                                    <div *ngFor="let getw of myGetways(i);let g = index;">
+                                        <div [formGroupName]="g" class="branch__gateway my8">
+                                            <button class="branch__gateway--close" *ngIf="g !== 0"  matTooltip="Remove" [disabled]="parent.disabled" (click)="removeOnlineGateway(g,methods[i])" mat-icon-button color="warn">
+                                                <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                                            </button>
+                                            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between start" >
+                                                <div fxFlex="35" fxLayout="column" >
+                                                    <mat-label>Gateway</mat-label>
+                                                    <div class="form-group selectedMat" >
+                                                        <mat-select placeholder="Select a gateway"  formControlName="name" (selectionChange)="onSelectGateway($event.value,g)">
+                                                            <mat-option>-- None --</mat-option>
+                                                            <mat-option  *ngFor="let gateway of onlineGateways | keyvalue" [value]="gateway.key">
+                                                              {{gateway.value}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>  
+                                                </div>  
+                                                <div *ngIf=" (getw?.value?.name!==onlineGateways.ADYEN && getw?.value?.name!==onlineGateways.STRIPE) && (!isAdyanForm(g) && !isStripeForm(g)) " fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" formGroupName="access"> 
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Service Id</mat-label>
+                                                        
+                                                        <input type="text" matInput class="form-control" formControlName="serviceId" placeholder="Service Id" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Password</mat-label>
+                                                        <input type="passsword" matInput class="form-control" formControlName="password" placeholder="Password" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant Name</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="merchantName" placeholder="Merchant Name" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Payment Gateway Url</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="paymentGatewayUrl" placeholder="Payment Gateway Url" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant Call back Url</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="merchantCallbackUrl" placeholder="Merchant Call back Url" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant Return Url</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="merchantReturnUrl" placeholder="Merchant Return Url" autocomplete="off">
+                                                    </div>                
+                                                </div>
+                                                <div *ngIf="(getw?.value?.name===onlineGateways.ADYEN) || (isAdyanForm(g) && !isStripeForm(g)) " fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" formGroupName="access"> 
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Service Id</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="serviceId" placeholder="Service Id" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant account name</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="merchantAccountName" placeholder="Merchant account name" autocomplete="off">
+                                                    </div> 
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Api key</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="apiKey" placeholder="Api key" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Live Prefix Url</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="livePrefixUrl" placeholder="Live Prefix Url" autocomplete="off">
+                                                    </div>                              
+                                                </div>
+                                                <div *ngIf="(getw?.value?.name===onlineGateways.STRIPE) || (isStripeForm(g) && !isAdyanForm(g))  " fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" formGroupName="access"> 
+                                                    <div  class="form-group" fxFlex="35">
+                                                        <mat-label>Secret Key</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="secretKey" placeholder="Secret Key" autocomplete="off">
+                                                    </div>  
+                                                    <div  class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant Name</mat-label>
+                                                         <input type="text" matInput class="form-control" formControlName="merchantName" placeholder="Merchant Name " autocomplete="off">
+                                                    </div> 
+                                                    <div  class="form-group" fxFlex="35">
+                                                        <mat-label>Publishable Key</mat-label>
+                                                         <input type="text" matInput class="form-control" formControlName="publishableKey" placeholder="Publishable Key" autocomplete="off">
+                                                    </div> 
+                                                    <div  class="form-group" fxFlex="35">
+                                                        <mat-label>Webhook Secret Key</mat-label>
+                                                         <input type="text" matInput class="form-control" formControlName="webhookSecretKey" placeholder="Webhook Secret Key" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #salesText>
+                <div class="branch__payment">
+                    Click <button mat-flat-button color="accent" [disabled]="!currencies || parent.disabled" type="button" class="mr4 px10 py1" (click)="createPayment(types.SALES)">Here</button>to active sales payment
+                </div>
+            </ng-template>
+
+        </mat-card-content>
+        <ng-content  select="[sale]"></ng-content>
+    </mat-card>
+    <mat-card class="branch p4 my8">
+        <mat-card-title class="mb2">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <h2 class="h6 text-capitalize font-semi-thick my0">After Sales</h2>
+            </div>
+        </mat-card-title>
+        <div class="branch__divider">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-card-content>
+            <div formGroupName="payments">
+                <div fxLayout="column" fxFlex="100" class="branch__general my8" formGroupName="afterSales" fxLayoutAlign="space-evenly space-between" fxLayoutGap="1rem" fxFlexOffset="8rem" *ngIf="activeAfterSale;else afterSalesText">
+                    <div fxLayout="row" fxFlex="100" fxLayoutGap="1rem"> 
+                        <div class="form-group" fxFlex="31">
+                            <mat-label>Currency</mat-label>
+                            <input type="text" readonly matInput class="form-control" formControlName="currency" placeholder="Currency" autocomplete="off">
+                        </div>
+                    </div>
+                    <div  fxLayout="row" fxFlex="100" fxLayoutGap="1rem" formArrayName="methods"> 
+                        <div *ngFor="let item of afterSalesMethods;let i = index;" fxLayout="column">
+                            <div [formGroupName]="i" fxFlex="100" fxLayout="column">
+                                <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                                    <h2 class="h6 text-capitalize font-semi-thick my0">Online Gateways</h2>
+                                    <button mat-mini-fab color="primary" type="button" [disabled]="parent.disabled" (click)="addOnlineGatewayAfterSales(afterSalesMethods[i])">
+                                        <mat-icon svgIcon="add"></mat-icon>
+                                    </button>
+                                </div>
+                                <div formArrayName="gateways" fxFlex="100" class="mt4">
+                                    <div *ngFor="let getw of myAfterSalesGetways(i);let g = index;">
+                                        <div [formGroupName]="g" class="branch__gateway my8">
+                                            <button class="branch__gateway--close"  *ngIf="g !== 0"  matTooltip="Remove" [disabled]="parent.disabled" (click)="removeOnlineGatewayAfterSales(g,afterSalesMethods[i])"  mat-icon-button color="warn">
+                                                <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                                            </button>
+                                            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between start" >
+                                                <div fxFlex="35" fxLayout="column">
+                                                    <mat-label>Gateway</mat-label>
+                                                    <div class="form-group selectedMat">
+                                                        <mat-select placeholder="Select a gateway" formControlName="name" (selectionChange)="onSelectGatewayAfterSales($event.value, g)">
+                                                            <mat-option>-- None --</mat-option>
+                                                            <mat-option *ngFor="let gateway of onlineGateways | keyvalue" [value]="gateway.key">
+                                                              {{gateway.value}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </div>   
+                                                </div>
+                                                <div *ngIf="(getw?.value?.name!==onlineGateways.ADYEN && getw?.value?.name!==onlineGateways.STRIPE) && !isAdyanFormAfterSales(g) && !isStripeFormAfterSales(g)" fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" formGroupName="access"> 
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Service Id</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="serviceId" placeholder="Service Id" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Password</mat-label>
+                                                        <input type="passsword" matInput class="form-control" formControlName="password" placeholder="Password" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant Name</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="merchantName" placeholder="Merchant Name" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Payment Gateway Url</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="paymentGatewayUrl" placeholder="Payment Gateway Url" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant Call back Url</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="merchantCallbackUrl" placeholder="Merchant Call back Url" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant Return Url</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="merchantReturnUrl" placeholder="Merchant Return Url" autocomplete="off">
+                                                    </div>                
+                                                </div>
+                                                <div *ngIf="(getw?.value?.name===onlineGateways.ADYEN) || (isAdyanFormAfterSales(g) && !isStripeFormAfterSales(g))" fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" formGroupName="access"> 
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Service Id</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="serviceId" placeholder="Service Id" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant account name</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="merchantAccountName" placeholder="Merchant Account Name" autocomplete="off">
+                                                    </div> 
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Api key</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="apiKey" placeholder="Api key" autocomplete="off">
+                                                    </div>                
+                                                    <div class="form-group" fxFlex="35">
+                                                        <mat-label>Live Prefix Url</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="livePrefixUrl" placeholder="Live Prefix Url" autocomplete="off">
+                                                    </div>                              
+                                                </div>
+                                                <div *ngIf="(getw?.value?.name===onlineGateways.STRIPE) ||(isStripeFormAfterSales(g) && !isAdyanFormAfterSales(g))" fxLayout="row wrap" fxFlex="100" fxLayoutGap="1rem grid" formGroupName="access"> 
+                                                    <div  class="form-group" fxFlex="35">
+                                                        <mat-label>Secret Key</mat-label>
+                                                        <input type="text" matInput class="form-control" formControlName="secretKey" placeholder="Secret Key" autocomplete="off">
+                                                    </div>  
+                                                    <div  class="form-group" fxFlex="35">
+                                                        <mat-label>Merchant Name</mat-label>
+                                                         <input type="text" matInput class="form-control" formControlName="merchantName" placeholder="Merchant Name " autocomplete="off">
+                                                    </div> 
+                                                    <div  class="form-group" fxFlex="35">
+                                                        <mat-label>Publishable Key</mat-label>
+                                                         <input type="text" matInput class="form-control" formControlName="publishableKey" placeholder="Publishable Key" autocomplete="off">
+                                                    </div> 
+                                                    <div  class="form-group" fxFlex="35">
+                                                        <mat-label>Webhook Secret Key</mat-label>
+                                                         <input type="text" matInput class="form-control" formControlName="webhookSecretKey" placeholder="Webhook Secret Key" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #afterSalesText>
+                <div class="branch__payment" >
+                    Click <button mat-flat-button color="accent" [disabled]="!currencies || parent.disabled" type="button" class="mr4 px10 py1" (click)="createPayment(types.AFTER_SALES)">Here</button>to active after sales payment
+                </div>
+            </ng-template>
+        </mat-card-content>
+        <ng-content select="[afterSale]"></ng-content>
+    </mat-card>
+</form>

@@ -1,0 +1,23 @@
+<h1 mat-dialog-title class="font-thick text-black">Are you sure?</h1>
+
+<mat-dialog-content>
+  <container-element [ngSwitch]="data.isRedeem">
+    <p *ngSwitchCase="false">
+      {{name}}'s will be {{ [isActive ? 'deactivated' : 'activated'] }}.
+    </p>
+    <p *ngSwitchDefault>
+      {{name}}'s will be change
+    </p>
+  </container-element>
+</mat-dialog-content>
+
+<mat-dialog-actions class="text-right">
+  <button
+    mat-button
+    (click)="toggleStatus()"
+    [color]="[isActive ? 'warn' : 'primary']"
+  >
+    Yes
+  </button>
+  <button mat-button (click)="close()">No</button>
+</mat-dialog-actions>

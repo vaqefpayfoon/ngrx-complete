@@ -1,0 +1,180 @@
+<div fxLayout="column" fxFlex="100" fxLayoutAlign="start start" class="my8">
+  <div
+    [formGroup]="form"
+    fxLayout="row"
+    fxFlexFill
+    fxFlex="100"
+    fxLayoutAlign="start center"
+    fxLayoutGap="1rem"
+  >
+    <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="35">
+      <mat-label style="font-size: 13px;">Type</mat-label>
+      <div
+        class="form-group selectedMat my0"
+        fxFlex="100"
+        [ngClass]="{
+          'ng-invalid':
+            form.controls.type.invalid && form.controls.type.touched,
+          'ng-valid': form.controls.type.valid && form.controls.type.touched
+        }"
+      >
+        <mat-select
+          color="primary"
+          placeholder="Select a type"
+          formControlName="type"
+        >
+          <mat-option
+            *ngFor="let type of types | keyvalue"
+            [value]="type.value"
+          >
+            {{ type.key }}
+          </mat-option>
+        </mat-select>
+        <neural-show-errors [control]="form.controls.type"></neural-show-errors>
+      </div>
+    </div>
+
+    <div fxFlex="35" class="form-group" fxLayout="column">
+      <mat-label>Year/Month</mat-label>
+      <div
+        fxFlex="100"
+        fxLayout="row"
+        fxLayoutGap="1rem"
+        fxLayoutAlign="space-between center"
+      >
+        <input
+          placeholder="Select a date"
+          class="form-control"
+          matInput
+          [matDatepicker]="dp"
+          formControlName="date"
+          readonly
+        />
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker
+          #dp
+          startView="multi-year"
+          (yearSelected)="chosenYearHandler($event)"
+          (monthSelected)="chosenMonthHandler($event, dp)"
+          panelClass="example-month-picker"
+        >
+        </mat-datepicker>
+        <neural-show-errors [control]="form.controls.date"></neural-show-errors>
+      </div>
+    </div>
+
+    <div fxFlex="35" class="mt4" fxLayoutAlign="center start" fxLayout="column">
+      <button
+        mat-flat-button
+        *ngIf="form.enabled"
+        [disabled]="form.invalid || form.pristine"
+        class="px10 py1"
+        color="primary"
+        (click)="onGenerate(form)"
+      >
+        Save
+      </button>
+      <button
+        mat-flat-button
+        *ngIf="form.disabled"
+        [disabled]="form.invalid"
+        class="px10 py1"
+        color="primary"
+        (click)="form.enable()"
+      >
+        Edit
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="box-container"
+    fxLayout="column"
+    [ngStyle.lt-sm]="'min-height: 800px;'"
+    fxFlex="100%"
+  >
+    <div
+      class="horizontal-container"
+      fxLayout="row"
+      fxLayout.lt-sm="column"
+      fxLayoutAlign="stretch"
+      fxFlex="auto"
+    >
+      <div
+        class="vertical-container"
+        fxLayout="column"
+        fxLayoutAlign="stretch"
+        fxFlex="100%"
+      >
+        <div fxLayoutAlign="center">
+          <button
+            class="mr0"
+            [disabled]="!updatePermission"
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="menu"
+            color="primary"
+            [disabled]="!day"
+            [matTooltip]="
+              day?.isBlocked
+                ? day?.remark
+                  ? day?.remark
+                  : 'was blocked by admin'
+                : ''
+            "
+            matTooltipPosition="above"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button [disabled]="!day" mat-menu-item [disabled]="!updatePermission" (click)="openDialog(day)">
+              <span>{{ day?.isBlocked ? 'Unblock' : 'Block' }}</span>
+            </button>
+          </mat-menu>
+        </div>
+
+        <div
+          class="content-container"
+          fxLayout="column"
+          fxLayoutAlign="stretch"
+          fxFlex="auto"
+        >
+          <swiper
+            #daySlider
+            class="swiper-container"
+            fxFlex="auto"
+            [config]="config"
+            (indexChange)="onIndexChange($event)"
+          >
+            <ng-template ngFor let-slide [ngForOf]="days" let-i="index">
+              <div
+                class="swiper-slide"
+                (click)="onClick(i)"
+                fxLayout="column"
+                fxLayoutAlign="center center"
+                fxLayoutGap="1rem"
+              >
+                <span
+                  class="swiper-slide__date"
+                  [ngClass]="{
+                    'swiper-slide__date--disable': index === i && day?.isBlocked
+                  }"
+                >
+                  {{ slide | date: 'd' : timeZone }}
+                </span>
+                <span
+                  class="swiper-slide__name"
+                  [ngClass]="{
+                    'swiper-slide__name--disable': index === i && day?.isBlocked
+                  }"
+                >
+                  {{ slide | date: 'EEE' : timeZone }}
+                </span>
+              </div>
+            </ng-template>
+          </swiper>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<neural-dynamic-header
+  [title]="(role$ | async) ? (role$ | async)?.name : title"
+  [breadcrumbs]="bc"
+  [loading]="loading$ | async"
+></neural-dynamic-header>
+<neural-role-form
+  [role]="role$ | async"
+  [isSuperAdmin]="(account$ | async)?.isSuperAdmin"
+  [error]="error$ | async"
+  [loading]="loading$ | async"
+  [permissions]="permissions$ | async"
+  [tagPermissions]="tagPermissions$ | async"
+  (create)="onCreate($event)"
+  (update)="onUpdate($event)"
+  (loaded)="onLoad($event)"
+></neural-role-form>

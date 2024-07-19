@@ -1,0 +1,30 @@
+<input #statusFilters [value]="(reservationsConfig$ | async).statusFilter" type="hidden" />
+<input #dateFilter [value]="(reservationsConfig$ | async).dateFilter" type="hidden" />
+<div class="reservations" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'Declined'" [breadcrumbs]="bc" [sort]="sort" (refreshChange)="onRefresh($event, statusFilters.value)" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <neural-reservation-statistics [reservations]="reservations$ | async" [statuses]="(reservationsConfig$ | async).statusFilter" [totalBooking]="total$ | async" [totalSlot]="(reservations$ | async).length" (statusChanges)="unSelectFilter($event, dateFilter.value)"></neural-reservation-statistics>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8 pt4">
+        <ng-container *ngIf="!(loading$ | async)">
+            <div class="mb12" *ngFor="let reservation of (reservations$ | async)">
+                <neural-reservation-card [timeZone]="timeZone$ |  async" [permissions]="permissions$ | async" [reservation]="reservation"></neural-reservation-card>
+            </div>
+        </ng-container>
+        <div *ngIf="(loading$ | async)" class="reservations__loading">
+            Loading...
+        </div>
+        <div class="reservations__not-found" *ngIf="(error$ | async)">
+            <span> {{ (error$ | async) }} </span>
+        </div>  
+    </div>
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+        <mat-paginator [length]="total$ | async"
+            [pageSize]="(reservationsConfig$ | async).limit"
+            [pageIndex]="(reservationsConfig$ | async).page - 1"
+            (page)="changePage($event, statusFilters.value)" showFirstLastButtons>
+        </mat-paginator>
+    </div>    
+</div>

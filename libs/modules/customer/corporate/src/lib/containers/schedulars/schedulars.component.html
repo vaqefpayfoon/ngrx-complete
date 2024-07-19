@@ -1,0 +1,187 @@
+<div
+  class="schedules"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill>
+    <div
+      class="dynamic-header"
+      fxFlex="100"
+      fxLayoutAlign="space-between center"
+      fxLayout="row wrap"
+    >
+      <div
+        fxLayout="column"
+        fxFlex="50"
+        class="dynamic-header__header"
+        fxLayoutAlign="start start"
+      >
+        <h1
+          fxFlex="100"
+          class="mt0 mb3 font-semi-thick text-capitalize h2"
+          fxFlexFill
+        >
+          Scheduler
+        </h1>
+        <div
+          *ngIf="bc && !!bc.length"
+          class="breadcrumb"
+          fxLayoutAlign="start center"
+        >
+          <a class="text-uppercase breadcrumb__active" routerLink="/">Home</a>
+          <span class="arrow">
+            <mat-icon svgIcon="arrow_right_off"></mat-icon>
+          </span>
+          <ng-template ngFor let-item [ngForOf]="bc" let-i="index">
+            <span
+              class="text-uppercase"
+              *ngIf="!item.path"
+              [routerLink]="item.path"
+              >{{ item?.name }}</span
+            >
+            <a
+              class="text-uppercase"
+              [class.breadcrumb__active]="!!item.path"
+              *ngIf="item?.path"
+              [routerLink]="item.path"
+              >{{ item?.name }}</a
+            >
+            <span class="arrow" *ngIf="i !== bc.length - 1">
+              <mat-icon svgIcon="arrow_right_off"></mat-icon>
+            </span>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-tab-group fxFlex="100" fxFlexFill dynamicHeight class="my4">
+    <mat-tab label="Calendar">
+      <div
+        class="dynamic-header__actions"
+        fxFlex="100"
+        fxLayoutAlign="end center"
+        fxLayout="row wrap"
+        fxLayoutGap="10px grid"
+        class="my3"
+      >
+        <div fxLayoutGap="10px">
+          <button
+            (click)="addSchedule()"
+            mat-mini-fab
+            color="primary"
+            [disabled]="
+              (branch$ | async)?.schedules?.length >= 1 ||
+              !(permissions$ | async)?.CREATE_BRANCH_SCHEDULES
+            "
+          >
+            <mat-icon svgIcon="add"></mat-icon>
+          </button>
+        </div>
+      </div>
+      <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="schedulers__header">
+          <div
+            fxLayout="row wrap"
+            fxFlex="100"
+            fxLayoutAlign="space-between center"
+          >
+            <span class="schedules__header--item font-normal" fxFlex="20"
+              >Name</span
+            >
+          </div>
+        </mat-card>
+        <ng-container *ngIf="!(loading$ | async)">
+          <div
+            class="mb3"
+            *ngFor="let schedule of (branch$ | async)?.schedules"
+          >
+            <neural-schedular-card
+              [permissions]="permissions$ | async"
+              [schedule]="schedule"
+              (deleteEvent)="onDelete($event)"
+              (updateEvent)="onUpdate($event)"
+            ></neural-schedular-card>
+          </div>
+        </ng-container>
+        <div *ngIf="loading$ | async" class="schedules__loading">
+          Loading...
+        </div>
+        <div
+          class="schedules__not-found"
+          *ngIf="!(branch$ | async)?.schedules?.length"
+        >
+          <neural-error [error]="error$ | async"></neural-error>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Off Days">
+      <div
+        class="dynamic-header__actions"
+        fxFlex="100"
+        fxLayout="row wrap"
+        fxLayoutGap="10px grid"
+        class="my3"
+      >
+        <div fxFlex="100" fxFlexFill class="my8" fxLayoutAlign="end center">
+          <div fxLayoutGap="10px">
+            <button
+              [routerLink]="'offdays/new'"
+              mat-mini-fab
+              color="primary"
+              [disabled]="
+                !(permissions$ | async)?.CREATE_BRANCH_SCHEDULES_OFF_DAYS
+              "
+            >
+              <mat-icon svgIcon="add"></mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlexFill class="my8">
+          <mat-card class="schedulers__header">
+            <div
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutAlign="space-between center"
+            >
+              <span fxFlex="20">Reason</span>
+              <span fxFlex="20">Who</span>
+              <span fxFlex="20">Start Date/Time</span>
+              <span fxFlex="20">End Date/Time</span>
+              <span fxFlex="5">&nbsp;</span>
+            </div>
+          </mat-card>
+          <ng-container *ngIf="!(loading$ | async)">
+            <div class="mb3" *ngFor="let offDays of offDays$ | async">
+              <neural-schedules-off-days-card
+                [permissions]="permissions$ | async"
+                [offDays]="offDays"
+                (deleteEvent)="onDeleteOffDays($event)"
+              ></neural-schedules-off-days-card>
+            </div>
+          </ng-container>
+          <div *ngIf="loading$ | async">Loading...</div>
+          <div
+            class="schedules__not-found"
+            *ngIf="!(branch$ | async)?.schedulesOffDays?.length"
+          >
+            <neural-error [error]="error2$|async"></neural-error>
+          </div>
+        </div>
+        <div fxFlex="100" fxFlexFill *ngIf="total$|async">
+          <mat-paginator
+            [length]="total$|async"
+            [pageSize]="(offDaysConfig$|async).limit"
+            [pageIndex]="(offDaysConfig$|async).page - 1"
+            (page)="changePage($event)"
+            showFirstLastButtons
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

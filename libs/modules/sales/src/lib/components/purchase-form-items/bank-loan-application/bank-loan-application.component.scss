@@ -1,0 +1,11 @@
+@import 'styles-variables';
+
+.bank {
+  max-width: 400px;
+  background-color: map-get($map: $colors, $key: seashell);
+
+  &__logo {
+    object-fit: cover;
+    border: 1px solid map-get($map: $colors, $key: heather);
+  }
+}

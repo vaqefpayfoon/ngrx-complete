@@ -1,0 +1,35 @@
+<div class="enquiries" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'general enquiries'" [breadcrumbs]="bc" [filtered]="enquiriesFilter$ | async" [filters]="filters" (refreshChange)="onRefresh($event)" (filterChange)="onFilter($event)" [loading]="loading$ | async"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="enquiries__header">
+            <div fxLayout="row wrap" fxLayout.lt-md="column" fxFlex="100" fxLayoutGap.lt-md="1rem" fxLayoutAlign="space-between center" fxLayoutAlign.lt-md="start start">
+                <span class="enquiries__header--item font-normal" fxFlex.lt-md="100" fxFlex="20">Name</span>
+                <span class="enquiries__header--item font-normal" fxFlex.lt-md="100" fxFlex="20">Email</span>
+                <span class="enquiries__header--item font-normal" fxFlex.lt-md="100" fxFlex="15">Phone</span>
+                <span class="enquiries__header--item font-normal" fxFlex.lt-md="100" fxFlex="20">Subject</span>
+                <span class="enquiries__header--item font-normal" fxFlex.lt-md="100" fxFlex="10">Status</span>
+                <span class="enquiries__header--item font-normal" fxFlex.lt-md="100" fxFlexFill fxLayoutAlign="center" fxLayoutAlign.lt-md="end" fxFlex="10">Actions</span>
+            </div>
+        </mat-card>
+          <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+            <div class="mb3" *ngFor="let enquiry of (enquiries$ | async)">
+                <neural-enquiry-card [enquiry]="enquiry" [permissions]="permissions$ | async"></neural-enquiry-card>
+            </div>
+          </ng-container>
+          <div *ngIf="(loading$ | async)" class="enquiries__loading">
+              Loading...
+          </div>
+          <div class="enquiries__not-found" *ngIf="(error$ | async) && !(total$ | async)">
+            <neural-error [error]="(error$ | async)"></neural-error>
+          </div>
+    </div>
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+      <mat-paginator [length]="total$ | async"
+            [pageSize]="(enquiriesConfig$ | async).limit"
+            [pageIndex]="(enquiriesConfig$ | async).page - 1"
+            (page)="changePage($event)" showFirstLastButtons>
+      </mat-paginator>
+    </div>
+</div>

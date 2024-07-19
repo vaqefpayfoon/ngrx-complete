@@ -1,0 +1,12 @@
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false">
+    <ng-template ngFor let-child [ngForOf]="items">
+        <button [disabled]="!child.enabled" mat-menu-item *ngIf="child.path" [routerLink]="[child.path]" routerLinkActive="active" #rla="routerLinkActive">
+            <span>{{child.name}}</span>
+        </button>
+        <mat-divider *ngIf="child?.divider"></mat-divider>
+        <button [disabled]="!child.enabled" mat-menu-item *ngIf="!child.path" [matMenuTriggerFor]="menu.childMenu">
+            <span>{{child.name}}</span>
+        </button>
+        <neural-menu-item #menu [items]="child.items"></neural-menu-item>
+    </ng-template>
+</mat-menu>

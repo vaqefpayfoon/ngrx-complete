@@ -1,0 +1,12 @@
+<neural-dynamic-header [title]="'groups'" [breadcrumbs]="bc"></neural-dynamic-header>
+<neural-group-form
+[group]="group$ | async"
+[roles]="roles$ | async"
+[error]="error$ | async"
+[permissions]="permissions$ | async"
+[selectedCorporate]="selectedCorporate$ | async"
+(corporateChange)="onCorporateChange($event)"
+(create)="onCreate($event)"
+(update)="onUpdate($event)"
+(loaded)="onLoad($event)"
+></neural-group-form>

@@ -1,0 +1,46 @@
+<div class="servicePackage" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header [title]="'Package'" [breadcrumbs]="bc"
+      [link]="(permissions$ | async)?.CREATE_SERVICE_LINE_PACKAGE ? '../new' : null" (refreshChange)="onRefresh($event)"
+      [loading]="loading$ | async"></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <mat-card class="servicePackage__header">
+      <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+        <span class="servicePackage__header--item font-normal" fxFlex="20">
+          NAME
+        </span>
+        <span class="servicePackage__header--item font-normal" fxFlex="15">
+          ESTIMATED PRICE &nbsp;({{(branchInfo$ | async)?.payments?.sales?.currency}})
+        </span>
+        <span class="servicePackage__header--item font-normal" fxFlex="10">
+          ACTIVE
+        </span>
+        <span class="servicePackage__header--item font-normal" fxFlex="10">
+          CUSTOMER VIEW
+        </span>
+        <span class="servicePackage__header--item font-normal" fxFlex="5">
+          ACTION
+        </span>
+      </div>
+    </mat-card>
+    <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+      <div class="mb3" *ngFor="let servicePackage of servicePackages$ | async">
+        <neural-service-package-card [servicePackage]="servicePackage" [permissions]="permissions$ | async"
+          (activeStatusChange)="onActiveChange($event)" (customerViewStatusChange)="onCustomerView($event)"
+          (resetToggle)="onResetToggle($event)"></neural-service-package-card>
+      </div>
+    </ng-container>
+    <div *ngIf="loading$ | async" class="promotions__loading">
+      Loading...
+    </div>
+    <div class="promotions__not-found" *ngIf="(error$ | async) && !(total$ | async)">
+      <neural-error [error]="error$ | async"></neural-error>
+    </div>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="total$ | async">
+    <mat-paginator [length]="total$ | async" [pageSize]="(servicePackageConfig$ | async).limit"
+      [pageIndex]="(servicePackageConfig$ | async).page - 1" (page)="changePage($event)" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

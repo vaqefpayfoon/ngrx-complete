@@ -1,0 +1,195 @@
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="start stretch">
+  <mat-card fxFlex class="sale">
+    <mat-card-title class="mb2">
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+          <h2 class="h6 text-capitalize font-semi-thick my0">
+            {{ purchase.fulfillments[index]?.title }}
+          </h2>
+        </div>
+        <div fxLayoutGap="1rem">
+          <button *ngIf="purchase?.badge?.edit" mat-stroked-button color="primary" matBadgeColor="warn" matBadge="1"
+            (click)="onClearBadge()">
+            Clear
+          </button>
+          <button mat-stroked-button type="button" class="px10 py1" color="primary"
+          [disabled]="!updatePermission"
+          (click)="onLock(form)">
+            {{ !purchase.fulfillments[index]?.isLocked ? 'Lock' : 'Unlock' }}
+          </button>
+        </div>
+      </div>
+    </mat-card-title>
+    <div class="sale__divider">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-card-content>
+      <div fxLayout="column" fxFlex="100">
+        <ng-container *ngIf="edit; else editForms">
+          <div fxFlex="100">
+            <mat-list>
+              <mat-list-item>
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                  <h2 class="h6 text-capitalize my0">Status</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                    purchase.fulfillments[index]?.calendar?.status | formatString | titlecase
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                  <h2 class="h6 text-capitalize my0">Location</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                    purchase.fulfillments[index]?.calendar?.location?.address ||  branchName
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                  <h2 class="h6 text-capitalize my0">Collection Type</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                    purchase.fulfillments[index]?.calendar?.collectionType | titlecase | formatString
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                  <h2 class="h6 text-capitalize my0">Preferred Date & Time</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{
+                    purchase.fulfillments[index]?.calendar?.date
+                    | date: 'MMM d, y, h:mm a'
+                    }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                  <h2 class="h6 text-capitalize my0">Is Collected?</h2>
+                  <div fxLayout="row" fxLayoutGap="1rem">
+                    {{ purchase.fulfillments[index]?.calendar?.isCollected }}
+                  </div>
+                </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+        </ng-container>
+        <ng-template #editForms>
+          <form [formGroup]="form" novalidate>
+            <div fxLayout="column" fxFlex="100" class="sale__general mt8" fxLayoutAlign="space-evenly space-between"
+              fxLayoutGap="1rem">
+              <div fxLayout="row" fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                  <mat-label style="font-size: 13px">Collection Type</mat-label>
+                  <div class="form-group selectedMat my0" [ngClass]="{
+                      'selectedMat--disabled': formDisabled,
+                      'ng-invalid': collectionType.invalid && collectionType.touched,
+                      'ng-valid': collectionType.valid && collectionType.touched
+                    }" fxFlex="100">
+                    <mat-select formControlName="collectionType" placeholder="Select a type" (selectionChange)="onChangeCollection($event)">
+                      <mat-option *ngFor="let type of collectionTypes | keyvalue" [value]="type.value">
+                        {{ type.key | formatString | titlecase }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <ng-container *ngIf="collectionType.value === collectionTypes.SERVICE_CENTER;">
+                  <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+                    <mat-label style="font-size: 13px">Location</mat-label>
+                    <div class="form-group selectedMat my0" [ngClass]="{
+                        'selectedMat--disabled': formDisabled,
+                        'ng-invalid': branchUuid.invalid && branchUuid.touched,
+                        'ng-valid': branchUuid.valid && branchUuid.touched
+                      }" fxFlex="100">
+                      <mat-select formControlName="branchUuid" placeholder="Select a Location">
+                        <mat-option *ngFor="let branch of branches" [value]="branch.uuid">
+                          {{ branch.name | titlecase }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </ng-container>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="30">
+                  <div
+                    fxFlex="100"
+                    class="form-group"
+                    fxLayout="column"
+                    fxLayoutGap="0.5rem"
+                  >
+                    <mat-label>Date and Time</mat-label>
+                    <div fxLayout="row">
+                      <input
+                        readonly
+                        matInput
+                        [min]="minDate"
+                        class="form-control"
+                        formControlName="date"
+                        [ngxMatDatetimePicker]="picker"
+                        placeholder="30 March 2021, 10:30am"
+                        (dateChange)="changeDate($event)"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                      ></mat-datepicker-toggle>
+                      <ngx-mat-datetime-picker
+                        #picker
+                      ></ngx-mat-datetime-picker>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div fxLayout="row" fxFlex="100">
+                <div class="form-group form-group--inline mt4" fxLayoutAlign="start center" fxLayoutGap="1rem"
+                  fxFlex="30">
+                  <mat-label>Is Collected?</mat-label>
+                  <mat-slide-toggle fxLayout="row-reversed" color="primary" formControlName="isCollected">
+                  </mat-slide-toggle>
+                </div>
+              </div>
+              <ng-container *ngIf="collectionType.value === collectionTypes.DELIVERY;">
+                <div fxLayout="row" fxFlex="100" fxLayout="column" fxLayoutGap="1rem">
+                  <neural-search-location fxFlex="71" (searched)="onSearch($event)"></neural-search-location>
+                  <mat-hint *ngIf="address.value">{{address.value}}</mat-hint>
+                </div>
+              </ng-container>
+              <div fxLayout="row" fxFlex="100">
+                <div class="form-group" fxFlex="90" fxLayout="column" fxLayoutGap="0.5rem">
+                  <mat-label>Remarks</mat-label>
+                  <textarea matInput rows="7" formControlName="remark" class="form-control"
+                    placeholder="Remarks"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="py4" fxLayoutAlign="end center">
+      <button mat-stroked-button type="button" class="mr4 px10 py1" (click)="edit = true"
+        [disabled]="!updatePermission">
+        Cancel
+      </button>
+      <button mat-flat-button type="button" class="px10 py1" color="primary" *ngIf="edit" (click)="edit = !edit; onSearch();"
+        [disabled]="!updatePermission">
+        Edit
+      </button>
+      <button mat-flat-button class="px10 py1" color="primary" *ngIf="!edit" (click)="onUpdate(form)"
+        [disabled]="form.invalid || !updatePermission">
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,0 +1,27 @@
+@import 'styles-variables';
+@import 'styles-mixins';
+.template {
+
+  font-size: 14px;
+
+  color: map-get($map: $colors, $key: shark) !important;
+  border: 1px solid map-get($map: $colors, $key: aquaHaze);
+  @include round(7px);
+  box-shadow: none;
+
+  &__title {
+
+    &--name {
+      span {
+        background-color: map-get($map: $colors, $key: red);
+        @include round(50%);
+        display: inline-block;
+        color: map-get($map: $colors, $key: white);
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 13px;
+      }
+    }
+  }
+}

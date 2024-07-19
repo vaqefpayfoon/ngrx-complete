@@ -1,0 +1,422 @@
+<div
+  fxLayout="column"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayoutGap="1rem"
+  class="sale"
+>
+  <div
+    fxLayout="row wrap"
+    fxLayoutAlign="space-between center"
+    fxLayoutGap="1rem"
+    class="my4"
+  >
+    <h2 class="h4 text-capitalize font-semi-thick my0">
+      {{ bankLoan?.bank?.name }}
+    </h2>
+  </div>
+
+  <div
+    fxFlex="100"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+    fxFlexFill
+  >
+    <h2 class="h6 text-capitalize font-semi-thick my0">Calculator</h2>
+  </div>
+
+  <!-- start calculatorForm -->
+  <form
+    novalidate
+    fxFlex="100"
+    fxFlexFill
+    [formGroup]="calculatorForm"
+    class="sale"
+  >
+    <div
+      fxLayout="row"
+      fxFlex="100"
+      fxLayoutAlign="start start"
+      fxLayoutGap="1rem"
+      class="sale__general"
+    >
+      <div class="form-group" fxFlex="30">
+        <mat-label>Downpayment Value (RM)</mat-label>
+        <input
+          type="number"
+          matInput
+          formControlName="downPayment"
+          class="form-control"
+          placeholder="Downpayment value"
+          autocomplete="off"
+        />
+      </div>
+      <div class="form-group" fxFlex="30">
+        <mat-label>Interest Rate (%)</mat-label>
+        <input
+          type="number"
+          matInput
+          formControlName="interestRate"
+          class="form-control"
+          placeholder="Interest Rate"
+          autocomplete="off"
+        />
+        <neural-show-errors
+          [control]="interestRateCalculator"
+        ></neural-show-errors>
+      </div>
+      <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+        <mat-label style="font-size: 13px">Loan Period (Years)</mat-label>
+        <div
+          class="form-group selectedMat my0"
+          [ngClass]="{
+            'selectedMat--disabled': formDisabled,
+            'ng-invalid': periodCalculator.invalid && periodCalculator.touched,
+            'ng-valid': periodCalculator.valid && periodCalculator.touched
+          }"
+          fxFlex="100"
+        >
+          <mat-select
+            formControlName="period"
+            placeholder="Select a loan period"
+          >
+            <mat-option *ngFor="let year of years" [value]="year">
+              {{ year }}
+            </mat-option>
+          </mat-select>
+          <neural-show-errors [control]="period"></neural-show-errors>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- end calculatorForm -->
+
+  <!-- start bank loan form -->
+  <form
+    novalidate
+    fxFlex="100"
+    fxLayout="column"
+    fxLayoutGap="1rem"
+    fxFlexFill
+    [formGroup]="form"
+  >
+    <div
+      fxLayout="column"
+      fxFlex="100"
+      fxLayoutAlign="start start"
+      fxLayoutGap="1rem grid"
+      class="sale__general"
+    >
+      <div
+        fxFlex="100"
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        fxFlexFill
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Account</h2>
+      </div>
+
+      <div
+        fxLayout="row wrap"
+        fxFlex="100"
+        fxLayoutAlign="space-between center"
+        fxLayoutGap="1rem grid"
+        formGroupName="account"
+        fxFlexFill
+      >
+        <div class="form-group" fxFlex="33">
+          <mat-label>IC/Passport number</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="identification"
+            class="form-control"
+            placeholder="Ex. Z13243454"
+            autocomplete="off"
+          />
+        </div>
+        <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="33">
+          <mat-label style="font-size: 13px">Nationality</mat-label>
+          <div
+            class="form-group selectedMat my0"
+            [ngClass]="{
+              'selectedMat--disabled': form.disabled,
+              'ng-invalid': nationality.invalid && nationality.touched,
+              'ng-valid': nationality.valid && nationality.touched
+            }"
+            fxFlex="100"
+          >
+            <mat-select
+              formControlName="nationality"
+              placeholder="Select a nationality"
+            >
+              <mat-option *ngFor="let country of countries" [value]="country">
+                {{ country }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div
+          fxFlex="33"
+          class="form-group"
+          fxLayout="column"
+          fxLayoutGap="0.5rem"
+        >
+          <mat-label>Date of Birth</mat-label>
+          <div fxLayout="row">
+            <input
+              matInput
+              formControlName="dateOfBirth"
+              readonly
+              placeholder="30 March 1991"
+              class="form-control"
+              [matDatepicker]="datePicker"
+              (dateChange)="changeDate($event)"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="datePicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+          </div>
+        </div>
+      </div>
+
+      <div
+        fxFlex="100"
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        fxFlexFill
+      >
+        <h2 class="h6 text-capitalize font-semi-thick my0">Loan</h2>
+      </div>
+
+      <div formGroupName="loan" fxFlex="100" fxLayoutGap="1rem" fxFlexFill>
+        <div class="form-group" fxFlex="30">
+          <mat-label>Amount</mat-label>
+          <input
+            type="number"
+            readonly
+            matInput
+            formControlName="amount"
+            class="form-control"
+            placeholder="Ex. 40,000"
+            autocomplete="off"
+          />
+          <neural-show-errors [control]="amount"></neural-show-errors>
+        </div>
+        <div class="form-group" fxFlex="30">
+          <mat-label>Monthly Instalment</mat-label>
+          <input
+            type="number"
+            readonly
+            matInput
+            formControlName="monthlyInstallment"
+            class="form-control"
+            placeholder="Ex. 30,000"
+            autocomplete="off"
+          />
+          <neural-show-errors
+            [control]="monthlyInstallment"
+          ></neural-show-errors>
+        </div>
+      </div>
+
+      <div fxFlex="100" fxLayoutGap="1rem" fxFlexFill>
+        <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+          <mat-label style="font-size: 13px">Status</mat-label>
+          <div
+            class="form-group selectedMat my0"
+            [ngClass]="{
+              'selectedMat--disabled': formDisabled || status.disabled,
+              'ng-invalid': status.invalid && status.touched,
+              'ng-valid': status.valid && status.touched
+            }"
+            fxFlex="100"
+          >
+            <mat-select
+              formControlName="status"
+              placeholder="Select a status"
+              (selectionChange)="onChangeStatus($event)"
+            >
+              <mat-option
+                *ngFor="let status of bankLoanStatus | keyvalue"
+                [value]="status.value"
+              >
+                {{ status.key }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div fxLayout="column" fxLayoutGap="0.5rem" fxFlex="30">
+          <mat-label style="font-size: 13px">Customer Decision</mat-label>
+          <div
+            class="form-group selectedMat my0"
+            [ngClass]="{
+              'selectedMat--disabled':
+                formDisabled ||
+                customerDecision.disabled,
+              'ng-invalid':
+                customerDecision.invalid && customerDecision.touched,
+              'ng-valid': customerDecision.valid && customerDecision.touched
+            }"
+            fxFlex="100"
+          >
+            <mat-select
+              formControlName="customerDecision"
+              placeholder="Select a status"
+            >
+              <mat-option>-- None --</mat-option>
+              <mat-option
+                *ngFor="
+                  let status of bankLoanDocumentsCustomerDecision | keyvalue
+                "
+                [value]="status.value"
+              >
+                {{ status.key }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- end bank loan form -->
+
+  <!-- start doc form -->
+  <form
+    [formGroup]="documentsForm"
+    novalidate
+    fxFlex="100"
+    fxLayout="column"
+    fxLayoutGap="1rem"
+    fxFlexFill
+  >
+    <ng-container>
+      <div>
+        <div
+          fxLayout="row"
+          fxFlex="100"
+          fxLayoutAlign="space-between center"
+          class="my4"
+        >
+          <div
+            fxFlex="100"
+            fxLayout="column"
+            fxLayoutAlign="start start"
+            fxFlexFill
+          >
+            <div
+              fxFlex="100"
+              fxLayout="row"
+              fxLayoutAlign="start start"
+              fxFlexFill
+            >
+              <div
+                fxLayout="row"
+                fxFlex="100"
+                fxLayoutAlign="space-between center"
+                class="my4"
+              >
+                <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                  <ng-template
+                    ngFor
+                    let-item
+                    [ngForOf]="bankLoanDocumentsTitleLists"
+                    let-i="index"
+                  >
+                    <div
+                      fxLayout="column"
+                      fxLayoutGap="0.5rem"
+                      fxLayoutAlign="center start"
+                    >
+                      <mat-label
+                        >{{ item | formatString | titlecase }} file</mat-label
+                      >
+                      <input
+                        type="file"
+                        #bankLoanDoc
+                        [id]="'upload-' + item + '-' + index"
+                        name="docs"
+                        hidden
+                        class="form-control"
+                        placeholder="File"
+                        autocomplete="off"
+                        (change)="onUploadFile($event, item)"
+                        accept="application/pdf"
+                      />
+                      <div
+                        fxFlex="100"
+                        fxLayout="row"
+                        fxLayoutAlign="start center"
+                        fxLayoutGap="1rem"
+                      >
+                        <button
+                          type="button"
+                          color="primary"
+                          mat-flat-button
+                          (click)="onClickBankLoanDoc(item)"
+                          [disabled]="
+                            !updatePermission || titleInDocuments(item)
+                          "
+                        >
+                          Select doc
+                        </button>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </form>
+  <!-- end doc form -->
+  <div fxLayout="column" fxFlexFill fxFlex="100">
+    <div>
+      <div class="mb5" fxFlex="100">
+        <h2 class="h6 text-capitalize font-semi-thick my0 mt10">
+          Uploaded files
+        </h2>
+      </div>
+    </div>
+    <div fxLayout="row" fxFlex="100" fxLayoutAlign="start start">
+      <form [formGroup]="form" fxLayout="row wrap" fxLayoutGap="1rem grid">
+        <ng-container formArrayName="documents">
+          <ng-container *ngFor="let item of documents.controls; let i = index">
+            <div [formGroupName]="i">
+              <neural-tradeIn-file
+                [permissions]="permissions"
+                [formDisabled]="form.disabled"
+                [title]="item.get('title').value"
+                formControlName="url"
+                (remove)="onDeleteFile(item.get('url'))"
+              >
+              </neural-tradeIn-file>
+            </div>
+          </ng-container>
+        </ng-container>
+      </form>
+    </div>
+  </div>
+  <div fxFlexFill fxFlex="100">
+    <mat-card-actions class="py0" fxLayoutAlign="end center">
+      <button
+        mat-flat-button
+        class="px10 py1"
+        color="primary"
+        (click)="onUpdate(form)"
+        [disabled]="!updatePermission || form.invalid"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+    <div  fxLayout="column" fxLayoutAlign="center end" class="mb4"> 
+    <mat-hint >This button will save any updates on the bank loan above only.
+      Please edit and save the next bank loan separately.</mat-hint>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="formChange$ | async"></ng-container>

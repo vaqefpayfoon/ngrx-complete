@@ -1,0 +1,43 @@
+<div
+  class="job-inprogress"
+  fxFlex="100"
+  fxLayoutAlign="start start"
+  fxLayout="column"
+>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <neural-dynamic-header
+      [link]="null"
+      [title]="title"
+      [breadcrumbs]="bc"
+      (refreshChange)="onRefresh($event)"
+      [loading]="loading$ | async"
+    ></neural-dynamic-header>
+  </div>
+  <div fxFlex="100" fxFlexFill>
+    <neural-in-progress-card
+      [timeZone]="timeZone$ | async"
+      [dailyReportError]="dailyReportError$ | async"
+      [report]="report$ | async"
+      [permissions]="permissions$ | async"
+      [inProgressJob]="inProgressJob$ | async"
+      [inProgressJobList]="inProgressJobList$ | async"
+      [loading]="loading$ | async"
+      [error]="error$ | async"
+      (refreshChange)="onRefresh($event)"
+      (reportChange)="getDailyReport($event)"
+      (referenceNoChange)="getReferenceNo($event)"
+    ></neural-in-progress-card>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="inProgressJob$ | async">
+    <neural-in-progress-form
+      [permissions]="permissions$ | async"
+      [error]="error$ | async"
+      (create)="createRO($event)"
+      (update)="createInvoice($event)"
+      [inprogress]="inProgressJob$ | async"
+      (loaded)="onLoad($event)"
+      (completeJob)="openDialog($event)"
+      [digitalRepairOrder]="(corporateInfo$ | async)?.configuration?.appFeatures?.service?.digitalRepairOrder"
+    ></neural-in-progress-form>
+  </div>
+</div>

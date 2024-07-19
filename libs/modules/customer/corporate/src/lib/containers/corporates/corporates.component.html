@@ -1,0 +1,34 @@
+<div class="corporates" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+    <div fxFlex="100" fxFlexFill>
+        <neural-dynamic-header [title]="'corporates'" [breadcrumbs]="bc" [sort]="sort" [link]="(permissions$ | async)?.CREATE_CORPORATE ? 'new' : null" (refreshChange)="onRefresh($event)" [loading]="(loading$ | async)"></neural-dynamic-header>
+    </div>
+    <div fxFlex="100" fxFlexFill class="my8">
+        <mat-card class="corporates__header">
+            <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+                <span class="corporates__header--item font-normal" fxFlex="20">Type</span>
+                <span class="corporates__header--item font-normal" fxFlex="30">Registeration</span>
+                <span class="corporates__header--item font-normal" fxFlex="30">Name</span>
+                <span class="corporates__header--item font-normal" fxFlex="15">Status</span>
+                <span class="corporates__header--item font-normal" fxFlex="5">Actions</span>
+            </div>
+        </mat-card>
+        <ng-container *ngIf="!(loading$ | async)">
+            <div class="mb3" *ngFor="let corporate of (corporates$ | async)">
+                <neural-corporate-card [permissions]="permissions$ | async" [corporate]="corporate" (status)="openDialog($event)"></neural-corporate-card>
+            </div>
+        </ng-container>
+        <div *ngIf="(loading$ | async)" class="corporates__loading">
+            Loading...
+        </div>
+        <div class="corporates__not-found" *ngIf="!(total$ | async) && !(error$ | async) && !(loading$ | async)">
+            <span> {{ (error$ | async) }} </span>
+        </div>
+    </div>
+    <div fxFlex="100" fxFlexFill *ngIf="(total$ | async)">
+        <mat-paginator [length]="total$ | async"
+            [pageSize]="(corporatesConfig$ | async).limit"
+            [pageIndex]="(corporatesConfig$ | async).page - 1"
+            (page)="changePage($event)" showFirstLastButtons>
+        </mat-paginator>
+    </div>    
+</div>

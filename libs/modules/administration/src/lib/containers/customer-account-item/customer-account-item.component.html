@@ -1,0 +1,27 @@
+<neural-dynamic-header
+  [title]="title"
+  [breadcrumbs]="bc"
+></neural-dynamic-header>
+<div class="account-item my8">
+  <div class="account-item__body">
+    <div class="account-item__body--content p9">
+      <neural-account-form
+        [router]="data$ | async"
+        [codes]="codes$ | async"
+        [permissions]="permissions$ | async"
+        [authCorporates]="corporates$ | async"
+        [selectCorporate]="selectedCorporate$ | async"
+        [groups]="groups$ | async"
+        [account]="account$ | async"
+        [isCDK]="(corporateInfo$ |async)?.configuration?.cdk?.active"
+        (create)="onCreateAccount($event)"
+        [error]="error$ | async"
+        [isCDK]="isCDK"
+        (update)="onUpdateAccount($event)"
+        (passChanges)="onUpdateAccountPassword($event)"
+        (loaded)="onLoad($event)"
+        (corporateChange)="onCorporateChange($event)"
+      ></neural-account-form>
+    </div>
+  </div>
+</div>

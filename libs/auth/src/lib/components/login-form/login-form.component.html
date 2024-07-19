@@ -1,0 +1,54 @@
+<div class="login" fxLayout="row" fxLayoutAlign="start stretch" fxFlex="100">
+  <div fxFlex="40" class="login__responsive py23 pl25 pr18"  fxLayoutAlign="center stretch"
+    fxLayout="column">
+    <!-- logo -->
+    <div>
+      <img class="login__logo" src="https://d3gyzh3f9mj82k.cloudfront.net/images/logo.svg" alt="logo">
+    </div>
+
+    <!-- form -->
+    <div class="mt12">
+      <h4 class="font-semi-thick" style="color: #515050;"><b>Customer Digital Transformation </b>
+      </h4>
+      <p class="login__description">
+        Made Easy!
+      </p>
+
+      <div fxLayout="column">
+        <form [formGroup]="loginForm" novalidate (ngSubmit)="login(loginForm)">
+          <div class="login__email-field">
+            <input formControlName="email" placeholder="Email Address" class="p6">
+          </div>
+          
+          <div class="login__password-field login__password-field--partial-rounded">
+            <input formControlName="password" placeholder="Password" [type]="hide ? 'password' : 'text'" class="p6">
+            <button [disabled]="loginForm.disabled" class="login__password-visibility" type="button" mat-icon-button
+              matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </div>
+          <div class="mt6">
+            <neural-show-errors [control]="loginForm.controls.password"></neural-show-errors>
+          </div>
+          <div class="login__button my4" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <button mat-raised-button [disabled]="loading || !loginForm.valid || loginForm.pristine" color="primary"
+              type="submit" class="login__sign-in">Sign in</button>
+            <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="20" strokeWidth="4">
+            </mat-progress-spinner>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- privacy & policy -->
+    <div class="login__privacy">
+      <p><b>By clicking "Sign in", you agree to our</b> <br>
+        <a href="javascript:void(0)" title="Terms and conditions">Terms & condition</a> <b>&nbsp; and &nbsp;</b> <a href="javascript:void(0)"
+          title="privacy statement">privacy statement</a>.
+      </p>
+    </div>
+
+  </div>
+
+  <div fxFlex="60" class="login__background-image" fxLayout="row">
+  </div>
+</div>

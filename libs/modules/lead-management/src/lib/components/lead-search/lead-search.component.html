@@ -1,0 +1,197 @@
+<div class="mt8 lead-search">
+  <mat-accordion class="lead-search__panel">
+    <mat-expansion-panel [expanded]="panelOpenState">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="h6 text-capitalize font-semi-thick my0">Advance search</h2>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card class="lead-search__card p4 my8">
+        <!-- content -->
+        <mat-card-content>
+          <div
+            fxLayout="column"
+            fxFlex="100"
+            class="lead-search__general"
+            fxLayoutAlign="start space-between"
+            fxLayoutGap="1rem"
+            fxFlexOffset="1rem"
+          >
+            <!-- form -->
+            <div
+              [formGroup]="form"
+              fxLayout="row wrap"
+              fxFlex="100"
+              fxLayoutGap="1rem grid"
+            >
+              <!-- lead name -->
+              <div
+                fxFlex="30"
+                class="form-group"
+                fxLayout="column"
+                formGroupName="account"
+              >
+                <div
+                  fxFlex="30"
+                  class="form-group"
+                  fxLayout="column"
+                  formGroupName="identity"
+                >
+                  <mat-label>Lead Name</mat-label>
+                  <div fxLayout="row" class="form-group__wrapper">
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="fullName"
+                      autocomplete="off"
+                      (keyup)="onSearch(form)"
+                    />
+                    <button
+                      class="form-group__remove"
+                      mat-button
+                      matSuffix
+                      mat-icon-button
+                      (click)="clearAccountFullName(form)"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- email -->
+              <div
+                fxFlex="30"
+                class="form-group"
+                fxLayout="column"
+                formGroupName="account"
+              >
+                <mat-label>Lead Email</mat-label>
+                <div fxLayout="row" class="form-group__wrapper">
+                  <input
+                    type="text"
+                    matInput
+                    class="form-control"
+                    formControlName="email"
+                    placeholder="name@example.com"
+                    autocomplete="off"
+                    (keyup)="onSearch(form)"
+                  />
+                  <button
+                    class="form-group__remove"
+                    *ngIf="accountEmail.value"
+                    mat-button
+                    matSuffix
+                    mat-icon-button
+                    (click)="clearAccountEmail(form)"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <!-- salesAdvisorfullname -->
+              <div
+                fxFlex="30"
+                class="form-group"
+                fxLayout="column"
+                formGroupName="salesAdvisor"
+              >
+                <div
+                  fxFlex="30"
+                  class="form-group"
+                  fxLayout="column"
+                  formGroupName="identity"
+                >
+                  <mat-label>Sales Advisor</mat-label>
+                  <div fxLayout="row" class="form-group__wrapper">
+                    <input
+                      type="text"
+                      matInput
+                      class="form-control"
+                      formControlName="fullName"
+                      autocomplete="off"
+                      (keyup)="onSearch(form)"
+                    />
+                    <button
+                      class="form-group__remove"
+                      mat-button
+                      matSuffix
+                      mat-icon-button
+                      (click)="clearSalesAdvisorFullName(form)"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- status -->
+              <div fxFlex="30" fxLayout="column" fxLayoutGap="0.5rem">
+                <mat-label>Status</mat-label>
+                <ng-container>
+                  <div class="form-group selectedMat mb4" fxFlex="100">
+                    <mat-select
+                      placeholder="Select a status"
+                      formControlName="status"
+                      (selectionChange)="onSearch(form)"
+                    >
+                      <mat-option>-- None --</mat-option>
+                      <mat-option
+                        *ngFor="let status of leadStatuses | keyvalue"
+                        [value]="status.value"
+                      >
+                        {{ status.value }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </ng-container>
+              </div>
+              <!-- priority -->
+              <div fxFlex="30" fxLayout="column" fxLayoutGap="0.5rem">
+                <mat-label>Priority</mat-label>
+                <ng-container>
+                  <div class="form-group selectedMat mb4" fxFlex="100">
+                    <mat-select
+                      placeholder="Select a Priority"
+                      formControlName="priority"
+                      (selectionChange)="onSearch(form)"
+                    >
+                      <mat-option>-- None --</mat-option>
+                      <mat-option
+                        *ngFor="let priority of leadPriority | keyvalue"
+                        [value]="priority.value"
+                      >
+                        {{ priority.value }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </ng-container>
+              </div>
+              <!-- advisorAssigned -->
+              <div fxFlex="30" class="form-group" fxLayout="column">
+                <mat-label>Assigned</mat-label>
+                <div fxLayout="row" class="form-group__wrapper">
+                  <!-- <mat-checkbox
+                    formControlName="advisorAssigned"
+                    (change)="clientFilter($event)"
+                  >
+                    Sale Advisor Assigned
+                  </mat-checkbox> -->
+                  <div class="form-group selectedMat mb4" fxFlex="100">
+                    <mat-select
+                      placeholder="Select"
+                      (selectionChange)="clientFilter($event.value)"
+                    >
+                      <mat-option value="0">-- None --</mat-option>
+                      <mat-option value="1">Assigned</mat-option>
+                      <mat-option value="2">Not Assigned</mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

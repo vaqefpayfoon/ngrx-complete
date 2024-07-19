@@ -1,0 +1,77 @@
+<mat-dialog-content class="service">
+  <div fxLayout="row" class="service__title" fxLayoutAlign="start start" class="mb5">
+    <h2 fxFlex="100" fxFlexFill class="service__title h3 text-capitalize font-semi-thick my0">{{data?.serviceLine?.service?.title}}
+    </h2>
+  </div>
+  <div fxLayout="column">
+    <div fxLayout="column">
+      <div fxLayout="column" class="mb5">
+        <div>
+          <h2 class="h6 text-capitalize font-semi-thick">Operation Code</h2>
+        </div>
+        <div>
+          <h2 class="service__textShadow h6 text-capitalize font-semi-thick">{{data?.serviceLine?.operationCode}}</h2>
+        </div>
+      </div>
+      <!-- <div fxLayout="column" class="mb5">
+        <div>
+          <h2 class="h6 text-capitalize font-semi-thick">Estimated Price</h2>
+        </div>
+        <div>
+          <h2 class="service__textShadow h6 text-capitalize font-semi-thick">{{data?.serviceLine?.service?.price?.value}}
+            <span *ngIf="data?.serviceLine?.service?.price?.value"> &nbsp;
+              <span
+                *ngIf="data?.branchInfo?.payments?.sales?.currency">({{data?.branchInfo?.payments?.sales?.currency}})</span>
+            </span>
+          </h2>
+        </div>
+      </div> -->
+      <div fxLayout="column" class="mb5" *ngIf="data?.serviceLine?.service?.description">
+        <div>
+          <h2 class="h6 text-capitalize font-semi-thick">Description</h2>
+        </div>
+        <div>
+          <h2 class="service__textShadow h6 text-capitalize font-semi-thick">{{data?.serviceLine?.service?.description}}</h2>
+        </div>
+      </div>
+      <div fxLayout="column" class="mb5" *ngIf="data?.serviceLine?.eligibility?.vehicles?.brands?.length>0">
+        <div>
+          <h2 class="h6 text-capitalize font-semi-thick">Brand</h2>
+        </div>
+        <div fxLayout="row">
+          <div class="mr4" *ngFor="let brand of data?.serviceLine?.eligibility?.vehicles?.brands">
+            <h2 class="service__textShadow h6 text-capitalize font-semi-thick">
+              {{brand?.brand}}
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="column" class="mb5" *ngIf="data?.serviceLine?.eligibility?.registrationYears">
+        <div>
+          <h2 class="h6 text-capitalize font-semi-thick">Year Make</h2>
+        </div>
+        <div fxLayout="row">
+          <div class="mr4" *ngFor="let year of data?.serviceLine?.eligibility?.registrationYears">
+            <h2 class="service__textShadow h6 text-capitalize font-semi-thick">{{year}}</h2>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="column" class="mb5" *ngIf="data?.serviceLine?.eligibility?.mileages?.length>0">
+        <div>
+          <h2 class="h6 text-capitalize font-semi-thick">Mileage</h2>
+        </div>
+        <div fxLayout="row">
+          <div class="mr4" *ngFor="let ml of data?.serviceLine?.eligibility?.mileages">
+            <h2 class="service__textShadow h6 text-capitalize font-semi-thick">
+              {{ml?.from}}-{{ml?.to}}
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" class="mt5" fxLayoutAlign="end center">
+  <button mat-stroked-button class="mr3 px10 py1" (click)="onClose()">Cancel</button>
+  <button mat-flat-button class="px10 py1" color="primary" (click)="onAdd()">Add</button>
+</mat-dialog-actions>

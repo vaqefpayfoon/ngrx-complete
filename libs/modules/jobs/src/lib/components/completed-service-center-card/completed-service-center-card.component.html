@@ -1,0 +1,73 @@
+<mat-card class="card">
+  <div class="card__status font-semi-thick" [class.card__blue]="rawStatus === 'NO_SHOW'" [class.card__green]="rawStatus === 'NOT_OPERATIONAL'" [class.card__orange]="rawStatus === 'JOB_PENDING'" [class.card__yellow]="rawStatus === 'FLEET_EN_ROUTE'" [class.card__green]="rawStatus === 'JOB_IN_PROGRESS'" [class.card__violet]="rawStatus === 'JOB_COMPLETED'" >
+      {{statusName(rawStatus)}}
+  </div>
+  <div
+    fxFlex="100"
+    fxFlexOffset="4rem"
+  >
+    <div class="card__header" fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center">   
+      <div fxFlex="0 0 15" fxLayout="column" class="font-semi-thick card__header--email">
+        <span>{{referenceNumber}}</span>
+      </div>    
+      <div fxFlex="0 0 15" fxLayout="column" class="font-semi-thick card__header--name">
+        <span>{{name?.salutation | titlecase}} {{name?.fullName | titlecase}}</span>
+        <a href="tel:{{phone?.code}}{{phone?.number}}">{{phone?.code}}{{phone?.number}}</a>
+      </div>
+      <div fxFlex="0 0 15" fxLayout="column" class="font-semi-thick card__header--phone">
+        <span>{{unit?.brand | titlecase}} {{unit?.model?.display | titlecase}} </span>
+        <span>{{unit?.variant?.display  | titlecase}}</span>
+      </div>
+      <div fxFlex="0 0 15" fxLayout="column" class="font-semi-thick card__header--fleet pl4" [ngClass]="{'card__header--fleet': !!fleet}">
+        <span>{{operation?.identity?.salutation | titlecase}} {{operation?.identity?.fullName | titlecase}}</span>
+        <span>{{fleet?.name}} </span>
+        <span>{{fleet?.numberPlate}}</span>
+      </div>
+      <div fxFlex="0 0 15" fxLayout="column" class="font-semi-thick card__header--phone" *ngIf="!reservation?.mobileService">
+        <span *ngFor="let item of reservation?.calendar?.selectedTypes">{{item | titlecase}}</span>
+      </div>
+      <div fxFlex="0 0 15" fxLayout="column" class="font-semi-thick card__header--phone" *ngIf="!reservation?.mobileService">
+        <span >{{ handleDropWait(reservation?.calendar?.logistic) | titlecase}}</span>
+      </div>
+      <div fxFlex="0 0 5" class="font-semi-thick card__header--actions">
+        <button mat-icon-button [disabled]="!previewPermission &&
+        !assignPermission &&
+        !cancelPermission &&
+        !compeletePermission &&
+        !resetPermission" [matMenuTriggerFor]="actions">
+          <mat-icon svgIcon="action_off"></mat-icon>
+        </button>
+        <mat-menu #actions="matMenu">
+          <button mat-menu-item [disabled]="!previewPermission" [routerLink]="['../scheduled/'+uuid]">
+            <mat-icon>remove_red_eye</mat-icon>
+            <span>Preview</span>
+          </button>
+          <mat-divider *ngIf="complete"></mat-divider>
+          <button mat-menu-item [disabled]="!assignPermission" *ngIf="assing" [routerLink]="['../scheduled/'+uuid+'/assign']">
+            <mat-icon>supervisor_account</mat-icon>
+            <span>Assign Operation Team</span>
+          </button>
+          <button mat-menu-item [disabled]="!cancelPermission" *ngIf="cancel" (click)="cancelReservation(reservation)">
+            <mat-icon>cancel</mat-icon>
+            <span>Cancel</span>
+          </button>
+          <button mat-menu-item [disabled]="!compeletePermission" *ngIf="complete" (click)="compeleteReservation(reservation)">
+            <mat-icon>done</mat-icon>
+            <span>Complete</span>
+          </button>
+          <button mat-menu-item [disabled]="!resetPermission" *ngIf="reset" (click)="resetReservation(reservation)">
+            <mat-icon>refresh</mat-icon>
+            <span>Reset</span>
+          </button>
+          <button mat-menu-item [disabled]="!rescheduleMobileReservationPermission" *ngIf="reschedule && rescheduleMobileReservationPermission" [routerLink]="['../rescheduled/'+uuid]">
+            <mat-icon>timelapse</mat-icon>
+            <span>Reschedule</span>
+          </button>
+          <button mat-menu-item [disabled]="!rescheduleServiceCenterReservationPermission" *ngIf="rescheduleService && rescheduleServiceCenterReservationPermission" [routerLink]="['../rescheduled/'+uuid]">
+            <mat-icon>timelapse</mat-icon>
+            <span>Reschedule</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>

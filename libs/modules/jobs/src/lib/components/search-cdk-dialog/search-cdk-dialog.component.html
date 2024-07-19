@@ -1,0 +1,100 @@
+<div class="search">
+<mat-horizontal-stepper linear #stepper *ngIf="(dmsCustomers$ | async) && !(dmsCustomersLoading$ | async)">
+    <mat-step >
+        <ng-template matStepLabel>Select Customer</ng-template>
+        <div  fxLayout="column" fxLayoutGap="1rem">
+        <div class="search__fixedHight" fxFlexFill fxLayout="column" fxLayoutGap="1rem">
+          <div  fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="5" fxLayoutAlign="start start">
+            </div>
+            <div fxFlex="20" fxLayoutAlign="start start">
+              <h2 class="h6 font-semi-thick text-capitalize my0">Name</h2>
+            </div>
+            <div fxFlex="20" fxLayoutAlign="start start">
+              <h2 class="h6 font-semi-thick text-capitalize my0">Company Name</h2>
+            </div>
+            <div fxFlex="35" fxLayoutAlign="start start">
+              <h2 class="h6 font-semi-thick text-capitalize my0">Email</h2>
+            </div>
+            <div fxFlex="15" fxLayoutAlign="start start">
+              <h2 class="h6 font-semi-thick text-capitalize my0">Phone</h2>
+            </div>   
+          </div>
+          <div fxLayout="row wrap" *ngFor="let customer of (dmsCustomers$ | async)" fxLayoutAlign="space-between start" fxFlex="100" fxLayoutGap="0.5rem">
+          <div fxFlex="5" fxLayoutAlign="start start">
+            <mat-radio-button (change)="onSelectCustomer(customer)" color="primary" [value]="customer?.id">
+          </mat-radio-button>
+          </div>
+            <div fxFlex="20" fxLayoutAlign="start start">
+              <h2 class="h6 text-capitalize my0">{{customer?.identity?.fullName}}</h2>
+            </div>
+            <div fxFlex="20" fxLayoutAlign="start start">
+              <h2 class="h6 text-capitalize my0" >{{customer?.companyName}}</h2>
+            </div>
+            <div fxFlex="35" fxLayoutAlign="start start">
+              <h2 class="h6 text-capitalize my0" >{{customer?.email}}</h2>
+            </div>
+            <div fxFlex="15" fxLayoutAlign="start start">
+              <h2 class="h6 text-capitalize my0">{{customer?.phone?.number}}</h2>
+            </div> 
+          </div>
+        </div>
+        <div fxLayout="row" class="mt5" fxLayoutAlign="space-evenly">
+          <button mat-stroked-button class="px10 py1" (click)="onClose()">Cancel</button>
+          <button mat-flat-button  class="px10 py1" color="primary"  (click)="searchVehicleByCustomerId()">Next</button>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Select Vehicle</ng-template>
+        <div  fxLayout="column"  fxLayoutGap="1rem">
+          <div class="search__fixedHight" fxFlexFill fxLayout="column" fxLayoutGap="1rem">
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-between start">
+              <div fxFlex="5" fxLayoutAlign="start start">
+            </div> 
+              <div fxFlex="30" fxLayoutAlign="start start">
+                <h2 class="h6 font-semi-thick text-capitalize my0">ID Number</h2>
+              </div>
+              <div fxFlex="20" fxLayoutAlign="start start">
+                <h2 class="h6 font-semi-thick text-capitalize my0">Status</h2>
+              </div>
+              <div fxFlex="20" fxLayoutAlign="start start">
+                <h2 class="h6 font-semi-thick text-capitalize my0">Model</h2>
+              </div> 
+              <div fxFlex="15" fxLayoutAlign="start start">
+                <h2 class="h6 font-semi-thick text-capitalize my0">Year Make</h2>
+              </div>    
+            </div>
+            <div *ngFor="let vehicle of (dmsVehicles$ |  async)" fxLayoutAlign="space-between start" fxFlex="100" fxLayout="row wrap" fxLayoutGap="0.5rem">
+              <div fxFlex="5" fxLayoutAlign="start start">
+                 <mat-radio-button (change)="onSelectVehicle(vehicle)" color="primary" [value]="vehicle?.id">
+                </mat-radio-button>
+             </div>  
+              <div fxFlex="30" fxLayoutAlign="start start">
+                <h2 class="h6 text-capitalize my0" >{{vehicle?.identificationNumber}}</h2>
+              </div>
+              <div fxFlex="20" fxLayoutAlign="start start">
+                <h2 class="h6 text-capitalize my0" >{{vehicle?.status}}</h2>
+              </div>
+              <div fxFlex="20" fxLayoutAlign="start start">
+                <h2 class="h6 text-capitalize my0" >{{vehicle?.unit?.model?.actual}}</h2>
+              </div>
+              <div fxFlex="15" fxLayoutAlign="start start">
+                <h2 class="h6 text-capitalize my0" >{{vehicle?.yearMake}}</h2>
+              </div>
+            </div>
+          </div>
+          <div fxLayout="row" class="mt5" fxLayoutAlign="space-evenly">
+            <button mat-stroked-button class="px10 py1" matStepperPrevious (click)="onBack(stepper)">Back</button>
+            <button [disabled]="!selectedVehicle" mat-flat-button class="px10 py1" color="primary" type="button" (click)="onSave()">Select</button>
+          </div>
+        </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+  <div *ngIf="(dmsCustomersLoading$ | async)" class="search__loading">Loading...</div>
+  <div *ngIf="!(dmsCustomersLoading$ | async) && !(dmsCustomers$ | async)" class="search__loading">Not Found</div>
+  <div *ngIf="!(dmsCustomersLoading$ | async) && !(dmsCustomers$ | async)" fxLayout="row" class="mt5" fxLayoutAlign="start start">
+    <button mat-stroked-button class="px10 py1" (click)="onClose()">Close</button>
+  </div>
+</div>
+

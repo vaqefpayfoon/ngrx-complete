@@ -1,0 +1,48 @@
+<div class="nextServices" fxFlex="100" fxLayoutAlign="start start" fxLayout="column">
+  <div fxFlex="100" fxFlexFill>
+    <neural-dynamic-header [title]="'Next Services'" [breadcrumbs]="bc" (refreshChange)="onRefresh($event)"
+      [loading]="loading$ | async"></neural-dynamic-header>
+  </div>
+  <div fxLayout="row" fxFlexFill fxFlex="100" class="mt10"  *ngFor="let nextService of allNextServices$ | async" >
+  <neural-next-services-dashboard *ngFor="let item of nextService.overall" [nextService]="item">
+
+  </neural-next-services-dashboard>
+</div>
+  <div fxFlex="100" fxFlexFill>
+    <neural-next-services-search [filters]="nextServicesFilter$ | async" [permissions]="permissions$ | async"
+      [selectedCorporate]="selectedCorporate$ | async" [selectedBranch]="selectedBranch$ | async"
+      (searched)="onFilter($event)"></neural-next-services-search>
+  </div>
+  <div fxFlex="100" fxFlexFill class="my8">
+    <mat-card class="nextServices__header">
+      <div fxLayout="row wrap" fxLayout.lt-md="column" fxFlex="100" fxLayoutGap.lt-md="1rem"
+        fxLayoutAlign="space-between center" fxLayoutAlign.lt-md="start start">
+        <span class="nextServices__header--item font-normal" fxLayoutAlign="start center" fxFlex.lt-md="200"
+          fxFlex="25">Account</span>
+        <span class="nextServices__header--item font-normal" fxLayoutAlign="start center" fxFlex.lt-md="100"
+          fxFlex="20">Vehicle</span>
+        <span class="nextServices__header--item font-normal" fxLayoutAlign="start center" fxFlex.lt-md="50"
+          fxFlex="20">Next Service DUE</span>
+        <span class="nextServices__header--item font-normal" fxLayoutAlign="start center" fxFlex.lt-md="50"
+          fxFlex="15">Last Service</span>
+        <span class="nextServices__header--item font-normal" fxLayoutAlign="start center" fxFlex.lt-md="50"
+          fxFlex="15">{{lastColumnTxt}}</span>
+      </div>
+    </mat-card>
+    <ng-container *ngIf="(allNextServices$ | async)">
+      <div class="mb3" *ngFor="let nextService of allNextServices$ | async">
+        <neural-next-services-card *ngFor="let item of nextService.reservations.docs" [nextService]="item"
+          [permissions]="permissions$ | async"></neural-next-services-card>
+      </div>
+    </ng-container>
+    <div *ngIf="loading$ | async" class="nextServices__loading">Loading...</div>
+    <div class="nextServices__not-found" *ngIf="(error$ | async)">
+      <neural-error [error]="error$ | async"></neural-error>
+    </div>
+  </div>
+  <div fxFlex="100" fxFlexFill *ngIf="total$ | async">
+    <mat-paginator [length]="total$ | async" [pageSize]="(nextServicesConfig$ | async)?.limit"
+      [pageIndex]="(nextServicesConfig$ | async).page - 1" (page)="changePage($event)" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

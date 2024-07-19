@@ -1,0 +1,29 @@
+<mat-card class="role-card p4 my8">
+  <mat-card-title class="mb0">
+      <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="space-between center">
+          <h2 class="h6 text-capitalize font-semi-thick my0">{{ role.name }}</h2>
+          <mat-card-actions class="m0 p0">
+              <button mat-icon-button [disabled]="!previewPermission" [routerLink]="['../role/'+role.uuid]">
+                  <mat-icon svgIcon="edit_off"></mat-icon>
+              </button>
+              <button mat-icon-button [disabled]="!deletePermission" (click)="deleteRole(role)">
+                  <mat-icon svgIcon="delete_off"></mat-icon>
+              </button>
+          </mat-card-actions> 
+      </div>
+  </mat-card-title>
+  <div class="role-card__divider">
+      <mat-divider></mat-divider>
+  </div>
+  <mat-card-content>
+      <div fxFlex="100" fxLayout="column" class="role-card__content">
+          <div class="py4 role-card__content--title" fxLayout="row" fxFlexFill fxFlex="100" fxLayoutAlign="start center">
+              <mat-icon svgIcon="tag"></mat-icon>
+              <span class="font-semi-thick">Permission</span>
+          </div>
+          <mat-chip-list>
+              <mat-chip *ngFor="let permission of role.permissions">{{permission}}</mat-chip>
+          </mat-chip-list>
+      </div>
+  </mat-card-content>        
+</mat-card>

@@ -1,0 +1,51 @@
+<mat-card class="model p4 my8">
+    <mat-card-title class="mb2">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+            <h2 class="h6 text-capitalize font-semi-thick my0">Specs</h2>
+            <button mat-mini-fab color="primary" (click)="onAdd()" [disabled]="formDisabled">
+                <mat-icon svgIcon="add"></mat-icon>
+            </button>              
+        </div>
+    </mat-card-title>
+    <div class="model__divider">
+        <mat-divider></mat-divider>
+    </div>
+    <mat-card-content >
+        <div [formGroup]="parent">
+            <div formArrayName="specs">
+                <div *ngFor="let item of specs; let i = index;">
+                    <div fxLayout="column" fxFlex="100" class="model__general my8" fxFlexOffset="8rem" fxLayoutAlign="space-evenly space-between" [formGroupName]="i">
+                        <button class="model__general--close" *ngIf="i !== 0" matTooltip="Remove" [disabled]="formDisabled" (click)="onRemove(i)" mat-icon-button color="warn">
+                            <mat-icon [svgIcon]="'close_off'"></mat-icon>
+                        </button>
+                        <div fxLayout="column" fxFlex="100" fxLayoutGap="1rem">
+                            <div fxFlex="100" fxLayout="row" fxLayoutGap="1rem">
+                                <div fxFlex="35" fxLayout="column" fxLayoutGap="0.5rem">
+                                    <mat-label>Key</mat-label>
+                                    <div class="form-group selectedMat mb4" [ngClass]="{'selectedMat--disabled':formDisabled, 'ng-invalid': specs[i].get('key').invalid && specs[i].get('key').touched, 'ng-valid': specs[i].get('key').valid && specs[i].get('key').touched}" fxFlex="100">
+                                        <mat-select placeholder="Select a key" formControlName="key">
+                                            <mat-option *ngFor="let key of specKeys | keyvalue" [value]="key.value">
+                                              {{key.value}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <neural-show-errors [control]="specs[i].get('key')"></neural-show-errors>
+                                    </div>            
+                                </div>                                
+                                <div class="form-group" fxFlex="35">
+                                    <mat-label>Value</mat-label>
+                                    <input type="text" matInput class="form-control" formControlName="value" placeholder="Value" autocomplete="off">
+                                    <neural-show-errors [control]="specs[i].get('value')"></neural-show-errors>
+                                </div>            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="my0 ml32 p0">
+        <button mat-stroked-button type="button" class="mr4 px10 py1" [disabled]="!createPermission && !updatePermission" (click)="onAction('cancel')">Cancel</button>
+        <button mat-flat-button type="button" *ngIf="parent.disabled"  class="px10 py1" color="primary" [disabled]="!updatePermission" (click)="onAction('edit')">Edit</button>
+        <button mat-flat-button type="button" *ngIf="parent.enabled" class="px10 py1" color="primary" [disabled]="!parent.valid || !createPermission || !updatePermission"  (click)="onSave(parent)">Save</button>
+    </mat-card-actions>
+</mat-card>

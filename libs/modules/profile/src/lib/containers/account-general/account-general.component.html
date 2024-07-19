@@ -1,0 +1,8 @@
+<neural-general-form
+  [account]="account$ | async"
+  [codes]="codes$ | async"
+  (submittedAccountProfile)="updateSelfAccountProfile($event)"
+  (submittedPassword)="updatePassword($event)"
+  (submittedPhone)="updatePhone($event)"
+  (submittedImage)="updateImage($event)"
+></neural-general-form>

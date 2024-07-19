@@ -1,0 +1,36 @@
+<h1 mat-dialog-title class="font-thick text-black">Are you sure?</h1>
+
+<mat-dialog-content>
+  <p>
+    {{ name }}'s reminder will be closed.
+  </p>
+
+  <form [formGroup]="form" fxLayout="column" fxLayoutAlign="space-between start">
+    <div fxFlex="100" fxFill>
+      <div class="form-group selectedMat mb4" fxLayout="row" fxFlex="100">
+        <mat-select placeholder="Select your Reason" formControlName="reason">
+          <mat-option *ngFor="let reason of reasons | keyvalue" [value]="reason.key">
+            {{reason.key}}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="form-group" fxFlex="100">
+      <mat-label class="mb1">Remark</mat-label>
+      <input type="text" matInput class="form-control" formControlName="remark" placeholder="Remark" autocomplete="off">
+    </div>
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="text-right">
+  <button
+    mat-button
+    [disabled]="!form.valid"
+    (click)="toggleStatus(form)"
+    [color]="'primary'"
+  >
+    Yes
+  </button>
+  <button mat-button (click)="close()">No</button>
+</mat-dialog-actions>
